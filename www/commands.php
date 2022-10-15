@@ -32,8 +32,8 @@ while($row = mysqli_fetch_assoc($result)) {
     $HTML .= "
     <tr>
         <td>".$row["command"]."</td>
-        <td><input type='checkbox' class='checkbox' ".($row['auto'] ? "checked" : "")." disabled></td>
         <td id='value_".$row["id"]."'>".$row["value"]."</td>
+        <td><input type='checkbox' class='checkbox' ".($row['auto'] ? "checked" : "")." disabled></td>
         <td>
           <span class='pull-right'>
             <button onClick='edit_entry(\"".$row["id"]."\", \"".$row["auto"]."\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
@@ -74,9 +74,9 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM commands")['value'];
       <table class="table table-hover table-condensed">
         <thead>
             <tr>
-                <th class="col-xs-2">Key</th>
-                <th class="col-xs-1">Auto</th>
+                <th class="col-xs-2">Command</th>
                 <th class="col-xs-8">Text</th>
+                <th class="col-xs-1">Auto</th>
                 <th class="col-xs-1"></th>
             </tr>
           </thead>

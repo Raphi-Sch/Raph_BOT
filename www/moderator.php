@@ -75,7 +75,7 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM `moderator`")['value'];
       <table class="table table-hover table-condensed">
         <thead>
           <tr>
-              <th class="col-xs-2">Trigger Word</th>
+              <th class="col-xs-2">Trigger</th>
               <th class="col-xs-3">Moderator action</th>
               <th class="col-xs-4">Explanation</th>
               <th class="col-xs-1"></th>
