@@ -1,0 +1,17 @@
+# Log file
+log/error_bot.log
+core/lastest.log
+core/debug.log
+
+# Config File
+config.json
+
+# Test file
+test.*
+
+# Audio folder
+*.mp3
+
+# Node_modules
+node_modules
+package-lock.json
