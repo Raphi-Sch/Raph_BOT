@@ -87,7 +87,7 @@ async function run(user, message) {
     if (fullCommand) {
         const command = await get_alias(tools.normalize_string(fullCommand[1]));
         if (command === "char") {
-            return tanks.hangar(tools.normalize_string(fullCommand[2]));
+            return tanks.run(tools.normalize_string(fullCommand[2]));
         }
         const result = await get_command(command);
         if (result) {
