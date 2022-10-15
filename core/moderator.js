@@ -31,7 +31,11 @@ async function run(user, message) {
     try {
         if (result) {
             socket.log("[MODERATOR] Taking action against '" + user['display-name'] + "' for saying '" + message + "' (Action : " + result.mod_action + ")");
-            return [result.mod_action.replace("@username", user['display-name']), result.explanation.replace("@username", user['display-name'])];
+
+            result.mod_action = result.mod_action.replace("@username", user['display-name']);
+            result.explanation = result.explanation.replace("@username", user['display-name']);
+
+            return result;
         }
         return;
     }
