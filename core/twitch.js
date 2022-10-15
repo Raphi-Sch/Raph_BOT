@@ -48,7 +48,7 @@ function init(config_init, socket_init) {
         socket.log("[TWITCH] Connected on : " + adress)
 
         setInterval(async function () {
-            var result = await commands.timeTrigger();
+            var result = await commands.time_trigger();
             if (result) {
                 send(result);
             }
@@ -67,7 +67,7 @@ function init(config_init, socket_init) {
         if (isSelf) return;
 
         // Automatic command by number of messages
-        result = await commands.msgTrigger();
+        result = await commands.message_trigger();
         if (result) {
             send(result);
         }
