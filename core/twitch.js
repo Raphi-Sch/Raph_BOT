@@ -85,8 +85,8 @@ function init(config_init, socket_init) {
         if (config['plugin_moderator'] == 1) {
             result = await moderator.run(user, message);
             if (result) {
-                send(result[0]); // Mod action
-                send(result[1]); // Explanation
+                send(result.mod_action);
+                send(result.explanation);
                 return;
             }
         }
