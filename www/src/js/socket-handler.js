@@ -1,5 +1,5 @@
-var socket = null;
-var core_state = false;
+let socket = null;
+let core_state = false;
 
 function twitch_state(state) {
     // Dashboard

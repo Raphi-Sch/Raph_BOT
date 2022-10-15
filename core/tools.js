@@ -22,4 +22,8 @@ function max_array_index(array, start){
     return index;
 }
 
-module.exports = {commandParser, getRandomInt, max_array_index}
+function normalize_string(str) {
+    return str.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+}
+
+module.exports = {commandParser, getRandomInt, max_array_index, normalize_string}

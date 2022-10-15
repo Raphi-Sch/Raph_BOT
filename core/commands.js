@@ -4,17 +4,18 @@ const db = require('./db.js');
 const tanks = require('./tanks.js');
 
 // Global Var
-var config = null;
-var timer = 0;
-var message_counter = 0;
-var total_auto_cmd_time = 0;
-var total_auto_cmd_msg = 0;
-var last_auto_cmd = 0;
-var time_interval = null; //Trigger auto des cmd (en minutes)
-var message_interval = null;  //Trigger auto des cmd (en nb de msg)
+let config = null;
+let socket = null
+let timer = 0;
+let message_counter = 0;
+let total_auto_cmd_time = 0;
+let total_auto_cmd_msg = 0;
+let last_auto_cmd = 0;
+let time_interval = null; //Trigger auto des cmd (en minutes)
+let message_interval = null;  //Trigger auto des cmd (en nb de msg)
 
 // Function declaration
-function init(config_init, socket_init){
+function init(config_init, socket_init) {
     socket = socket_init;
     config = config_init;
 
@@ -22,114 +23,78 @@ function init(config_init, socket_init){
     message_interval = config["cmd_msg_interval"];
 }
 
-async function timeTrigger(){
-	timer++;
-	socket.time_trigger_update(timer, time_interval, total_auto_cmd_time);
-	if(timer >= time_interval){
-		timer = 0;
-		total_auto_cmd_time++;
-		return await auto_command();
-	}
-	return false;
+async function time_trigger() {
+    timer++;
+    socket.time_trigger_update(timer, time_interval, total_auto_cmd_time);
+    if (timer >= time_interval) {
+        timer = 0;
+        total_auto_cmd_time++;
+        return auto_command();
+    }
+    return false;
 }
 
-async function msgTrigger(){
-	message_counter++;
-	socket.msg_trigger_update(message_counter, message_interval, total_auto_cmd_msg);
-	if(message_counter >= message_interval){
-		message_counter = 0;
-		total_auto_cmd_msg++;
-		return await auto_command();
+async function message_trigger() {
+    message_counter++;
+    socket.msg_trigger_update(message_counter, message_interval, total_auto_cmd_msg);
+    if (message_counter >= message_interval) {
+        message_counter = 0;
+        total_auto_cmd_msg++;
+        return auto_command();
     }
-	return false;
+    return false;
 }
 
-async function load_auto_command(){
-    var sql = await db.query("SELECT `command` FROM commands WHERE auto = 1");
-    var result = [];
-
-    try {
-        sql.forEach(element => {result.push(element.command);});
-        return result;
-    }
-    catch (err){
-        console.error(err);
-    }
+async function load_auto_command() {
+    const sql = await db.query("SELECT command FROM commands WHERE auto = 1");
+    return sql.map(element => element.command);
 }
 
-async function auto_command(){
-    ///Boucle des commandes automatiques
-    var list = await load_auto_command();
-    var index;
-
-	do{
-		index = Math.floor(Math.random() * Math.floor(list.length));
-	}while(index == last_auto_cmd && list.length > 1)
+/**
+ * Boucle des commandes automatiques
+ * @returns {Promise<string|string|*|null>}
+ */
+async function auto_command() {
+    const list = await load_auto_command();
+    let index;
+    do {
+        index = Math.floor(Math.random() * Math.floor(list.length));
+    } while (index === last_auto_cmd && list.length > 1)
 
     last_auto_cmd = index;
 
-	return await run(null, config['cmd_prefix'] + list[index]);		
+    return run(null, config['cmd_prefix'] + list[index]);
 }
 
-async function get_alias(request){
+async function get_alias(request) {
     const res = await db.query("SELECT command FROM alias_commands WHERE alias = ?", [request]);
-
-    try {
-        if(res[0])
-            return res[0].command;
-        else
-            return request;
+    if (res[0]) {
+        return res[0].command;
     }
-    catch (err){
-        console.error(err);
-        return null;
-    }
+    return request;
 }
 
-async function get_command(request){
+async function get_command(request) {
     const res = await db.query("SELECT value FROM commands WHERE command= ?", [request]);
-
-    try {
-        if(res[0])
-            return res[0].value;
-        else
-            return null;
+    if (res[0]) {
+        return res[0].value;
     }
-    catch (err){
-        console.error(err);
-        return null;
-    }
-}
-
-async function run(user, message){
-    var result = null;
-	var fullCommand = tools.commandParser(message, config['cmd_prefix']);
-
-    // Not a command
-	if(!fullCommand) return null;
-
-    // Sanitize
-	var command = fullCommand[1].toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-	var param = fullCommand[2].toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-
-    // Alias
-    command = await get_alias(command);
-    
-    // Tank
-    if(command == "char"){
-        return await tanks.hangar(param);
-    }
-    
-    // Text
-    result = await get_command(command);
-    if (result){
-        if(user) 
-            result = result.replace("@username", user['display-name']);
-
-        return result;
-    }
-        
     return null;
 }
 
-module.exports = {init, run, auto_command, timeTrigger, msgTrigger}
+async function run(user, message) {
+    const fullCommand = tools.commandParser(message, config['cmd_prefix']);
+    if (fullCommand) {
+        const command = await get_alias(tools.normalize_string(fullCommand[1]));
+        if (command === "char") {
+            return tanks.hangar(tools.normalize_string(fullCommand[2]));
+        }
+        const result = await get_command(command);
+        if (result) {
+            return result.replace("@username", user['display-name']);
+        }
+    }
+    return null;
+}
+
+module.exports = {init, run, time_trigger, message_trigger}
