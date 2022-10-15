@@ -34,9 +34,9 @@ while($row = mysqli_fetch_assoc($data)) {
 
 // Building options list
 $command_options = "";
-$data = db_query_raw($db, "SELECT commands.key FROM commands ORDER BY commands.key ASC");
+$data = db_query_raw($db, "SELECT commands.command FROM commands ORDER BY commands.command ASC");
 while($row = mysqli_fetch_assoc($data)) {
-  $command_options .= '<option>'.$row["key"].'</option>';
+  $command_options .= '<option>'.$row["command"].'</option>';
 }
 
 // Count

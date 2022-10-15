@@ -45,11 +45,11 @@ async function msgTrigger(){
 }
 
 async function load_auto_command(){
-    var sql = await db.query("SELECT `key` FROM commands WHERE auto = 1");
+    var sql = await db.query("SELECT `command` FROM commands WHERE auto = 1");
     var result = [];
 
     try {
-        sql.forEach(element => {result.push(element.key);});
+        sql.forEach(element => {result.push(element.command);});
         return result;
     }
     catch (err){
@@ -72,7 +72,7 @@ async function auto_command(){
 }
 
 async function get_alias(request){
-    var sql = "SELECT command FROM alias_commands WHERE alias_commands.alias='" + request + "'";
+    var sql = "SELECT command FROM alias_commands WHERE alias='" + request + "'";
     var res = await db.query(sql);
 
     try {
@@ -88,7 +88,7 @@ async function get_alias(request){
 }
 
 async function get_command(request){
-    var sql = "SELECT value FROM commands WHERE commands.key='" + request + "'";
+    var sql = "SELECT value FROM commands WHERE command='" + request + "'";
     var res = await db.query(sql);
 
     try {
