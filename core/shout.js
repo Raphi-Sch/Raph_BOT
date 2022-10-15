@@ -7,7 +7,7 @@ var shout_counter = 0;
 
 function init(config_init, socket_init){
 	socket = socket_init;
-	shout_interval = config_init["shout_interval"];
+	shout_interval = config_init.shout_interval;
 }
 
 async function load_shout_words(){

@@ -28,9 +28,9 @@ function init(config_init, discord, version) {
 
     log("[CORE] Started (" + version + ")");
 
-    GUI.trigger_time.max = config["cmd_time_interval"];
-    GUI.trigger_msg.max = config["cmd_msg_interval"];
-    GUI.shout.max = config["shout_interval"];
+    GUI.trigger_time.max = config.cmd_time_interval;
+    GUI.trigger_msg.max = config.cmd_msg_interval;
+    GUI.shout.max = config.shout_interval;
 
     server.listen(port);
 }
@@ -48,7 +48,7 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('discord-notification', function () {
-        discord_client.send(config['discord_notification'], 'annonce');
+        discord_client.send(config.discord_notification, 'annonce');
     });
 
     socket.on('disconnect', function () {

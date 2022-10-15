@@ -19,8 +19,8 @@ function init(config_init, socket_init) {
     socket = socket_init;
     config = config_init;
 
-    time_interval = config["cmd_time_interval"];
-    message_interval = config["cmd_msg_interval"];
+    time_interval = config.cmd_time_interval;
+    message_interval = config.cmd_msg_interval;
 }
 
 async function time_trigger() {
@@ -63,7 +63,7 @@ async function auto_command() {
 
     last_auto_cmd = index;
 
-    return run(null, config['cmd_prefix'] + list[index]);
+    return run(null, config.cmd_prefix + list[index]);
 }
 
 async function get_alias(request) {

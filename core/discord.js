@@ -27,13 +27,13 @@ discord_client.on('disconnect', () => {
 function send(msg, channel){
 	switch (channel){
 		case "annonce":
-			console.log(config["discord_channel_1"])
-			discord_client.guilds.cache.get(config["discord_channel_1"]).send(msg);
+			console.log(config.discord_channel_1)
+			discord_client.guilds.cache.get(config.discord_channel_1).send(msg);
 			socket.log("[DISCORD] Announcement send");
 			break;
 			
 		case "bot-command":
-			discord_client.channels.cache.get(config["discord_channel_2"]).send(msg);
+			discord_client.channels.cache.get(config.discord_channel_2).send(msg);
 			break;
 			
 		default:

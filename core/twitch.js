@@ -31,10 +31,10 @@ function init(config_init, socket_init) {
             reconnect: true
         },
         identity: {
-            username: config["bot_name"],
-            password: config["twitch_token"]
+            username: config.bot_name,
+            password: config.twitch_token
         },
-        channels: [config["twitch_channel"]]
+        channels: [config.twitch_channel]
     };
 
     socket.log("[TWITCH] Connecting ...");
@@ -73,7 +73,7 @@ function init(config_init, socket_init) {
         }
 
         // Commands
-        if (config['plugin_commands'] == 1) {
+        if (config.plugin_commands == 1) {
             result = await commands.run(user, message);
             if (result) {
                 send(result);
@@ -82,7 +82,7 @@ function init(config_init, socket_init) {
         }
 
         // Moderator
-        if (config['plugin_moderator'] == 1) {
+        if (config.plugin_moderator == 1) {
             result = await moderator.run(user, message);
             if (result) {
                 send(result.mod_action);
@@ -92,7 +92,7 @@ function init(config_init, socket_init) {
         }
 
         // Reaction
-        if (config['plugin_reaction'] == 1) {
+        if (config.plugin_reaction == 1) {
             result = await reaction.run(user, message);
             if (result) {
                 send(result);
@@ -101,7 +101,7 @@ function init(config_init, socket_init) {
         }
 
         // Shout
-        if (config['plugin_shout'] == 1) {
+        if (config.plugin_shout == 1) {
             result = await shout.run(user, message);
             if (result) {
                 send(result);
@@ -110,7 +110,7 @@ function init(config_init, socket_init) {
         }
 
         // Audio
-        if (config['plugin_audio'] == 1) {
+        if (config.plugin_audio == 1) {
             result = await audio.run(user, message);
             if (result) {
                 return; // Nothing to send
