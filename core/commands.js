@@ -91,7 +91,12 @@ async function run(user, message) {
         }
         const result = await get_command(command);
         if (result) {
-            return result.replace("@username", user['display-name']);
+            if (user){
+                return result.replace("@username", user['display-name']);
+            }
+            else{
+                return result;
+            }
         }
     }
     return null;
