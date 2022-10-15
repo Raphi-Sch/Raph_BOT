@@ -1,5 +1,4 @@
 const db = require('./db.js');
-
 const tierMin = 5;
 const tierMax = 10;
 

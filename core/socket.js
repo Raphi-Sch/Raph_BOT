@@ -1,20 +1,20 @@
-var http = require('http');
-var fs = require('fs');
-var stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'a' });
+const http = require('http');
+const fs = require('fs');
+const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'a' });
 const port = require('../config.json')['socket_port'];
 
 // Basic HTTP server
-var server = http.createServer();
-var io = require('socket.io').listen(server);
+const server = http.createServer();
+const io = require('socket.io').listen(server);
 
 // Variables
-var web_client = null;
-var web_client_connected = false;
-var discord_client;
-var config = null;
+let web_client = null;
+let web_client_connected = false;
+let discord_client;
+let config = null;
 
 // GUI info
-var GUI = {
+const GUI = {
     discord: false,
     twitch: false,
     shout: { current: 0, max: 0 },
@@ -89,8 +89,8 @@ function msg_trigger_update(current, max, nb) {
 
 function log(msg) {
     // Format
-    var date = new Date;
-    var time = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2) + ":" + ('0' + date.getSeconds()).slice(-2) + "." + ('00' + date.getMilliseconds()).slice(-3);
+    let date = new Date;
+    let time = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2) + ":" + ('0' + date.getSeconds()).slice(-2) + "." + ('00' + date.getMilliseconds()).slice(-3);
     msg = "[" + time + "] " + msg + "\n";
 
     // Write to file
