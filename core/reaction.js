@@ -14,7 +14,6 @@ async function query_reaction(words) {
     let trigger_word_not_in = "";
     if (exclusion.length > 0) {
         trigger_word_not_in = `AND reactions.trigger_word NOT IN (${exclusion.map(word => "?").join(",")})`;
-
     }
 
     const values = [];
@@ -33,7 +32,7 @@ async function query_reaction(words) {
 }
 
 async function run(user, message) {
-    let words = message.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/['"]+/g, ' ').split(" ");
+    let words = tools.normalize_string(message).replace(/['"]+/g, '').split(" ");
     let result = await query_reaction(words);
 
     try {
