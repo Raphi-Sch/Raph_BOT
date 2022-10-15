@@ -4,7 +4,7 @@ core/lastest.log
 core/debug.log
 
 # Config File
-config.json
+/config.json
 
 # Test file
 test.*
