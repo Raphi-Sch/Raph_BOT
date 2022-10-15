@@ -1,0 +1,177 @@
+body {
+  padding-top: 50px;
+  color: #EFEFF1;
+  background-color: #0E0E10;
+}
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.navbar-fixed-top {
+  border: 0;
+  background-color: #18181B;
+  border-bottom: 2px solid #000;
+}
+
+/* Hide for mobile, show later */
+.sidebar {
+  display: none;
+  
+}
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    /*border-right: 1px solid #eee;*/
+
+    background-color: #18181B;
+  }
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+  
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+  color: #bdc3c7;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #747d8c;
+}
+
+a:hover{
+  color: #fff !important;
+  background-color: #2f3542 !important;
+}
+
+.table-hover tr:hover{
+  color: #fff !important;
+  background-color: #2f3542 !important;
+}
+
+.main {
+  padding: 20px;
+  /*background-color: #7f8c8d;*/
+}
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+.main .page-header {
+  margin-top: 10px;
+}
+
+.placeholders {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.placeholders h4 {
+  margin-bottom: 0;
+}
+.placeholder {
+  margin-bottom: 20px;
+}
+.placeholder img {
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.progress{
+  background-color: #bdc3c7;
+}
+
+.form-control{
+  color: #fff !important;
+  background-color: #18181B !important;
+}
+
+/* SWAL Dark theme */
+
+.swal2-popup{
+  color: #fff !important;
+  background: #2f3542 !important;
+}
+
+.swal2-popup .swal2-title{
+  color: #fff !important;
+}
+
+.log{
+  color: #EFEFF1;
+  background-color: #2f3542;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  white-space:pre-wrap;
+  word-break: keep-all;
+}
+
+label{
+  color: #eee;
+}
+
+/* dash */
+.dash-log {
+    flex: auto;
+    height: 60vh;
+}
+
+/* dock */
+
+.dock{
+    padding-top: 0px;
+    background-color: #2b2e38; /* OBS Dark theme */
+    padding: 5px;
+    display: flex;
+    height: 100vh;
+}
+
+.dock th{
+    padding-right: 5px;
+    text-align: right;
+}
+
+.dock td{
+    text-align: center;
+    width: 100px;
+}
+
+.dock-left{
+    margin: 5px;
+}
+
+.dock-right{
+    margin: 5px;
+    flex: auto;
+}
+
+.ico-green{
+    color: #27ae60;
+}
+
+.ico-orange{
+    color: #f39c12;
+}
+
+.ico-red{
+    color: #e74c3c;
+}
