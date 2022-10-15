@@ -3,57 +3,32 @@ const db = require('./db.js');
 const tierMin = 5;
 const tierMax = 10;
 
-var exclude_tanks = [];
-
-async function query_tier(tier) {
-    const res = await db.query(`SELECT GROUP_CONCAT(name SEPARATOR ', ') as value
+async function query_tier(request) {
+    const tier = parseInt(request);
+    if (tier) {
+        const res = await db.query(`SELECT GROUP_CONCAT(name SEPARATOR ', ') as value
                                 FROM tanks
                                 WHERE tanks.tier = ?
                                 ORDER BY name ASC`, [tier]);
-
-    try {
-        if (res) {
-            return res[0].value;
-        }
-        return;
-    } catch (err) {
-        console.error(err);
-        return null;
+        return first(res, tank => "Tier " + tier + " : " + tank.value)
     }
 }
 
-async function query_name(name) {
+async function query_name(request) {
     const res = await db.query(`SELECT name, mark, max_dmg, note
                                 FROM tanks
-                                WHERE tanks.trigger_word = ?`, [name]);
-
-    try {
-        if (res[0]) {
-            tank = res[0];
-            return tank.name + ' : ' + tank.mark + ' Marque(s) - Dégats max : ' + tank.max_dmg;
-        }
-        return;
-    } catch (err) {
-        console.error(err);
-        return;
-    }
+                                INNER JOIN alias_tanks ON alias_tanks.tank = tanks.trigger_word
+                                AND alias_tanks.alias = ?`, [request]);
+    return first(res, tank => `${tank.name} : ${tank.mark} Marque(s) - Dégats max : ${tank.max_dmg}`)
 }
 
-async function query_nation(nation) {
-    const res = await db.query(`SELECT GROUP_CONCAT(name SEPARATOR ', ') as value
+async function query_nation(request) {
+        const res = await db.query(`SELECT tanks.nation as nation, GROUP_CONCAT(name SEPARATOR ', ') as value
                                FROM tanks
-                               WHERE tanks.nation = ?
-                               ORDER BY name ASC`, [nation]);
-
-    try {
-        if (res[0]) {
-            return res[0].value;
-        }
-        return;
-    } catch (err) {
-        console.error(err);
-        return;
-    }
+                               INNER JOIN alias_nation ON alias_nation.nation = tanks.nation
+                               AND alias_nation.alias = ?
+                               ORDER BY name ASC`, [request]);
+        return first(res, x => "Char(s) " + x.nation + " : " + x.value)
 }
 
 async function query_type(type) {
@@ -61,145 +36,75 @@ async function query_type(type) {
                                FROM tanks
                                WHERE tanks.type = ?
                                ORDER BY name ASC`, [type]);
-
-    try {
-        if (res[0]) {
-            return res[0].value;
-        }
-        return;
-    } catch (err) {
-        console.error(err);
-        return;
-    }
+    return first(res, x => "Char(s) " + type + " : " + x.value)
 }
 
+let exclude_tanks = [];
+
 async function query_random() {
-    var count = 0;
+    let count = 0;
 
     // Get number of Tier 10
     const tier_10 = await db.query(`SELECT COUNT(id) as count FROM tanks WHERE tier = 10`);
-    try {
-        if (tier_10[0]) {
-            count = tier_10[0].count;
-        }
-    } catch (err) {
-        console.error(err);
-        return;
-    }
+    first(tier_10, x => count = x.count)
 
     // Empty array
     if (exclude_tanks.length === count) exclude_tanks = [];
 
-    const tank_not_in = exclude_tanks.map(word => "?").join(",")
+    const tank_not_in = exclude_tanks.map(() => "?").join(",")
     // Random
     const res = await db.query(`SELECT id, name
                                FROM tanks
                                WHERE tier = 10
                                AND id NOT IN (${tank_not_in})
                                ORDER BY RAND() LIMIT 1`, [exclude_tanks]);
-    try {
-        if (res[0]) {
-            exclude_tanks.push(res[0].id);
-            return res[0].name;
-        }
-        return;
-    } catch (err) {
-        console.error(err);
-        return;
-    }
-}
-
-async function get_alias_name(request) {
-    const res = await db.query(`SELECT tank
-                               FROM alias_tanks
-                               WHERE alias_tanks.alias = ?`, [request]);
-
-    try {
-        if (res[0]) {
-            return res[0].tank;
-        }
-        return;
-    } catch (err) {
-        console.error(err);
-        return null;
-    }
-}
-
-async function get_alias_nation(request) {
-    const res = await db.query(`SELECT nation
-                             FROM alias_nation
-                             WHERE alias_nation.alias = ?`, [request]);
-    try {
-        if (res[0]) {
-            return res[0].nation;
-        }
-        return;
-    } catch (err) {
-        console.error(err);
-        return null;
-    }
+    return first(res, x => {
+        exclude_tanks.push(x.id)
+        return x.name
+    })
 }
 
 async function hangar(request) {
-    var result = null;
-
-    // Param is not defined or out of range
     if (!request) {
-        return "Ecrit \"!char 5\" pour les chars de tier 5 ou \"!char e100\" pour les détails du E100, \"!char fr\" pour les chars Français, ...";
+        return `Ecrit "!char 5" pour les chars de tier 5 ou "!char e100" pour les détails du E100, "!char fr" pour les chars Français, ...`;
     }
-
-    // Param is out of range
     if (request < tierMin || request > tierMax) {
         return "Le tier que tu m'as demandé est trop bas ou trop haut (entre " + tierMin + " et " + tierMax + ")";
     }
-
-    // request = random
-    if (request == "random") {
+    if (request === "random") {
         return "Voici un char : " + await query_random();
     }
-
-    // request is a tier
-    var param_tier = parseInt(request);
-    if (param_tier) {
-        result = await query_tier(param_tier);
-
-        if (result) {
-            return "Tier " + param_tier + " : " + result;
-        }
+    const tank_by_tier = await query_tier(request);
+    if (tank_by_tier) {
+        return tank_by_tier;
     }
-
-    // request is a Nation
-    // Alias
-    var nation = await get_alias_nation(request);
-    if (nation) {
-        request = nation;
+    const tank_by_nation = await query_nation(request);
+    if (tank_by_nation) {
+        return tank_by_nation;
     }
-
-    result = await query_nation(request);
-    if (result) {
-        return "Char(s) " + request + " : " + result;
+    const tank_by_name = await query_name(request);
+    if (tank_by_name) {
+        return tank_by_name;
     }
-
-    // request is a tank
-    // Alias
-    var tank = await get_alias_name(request);
-    if (tank) {
-        request = tank
+    const tank_by_type = await query_type(request);
+    if (tank_by_type) {
+        return "Char(s) " + request + " : " + tank_by_type;
     }
-
-    result = await query_name(request);
-    if (result) {
-        return result;
-    }
-
-    // request is a type
-    result = await query_type(request);
-    if (result) {
-        return "Char(s) " + request + " : " + result;
-    }
-
-    // IDK
     return "Aucun résultat :(";
+}
+
+function first(tab, data_to_get) {
+    if (data_to_get === undefined) {
+        data_to_get = x => x
+    }
+    try {
+        if (tab[0]) {
+            return data_to_get(tab[0]);
+        }
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
 }
 
 module.exports = {hangar};
