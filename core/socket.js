@@ -63,27 +63,27 @@ function GUI_update() {
 }
 
 function discord_state(state) {
-    GUI['discord'] = state;
+    GUI.discord = state;
     GUI_update();
 }
 
 function twitch_state(state) {
-    GUI['twitch'] = state;
+    GUI.twitch = state;
     GUI_update();
 }
 
 function shout_update(current, max) {
-    GUI['shout'] = { current, max };
+    GUI.shout = { current, max };
     GUI_update();
 }
 
 function time_trigger_update(current, max, nb) {
-    GUI['trigger_time'] = { current, max, nb };
+    GUI.trigger_time = { current, max, nb };
     GUI_update();
 }
 
 function msg_trigger_update(current, max, nb) {
-    GUI['trigger_msg'] = { current, max, nb };
+    GUI.trigger_msg = { current, max, nb };
     GUI_update();
 }
 
