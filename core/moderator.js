@@ -12,15 +12,9 @@ async function query_moderator(words) {
                                   FROM moderator
                                   WHERE moderator.trigger_word IN (${trigger_word_in})
                                   ORDER BY RAND() LIMIT 1`, words);
-    try {
-        if (res[0]) {
-            return res[0];
-        }
-        return;
-    }
-    catch (err) {
-        console.error(err);
-        return null;
+
+    if (res[0]) {
+        return res[0];
     }
 }
 
