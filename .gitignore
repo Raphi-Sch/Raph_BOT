@@ -1,7 +1,5 @@
 # Log file
-log/error_bot.log
-core/lastest.log
-core/debug.log
+*.log
 
 # Config File
 /config.json
