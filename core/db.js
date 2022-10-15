@@ -12,8 +12,8 @@ db.connect(function(err) {
     if(err) throw err;
 })
 
-function query(sql){
-    return new Promise(resolve => db.query(sql, function(err, result){
+function query(sql, values){
+    return new Promise(resolve => db.query(sql, values, function(err, result){
         if (err) {
             console.error(err);
             resolve(null);

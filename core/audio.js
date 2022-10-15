@@ -11,19 +11,17 @@ function init(config_init, socket_init){
 }
 
 async function query(words){
-	var sql = "( 0";
+	const trigger_word_in = words.map(word => "?").join(",")
+    const trigger_word_not_in = exclusion.map(word => "?").join(",")
+    const values = []
+    values.push(trigger_word_in)
+    values.push(trigger_word_not_in)
 
-	for(var word of words) {
-		sql += " OR audio.trigger_word='" + word + "'";
-	}	
-
-	sql += ")"
-
-	// Exclude
-	var sql_exclude = "";
-	exclusion.forEach(exclude_word => sql_exclude += " AND audio.trigger_word != '" + exclude_word + "'");
-
-	var res = await db.query("SELECT * FROM audio WHERE " + sql + sql_exclude + " ORDER BY RAND() LIMIT 1");
+	const res = await db.query(`SELECT *
+                                  FROM audio
+                                  WHERE audio.trigger_word IN (${trigger_word_in})
+                                    AND audio.trigger_word NOT IN (${trigger_word_not_in})
+                                  ORDER BY RAND() LIMIT 1`, values);
     try {
         if(res[0]){
             return res[0];

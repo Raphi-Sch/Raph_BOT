@@ -1,21 +1,17 @@
 const db = require('./db.js');
 
-var socket = null;
+let socket = null;
 
 function init(config_init, socket_init) {
     socket = socket_init;
 }
 
 async function query_moderator(words) {
-    var sql = "( 0";
-
-    for (var word of words) {
-        sql += " OR moderator.trigger_word='" + word + "'";
-    }
-
-    sql += ")";
-
-    var res = await db.query("SELECT mod_action, explanation FROM moderator WHERE " + sql + " ORDER BY RAND() LIMIT 1");
+    const trigger_word_in = words.map(word => "?").join(",")
+    const res = await db.query(`SELECT mod_action, explanation
+                                  FROM moderator
+                                  WHERE moderator.trigger_word IN (${trigger_word_in})
+                                  ORDER BY RAND() LIMIT 1`, words);
     try {
         if (res[0]) {
             return res[0];
@@ -29,8 +25,8 @@ async function query_moderator(words) {
 }
 
 async function run(user, message) {
-    var words = message.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/['"]+/g, ' ').split(" ");
-    var result = await query_moderator(words);
+    const words = message.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/['"]+/g, ' ').split(" ");
+    const result = await query_moderator(words);
 
     try {
         if (result) {

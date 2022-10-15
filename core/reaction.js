@@ -1,42 +1,39 @@
 const db = require('./db.js');
 const tools = require('./tools.js');
 
-var exclude_reactions = [];
-var socket = null;
+let exclude_reactions = [];
+let socket = null;
 
 function init(config_init, socket_init) {
     socket = socket_init;
 }
 
 async function query_reaction(words) {
-    var sql = "( 0";
+    const reactions_key_in = words.map(word => "?").join(",")
+    const reactions_key_not_in = exclude_reactions.map(word => "?").join(",")
+    const values = []
+    values.push(reactions_key_in)
+    values.push(reactions_key_not_in)
 
-    for (var word of words) {
-        sql += " OR reactions.trigger_word='" + word + "'";
-    }
-
-    sql += ")"
-
-    // Exclude
-    var sql_exclude = "";
-    exclude_reactions.forEach(reaction => sql_exclude += " AND reactions.trigger_word != '" + reaction + "'");
-
-    var res = await db.query("SELECT id, trigger_word, reaction, frequency, timeout FROM reactions WHERE " + sql + sql_exclude + " ORDER BY RAND() LIMIT 1");
+    const res = await db.query(`SELECT key, reaction, frequency, timeout
+                                  FROM reactions
+                                  WHERE reactions.key IN (${reactions_key_in})
+                                    AND reactions.key NOT IN (${reactions_key_not_in})
+                                  ORDER BY RAND() LIMIT 1`, values);
     try {
         if (res[0]) {
             return res[0];
         }
         return;
-    }
-    catch (err) {
+    } catch (err) {
         console.error(err);
         return null;
     }
 }
 
 async function run(user, message) {
-    var words = message.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/['"]+/g, ' ').split(" ");
-    var result = await query_reaction(words);
+    let words = message.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/['"]+/g, ' ').split(" ");
+    let result = await query_reaction(words);
 
     try {
         if (result) {

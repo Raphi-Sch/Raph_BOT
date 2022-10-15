@@ -72,8 +72,7 @@ async function auto_command(){
 }
 
 async function get_alias(request){
-    var sql = "SELECT command FROM alias_commands WHERE alias='" + request + "'";
-    var res = await db.query(sql);
+    const res = await db.query("SELECT command FROM alias_commands WHERE alias = ?", [request]);
 
     try {
         if(res[0])
@@ -88,8 +87,7 @@ async function get_alias(request){
 }
 
 async function get_command(request){
-    var sql = "SELECT value FROM commands WHERE command='" + request + "'";
-    var res = await db.query(sql);
+    const res = await db.query("SELECT value FROM commands WHERE command= ?", [request]);
 
     try {
         if(res[0])

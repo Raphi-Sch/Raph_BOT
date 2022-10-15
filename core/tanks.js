@@ -6,22 +6,26 @@ const tierMax = 10;
 var exclude_tanks = [];
 
 async function query_tier(tier) {
-    var res = await db.query("SELECT GROUP_CONCAT(name SEPARATOR ', ') as value FROM tanks WHERE tanks.tier='" + tier + "' ORDER BY name ASC");
+    const res = await db.query(`SELECT GROUP_CONCAT(name SEPARATOR ', ') as value
+                                FROM tanks
+                                WHERE tanks.tier = ?
+                                ORDER BY name ASC`, [tier]);
 
     try {
         if (res) {
             return res[0].value;
         }
         return;
-    }
-    catch (err) {
+    } catch (err) {
         console.error(err);
         return null;
     }
 }
 
 async function query_name(name) {
-    var res = await db.query("SELECT name, mark, max_dmg, note FROM tanks WHERE tanks.trigger_word='" + name + "'");
+    const res = await db.query(`SELECT name, mark, max_dmg, note
+                                FROM tanks
+                                WHERE tanks.trigger_word = ?`, [name]);
 
     try {
         if (res[0]) {
@@ -29,38 +33,41 @@ async function query_name(name) {
             return tank.name + ' : ' + tank.mark + ' Marque(s) - Dégats max : ' + tank.max_dmg;
         }
         return;
-    }
-    catch (err) {
+    } catch (err) {
         console.error(err);
         return;
     }
 }
 
 async function query_nation(nation) {
-    var res = await db.query("SELECT GROUP_CONCAT(name SEPARATOR ', ') as value FROM tanks WHERE tanks.nation='" + nation + "' ORDER BY name ASC");
+    const res = await db.query(`SELECT GROUP_CONCAT(name SEPARATOR ', ') as value
+                               FROM tanks
+                               WHERE tanks.nation = ?
+                               ORDER BY name ASC`, [nation]);
 
     try {
         if (res[0]) {
             return res[0].value;
         }
         return;
-    }
-    catch (err) {
+    } catch (err) {
         console.error(err);
         return;
     }
 }
 
 async function query_type(type) {
-    var res = await db.query("SELECT GROUP_CONCAT(name SEPARATOR ', ') as value FROM tanks WHERE tanks.type='" + type + "' ORDER BY name ASC");
+    const res = await db.query(`SELECT GROUP_CONCAT(name SEPARATOR ', ') as value
+                               FROM tanks
+                               WHERE tanks.type = ?
+                               ORDER BY name ASC`, [type]);
 
     try {
         if (res[0]) {
             return res[0].value;
         }
         return;
-    }
-    catch (err) {
+    } catch (err) {
         console.error(err);
         return;
     }
@@ -70,64 +77,64 @@ async function query_random() {
     var count = 0;
 
     // Get number of Tier 10
-    var res = await db.query("SELECT COUNT(`id`) as count FROM tanks WHERE tier = 10");
+    const tier_10 = await db.query(`SELECT COUNT(id) as count FROM tanks WHERE tier = 10`);
     try {
-        if (res[0]) {
-            count = res[0].count;
+        if (tier_10[0]) {
+            count = tier_10[0].count;
         }
-    }
-    catch (err) {
+    } catch (err) {
         console.error(err);
         return;
     }
 
     // Empty array
-    if (exclude_tanks.length == count) exclude_tanks = [];
+    if (exclude_tanks.length === count) exclude_tanks = [];
 
-    // Exclude tank
-    var sql_exclude = "";
-    exclude_tanks.forEach(tank => sql_exclude += " AND `id` != '" + tank + "'");
-
+    const tank_not_in = exclude_tanks.map(word => "?").join(",")
     // Random
-    var res = await db.query("SELECT `id`, `name` FROM tanks WHERE tier = 10 " + sql_exclude + " ORDER BY RAND() LIMIT 1");
+    const res = await db.query(`SELECT id, name
+                               FROM tanks
+                               WHERE tier = 10
+                               AND id NOT IN (${tank_not_in})
+                               ORDER BY RAND() LIMIT 1`, [exclude_tanks]);
     try {
         if (res[0]) {
             exclude_tanks.push(res[0].id);
             return res[0].name;
         }
         return;
-    }
-    catch (err) {
+    } catch (err) {
         console.error(err);
         return;
     }
 }
 
 async function get_alias_name(request) {
-    var res = await db.query("SELECT tank FROM alias_tanks WHERE alias_tanks.alias='" + request + "'");
+    const res = await db.query(`SELECT tank
+                               FROM alias_tanks
+                               WHERE alias_tanks.alias = ?`, [request]);
 
     try {
         if (res[0]) {
             return res[0].tank;
         }
         return;
-    }
-    catch (err) {
+    } catch (err) {
         console.error(err);
         return null;
     }
 }
 
 async function get_alias_nation(request) {
-    var res = await db.query("SELECT nation FROM alias_nation WHERE alias_nation.alias='" + request + "'");
-
+    const res = await db.query(`SELECT nation
+                             FROM alias_nation
+                             WHERE alias_nation.alias = ?`, [request]);
     try {
         if (res[0]) {
             return res[0].nation;
         }
         return;
-    }
-    catch (err) {
+    } catch (err) {
         console.error(err);
         return null;
     }
@@ -195,4 +202,4 @@ async function hangar(request) {
     return "Aucun résultat :(";
 }
 
-module.exports = { hangar };
+module.exports = {hangar};
