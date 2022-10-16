@@ -5,7 +5,7 @@ require_once('src/php/header.php');
 $username = $_SESSION['username'];
 
 // SQL : Infos utilisateur
-$user = db_query_prepared($db, "SELECT * FROM users WHERE username = ?", "s", $_SESSION['username']);
+$user = db_query($db, "SELECT * FROM users WHERE username = ?", "s", $_SESSION['username']);
 
 // MDP Actuel
 if(isset($_SESSION["pass-reset"]) && $_SESSION["pass-reset"]){
@@ -21,7 +21,7 @@ else{
 // Execution si appel du script par POST
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
   // MDP Actuel incorrect
-  $row = db_query_prepared($db, "SELECT `password` FROM users WHERE username = ?", "s", $username);
+  $row = db_query($db, "SELECT `password` FROM users WHERE username = ?", "s", $username);
 
   if(password_verify($_POST['current_pass'], $row['password']) || (isset($_SESSION["pass-reset"]) && $_SESSION["pass-reset"])){
 
@@ -30,7 +30,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
       $hash = password_hash($_POST['new_pass'], PASSWORD_DEFAULT);
       
       // SQL : Requete du Pass de l'utilisateur
-      db_query_prepared_no_result($db, "UPDATE `users` SET `password` = ? WHERE username = ?", "ss", [$hash, $username]);
+      db_query_no_result($db, "UPDATE `users` SET `password` = ? WHERE username = ?", "ss", [$hash, $username]);
 
       $_SESSION["pass-reset"] = false;
       $_SESSION["pass-change"] = false;

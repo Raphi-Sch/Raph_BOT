@@ -3,7 +3,7 @@ session_start();
 require_once('src/php/db.php');
 
 $db = db_connect();
-$bot_name = db_query_prepared($db, "SELECT `value` FROM config WHERE id = 'bot_name'", null, null)["value"];
+$bot_name = db_query($db, "SELECT `value` FROM config WHERE id = 'bot_name'")["value"];
 
 $redirect = isset($_GET['redirect']) ? trim($_GET['redirect']) : "";
 
@@ -11,7 +11,7 @@ $redirect = isset($_GET['redirect']) ? trim($_GET['redirect']) : "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $row = db_query_prepared_raw($db, "SELECT `password` FROM `users` WHERE `username` = ?", "s", $username);
+    $row = db_query_raw($db, "SELECT `password` FROM `users` WHERE `username` = ?", "s", $username);
 
 
     if (mysqli_num_rows($row)) {

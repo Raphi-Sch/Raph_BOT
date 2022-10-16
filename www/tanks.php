@@ -15,11 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $max_dmg = empty($max_dmg) ? 0 : $max_dmg;
 
-        db_query_prepared_no_result($db, "INSERT INTO tanks VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)", "ssisiiss", [$trigger_word, $nation, $tier, $name, $mark, $max_dmg, $note, $type]);
+        db_query_no_result($db, "INSERT INTO tanks VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)", "ssisiiss", [$trigger_word, $nation, $tier, $name, $mark, $max_dmg, $note, $type]);
     }
 
     if ($_POST['action'] == "del") {
-        db_query_prepared_no_result($db, "DELETE FROM tanks WHERE id= ?", "i", $_POST['id']);
+        db_query_no_result($db, "DELETE FROM tanks WHERE id= ?", "i", $_POST['id']);
     }
 
     if ($_POST['action'] == "edit") {
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $mark = intval($_POST['swal-mark']);
         $note = trim($_POST['swal-note']);
 
-        db_query_prepared_no_result($db, "UPDATE `tanks` SET `trigger_word` = ?, `name` = ?, `mark` = ?, `max_dmg` = ?, `note` = ? WHERE `id` = ?", "ssiisi", [$trigger_word, $name, $mark, $dmg, $note, $_POST['swal-key']]);
+        db_query_no_result($db, "UPDATE `tanks` SET `trigger_word` = ?, `name` = ?, `mark` = ?, `max_dmg` = ?, `note` = ? WHERE `id` = ?", "ssiisi", [$trigger_word, $name, $mark, $dmg, $note, $_POST['swal-key']]);
     }
 
     header('Location: tanks.php');
@@ -60,7 +60,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 // Count tank
-$count = db_query_prepared($db, "SELECT COUNT(`id`) as value FROM tanks", null, null)['value'];
+$count = db_query($db, "SELECT COUNT(`id`) as value FROM tanks")['value'];
 
 ?>
 

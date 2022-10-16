@@ -7,18 +7,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($_POST['action'] == "add" && !empty($_POST['original']) && !empty($_POST['replacement'])) {
         $original = strtolower(trim($_POST['original']));
         $replacement = strtolower(trim($_POST['replacement']));
-        db_query_prepared_no_result($db, "INSERT INTO shout VALUES (NULL, ?, ?)", "ss", [$original, $replacement]);
+        db_query_no_result($db, "INSERT INTO shout VALUES (NULL, ?, ?)", "ss", [$original, $replacement]);
     }
 
     // Del
     if ($_POST['action'] == "del" && !empty($_POST['id'])) {
-        db_query_prepared_no_result($db, "DELETE FROM shout WHERE id = ?", "i", $_POST['id']);
+        db_query_no_result($db, "DELETE FROM shout WHERE id = ?", "i", $_POST['id']);
     }
 
     // Edit
     if ($_POST['action'] == "edit" && !empty($_POST['id']) && !empty($_POST['replacement'])) {
         $replacement = trim($_POST['replacement']);
-        db_query_prepared_no_result($db, "UPDATE `shout` SET `replacement` = '$replacement' WHERE `id` = '$id'", "si", [$replacement, $_POST['id']]);
+        db_query_no_result($db, "UPDATE `shout` SET `replacement` = '$replacement' WHERE `id` = '$id'", "si", [$replacement, $_POST['id']]);
     }
 
     header('Location: shout.php');
@@ -42,7 +42,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 // Count
-$count = db_query_prepared($db, "SELECT COUNT(`original`) as value FROM shout", null, null)['value'];
+$count = db_query($db, "SELECT COUNT(`original`) as value FROM shout")['value'];
 
 ?>
 

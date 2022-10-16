@@ -6,11 +6,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['action']) && $_POST['action'] == "add" && !empty($_POST['alias']) && !empty($_POST['value'])) {
         $alias = strtolower(trim($_POST['alias']));
         $nation = $_POST['value'];
-        db_query_prepared_no_result($db, "REPLACE INTO alias_nation VALUES (?, ?)", "ss", [$alias, $nation]);
+        db_query_no_result($db, "REPLACE INTO alias_nation VALUES (?, ?)", "ss", [$alias, $nation]);
     }
 
     if (isset($_POST['action']) && $_POST['action'] == "del") {
-        db_query_prepared_no_result($db, "DELETE FROM alias_nation WHERE alias = ?", "s", $_POST['alias']);
+        db_query_no_result($db, "DELETE FROM alias_nation WHERE alias = ?", "s", $_POST['alias']);
     }
 
     header('Location: alias_nation.php');
@@ -35,7 +35,7 @@ while ($row = mysqli_fetch_assoc($data)) {
 }
 
 // Count
-$count = db_query_prepared($db, "SELECT COUNT(`alias`) as value FROM alias_nation", null, null)['value'];
+$count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_nation", null, null)['value'];
 
 ?>
 

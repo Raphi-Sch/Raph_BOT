@@ -6,17 +6,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
   if($_POST['action'] == "add" && !empty($_POST['command'])){
     $command = strtolower(trim($_POST['command']));
     $text = trim($_POST['text']);
-    db_query_prepared_no_result($db, "INSERT INTO commands VALUES (NULL, ?, ?, 0)", "ss", [$command, $text]);
+    db_query_no_result($db, "INSERT INTO commands VALUES (NULL, ?, ?, 0)", "ss", [$command, $text]);
   }
 
   if($_POST['action'] == "del" && !empty($_POST['id'])){
-    db_query_prepared_no_result($db, "DELETE FROM commands WHERE id = ?", "i", $_POST['id']);
+    db_query_no_result($db, "DELETE FROM commands WHERE id = ?", "i", $_POST['id']);
   }
 
   if($_POST['action'] == "edit" && !empty($_POST['id'])){
     $auto = isset($_POST['auto']) ? 1 : 0;
     $text = trim($_POST['value']);
-    db_query_prepared_no_result($db, "UPDATE `commands` SET `value` = ?, `auto` = ? WHERE id = ?", "sii", [$text, $auto, $_POST['id']]);
+    db_query_no_result($db, "UPDATE `commands` SET `value` = ?, `auto` = ? WHERE id = ?", "sii", [$text, $auto, $_POST['id']]);
   }
 
   header('Location: commands.php');
@@ -42,7 +42,7 @@ while($row = mysqli_fetch_assoc($result)) {
 }
 
 // Count
-$count = db_query_prepared($db, "SELECT COUNT(`id`) as value FROM commands", null, null)['value'];
+$count = db_query($db, "SELECT COUNT(`id`) as value FROM commands")['value'];
 
 ?>
 

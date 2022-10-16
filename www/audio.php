@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $file_name = file_upload("audio", dirname(__FILE__) . "/src/audio", "", false, guidv4());
 
         if ($file_name) {
-            db_query_prepared_no_result($db, "INSERT INTO audio VALUES (NULL, ?, ?, ?, ?, ?, ?)", "sssdii", [$name, $trigger, $file_name, $volume, $timeout, $freq]);
+            db_query_no_result($db, "INSERT INTO audio VALUES (NULL, ?, ?, ?, ?, ?, ?)", "sssdii", [$name, $trigger, $file_name, $volume, $timeout, $freq]);
         }
 
         header('Location: audio.php');
@@ -26,13 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id = $_POST['id'];
 
         // Get filename
-        $file = db_query_prepared($db, "SELECT `file` FROM audio WHERE id = ?", "i", $id)['file'];
+        $file = db_query($db, "SELECT `file` FROM audio WHERE id = ?", "i", $id)['file'];
 
         // Remove file
         shell_exec("rm src/audio/$file");
 
         // Remove from database
-        db_query_prepared_no_result($db, "DELETE FROM audio WHERE id = ?", "i", $id);
+        db_query_no_result($db, "DELETE FROM audio WHERE id = ?", "i", $id);
 
         exit();
     }
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $freq = intval($_POST['freq']);
         $timeout = intval($_POST['timeout']);
 
-        db_query_prepared_no_result($db, "UPDATE `audio` SET `name` = ?, `trigger_word` = ?, `volume` = ?, `frequency` = ?, `timeout` = ? WHERE id = ?", "ssdiii", [$name, $trigger, $volume, $freq, $timeout, $id]);
+        db_query_no_result($db, "UPDATE `audio` SET `name` = ?, `trigger_word` = ?, `volume` = ?, `frequency` = ?, `timeout` = ? WHERE id = ?", "ssdiii", [$name, $trigger, $volume, $freq, $timeout, $id]);
 
         header('Location: audio.php');
         exit();
@@ -78,7 +78,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 // Count
-$count = db_query_prepared($db, "SELECT COUNT(`id`) as value FROM audio", null, null)['value'];
+$count = db_query($db, "SELECT COUNT(`id`) as value FROM audio")['value'];
 
 ?>
 

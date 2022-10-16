@@ -6,11 +6,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($_POST['action'] == "add" && !empty($_POST['alias']) && !empty($_POST['value'])) {
         $alias = strtolower(trim($_POST['alias']));
         $tank = $_POST['value'];
-        db_query_prepared_no_result($db, "REPLACE INTO alias_tanks VALUES (?, ?)", "ss", [$alias, $tank]);
+        db_query_no_result($db, "REPLACE INTO alias_tanks VALUES (?, ?)", "ss", [$alias, $tank]);
     }
 
     if (isset($_POST) && $_POST['action'] == "del") {
-        db_query_prepared_no_result($db, "DELETE FROM alias_tanks WHERE alias = ?", "s", $_POST['alias']);
+        db_query_no_result($db, "DELETE FROM alias_tanks WHERE alias = ?", "s", $_POST['alias']);
     }
 
     header('Location: alias_tanks.php');
@@ -37,7 +37,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 // Count
-$count = db_query_prepared($db, "SELECT COUNT(`alias`) as value FROM alias_tanks", null, null)['value'];
+$count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_tanks")['value'];
 
 ?>
 

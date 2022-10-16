@@ -8,18 +8,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $reaction = trim($_POST['reaction']);
         $frequency = intval($_POST['frequency']);
         $timeout = intval($_POST['timeout']);
-        db_query_prepared_no_result($db, "INSERT INTO reactions VALUES (NULL, ?, ?, ?, ?)", "ssii", [$trigger_word, $reaction, $frequency, $timeout]);
+        db_query_no_result($db, "INSERT INTO reactions VALUES (NULL, ?, ?, ?, ?)", "ssii", [$trigger_word, $reaction, $frequency, $timeout]);
     }
 
     if ($_POST['action'] == "del" && !empty($_POST['id'])) {
-        db_query_prepared_no_result($db, "DELETE FROM `reactions` WHERE `id` = ?", "i", $_POST['id']);
+        db_query_no_result($db, "DELETE FROM `reactions` WHERE `id` = ?", "i", $_POST['id']);
     }
 
     if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
         $reaction = trim($_POST['value']);
         $frequency = intval($_POST['frequency']);
         $timeout = intval($_POST['timeout']);
-        db_query_prepared_no_result($db, "UPDATE `reactions` SET `reaction` = ?, `frequency` = ?, `timeout` = ? WHERE `id` = ?", "siii", [$reaction, $frequency, $timeout, $_POST['id']]);
+        db_query_no_result($db, "UPDATE `reactions` SET `reaction` = ?, `frequency` = ?, `timeout` = ? WHERE `id` = ?", "siii", [$reaction, $frequency, $timeout, $_POST['id']]);
     }
 
     header('Location: reactions.php');
@@ -46,7 +46,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 // Count
-$count = db_query_prepared($db, "SELECT COUNT(`id`) as value FROM reactions", null, null)['value'];
+$count = db_query($db, "SELECT COUNT(`id`) as value FROM reactions")['value'];
 
 ?>
 
