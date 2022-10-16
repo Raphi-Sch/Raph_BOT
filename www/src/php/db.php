@@ -65,10 +65,12 @@ function db_query_prepared_no_result($db, $query, $parameters_types, $parameters
 {
     $query_exec = $db->prepare($query);
 
-    if (is_array($parameters))
-        $query_exec->bind_param($parameters_types, ...$parameters);
-    else
-        $query_exec->bind_param($parameters_types, $parameters);
+    if (!is_null($parameters)) {
+        if (is_array($parameters))
+            $query_exec->bind_param($parameters_types, ...$parameters);
+        else
+            $query_exec->bind_param($parameters_types, $parameters);
+    }
 
     $query_exec->execute();
     $query_exec->close();
@@ -82,10 +84,12 @@ function db_query_prepared($db, $query, $parameters_types, $parameters)
 {
     $query_exec = $db->prepare($query);
 
-    if (is_array($parameters))
-        $query_exec->bind_param($parameters_types, ...$parameters);
-    else
-        $query_exec->bind_param($parameters_types, $parameters);
+    if (!is_null($parameters)) {
+        if (is_array($parameters))
+            $query_exec->bind_param($parameters_types, ...$parameters);
+        else
+            $query_exec->bind_param($parameters_types, $parameters);
+    }
 
     $query_exec->execute();
 
@@ -100,10 +104,12 @@ function db_query_prepared_raw($db, $query, $parameters_types, $parameters)
 {
     $query_exec = $db->prepare($query);
 
-    if (is_array($parameters))
-        $query_exec->bind_param($parameters_types, ...$parameters);
-    else
-        $query_exec->bind_param($parameters_types, $parameters);
+    if (!is_null($parameters)) {
+        if (is_array($parameters))
+            $query_exec->bind_param($parameters_types, ...$parameters);
+        else
+            $query_exec->bind_param($parameters_types, $parameters);
+    }
 
     $query_exec->execute();
 
