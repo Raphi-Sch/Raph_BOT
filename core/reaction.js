@@ -9,7 +9,8 @@ function init(config_init, socket_init) {
 }
 
 async function query_reaction(words) {
-    const trigger_word_in = words.map(word => "?").join(",")
+    const filtered_words = words.filter(word => word !== '' && word !== null)
+    const trigger_word_in = filtered_words.map(() => "?").join(",")
 
     let trigger_word_not_in = "";
     if (exclusion.length > 0) {
@@ -17,8 +18,8 @@ async function query_reaction(words) {
     }
 
     const values = [];
-    values.push(words);
-    values.push(exclusion);
+    filtered_words.forEach(word => values.push(word))
+    exclusion.forEach(word => values.push(word))
 
     const res = await db.query(`SELECT trigger_word, reaction, frequency, timeout
                                 FROM reactions
@@ -32,7 +33,7 @@ async function query_reaction(words) {
 }
 
 async function run(user, message) {
-    let words = tools.normalize_string(message).replace(/['"]+/g, '').split(" ");
+    let words = tools.normalize_string(message).replace(/['"]+/g, ' ').split(" ");
     let result = await query_reaction(words);
 
     try {
