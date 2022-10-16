@@ -3,17 +3,15 @@ require_once('src/php/header.php');
 
 //POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if ($_POST['action'] == "add" && !empty($_POST['key']) && !empty($_POST['value'])) {
-        $key = strtolower(sanitise_input($db, $_POST['key']));
-        $value = sanitise_input($db, $_POST['value']);
-        $query = "REPLACE INTO alias_tanks VALUES ('" . $key . "', '" . $value . "')";
-        db_query_no_result($db, $query);
+    if ($_POST['action'] == "add" && !empty($_POST['alias']) && !empty($_POST['value'])) {
+        $alias = strtolower($_POST['alias']);
+        $tank = $_POST['value'];
+        db_query_prepared_no_result($db, "REPLACE INTO alias_tanks VALUES (?, ?)", "ss", [$alias, $tank]);
     }
 
     if (isset($_POST) && $_POST['action'] == "del") {
-        $key = $_POST['key'];
-        $query = 'DELETE FROM alias_tanks WHERE alias_tanks.alias="' . $key . '"';
-        db_query_no_result($db, $query);
+        $alias = $_POST['alias'];
+        db_query_prepared_no_result($db, "DELETE FROM alias_tanks WHERE alias = ?", "s", $alias);
     }
 
     header('Location: alias_tanks.php');
@@ -96,7 +94,7 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_tanks")['value
                 title: "Add entry",
                 html: "<form id='swal-form' method='post'>" +
                     "<input type='hidden' name='action' value='add'>" +
-                    "<label>Alias</label><input type='text' class='form-control' name='key' required><br/>" +
+                    "<label>Alias</label><input type='text' class='form-control' name='alias' required><br/>" +
                     "<label>Tank</label><select class='form-control' name='value' required><option disabled selected> - Select a tank - </option><?php echo $options_tanks; ?></select>" +
                     "</form>",
                 showCancelButton: true,
@@ -112,9 +110,9 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_tanks")['value
             });
         }
 
-        function del_entry(key) {
+        function del_entry(alias) {
             Swal.fire({
-                title: "Delete '" + key + "' ?",
+                title: `Delete '${alias}' ?`,
                 type: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
@@ -125,7 +123,7 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_tanks")['value
                 if (result.value) {
                     $.post("alias_tanks.php", {
                         action: "del",
-                        key: key
+                        alias: alias
                     }, function(data) {
                         document.location.reload();
                     });

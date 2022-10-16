@@ -6,15 +6,16 @@ require_once('src/php/functions.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Add
     if ($_POST['action'] == "add" && !empty($_POST['name']) && !empty($_POST['trigger'])) {
-        $name = sanitise_input($db, $_POST['name']);
-        $trigger = sanitise_input($db, $_POST['trigger']);
+        $name = $_POST['name'];
+        $trigger = $_POST['trigger'];
         $volume = floatval($_POST['volume']);
         $freq = intval($_POST['freq']);
         $timeout = intval($_POST['timeout']);
-
         $file_name = file_upload("audio", dirname(__FILE__) . "/src/audio", "", false, guidv4());
-        if ($file_name)
-            db_query_no_result($db, "INSERT INTO audio VALUES (NULL, '$name', '$trigger','$file_name', '$volume', '$timeout', '$freq')");
+
+        if ($file_name) {
+            db_query_prepared_no_result($db, "INSERT INTO audio VALUES (NULL, ?, ?, ?, ?, ?, ?)", "sssdii", [$name, $trigger, $file_name, $volume, $timeout, $freq]);
+        }
 
         header('Location: audio.php');
         exit();
@@ -22,22 +23,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Del
     if ($_POST['action'] == "del" && !empty($_POST['id'])) {
-        $id = sanitise_input($db, $_POST['id']);
-        $file = db_query($db, "SELECT `file` FROM audio WHERE id = '$id'")['file'];
+        $id = $_POST['id'];
+
+        // Get filename
+        $file = db_query_prepared($db, "SELECT `file` FROM audio WHERE id = ?", "i", $id)['file'];
+
+        // Remove file
         shell_exec("rm src/audio/$file");
-        db_query_no_result($db, "DELETE FROM audio WHERE id = '$id'");
+
+        // Remove from database
+        db_query_prepared_no_result($db, "DELETE FROM audio WHERE id = ?", "i", $id);
+
         exit();
     }
 
     if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
-        $id = sanitise_input($db, $_POST['id']);
-        $name = sanitise_input($db, $_POST['name']);
-        $trigger = sanitise_input($db, $_POST['trigger']);
+        $id = $_POST['id'];
+        $name = $_POST['name'];
+        $trigger = $_POST['trigger'];
         $volume = floatval($_POST['volume']);
         $freq = intval($_POST['freq']);
         $timeout = intval($_POST['timeout']);
 
-        db_query_no_result($db, "UPDATE `audio` SET `name` = '$name', `trigger_word` = '$trigger', `volume` = '$volume', `frequency` = '$freq', `timeout` = '$timeout' WHERE audio.id = '$id'");
+        db_query_prepared_no_result($db, "UPDATE `audio` SET `name` = ?, `trigger_word` = ?, `volume` = ?, `frequency` = ?, `timeout` = ? WHERE id = ?", "ssdiii", [$name, $trigger, $volume, $freq, $timeout, $id]);
+
         header('Location: audio.php');
         exit();
     }
