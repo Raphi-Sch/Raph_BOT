@@ -4,21 +4,19 @@ require_once('src/php/header.php');
 // POST
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
   if($_POST['action'] == "add" && !empty($_POST['command'])){
-    $command = strtolower(sanitise_input($db, $_POST['command']));
-    $value = sanitise_input($db, $_POST['value']);
-    db_query_no_result($db, "INSERT INTO commands VALUES (NULL, '$command', '$value', 0)");
+    $command = strtolower(trim($_POST['command']));
+    $text = trim($_POST['text']);
+    db_query_prepared_no_result($db, "INSERT INTO commands VALUES (NULL, ?, ?, 0)", "ss", [$command, $text]);
   }
 
   if($_POST['action'] == "del" && !empty($_POST['id'])){
-    $id = sanitise_input($db, $_POST['id']);
-    db_query_no_result($db, "DELETE FROM commands WHERE id = '$id'");
+    db_query_prepared_no_result($db, "DELETE FROM commands WHERE id = ?", "i", $_POST['id']);
   }
 
   if($_POST['action'] == "edit" && !empty($_POST['id'])){
-    $id = sanitise_input($db, $_POST['id']);
-    $value = sanitise_input($db, $_POST['value']);
     $auto = isset($_POST['auto']) ? 1 : 0;
-    db_query_no_result($db, "UPDATE `commands` SET `value` = '$value', `auto` = '$auto' WHERE id = '$id'");
+    $text = trim($_POST['value']);
+    db_query_prepared_no_result($db, "UPDATE `commands` SET `value` = ?, `auto` = ? WHERE id = ?", "sii", [$text, $auto, $_POST['id']]);
   }
 
   header('Location: commands.php');
@@ -36,7 +34,7 @@ while($row = mysqli_fetch_assoc($result)) {
         <td><input type='checkbox' class='checkbox' ".($row['auto'] ? "checked" : "")." disabled></td>
         <td>
           <span class='pull-right'>
-            <button onClick='edit_entry(\"".$row["id"]."\", \"".$row["auto"]."\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
+            <button onClick='edit_entry(\"".$row["id"]."\", \"".$row["auto"]."\",  \"".$row['command']."\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
             <button type='button' class='btn btn-danger' onclick='del_entry(\"".$row['id']."\", \"".$row['command']."\")'><i class='glyphicon glyphicon-remove'></i></button>
           </span>
         </td>
@@ -101,7 +99,7 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM commands")['value'];
             html:   "<form id='swal-form' method='post'>"+
                     "<input type='hidden' name='action' value='add'>"+
                     "<label>Command</label><input type='text' class='form-control' name='command' placeholder='Command' required><br/>"+
-                    "<label>Answer</label><input type='text' class='form-control' name='value' placeholder='Answer' required><br/>"+
+                    "<label>Text</label><input type='text' class='form-control' name='text' placeholder='Text' required><br/>"+
                     "</form>",
             showCancelButton: true,
             showConfirmButton: confirm,
@@ -117,7 +115,7 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM commands")['value'];
       }
 
       function del_entry(id, command){
-        Swal({
+        Swal.fire({
           title: "Delete '" + command + "' ?",
           type: 'question',
           showCancelButton: true,
@@ -134,7 +132,7 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM commands")['value'];
         })
       }
 
-      function edit_entry(id, auto){
+      function edit_entry(id, auto, command){
         value = document.getElementById("value_" + id).innerText;
 
         if(auto == 1)
@@ -142,8 +140,8 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM commands")['value'];
         else
           checkbox = "";
 
-        Swal({
-            title: 'Editing : "' + id + '"',
+        Swal.fire({
+            title: 'Editing : "' + command + '"',
             type: 'info',
             html: "<form id='swal-form' method='post'>"+
                   "<input type='hidden' name='action' value='edit'>"+

@@ -6,8 +6,8 @@ require_once('src/php/functions.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Add
     if ($_POST['action'] == "add" && !empty($_POST['name']) && !empty($_POST['trigger'])) {
-        $name = $_POST['name'];
-        $trigger = $_POST['trigger'];
+        $name = trim($_POST['name']);
+        $trigger = trim($_POST['trigger']);
         $volume = floatval($_POST['volume']);
         $freq = intval($_POST['freq']);
         $timeout = intval($_POST['timeout']);

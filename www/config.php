@@ -5,9 +5,8 @@ require_once('src/php/header.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Edit
     if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
-        $id = sanitise_input($db, $_POST['id']);
-        $value = sanitise_input($db, $_POST['value']);
-        db_query_no_result($db, "UPDATE `config` SET `value` = '$value' WHERE `id` = '$id'");
+        $value = trim($_POST['value']);
+        db_query_prepared_no_result($db, "UPDATE config SET `value` = ? WHERE id = ?", "ss", [$value, $_POST['id']]);
     }
 
     header('Location: config.php');

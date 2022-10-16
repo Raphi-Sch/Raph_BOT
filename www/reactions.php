@@ -4,24 +4,22 @@ require_once('src/php/header.php');
 // POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($_POST['action'] == "add" && !empty($_POST['trigger_word']) && !empty($_POST['reaction'])) {
-        $trigger_word = strtolower(addslashes(trim($_POST['trigger_word'])));
-        $reaction = addslashes(trim($_POST['reaction']));
+        $trigger_word = strtolower(trim($_POST['trigger_word']));
+        $reaction = trim($_POST['reaction']);
         $frequency = intval($_POST['frequency']);
         $timeout = intval($_POST['timeout']);
-        db_query_no_result($db, "INSERT INTO reactions VALUES (NULL, '$trigger_word', '$reaction', '$frequency', '$timeout')");
+        db_query_prepared_no_result($db, "INSERT INTO reactions VALUES (NULL, ?, ?, ?, ?)", "ssii", [$trigger_word, $reaction, $frequency, $timeout]);
     }
 
     if ($_POST['action'] == "del" && !empty($_POST['id'])) {
-        $id = addslashes(trim($_POST['id']));
-        db_query_no_result($db, "DELETE FROM `reactions` WHERE `id` = '$id'");
+        db_query_prepared_no_result($db, "DELETE FROM `reactions` WHERE `id` = ?", "i", $_POST['id']);
     }
 
     if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
-        $id = addslashes(trim($_POST['id']));
-        $reaction = addslashes(trim($_POST['value']));
-        $frequency = addslashes(trim($_POST['frequency']));
-        $timeout = addslashes(trim($_POST['timeout']));
-        db_query_no_result($db, "UPDATE `reactions` SET `reaction` = '$reaction', `frequency` = '$frequency', `timeout` = '$timeout' WHERE `id` = '$id'");
+        $reaction = trim($_POST['value']);
+        $frequency = intval($_POST['frequency']);
+        $timeout = intval($_POST['timeout']);
+        db_query_prepared_no_result($db, "UPDATE `reactions` SET `reaction` = ?, `frequency` = ?, `timeout` = ? WHERE `id` = ?", "siii", [$reaction, $frequency, $timeout, $_POST['id']]);
     }
 
     header('Location: reactions.php');
@@ -41,7 +39,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         <td>
           <span class='pull-right'>
             <button onClick='edit_entry(\"" . $row["id"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
-            <button type='button' class='btn btn-danger' onclick='del_entry(\"" . $row['id'] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
+            <button type='button' class='btn btn-danger' onclick='del_entry(\"" . $row['id'] . "\", \"" . $row['trigger_word'] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
           </span>
         </td>
     </tr>";
@@ -124,9 +122,9 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM reactions")['value'];
             });
         }
 
-        function del_entry(id) {
-            Swal({
-                title: "Delete '" + key + "' ?",
+        function del_entry(id, trigger) {
+            Swal.fire({
+                title: "Delete '" + trigger + "' ?",
                 type: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
@@ -149,7 +147,7 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM reactions")['value'];
             text = document.getElementById("text_" + id).innerText;
             freq = document.getElementById("freq_" + id).innerText;
             time = document.getElementById("time_" + id).innerText;
-            Swal({
+            Swal.fire({
                 title: 'Editing : "' + id + '"',
                 type: 'info',
                 html: "<form id='swal-form' method='post'><br/>" +

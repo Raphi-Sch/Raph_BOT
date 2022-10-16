@@ -4,20 +4,13 @@ require_once('src/php/header.php');
 //POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($_POST['action'] == "add" && !empty($_POST['alias']) && !empty($_POST['value'])) {
-        $alias = strtolower($_POST['alias']);
-        $command = $_POST['value'];
-
-        $query = $db->prepare("REPLACE INTO alias_commands (alias, command) VALUES (?, ?)");
-        $query->bind_param("ss", $alias, $command);
-        db_execute_and_close($query);
+        $alias = strtolower(trim($_POST['alias']));
+        $command = trim($_POST['value']);
+        db_query_prepared_no_result($db, "REPLACE INTO alias_commands (alias, command) VALUES (?, ?)", "ss", [$alias, $command]);
     }
 
     if ($_POST['action'] == "del" && !empty($_POST['alias'])) {
-        $alias = $_POST['alias'];
-
-        $query = $db->prepare("DELETE FROM alias_commands WHERE alias = ?");
-        $query->bind_param("s", $alias);
-        db_execute_and_close($query);
+        db_query_prepared_no_result($db, "DELETE FROM alias_commands WHERE alias = ?", "s", $_POST['alias']);
     }
 
     header('Location: alias_commands.php');
