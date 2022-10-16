@@ -35,7 +35,7 @@ while ($row = mysqli_fetch_assoc($data)) {
 }
 
 // Count
-$count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_nation")['value'];
+$count = db_query_prepared($db, "SELECT COUNT(`alias`) as value FROM alias_nation", null, null)['value'];
 
 ?>
 

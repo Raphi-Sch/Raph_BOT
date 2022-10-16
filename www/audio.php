@@ -78,7 +78,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 // Count
-$count = db_query($db, "SELECT COUNT(`id`) as value FROM audio")['value'];
+$count = db_query_prepared($db, "SELECT COUNT(`id`) as value FROM audio", null, null)['value'];
 
 ?>
 

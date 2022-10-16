@@ -46,7 +46,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 // Count
-$count = db_query($db, "SELECT COUNT(`id`) as value FROM reactions")['value'];
+$count = db_query_prepared($db, "SELECT COUNT(`id`) as value FROM reactions", null, null)['value'];
 
 ?>
 

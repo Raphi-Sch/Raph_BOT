@@ -42,7 +42,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 // Count
-$count = db_query($db, "SELECT COUNT(`original`) as value FROM shout")['value'];
+$count = db_query_prepared($db, "SELECT COUNT(`original`) as value FROM shout", null, null)['value'];
 
 ?>
 

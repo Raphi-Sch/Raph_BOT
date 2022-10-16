@@ -22,17 +22,6 @@ function query_error($db, $request)
     exit(1);
 }
 
-function db_query($db, $request)
-{
-    $res = mysqli_query($db, $request);
-
-    if (mysqli_error($db)) {
-        query_error($db, $request);
-    }
-
-    return mysqli_fetch_assoc($res);
-}
-
 function db_query_raw($db, $request)
 {
     $res = mysqli_query($db, $request);
