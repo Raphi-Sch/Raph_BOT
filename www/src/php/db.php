@@ -11,6 +11,9 @@ function db_connect()
         echo "<h2>SQL Error : " . mysqli_connect_error() . "</h2>";
         exit();
     }
+	
+	// Enable MYSQLi error reporting
+	mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
     return $db;
 }
