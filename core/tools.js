@@ -10,18 +10,6 @@ function command_parser(message, prefix){
     return regex.exec(message);
 }
 
-function max_array_index(array, start){
-    var max = 0;
-    var index = start;
-    for(i = start; i < array.length; i++){
-        if(array[i] > max){
-            index = i
-            max = array[i]
-        }
-    }
-    return index;
-}
-
 function normalize_string(str) {
     return str.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
 }
@@ -38,4 +26,4 @@ function first_of_array(array){
     }
 }
 
-module.exports = {command_parser, get_random_int, max_array_index, normalize_string, first_of_array}
+module.exports = {command_parser, get_random_int, normalize_string, first_of_array}
