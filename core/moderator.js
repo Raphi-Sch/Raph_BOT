@@ -13,9 +13,7 @@ async function query_moderator(words) {
                                   WHERE moderator.trigger_word IN (${trigger_word_in})
                                   ORDER BY RAND() LIMIT 1`, words);
 
-    if (res[0]) {
-        return res[0];
-    }
+    return tools.first_of_array(res);
 }
 
 async function run(user, message) {

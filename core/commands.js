@@ -83,7 +83,7 @@ async function get_command(request) {
 }
 
 async function run(user, message) {
-    const fullCommand = tools.commandParser(message, config['cmd_prefix']);
+    const fullCommand = tools.command_parser(message, config['cmd_prefix']);
     if (fullCommand) {
         const command = await get_alias(tools.normalize_string(fullCommand[1]));
         if (command === "char") {

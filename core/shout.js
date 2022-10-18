@@ -42,10 +42,10 @@ async function run(user, message){
 
 async function run_french(user, message){
 	// Load shout remplacement
-	var shout_words = await load_shout_words();
+	const shout_words = await load_shout_words();
 
 	//Split words of the sentence
-	var word_array = message.toLowerCase().split(" ");
+	const word_array = message.toLowerCase().split(" ");
 
 	//Do not take sentences too long
 	if(word_array.length > 15)

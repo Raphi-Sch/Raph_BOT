@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 const config = require('../config.json');
 
-var db = mysql.createConnection({
+const db = mysql.createConnection({
     host: config.db_host,
     user: config.db_user,
     password: config.db_pass,
@@ -35,7 +35,7 @@ async function load_config() {
     }
     catch (err) {
         console.error(err);
-        process.exit(0);
+        process.exit(1);
     }
 }
 

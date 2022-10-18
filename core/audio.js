@@ -11,17 +11,18 @@ function init(config_init, socket_init) {
 }
 
 async function query(words) {
-    const trigger_word_in = words.map(words => "?").join(",")
+    const filtered_words = words.filter(word => word !== '' && word !== null)
+    const trigger_word_in = filtered_words.map(() => "?").join(",")
+
     let trigger_word_not_in = "";
 
     if (exclusion.length > 0) {
         trigger_word_not_in = `AND audio.trigger_word NOT IN (${exclusion.map(word => "?").join(",")})`;
-
     }
 
     const values = [];
-    values.push(words);
-    values.push(exclusion);
+    filtered_words.forEach(word => values.push(word))
+    exclusion.forEach(word => values.push(word))
 
     const res = await db.query(`SELECT *
                                 FROM audio
@@ -29,9 +30,7 @@ async function query(words) {
                                 ${trigger_word_not_in}
                                 ORDER BY RAND() LIMIT 1`, values);
 
-    if (res[0]) {
-        return res[0];
-    }
+    return tools.first_of_array(res);
 }
 
 async function run(user, message) {
@@ -40,7 +39,7 @@ async function run(user, message) {
 
     try {
         if (result) {
-            if (tools.getRandomInt(100) <= result.frequency) {
+            if (tools.get_random_int(100) <= result.frequency) {
                 // Handle timeout
                 if (result.timeout > 0) {
                     exclusion.push(result.trigger_word);

@@ -27,9 +27,7 @@ async function query_reaction(words) {
                                 ${trigger_word_not_in}
                                 ORDER BY RAND() LIMIT 1`, values);
 
-    if (res[0]) {
-        return res[0];
-    }
+    return tools.first_of_array(res);
 }
 
 async function run(user, message) {
@@ -38,7 +36,7 @@ async function run(user, message) {
 
     try {
         if (result) {
-            if (tools.getRandomInt(100) <= result.frequency) {
+            if (tools.get_random_int(100) <= result.frequency) {
                 if (result.timeout > 0) {
                     exclusion.push(result.trigger_word);
 
