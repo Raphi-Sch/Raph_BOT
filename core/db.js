@@ -24,8 +24,8 @@ function query(sql, values) {
 }
 
 async function load_config() {
-    var sql = await query("SELECT * FROM config");
-    var result = [];
+    const sql = await query("SELECT * FROM config");
+    const result = [];
 
     try {
         sql.forEach(element => {

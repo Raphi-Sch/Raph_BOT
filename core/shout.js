@@ -1,9 +1,9 @@
 const db = require('./db.js');
-var socket = null;
 
+let socket = null;
 // Counter
-var shout_interval;
-var shout_counter = 0;
+let shout_interval;
+let shout_counter = 0;
 
 function init(config_init, socket_init){
 	socket = socket_init;
@@ -11,8 +11,8 @@ function init(config_init, socket_init){
 }
 
 async function load_shout_words(){
-    var sql = await db.query("SELECT * FROM shout");
-    var result = [];
+	const sql = await db.query("SELECT * FROM shout");
+	const result = [];
 
     try {
         sql.forEach(element => {result[element.original] = element.replacement});
@@ -28,7 +28,7 @@ async function run(user, message){
 	socket.shout_update(shout_counter, shout_interval);
 
 	if(shout_counter > shout_interval){
-		var res = await run_french(user, message);
+		const res = await run_french(user, message);
 		if(res){
 			shout_counter = 0;
 			return res;
@@ -52,22 +52,22 @@ async function run_french(user, message){
 		return false;
 
 	message = "";
-	var replaced_word = "";
+	let replaced_word = "";
 
-	for(var word of word_array){
+	for(const word of word_array){
 		//If the word can not be replaced it does not change, otherwise it is modified
 		replaced_word = (shout_words[word] ? shout_words[word] : word);
 
 		//If the word contains "'", special treatment to replace the left and right part
 		if(word.includes("'")){
 			//Split word with "'" in it
-			var word_split = word.split("'");
-			var replaced_word_L = shout_words[word_split[0]];
-			var replaced_word_R = shout_words[word_split[1]];
+			const word_split = word.split("'");
+			const replaced_word_L = shout_words[word_split[0]];
+			const replaced_word_R = shout_words[word_split[1]];
 			
 			//If left side or right side of the word can be replaced
 			if(replaced_word_L && replaced_word_R){
-				replaced_word = replaced_word_L + "'" + replaced_word_R;;
+				replaced_word = replaced_word_L + "'" + replaced_word_R;
 			}
 		}
 
