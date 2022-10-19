@@ -1,4 +1,5 @@
 const db = require('./db.js');
+const tools = require('./tools.js');
 
 let socket = null;
 
