@@ -43,26 +43,24 @@ async function run(user, message) {
                 // Handle timeout
                 if (result.timeout > 0) {
                     exclusion.push(result.trigger_word);
-                    socket.log("[AUDIO] '" + result.name + "' has been excluded for " + result.timeout + "s");
+                    socket.log(`[AUDIO] ${result.name} has been excluded for ${result.timeout}s`);
 
                     setTimeout(function () {
                         exclusion.splice(exclusion.indexOf(result.trigger_word), 1);
-                        socket.log("[AUDIO] '" + result.name + "' has been removed from the exclusion list");
+                        socket.log(`[AUDIO] ${result.name} has been removed from the exclusion list`);
                     }, result.timeout * 1000);
                 }
 
                 // Send play request
                 socket.play_audio(result);
-
-                return true;
             }
         }
-        return false;
     }
     catch (err) {
         console.error(err);
-        return false;
     }
+
+    return null;
 }
 
 module.exports = { init, run }
