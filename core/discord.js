@@ -3,15 +3,12 @@ const {Client} = require('discord.js');
 const discord_client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
 
 // Global var
-let socket;
-let config;
+const socket = require('./socket');
+const config = require('./config').config;
 
-function init(config_init, socket_init){
-	config = config_init;
-	socket = socket_init;
-
+function init(){
     socket.log("[DISCORD] Connecting ...");
-    discord_client.login(config["discord_token"]);
+    discord_client.login(config.discord_token);
 }
 
 discord_client.on('ready', () => {

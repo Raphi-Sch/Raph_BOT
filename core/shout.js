@@ -1,9 +1,8 @@
 const db = require('./db.js');
 const socket = require('./socket.js');
-const {config} = require("./config");
 
 // Counter
-const shout_interval = require('./config').config.shout_interval;
+const config = require('./config').config;
 let shout_counter = 0;
 
 const runnable = {
@@ -31,16 +30,16 @@ async function load_shout_words(){
 
 async function run_shout(user, message){
 	shout_counter++;
-	socket.shout_update(shout_counter, shout_interval);
+	socket.shout_update(shout_counter, config.shout_interval);
 
-	if(shout_counter > shout_interval){
+	if(shout_counter > config.shout_interval){
 		const res = await run_french(user, message);
 		if(res){
 			shout_counter = 0;
 			return res;
 		}
 		else {
-			shout_counter = shout_interval - 1;
+			shout_counter = config.shout_interval - 1;
 			return null;
 		}
 	}

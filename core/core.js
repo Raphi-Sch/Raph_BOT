@@ -13,7 +13,7 @@ const audio = require("./audio");
 
 config.load().then(() => {
     socket.init(discord, version);
-    // discord.init(current_config, socket); // FIXME - discord don't work anymore
+    // discord.init(); // FIXME - discord don't work anymore
 
     commands.init()
     moderator.init()
