@@ -1,17 +1,17 @@
 const http = require('http');
 const fs = require('fs');
 const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'a' });
-const port = require('../config.json')['socket_port'];
+const port = require('../config.json').socket_port;
 
 // Basic HTTP server
 const server = http.createServer();
 const io = require('socket.io').listen(server);
+const config = require('./config').config;
 
 // Variables
 let web_client = null;
 let web_client_connected = false;
 let discord_client;
-let config = null;
 
 // GUI info
 const GUI = {
@@ -22,8 +22,7 @@ const GUI = {
     trigger_msg: { current: 0, max: 0, nb: 0 },
 };
 
-function init(config_init, discord, version) {
-    config = config_init;
+function init(discord, version) {
     discord_client = discord;
 
     log("[CORE] Started (" + version + ")");

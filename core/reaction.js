@@ -1,11 +1,18 @@
 const db = require('./db.js');
 const tools = require('./tools.js');
+const socket = require('./socket.js');
+const {config} = require("./config");
 
 let exclusion = [];
-let socket = null;
 
-function init(config_init, socket_init) {
-    socket = socket_init;
+const runnable = {
+    run: (user, message) => null
+}
+
+function init() {
+    if (config.plugin_reaction == 1) {
+        runnable.run = (user, message) => run_reaction(user, message)
+    }
 }
 
 async function query_reaction(words) {
@@ -30,7 +37,7 @@ async function query_reaction(words) {
     return tools.first_of_array(res);
 }
 
-async function run(user, message) {
+async function run_reaction(user, message) {
     let words = tools.normalize_string(message).replace(/['"]+/g, ' ').split(" ");
     let result = await query_reaction(words);
 
@@ -56,6 +63,10 @@ async function run(user, message) {
         console.error(err);
         return null;
     }
+}
+
+function run(user, message) {
+    return runnable.run(user, message)
 }
 
 module.exports = { init, run }

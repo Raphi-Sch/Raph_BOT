@@ -18,7 +18,6 @@ function query(sql, values) {
             console.error(err);
             resolve(null);
         }
-
         resolve(result);
     }));
 }

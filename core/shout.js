@@ -1,13 +1,19 @@
 const db = require('./db.js');
+const socket = require('./socket.js');
+const {config} = require("./config");
 
-let socket = null;
 // Counter
-let shout_interval;
+const shout_interval = require('./config').config.shout_interval;
 let shout_counter = 0;
 
-function init(config_init, socket_init){
-	socket = socket_init;
-	shout_interval = config_init.shout_interval;
+const runnable = {
+	run: (user, message) => null
+}
+
+function init() {
+	if (config.plugin_shout == 1) {
+		runnable.run = (user, message) => run_shout(user, message)
+	}
 }
 
 async function load_shout_words(){
@@ -23,7 +29,7 @@ async function load_shout_words(){
     }
 }
 
-async function run(user, message){
+async function run_shout(user, message){
 	shout_counter++;
 	socket.shout_update(shout_counter, shout_interval);
 
@@ -76,6 +82,10 @@ async function run_french(user, message){
 	}
 
 	return "AH OUAIS @" + user["display-name"] + ", " + message.toUpperCase() + "!";
+}
+
+function run(user, message) {
+	return runnable.run(user, message)
 }
 
 module.exports = {init, run}

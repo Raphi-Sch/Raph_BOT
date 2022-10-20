@@ -1,13 +1,20 @@
 // Const declaration
 const db = require('./db.js');
 const tools = require('./tools.js');
+const socket = require('./socket.js');
+const {config} = require("./config");
 
 // Global var
-let socket = null;
 let exclusion = [];
 
-function init(config_init, socket_init) {
-    socket = socket_init;
+const runnable = {
+    run: (user, message) => null
+}
+
+function init() {
+    if (config.plugin_audio == 1) {
+        runnable.run = (user, message) => run_audio(user, message)
+    }
 }
 
 async function query(words) {
@@ -33,7 +40,7 @@ async function query(words) {
     return tools.first_of_array(res);
 }
 
-async function run(user, message) {
+async function run_audio(user, message) {
     const words = tools.normalize_string(message).replace(/['"]+/g, ' ').split(" ");
     const result = await query(words);
 
@@ -61,6 +68,10 @@ async function run(user, message) {
     }
 
     return null;
+}
+
+function run(user, message) {
+    return runnable.run(user, message)
 }
 
 module.exports = { init, run }
