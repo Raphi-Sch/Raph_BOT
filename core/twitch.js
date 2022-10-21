@@ -1,10 +1,10 @@
 // Module Import
 const tmi = require("tmi.js");
-const commands = require('./commands.js');
+const commands = require('./command/commands.js');
 const reaction = require('./reaction.js');
 const shout = require('./shout.js');
 const audio = require('./audio.js');
-const moderator = require('./moderator.js');
+const moderator = require('./moderator/moderator.js');
 
 const config = require('./config').config;
 const socket = require('./socket');

@@ -1,10 +1,10 @@
-// Const declaration
-const tools = require('./tools.js');
-const db = require('./db.js');
-const tanks = require('./tanks.js');
+import db from '../db'
+import {run_command} from './commands_runner'
 
-const config = require('./config').config;
-const socket = require('./socket.js');
+// Const declaration
+const config = require('../config').config;
+const socket = require('../socket.js');
+
 // Global Var
 let timer = 0;
 let message_counter = 0;
@@ -22,25 +22,6 @@ function init() {
   if (config.plugin_commands == 1) {
     runnable.run = (user, message) => run_command(user, message)
   }
-}
-
-async function run_command(user, message) {
-  const fullCommand = tools.command_parser(message, config['cmd_prefix']);
-  if (fullCommand) {
-    const command = await get_alias(tools.normalize_string(fullCommand[1]));
-    if (command === "char") {
-      return tanks.run(tools.normalize_string(fullCommand[2]));
-    }
-    const result = await get_command(command);
-    if (result) {
-      if (user) {
-        return result.replace("@username", user['display-name']);
-      } else {
-        return result;
-      }
-    }
-  }
-  return null;
 }
 
 async function time_trigger() {
@@ -90,23 +71,7 @@ async function auto_command() {
   return run(null, config.cmd_prefix + list[index]);
 }
 
-async function get_alias(request) {
-  const res = await db.query("SELECT command FROM alias_commands WHERE alias = ?", [request]);
-  if (res[0]) {
-    return res[0].command;
-  }
-  return request;
-}
-
-async function get_command(request) {
-  const res = await db.query("SELECT value FROM commands WHERE command= ?", [request]);
-  if (res[0]) {
-    return res[0].value;
-  }
-  return null;
-}
-
-async function run(user, message) {
+function run(user, message) {
   return runnable.run(user, message)
 }
 

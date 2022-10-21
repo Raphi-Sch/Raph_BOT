@@ -5,8 +5,8 @@ const discord = require('./discord.js');
 const twitch = require('./twitch.js');
 const config = require('./config.js');
 
-const commands = require("./commands");
-const moderator = require("./moderator");
+const commands = require("./command/commands");
+const moderator = require("./moderator/moderator");
 const reaction = require("./reaction");
 const shout = require("./shout");
 const audio = require("./audio");
