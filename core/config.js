@@ -1,4 +1,4 @@
-const db = require('./db.js');
+import db from './db'
 
 const config = {
   bot_name: null,
