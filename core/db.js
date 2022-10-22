@@ -22,20 +22,4 @@ function query(sql, values) {
     }));
 }
 
-async function load_config() {
-    const sql = await query("SELECT * FROM config");
-    const result = [];
-
-    try {
-        sql.forEach(element => {
-            result[element.id] = element.value;
-        });
-        return result;
-    }
-    catch (err) {
-        console.error(err);
-        process.exit(1);
-    }
-}
-
-module.exports = { query, load_config }
+module.exports = { query }

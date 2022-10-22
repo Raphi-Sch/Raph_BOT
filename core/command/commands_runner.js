@@ -1,10 +1,10 @@
 import tools from "../tools";
 import {config} from "../config";
-import tanks from "../tanks";
+import tanks from "./tanks";
 import db from "../db";
 
 async function run_command(user, message) {
-  const fullCommand = tools.command_parser(message, config['cmd_prefix']);
+  const fullCommand = tools.command_parser(message, config.cmd_prefix);
   if (fullCommand) {
     const command = await get_alias(tools.normalize_string(fullCommand[1]));
     if (command === "char") {
