@@ -1,19 +1,24 @@
-const db = require('./db.js');
+import db from './db.js'
+
 const tierMin = 5;
 const tierMax = 10;
 
 async function query_tier(request) {
-    const tier = parseInt(request);
+    const tier = containsOnlyNumbers(request) ? parseInt(request, 10) : null;
     if (tier) {
         const res = await db.query(`SELECT GROUP_CONCAT(name SEPARATOR ', ') as value
                                 FROM tanks
                                 WHERE tanks.tier = ?
                                 ORDER BY name ASC`, [tier]);
 
-        if (res[0].value) {
+        if (res[0]) {
             return `Char tier ${tier} : ${res[0].value}`;
         }
     }
+}
+
+function containsOnlyNumbers(str) {
+    return /^\d+$/.test(str);
 }
 
 async function query_name(request) {
@@ -34,7 +39,7 @@ async function query_nation(request) {
                                 OR tanks.nation = ?
                                 ORDER BY name ASC`, [request, request]);
 
-    if (res[0].nation) {
+    if (res[0]) {
         return `Char(s) ${res[0].nation} : ${res[0].value}`;
     }
 }
@@ -45,7 +50,7 @@ async function query_type(type) {
                                WHERE tanks.type = ?
                                ORDER BY name ASC`, [type]);
 
-    if (res[0].value) {
+    if (res[0]) {
         return `Char(s) ${type} : ${res[0].value}`;
     }
 }
@@ -53,11 +58,9 @@ async function query_type(type) {
 let exclude_tanks = [];
 
 async function query_random() {
-    let count = 0;
-
     // Get number of Tier 10
     const tier_10 = await db.query(`SELECT COUNT(id) as count FROM tanks WHERE tier = 10`);
-    count = tier_10[0].count;
+    const count = tier_10[0].count;
 
     // Empty array
     if (exclude_tanks.length === count) exclude_tanks = [];
@@ -74,7 +77,7 @@ async function query_random() {
                                ${tank_not_in}
                                ORDER BY RAND() LIMIT 1`, [exclude_tanks]);
 
-    if (res[0].id) {
+    if (res[0]) {
         exclude_tanks.push(res[0].id)
         return `Voici un char : ${res[0].name}`;
     }
