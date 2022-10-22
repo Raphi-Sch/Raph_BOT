@@ -1,4 +1,4 @@
-import db from './db.js'
+import db from '../db.js'
 
 const tierMin = 5;
 const tierMax = 10;

@@ -4,7 +4,7 @@ describe('tank request', () => {
 
     test('default awnser if request is null', async () => {
         // given
-        const tanks = require('../tanks');
+        const tanks = require('../command/tanks');
         // when
         const result = await tanks.run(null)
         // then
@@ -13,7 +13,7 @@ describe('tank request', () => {
 
     test('default tier awnser if request is lower than the minimum tier', async () => {
         // given
-        const tanks = require('../tanks');
+        const tanks = require('../command/tanks');
         // when
         const result = await tanks.run(1)
         // then
@@ -22,7 +22,7 @@ describe('tank request', () => {
 
     test('default tier awnser if request is greater than the minimum tier', async () => {
         // given
-        const tanks = require('../tanks');
+        const tanks = require('../command/tanks');
         // when
         const result = await tanks.run(11)
         // then
@@ -32,7 +32,7 @@ describe('tank request', () => {
     // TODO - to do as an integration test when we begin the CI
     test('random request should return a random tank', async () => {
         // given
-        const tanks = require('../tanks');
+        const tanks = require('../command/tanks');
         const db = require('../db');
         jest.spyOn(db, 'query')
             .mockReturnValueOnce(new Promise(resolve => resolve([{count: 2}])))
@@ -45,7 +45,7 @@ describe('tank request', () => {
 
     test('get all tanks of a tier if request is a number between 5 and 10', async () => {
         // given
-        const tanks = require('../tanks');
+        const tanks = require('../command/tanks');
         const db = require('../db');
         jest.spyOn(db, 'query')
             .mockReturnValueOnce(new Promise(resolve => resolve([{value: "Mause, G.W. E 100"}])))
@@ -57,7 +57,7 @@ describe('tank request', () => {
 
     test('get all tanks of a nation if request is a nation', async () => {
         // given
-        const tanks = require('../tanks');
+        const tanks = require('../command/tanks');
         const db = require('../db');
         jest.spyOn(db, 'query')
             .mockReturnValueOnce(new Promise(resolve => resolve([{nation: "allemand", value: "Mause, G.W. E 100"}])))
@@ -69,7 +69,7 @@ describe('tank request', () => {
 
     test('get all stat of a tank if request is a tank', async () => {
         // given
-        const tanks = require('../tanks');
+        const tanks = require('../command/tanks');
         const db = require('../db');
         jest.spyOn(db, 'query')
             .mockReturnValueOnce(new Promise(resolve => resolve([])))
@@ -87,7 +87,7 @@ describe('tank request', () => {
 
     test('get all stat of a tank if request is a tank', async () => {
         // given
-        const tanks = require('../tanks');
+        const tanks = require('../command/tanks');
         const db = require('../db');
         jest.spyOn(db, 'query')
             .mockReturnValueOnce(new Promise(resolve => resolve([])))
@@ -105,7 +105,7 @@ describe('tank request', () => {
 
     test('get all tanks of a type if request is a type', async () => {
         // given
-        const tanks = require('../tanks');
+        const tanks = require('../command/tanks');
         const db = require('../db');
         jest.spyOn(db, 'query')
             .mockReturnValueOnce(new Promise(resolve => resolve([])))
@@ -119,7 +119,7 @@ describe('tank request', () => {
 
     test('no result if no matched request', async () => {
         // given
-        const tanks = require('../tanks');
+        const tanks = require('../command/tanks');
         const db = require('../db');
         jest.spyOn(db, 'query')
             .mockReturnValueOnce(new Promise(resolve => resolve([])))

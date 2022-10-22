@@ -2,7 +2,7 @@ import {describe, expect, jest, test} from "@jest/globals";
 
 describe('load config', () => {
 
-    test('load with no db config return the default config', () => {
+    test('load with no db config return the default config', async () => {
         // given
         let exit = 0
         const config = require('../config');
@@ -10,30 +10,29 @@ describe('load config', () => {
         jest.spyOn(db, 'query').mockReturnValue(new Promise(resolve => resolve([])))
         jest.spyOn(process, 'exit').mockImplementation(() => exit = 1)
         // when
-        config.load().then(() => {
-            // then
-            expect(config.config.bot_name).toBe(null)
-            expect(config.config.cmd_msg_interval).toBe(null)
-            expect(config.config.cmd_prefix).toBe(null)
-            expect(config.config.cmd_time_interval).toBe(null)
-            expect(config.config.discord_channel_1).toBe(null)
-            expect(config.config.discord_channel_2).toBe(null)
-            expect(config.config.discord_notification).toBe(null)
-            expect(config.config.discord_token).toBe(null)
-            expect(config.config.plugin_audio).toBe(null)
-            expect(config.config.plugin_commands).toBe(null)
-            expect(config.config.plugin_moderator).toBe(null)
-            expect(config.config.plugin_reaction).toBe(null)
-            expect(config.config.plugin_shout).toBe(null)
-            expect(config.config.shout_interval).toBe(null)
-            expect(config.config.twitch_channel).toBe(null)
-            expect(config.config.twitch_connection_message).toBe(null)
-            expect(config.config.twitch_token).toBe(null)
-            expect(exit).toBe(0)
-        })
+        await config.load()
+        // then
+        expect(config.config.bot_name).toBe(null)
+        expect(config.config.cmd_msg_interval).toBe(null)
+        expect(config.config.cmd_prefix).toBe(null)
+        expect(config.config.cmd_time_interval).toBe(null)
+        expect(config.config.discord_channel_1).toBe(null)
+        expect(config.config.discord_channel_2).toBe(null)
+        expect(config.config.discord_notification).toBe(null)
+        expect(config.config.discord_token).toBe(null)
+        expect(config.config.plugin_audio).toBe(null)
+        expect(config.config.plugin_commands).toBe(null)
+        expect(config.config.plugin_moderator).toBe(null)
+        expect(config.config.plugin_reaction).toBe(null)
+        expect(config.config.plugin_shout).toBe(null)
+        expect(config.config.shout_interval).toBe(null)
+        expect(config.config.twitch_channel).toBe(null)
+        expect(config.config.twitch_connection_message).toBe(null)
+        expect(config.config.twitch_token).toBe(null)
+        expect(exit).toBe(0)
     });
 
-    test('load with db config return the overiding config', () => {
+    test('load with db config return the overiding config', async () => {
         // given
         const config = require('../config');
         const db = require('../db');
@@ -57,29 +56,28 @@ describe('load config', () => {
         ]
         jest.spyOn(db, 'query').mockReturnValue(new Promise(resolve => resolve(overriding_config)))
         // when
-        config.load().then(() => {
-            // then
-            expect(config.config.bot_name).toBe('toto')
-            expect(config.config.cmd_msg_interval).toBe(null)
-            expect(config.config.cmd_prefix).toBe('!')
-            expect(config.config.cmd_time_interval).toBe(2)
-            expect(config.config.discord_channel_1).toBe('raphi_55')
-            expect(config.config.discord_channel_2).toBe('nyphew_')
-            expect(config.config.discord_notification).toBe(null)
-            expect(config.config.discord_token).toBe(null)
-            expect(config.config.plugin_audio).toBe(1)
-            expect(config.config.plugin_commands).toBe(1)
-            expect(config.config.plugin_moderator).toBe(1)
-            expect(config.config.plugin_reaction).toBe(1)
-            expect(config.config.plugin_shout).toBe(1)
-            expect(config.config.shout_interval).toBe(201)
-            expect(config.config.twitch_channel).toBe('raphi_55')
-            expect(config.config.twitch_connection_message).toBe('I am now connected to the matrix')
-            expect(config.config.twitch_token).toBe('auth:sqdjhyfuiohhvcboqdb')
-        })
+        await config.load()
+        // then
+        expect(config.config.bot_name).toBe('toto')
+        expect(config.config.cmd_msg_interval).toBe(null)
+        expect(config.config.cmd_prefix).toBe('!')
+        expect(config.config.cmd_time_interval).toBe(2)
+        expect(config.config.discord_channel_1).toBe('raphi_55')
+        expect(config.config.discord_channel_2).toBe('nyphew_')
+        expect(config.config.discord_notification).toBe(null)
+        expect(config.config.discord_token).toBe(null)
+        expect(config.config.plugin_audio).toBe(1)
+        expect(config.config.plugin_commands).toBe(1)
+        expect(config.config.plugin_moderator).toBe(1)
+        expect(config.config.plugin_reaction).toBe(1)
+        expect(config.config.plugin_shout).toBe(1)
+        expect(config.config.shout_interval).toBe(201)
+        expect(config.config.twitch_channel).toBe('raphi_55')
+        expect(config.config.twitch_connection_message).toBe('I am now connected to the matrix')
+        expect(config.config.twitch_token).toBe('auth:sqdjhyfuiohhvcboqdb')
     });
 
-    test('load with db error exit the program', () => {
+    test('load with db error exit the program', async () => {
         // given
         let exit = 0
         const config = require('../config');
@@ -87,9 +85,9 @@ describe('load config', () => {
         jest.spyOn(db, 'query').mockReturnValue(new Promise(resolve => resolve(null)))
         jest.spyOn(process, 'exit').mockImplementation(() => exit = 1)
         // when
-        config.load().then(() => {
-            // then
-            expect(exit).toBe(1)
-        })
+        await config.load()
+        // then
+        expect(exit).toBe(1)
     });
-});
+})
+;
