@@ -1,23 +1,18 @@
 import {describe, expect, test, jest} from '@jest/globals';
-import {config} from '../config';
-import db from "../db";
-import tanks from "../command/tanks";
-import runner from "../command/commands_runner";
-import socket from "../socket";
-import tools from "../tools";
 
 describe('run audio', () => {
   test('trigering audio and not excluding it', async () => {
     // given
-    const runner = require('../audio/audio_runner');
-    const db = require('../db');
-    const socket = require('../socket');
-    const tools = require('../tools');
+    const runner = require('../../audio/audio_runner');
+    const db = require('../../db');
+    const socket = require('../../socket');
+    const tools = require('../../tools');
     let audio = null;
     jest.spyOn(tools, 'get_random_int').mockReturnValueOnce(5)
     jest.spyOn(db, 'query').mockReturnValueOnce([{frequency: 100, trigger_word: "toto", timeout: 0}])
     jest.spyOn(socket, 'play_audio').mockImplementation(msg => audio = msg.trigger_word)
     // when
+    await runner.run_audio({}, 'prenium')
     const result = await runner.run_audio({}, 'prenium')
     // then
     expect(audio).toBe("toto")
@@ -25,10 +20,10 @@ describe('run audio', () => {
 
   test('trigering audio and excluding it', async () => {
     // given
-    const runner = require('../audio/audio_runner');
-    const db = require('../db');
-    const socket = require('../socket');
-    const tools = require('../tools');
+    const runner = require('../../audio/audio_runner');
+    const db = require('../../db');
+    const socket = require('../../socket');
+    const tools = require('../../tools');
     let audio = null;
     let msg_in = null;
     let msg_out = null;
@@ -45,5 +40,16 @@ describe('run audio', () => {
     setTimeout(function (){
       expect(msg_out).toBe("toto")
     }, 1000)
+  });
+
+  test('socket crached', async () => {
+    // given
+    const runner = require('../../audio/audio_runner');
+    const tools = require('../../tools');
+    jest.spyOn(tools, 'get_random_int').mockImplementation(msg => null.dd)
+    // when
+    const result = await runner.run_audio({}, 'prenium')
+    // then
+    expect(result).toBe(null)
   });
 });
