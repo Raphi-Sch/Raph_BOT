@@ -58,5 +58,4 @@ describe('run moderator', () => {
         // then
         expect(result).toBe(null)
     });
-
 });
