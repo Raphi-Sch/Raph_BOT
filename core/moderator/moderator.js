@@ -1,5 +1,5 @@
-import {run_moderator} from './moderator_runner'
-import {config} from '../config'
+const {run_moderator} = require('./moderator_runner')
+const {config} = require('../config')
 
 const runnable = {
     run: (user, message) => null

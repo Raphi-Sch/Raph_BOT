@@ -1,10 +1,10 @@
-const {Client} = require('discord.js');
+const {Client} = require('discord.js')
+
+const socket = require('./socket')
+const config = require('./config').config
 
 const discord_client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
-
 // Global var
-const socket = require('./socket');
-const config = require('./config').config;
 
 function init(){
     socket.log("[DISCORD] Connecting ...");

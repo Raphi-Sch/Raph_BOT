@@ -1,4 +1,4 @@
-import {run_shout} from "./shout_runner"
+const {run_shout} = require("./shout_runner")
 
 // Counter
 const config = require('../config').config;

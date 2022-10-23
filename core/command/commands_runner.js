@@ -1,7 +1,7 @@
-import tools from "../tools";
-import {config} from "../config";
-import tanks from "./tanks";
-import db from "../db";
+const tools = require("../tools")
+const {config} = require("../config")
+const tanks = require("./tanks")
+const db = require("../db")
 
 async function run_command(user, message) {
   const fullCommand = tools.command_parser(message, config.cmd_prefix);

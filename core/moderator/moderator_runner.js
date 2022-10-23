@@ -1,6 +1,6 @@
-import tools from "../tools";
-import db from "../db";
-import socket from "../socket";
+const tools = require("../tools")
+const db = require("../db")
+const socket = require("../socket")
 
 const {re} = require("@babel/core/lib/vendor/import-meta-resolve");
 

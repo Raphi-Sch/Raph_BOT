@@ -1,6 +1,6 @@
 // Const declaration
-import {config} from "../config"
-import {run_audio} from "./audio_runner"
+const {config} = require("../config")
+const {run_audio} = require("./audio_runner")
 
 const runnable = {
     run: (user, message) => null

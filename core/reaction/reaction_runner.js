@@ -1,6 +1,6 @@
-import tools from "../tools"
-import socket from "../socket"
-import db from "../db"
+const tools = require("../tools")
+const socket = require("../socket")
+const db = require("../db")
 
 let exclusion = [];
 
@@ -16,7 +16,7 @@ function run_reaction(user, message) {
 
           setTimeout(function () {
             exclusion.splice(exclusion.indexOf(result.trigger_word), 1);
-            socket.log(`[REACTION] ${result.trigger_word} has been removed from the exclusion list`);
+            socket.log(`[REACTION] ${result.trigger_word} has been removed = require(the exclusion list`);
           }, result.timeout * 1000);
 
           socket.log(`[REACTION] ${result.trigger_word} has been excluded for ${result.timeout}s`);
@@ -44,10 +44,10 @@ function query_reaction(words) {
   exclusion.forEach(word => values.push(word))
 
   const res = db.query(`SELECT trigger_word, reaction, frequency, timeout
-                                FROM reactions
-                                WHERE reactions.trigger_word IN (${trigger_word_in})
-                                ${trigger_word_not_in}
-                                ORDER BY RAND() LIMIT 1`, values);
+                       FROM reactions
+                       WHERE reactions.trigger_word IN (${trigger_word_in})
+                       ${trigger_word_not_in}
+                       ORDER BY RAND() LIMIT 1`, values);
 
   return tools.first_of_array(res);
 }
