@@ -124,7 +124,7 @@ function start_stop() {
         })
     }
     else {
-        $.post("src/php/core-exec.php", { action: "start" }, function (data) { console.log(data) });
+        $.post("src/php/POST_core.php", { action: "start" }, function (data) { console.log(data) });
         document.getElementById("log").innerText = "";
         document.getElementById("btn-start-stop").disabled = true;
     }

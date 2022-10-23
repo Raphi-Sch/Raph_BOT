@@ -1,7 +1,7 @@
 function add_entry() {
     Swal.fire({
         title: "New tank",
-        html: "<form id='swal-form' method='post'>" +
+        html: "<form id='swal-form' method='post' action='src/php/POST_tanks.php'>" +
             "<input type='hidden' name='action' value='add'>" +
             // Key
             "<label>Tank trigger</label><input type='text' class='form-control' name='form_key' required></br>" +
@@ -34,27 +34,6 @@ function add_entry() {
     });
 }
 
-function del_entry(id, name) {
-    Swal.fire({
-        title: "Delete '" + name + "' ?",
-        type: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No'
-    }).then((result) => {
-        if (result.value) {
-            $.post("tanks.php", {
-                action: "del",
-                id: id
-            }, function () {
-                document.location.reload();
-            });
-        }
-    })
-}
-
 function edit_entry(id) {
     var tank = document.getElementById(id).children;
     var trigger_word = tank.trigger_word.textContent;
@@ -66,7 +45,7 @@ function edit_entry(id) {
     Swal.fire({
         title: 'Editing : "' + trigger_word + '"',
         type: 'info',
-        html: "<form id='swal-form' method='post' class='form-vertical'>" +
+        html: "<form id='swal-form' method='post' class='form-vertical' action='src/php/POST_tanks.php'>" +
             "<input type='hidden' name='action' value='edit'>" +
             "<input type='hidden' name='swal-key' value='" + id + "'>" +
             "<label>Trigger</label><input class='form-control' type='text' name='swal-trigger' value='" + trigger_word + "'></br>" +
@@ -84,5 +63,30 @@ function edit_entry(id) {
     }).then((result) => {
         if (result.value)
             document.getElementById('swal-form').submit();
+    })
+}
+
+// SYNC
+// ----
+// ASYNC
+
+function del_entry(id, name) {
+    Swal.fire({
+        title: "Delete '" + name + "' ?",
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+    }).then((result) => {
+        if (result.value) {
+            $.post("src/php/POST_tanks.php", {
+                action: "del",
+                id: id
+            }, function () {
+                document.location.reload();
+            });
+        }
     })
 }

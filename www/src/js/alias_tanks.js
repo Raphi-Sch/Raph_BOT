@@ -1,7 +1,7 @@
 function add_entry() {
     Swal.fire({
         title: "Add entry",
-        html: "<form id='swal-form' method='post'>" +
+        html: "<form id='swal-form' method='post' action='src/php/POST_alias_tanks.php'>" +
             "<input type='hidden' name='action' value='add'>" +
             "<label>Alias</label><input type='text' class='form-control' name='alias' required><br/>" +
             "<label>Tank</label><select class='form-control' name='value' required><option disabled selected> - Select a tank - </option>" +
@@ -20,6 +20,10 @@ function add_entry() {
     });
 }
 
+// SYNC
+// ----
+// ASYNC
+
 function del_entry(alias) {
     Swal.fire({
         title: `Delete '${alias}' ?`,
@@ -31,7 +35,7 @@ function del_entry(alias) {
         focusCancel: true
     }).then((result) => {
         if (result.value) {
-            $.post("alias_tanks.php", {
+            $.post("src/php/POST_alias_tanks.php", {
                 action: "del",
                 alias: alias
             }, function () {

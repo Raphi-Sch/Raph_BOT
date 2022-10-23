@@ -1,8 +1,11 @@
 <?php
 
-function db_connect()
+function db_connect(bool $alternative_path = false)
 {
-    $config_JSON = json_decode(file_get_contents("../config.json"), true);
+    if ($alternative_path)
+        $config_JSON = json_decode(file_get_contents("../../../config.json"), true);
+    else
+        $config_JSON = json_decode(file_get_contents("../config.json"), true);
 
     $db = mysqli_connect($config_JSON["db_host"], $config_JSON["db_user"], $config_JSON["db_pass"], $config_JSON["db_name"]);
     mysqli_set_charset($db, "utf8");
@@ -11,9 +14,9 @@ function db_connect()
         echo "<h2>SQL Error : " . mysqli_connect_error() . "</h2>";
         exit();
     }
-	
-	// Enable MYSQLi error reporting
-	mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+    // Enable MYSQLi error reporting
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
     return $db;
 }

@@ -79,3 +79,7 @@ function file_upload($file_field, $dest_dir, $name_prefix = "", $original_name =
     }
     return $name.".".$ext; // Everything OK
 }
+
+function error_post(){
+    error_log("UNAUTHORIZED Request method :". $_SERVER['REQUEST_METHOD']. ", on : " . $_SERVER['REQUEST_URI'] . ", referer : " . $_SERVER['HTTP_REFERER']);
+}
