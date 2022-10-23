@@ -67,7 +67,6 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_nation", null,
             // Active the corresponding button in the navbar
             document.getElementById("alias_nation").className = "active";
         });
-
     </script>
     <script src="src/js/alias_nation.js"></script>
 

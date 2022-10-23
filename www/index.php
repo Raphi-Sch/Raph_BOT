@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['login'] = true;
 
             if (isset($_POST['redirect']) && !empty($_POST['redirect']))
-                header('Location: '.$_POST['redirect']);
+                header('Location: ' . $_POST['redirect']);
             else
                 header('Location: ./dashboard.php');
 

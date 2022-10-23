@@ -144,7 +144,7 @@ $lastestlog = shell_exec('cat ' . dirname(__FILE__) . "/../core/" . 'lastest.log
     </script>
     <script src="src/js/socket.io.js"></script>
     <script src="src/js/socket-handler.js"></script>
-    
+
 </body>
 
 </html>

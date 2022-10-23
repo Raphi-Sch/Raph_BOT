@@ -71,7 +71,7 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_tanks")['value
             // Active the corresponding button in the navbar
             document.getElementById("alias_tanks").className = "active";
         });
-        
+
         const tanks = "<?php echo $options_tanks; ?>";
     </script>
     <script src="src/js/alias_tanks.js"></script>

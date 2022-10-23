@@ -3,16 +3,16 @@ require_once('src/php/header.php');
 
 $HTML = "";
 $result = db_query_raw($db, "SELECT * FROM commands");
-while($row = mysqli_fetch_assoc($result)) {
+while ($row = mysqli_fetch_assoc($result)) {
     $HTML .= "
     <tr>
-        <td>".$row["command"]."</td>
-        <td id='value_".$row["id"]."'>".$row["value"]."</td>
-        <td><input type='checkbox' class='checkbox' ".($row['auto'] ? "checked" : "")." disabled></td>
+        <td>" . $row["command"] . "</td>
+        <td id='value_" . $row["id"] . "'>" . $row["value"] . "</td>
+        <td><input type='checkbox' class='checkbox' " . ($row['auto'] ? "checked" : "") . " disabled></td>
         <td>
           <span class='pull-right'>
-            <button onClick='edit_entry(\"".$row["id"]."\", \"".$row["auto"]."\",  \"".$row['command']."\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
-            <button type='button' class='btn btn-danger' onclick='del_entry(\"".$row['id']."\", \"".$row['command']."\")'><i class='glyphicon glyphicon-remove'></i></button>
+            <button onClick='edit_entry(\"" . $row["id"] . "\", \"" . $row["auto"] . "\",  \"" . $row['command'] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
+            <button type='button' class='btn btn-danger' onclick='del_entry(\"" . $row['id'] . "\", \"" . $row['command'] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
           </span>
         </td>
     </tr>";
@@ -25,53 +25,54 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM commands")['value'];
 
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
+
+<head>
     <title>Commands - <?php echo $bot_name; ?></title>
     <?php include("src/html/header.html"); ?>
-  </head>
+</head>
 
-  <body>
+<body>
     <!-- TOP Navbar -->
     <?php include("src/php/navbar.php"); ?>
 
     <!-- Side bar-->
-    <?php include("src/html/sidebar.html"); ?> 
+    <?php include("src/html/sidebar.html"); ?>
 
     <!-- Main area -->
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-      <h1 class="page-header">Commands (<?php echo $count;?>)
-        <div class='pull-right'>
-          <button type="button" class="btn btn-success" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button>
-        </div>
-      </h1>
+        <h1 class="page-header">Commands (<?php echo $count; ?>)
+            <div class='pull-right'>
+                <button type="button" class="btn btn-success" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button>
+            </div>
+        </h1>
 
-      <!-- Add command -->
-      <table class="table table-hover table-condensed">
-        <thead>
-            <tr>
-                <th class="col-xs-2">Command</th>
-                <th class="col-xs-8">Text</th>
-                <th class="col-xs-1">Auto</th>
-                <th class="col-xs-1"></th>
-            </tr>
-          </thead>
-        <tbody>
-            <?php echo $HTML; ?>
-        </tbody>
-      </table>
+        <!-- Add command -->
+        <table class="table table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th class="col-xs-2">Command</th>
+                    <th class="col-xs-8">Text</th>
+                    <th class="col-xs-1">Auto</th>
+                    <th class="col-xs-1"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php echo $HTML; ?>
+            </tbody>
+        </table>
     </div>
 
     <!-- Footer -->
     <?php include("src/html/footer.html"); ?>
 
     <script>
-      $(document).ready(function() {
-        // Active the corresponding button in the navbar
-        document.getElementById("commands").className="active"; 
-      });
-
-
+        $(document).ready(function() {
+            // Active the corresponding button in the navbar
+            document.getElementById("commands").className = "active";
+        });
     </script>
     <script src="src/js/commands.js"></script>
 
-</body></html>
+</body>
+
+</html>

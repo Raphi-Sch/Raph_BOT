@@ -29,9 +29,9 @@ function fix_config($db, $key, $data)
 // Getting users
 $result = "Checking entries\n";
 
-foreach($JSON as $table_name => $table_data){
-    foreach($table_data as $key => $data){
-        switch($table_name){
+foreach ($JSON as $table_name => $table_data) {
+    foreach ($table_data as $key => $data) {
+        switch ($table_name) {
             case 'config':
                 $result .= fix_config($db, $key, $data);
                 break;
@@ -39,7 +39,6 @@ foreach($JSON as $table_name => $table_data){
                 $result .= "Invalid table name : '$table_name'";
                 break;
         }
-        
     }
 }
 
