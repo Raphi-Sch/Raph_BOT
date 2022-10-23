@@ -1,10 +1,13 @@
 import {describe, expect, test, jest} from '@jest/globals';
 import {config} from '../../config';
+import reaction from "../../reaction/reaction";
+import reaction_runner from "../../reaction/reaction_runner";
+
+jest.mock('../../reaction/reaction_runner');
 
 describe('init reaction', () => {
   test('init reaction with plugin not activate, prepare run function to return null', () => {
     // given
-    const reaction = require('../../reaction/reaction');
     config.plugin_reaction = 2
     // when
     reaction.init()
@@ -14,10 +17,8 @@ describe('init reaction', () => {
 
   test('init reaction with plugin activate, prepare run function to return reaction', () => {
     // given
-    const reaction = require('../../reaction/reaction');
-    const runner = require('../../reaction/reaction_runner');
     config.plugin_reaction = 1
-    jest.spyOn(runner, 'run_reaction').mockReturnValue('foo')
+    jest.spyOn(reaction_runner, 'run_reaction').mockReturnValue('foo')
     // when
     reaction.init()
     // then
