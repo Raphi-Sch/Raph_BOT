@@ -1,22 +1,6 @@
 <?php
 require_once('src/php/header.php');
 
-//POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if ($_POST['action'] == "add" && !empty($_POST['alias']) && !empty($_POST['value'])) {
-        $alias = strtolower(trim($_POST['alias']));
-        $tank = $_POST['value'];
-        db_query_no_result($db, "REPLACE INTO alias_tanks VALUES (?, ?)", "ss", [$alias, $tank]);
-    }
-
-    if (isset($_POST) && $_POST['action'] == "del") {
-        db_query_no_result($db, "DELETE FROM alias_tanks WHERE alias = ?", "s", $_POST['alias']);
-    }
-
-    header('Location: alias_tanks.php');
-    exit();
-}
-
 // List option
 $result = db_query_raw($db, "SELECT trigger_word, `name` FROM tanks ORDER BY `name` ASC");
 $options_tanks = "";

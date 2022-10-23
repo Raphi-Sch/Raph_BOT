@@ -2,7 +2,7 @@ function edit_entry(key, value) {
     Swal({
         title: 'Editing : "' + key + '"',
         type: 'info',
-        html: "<form id='swal-form' method='post'>" +
+        html: "<form id='swal-form' method='post' action='src/php/POST_config.php'>" +
             "<input type='hidden' name='action' value='edit'>" +
             "<input type='hidden' name='id' value='" + key + "'>" +
             "<input class='form-control' type='text' name='value' value=\"" + value + "\"></form>",

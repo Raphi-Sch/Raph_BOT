@@ -1,7 +1,7 @@
 function add_entry() {
     Swal.fire({
         title: "Import audio file",
-        html: "<form id='swal-form' method='post' enctype='multipart/form-data'>" +
+        html: "<form id='swal-form' method='post' enctype='multipart/form-data' action='src/php/POST_audio.php'>" +
             "<input type='hidden' name='action' value='add'>" +
             "<label>Name</label><input type='text' class='form-control' name='name' required><br/>" +
             "<label>Trigger</label><input type='text' class='form-control' name='trigger' required><br/>" +
@@ -23,31 +23,10 @@ function add_entry() {
     });
 }
 
-function del_entry(id, name) {
-    Swal({
-        title: `Delete ${name} ?`,
-        type: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
-        focusCancel: true
-    }).then((result) => {
-        if (result.value) {
-            $.post("audio.php", {
-                action: "del",
-                id: id
-            }, function () {
-                document.location.reload();
-            });
-        }
-    })
-}
-
 function edit_entry(id, name, trigger, volume, freq, timeout) {
     Swal.fire({
         title: "Edit entry '" + name + "'",
-        html: "<form id='swal-form' method='post'>" +
+        html: "<form id='swal-form' method='post' action='src/php/POST_audio.php'>" +
             "<input type='hidden' name='action' value='edit'>" +
             "<input type='hidden' name='id' value='" + id + "'>" +
             "<label>Name</label><input type='text' class='form-control' name='name' value='" + name + "' required><br/>" +
@@ -67,4 +46,29 @@ function edit_entry(id, name, trigger, volume, freq, timeout) {
         if (result.value)
             document.getElementById('swal-form').submit();
     });
+}
+
+// SYNC
+// ----
+// ASYNC
+
+function del_entry(id, name) {
+    Swal({
+        title: `Delete ${name} ?`,
+        type: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        focusCancel: true
+    }).then((result) => {
+        if (result.value) {
+            $.post("src/php/POST_audio.php", {
+                action: "del",
+                id: id
+            }, function () {
+                document.location.reload();
+            });
+        }
+    })
 }

@@ -1,22 +1,6 @@
 <?php
 require_once('src/php/header.php');
 
-//POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if ($_POST['action'] == "add" && !empty($_POST['alias']) && !empty($_POST['value'])) {
-        $alias = strtolower(trim($_POST['alias']));
-        $command = trim($_POST['value']);
-        db_query_no_result($db, "REPLACE INTO alias_commands (alias, command) VALUES (?, ?)", "ss", [$alias, $command]);
-    }
-
-    if ($_POST['action'] == "del" && !empty($_POST['alias'])) {
-        db_query_no_result($db, "DELETE FROM alias_commands WHERE alias = ?", "s", $_POST['alias']);
-    }
-
-    header('Location: alias_commands.php');
-    exit();
-}
-
 // Listing
 $HTML = "";
 $data = db_query_raw($db, "SELECT * FROM alias_commands ORDER BY alias_commands.command ASC", null, null);

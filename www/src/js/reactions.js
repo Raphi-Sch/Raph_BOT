@@ -1,7 +1,7 @@
 function add_entry() {
     Swal.fire({
         title: "Add entry",
-        html: "<form id='swal-form' method='post'>" +
+        html: "<form id='swal-form' method='post' action='src/php/POST_reactions.php'>" +
             "<input type='hidden' name='action' value='add'>" +
             "<label>Trigger</label><input type='text' class='form-control' name='trigger_word' placeholder='Trigger' required><br/>" +
             "<label>Reaction</label><input type='text' class='form-control' name='reaction' placeholder='Reaction' required><br/>" +
@@ -21,27 +21,6 @@ function add_entry() {
     });
 }
 
-function del_entry(id, trigger) {
-    Swal.fire({
-        title: "Delete '" + trigger + "' ?",
-        type: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
-        focusCancel: true
-    }).then((result) => {
-        if (result.value) {
-            $.post("reactions.php", {
-                action: "del",
-                id: id
-            }, function () {
-                document.location.reload();
-            });
-        }
-    })
-}
-
 function edit_entry(id) {
     text = document.getElementById("text_" + id).innerText;
     freq = document.getElementById("freq_" + id).innerText;
@@ -49,7 +28,7 @@ function edit_entry(id) {
     Swal.fire({
         title: 'Editing : "' + id + '"',
         type: 'info',
-        html: "<form id='swal-form' method='post'><br/>" +
+        html: "<form id='swal-form' method='post' action='src/php/POST_reactions.php'><br/>" +
             "<input type='hidden' name='action' value='edit'>" +
             "<input type='hidden' name='id' value='" + id + "'>" +
             "<label>Text</label><input class='form-control' type='text' name='value' value=\"" + text + "\"><br/>" +
@@ -65,5 +44,30 @@ function edit_entry(id) {
     }).then((result) => {
         if (result.value)
             document.getElementById('swal-form').submit();
+    })
+}
+
+// SYNC
+// ----
+// ASYNC
+
+function del_entry(id, trigger) {
+    Swal.fire({
+        title: "Delete '" + trigger + "' ?",
+        type: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        focusCancel: true
+    }).then((result) => {
+        if (result.value) {
+            $.post("src/php/POST_reactions.php", {
+                action: "del",
+                id: id
+            }, function () {
+                document.location.reload();
+            });
+        }
     })
 }

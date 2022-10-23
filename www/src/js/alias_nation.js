@@ -1,7 +1,7 @@
 function add_entry() {
     Swal.fire({
         title: "Add entry",
-        html: "<form id='swal-form' method='post'>" +
+        html: "<form id='swal-form' method='post' action='src/php/POST_alias_nation.php'>" +
             "<input type='hidden' name='action' value='add'>" +
             "<label>Alias</label><input type='text' class='form-control' name='alias' required><br/>" +
             "<label>Nation</label><select class='form-control' name='value' required>"+
@@ -42,7 +42,7 @@ function del_entry(alias) {
         focusCancel: true
     }).then((result) => {
         if (result.value) {
-            $.post("alias_nation.php", {
+            $.post("src/php/POST_alias_nation.php", {
                 action: "del",
                 alias: alias
             }, function() {
