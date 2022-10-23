@@ -20,3 +20,5 @@ if ($_POST['action'] == "del" && !empty($_POST['alias'])) {
     db_query_no_result($db, "DELETE FROM alias_commands WHERE alias = ?", "s", $_POST['alias']);
     exit();
 }
+
+exit();

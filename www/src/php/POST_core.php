@@ -7,4 +7,3 @@ if(isset($_POST) && $_POST['action'] == "start"){
 }
 
 exit();
-?>
