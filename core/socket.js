@@ -1,7 +1,7 @@
-import http from 'http'
-import fs from 'fs'
-import discord from './discord.js'
-import {config} from "./config";
+const http = require('http')
+const fs = require('fs')
+const discord = require('./discord.js')
+const config = require("./config").config
 
 const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'a' });
 

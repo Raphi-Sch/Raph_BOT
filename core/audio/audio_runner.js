@@ -1,6 +1,6 @@
-import tools from "../tools"
-import socket from "../socket"
-import db from "../db"
+const tools = require("../tools")
+const socket = require("../socket")
+const db = require("../db")
 
 // Global var
 let exclusion = [];
@@ -19,7 +19,7 @@ function run_audio(user, message) {
 
                     setTimeout(function () {
                         exclusion.splice(exclusion.indexOf(result.trigger_word), 1);
-                        socket.log(`[AUDIO] ${result.name} has been removed from the exclusion list`);
+                        socket.log(`[AUDIO] ${result.name} has been removed = require(the exclusion list`);
                     }, result.timeout * 1000);
                 }
 

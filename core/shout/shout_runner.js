@@ -1,10 +1,10 @@
-import socket from "../socket"
-import db from "../db"
-import {config} from "../config"
+const socket = require("../socket")
+const db = require("../db")
+const {config} = require("../config")
 
 let shout_counter = 0;
 
-function run_shout(user, message) {
+async function run_shout(user, message) {
     shout_counter++;
     socket.shout_update(shout_counter, config.shout_interval);
 
@@ -20,9 +20,9 @@ function run_shout(user, message) {
     }
 }
 
-function run_french(user, message) {
+async function run_french(user, message) {
     // Load shout remplacement
-    const shout_words = load_shout_words();
+    const shout_words = await load_shout_words();
 
     //Split words of the sentence
     const word_array = message.toLowerCase().split(" ");
@@ -58,8 +58,8 @@ function run_french(user, message) {
     return "AH OUAIS @" + user["display-name"] + ", " + message.toUpperCase() + "!";
 }
 
-function load_shout_words() {
-    const sql = db.query("SELECT * FROM shout");
+async function load_shout_words() {
+    const sql = await db.query("SELECT * FROM shout");
     const result = {};
 
     try {

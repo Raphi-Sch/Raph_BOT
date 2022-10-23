@@ -1,5 +1,5 @@
-import db from '../db'
-import {run_command} from './commands_runner'
+const db = require('../db')
+const {run_command} = require('./commands_runner')
 
 // Const declaration
 const config = require('../config').config;

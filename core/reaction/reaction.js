@@ -1,5 +1,5 @@
-import {config} from '../config.js'
-import {run_reaction} from './reaction_runner'
+const {config} = require('../config.js')
+const {run_reaction} = require('./reaction_runner')
 
 const runnable = {
     run: (user, message) => null
