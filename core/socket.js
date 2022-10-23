@@ -1,36 +1,41 @@
-const http = require('http');
-const fs = require('fs');
-const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'a' });
-const port = require('../config.json').socket_port;
+import http from 'http'
+import fs from 'fs'
+import discord from './discord.js'
+import {config} from "./config";
 
+const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'a' });
+
+const port = require('../config.json').socket_port;
 // Basic HTTP server
 const server = http.createServer();
-const io = require('socket.io').listen(server);
-const config = require('./config').config;
 
+const io = require('socket.io').listen(server);
 // Variables
 let web_client = null;
 let web_client_connected = false;
-let discord_client;
+
 
 // GUI info
 const GUI = {
     discord: false,
     twitch: false,
-    shout: { current: 0, max: 0 },
-    trigger_time: { current: 0, max: 0, nb: 0 },
-    trigger_msg: { current: 0, max: 0, nb: 0 },
+    shout: {
+        current: 0,
+        max: config.shout_interval
+    },
+    trigger_time: {
+        current: 0,
+        max: config.cmd_time_interval,
+        nb: 0
+    },
+    trigger_msg: {
+        current: 0,
+        max: config.cmd_msg_interval,
+        nb: 0 },
 };
 
-function init(discord, version) {
-    discord_client = discord;
-
+function init(version) {
     log("[CORE] Started (" + version + ")");
-
-    GUI.trigger_time.max = config.cmd_time_interval;
-    GUI.trigger_msg.max = config.cmd_msg_interval;
-    GUI.shout.max = config.shout_interval;
-
     server.listen(port);
 }
 
@@ -47,7 +52,7 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('discord-notification', function () {
-        discord_client.send(config.discord_notification, 'annonce');
+        discord.send(config.discord_notification, 'annonce');
     });
 
     socket.on('disconnect', function () {

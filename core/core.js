@@ -12,8 +12,9 @@ import shout from "./shout/shout"
 import audio from "./audio/audio"
 
 config.load().then(() => {
-    socket.init(discord, version);
     // discord.init(); // FIXME - discord don't work anymore
+
+    socket.init(version);
 
     commands.init()
     moderator.init()

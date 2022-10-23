@@ -60,7 +60,7 @@ function run_french(user, message) {
 
 function load_shout_words() {
     const sql = db.query("SELECT * FROM shout");
-    const result = [];
+    const result = {};
 
     try {
         sql.forEach(element => {
