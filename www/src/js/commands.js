@@ -31,8 +31,8 @@ function edit_entry(id, command, text, auto) {
         html: "<br /><form id='swal-form' method='post' action='src/php/POST_commands.php'>" +
             "<input type='hidden' name='action' value='edit'>" +
             "<input type='hidden' name='id' value='" + id + "'>" +
-            `<label>Command</label><input class='form-control' type='text' name='command' value='${command}'><br />` +
-            `<label>Text</label><input class='form-control' type='text' name='value' value='${text}'><br />` +
+            `<label>Command</label><input class='form-control' type='text' name='command' value="${command}"><br />` +
+            `<label>Text</label><input class='form-control' type='text' name='value' value="${text}"><br />` +
             `<label>Auto</label><input class='form-control' type='checkbox' name='auto' ${checkbox}><br />` +
             "</form>",
         showCancelButton: true,
