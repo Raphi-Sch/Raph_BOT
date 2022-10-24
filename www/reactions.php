@@ -7,12 +7,12 @@ while ($row = mysqli_fetch_assoc($result)) {
     $HTML .= "
     <tr>
         <td>" . $row["trigger_word"] . "</td>
-        <td id='text_" . $row["id"] . "'>" . $row["reaction"] . "</td>
-        <td id='freq_" . $row["id"] . "' class='text-center'>" . $row["frequency"] . "</td>
-        <td id='time_" . $row["id"] . "' class='text-center'>" . $row["timeout"] . "</td>
+        <td>" . $row["reaction"] . "</td>
+        <td class='text-center'>" . $row["frequency"] . "</td>
+        <td class='text-center'>" . $row["timeout"] . "</td>
         <td>
           <span class='pull-right'>
-            <button onClick='edit_entry(\"" . $row["id"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
+            <button onClick='edit_entry(\"" . $row["id"] . "\", \"" . $row["trigger_word"] . "\", \"" . $row["reaction"] . "\", \"" . $row["frequency"] . "\", \"" . $row["timeout"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
             <button type='button' class='btn btn-danger' onclick='del_entry(\"" . $row['id'] . "\", \"" . $row['trigger_word'] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
           </span>
         </td>
