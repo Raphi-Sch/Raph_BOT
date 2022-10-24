@@ -20,17 +20,16 @@ function add_entry() {
     });
 }
 
-function edit_entry(id, trigger) {
-    mod = document.getElementById("mod_" + id).innerText;
-    exp = document.getElementById("exp_" + id).innerText;
+function edit_entry(id, trigger, mod, exp) {
     Swal.fire({
         title: `Editing : "${trigger}"`,
         type: 'info',
         html: "<form id='swal-form' method='post' action='src/php/POST_moderator.php'><br/>" +
             "<input type='hidden' name='action' value='edit'>" +
             `<input type='hidden' name='id' value='${id}'>` +
-            `<label>Mod action</label><input class='form-control' type='text' name='mod_action' value=\"${mod}\"><br/>` +
-            `<label>Explanation</label><input class='form-control' type='text' name='explanation' value=\"${exp}\"><br/>` +
+            `<label>Trigger</label><input class='form-control' type='text' name='trigger' value="${trigger}"><br/>` +
+            `<label>Mod action</label><input class='form-control' type='text' name='mod_action' value="${mod}"><br/>` +
+            `<label>Explanation</label><input class='form-control' type='text' name='explanation' value="${exp}"><br/>` +
             "</form>",
         showCancelButton: true,
         focusConfirm: false,

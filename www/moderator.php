@@ -11,7 +11,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         <td id='exp_" . $row["id"] . "'>" . $row["explanation"] . "</td>
         <td>
           <span class='pull-right'>
-            <button onClick='edit_entry(\"" . $row["id"] . "\", \"" . $row["trigger_word"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
+            <button onClick='edit_entry(\"" . $row["id"] . "\", \"" . $row["trigger_word"] . "\", \"" . $row["mod_action"] . "\", \"" . $row["explanation"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
             <button type='button' class='btn btn-danger' onclick='del_entry(\"" . $row['id'] . "\", \"" . $row['trigger_word'] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
           </span>
         </td>
