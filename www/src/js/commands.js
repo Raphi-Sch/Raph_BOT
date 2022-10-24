@@ -19,9 +19,7 @@ function add_entry() {
     });
 }
 
-function edit_entry(id, auto, command) {
-    value = document.getElementById("value_" + id).innerText;
-
+function edit_entry(id, command, text, auto) {
     if (auto == 1)
         checkbox = "checked";
     else
@@ -30,11 +28,12 @@ function edit_entry(id, auto, command) {
     Swal.fire({
         title: 'Editing : "' + command + '"',
         type: 'info',
-        html: "<form id='swal-form' method='post' action='src/php/POST_commands.php'>" +
+        html: "<br /><form id='swal-form' method='post' action='src/php/POST_commands.php'>" +
             "<input type='hidden' name='action' value='edit'>" +
             "<input type='hidden' name='id' value='" + id + "'>" +
-            "<label>Text</label><input class='form-control' type='text' name='value' value=\"" + value + "\">" +
-            "<label>Auto</label><input class='form-control' type='checkbox' name='auto' " + checkbox + ">" +
+            `<label>Command</label><input class='form-control' type='text' name='command' value='${command}'><br />` +
+            `<label>Text</label><input class='form-control' type='text' name='value' value='${text}'><br />` +
+            `<label>Auto</label><input class='form-control' type='checkbox' name='auto' ${checkbox}><br />` +
             "</form>",
         showCancelButton: true,
         focusConfirm: false,

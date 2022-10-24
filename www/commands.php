@@ -7,11 +7,11 @@ while ($row = mysqli_fetch_assoc($result)) {
     $HTML .= "
     <tr>
         <td>" . $row["command"] . "</td>
-        <td id='value_" . $row["id"] . "'>" . $row["value"] . "</td>
+        <td>" . $row["value"] . "</td>
         <td><input type='checkbox' class='checkbox' " . ($row['auto'] ? "checked" : "") . " disabled></td>
         <td>
           <span class='pull-right'>
-            <button onClick='edit_entry(\"" . $row["id"] . "\", \"" . $row["auto"] . "\",  \"" . $row['command'] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
+            <button onClick='edit_entry(\"" . $row["id"] . "\", \"" . $row['command'] . "\", \"" . $row["value"] . "\",  \"" . $row["auto"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
             <button type='button' class='btn btn-danger' onclick='del_entry(\"" . $row['id'] . "\", \"" . $row['command'] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
           </span>
         </td>
