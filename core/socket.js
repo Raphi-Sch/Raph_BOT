@@ -31,7 +31,8 @@ const GUI = {
     trigger_msg: {
         current: 0,
         max: config.cmd_msg_interval,
-        nb: 0 },
+        nb: 0
+    },
 };
 
 function init(version) {

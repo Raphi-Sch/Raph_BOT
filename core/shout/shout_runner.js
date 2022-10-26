@@ -1,6 +1,6 @@
 const socket = require("../socket")
 const db = require("../db")
-const {config} = require("../config")
+const { config } = require("../config")
 
 let shout_counter = 0;
 
@@ -72,4 +72,4 @@ async function load_shout_words() {
     }
 }
 
-module.exports = {run_shout}
+module.exports = { run_shout }

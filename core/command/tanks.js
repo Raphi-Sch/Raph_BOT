@@ -66,10 +66,10 @@ async function query_random() {
     if (exclude_tanks.length === count) exclude_tanks = [];
 
     let tank_not_in = "";
-    if (exclude_tanks.length > 0){
+    if (exclude_tanks.length > 0) {
         tank_not_in = `AND id NOT IN (${exclude_tanks.map(() => "?").join(",")})`;
     }
-    
+
     // Random
     const res = await db.query(`SELECT id, name
                                FROM tanks
