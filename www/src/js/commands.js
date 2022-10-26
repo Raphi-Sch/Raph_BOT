@@ -32,7 +32,7 @@ function edit_entry(id, command, text, auto) {
             "<input type='hidden' name='action' value='edit'>" +
             "<input type='hidden' name='id' value='" + id + "'>" +
             `<label>Command</label><input class='form-control' type='text' name='command' value="${command}"><br />` +
-            `<label>Text</label><input class='form-control' type='text' name='value' value="${text}"><br />` +
+            `<label>Text</label><input class='form-control' type='text' name='text' value="${text}"><br />` +
             `<label>Auto</label><input class='form-control' type='checkbox' name='auto' ${checkbox}><br />` +
             "</form>",
         showCancelButton: true,
