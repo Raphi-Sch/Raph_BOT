@@ -1,11 +1,11 @@
 <?php
 
-function db_connect(bool $alternative_path = false)
+function db_connect(string $alternative_path = null)
 {
-    if ($alternative_path)
-        $config_JSON = json_decode(file_get_contents("../../../config.json"), true);
-    else
+    if (empty($alternative_path))
         $config_JSON = json_decode(file_get_contents("../config.json"), true);
+    else
+        $config_JSON = json_decode(file_get_contents($alternative_path), true);
 
     $db = mysqli_connect($config_JSON["db_host"], $config_JSON["db_user"], $config_JSON["db_pass"], $config_JSON["db_name"]);
     mysqli_set_charset($db, "utf8");
