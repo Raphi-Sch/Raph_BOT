@@ -23,7 +23,11 @@ switch ($request_method) {
 
 // GET Functions
 function get_command($db, $request){
-    $result = db_query($db, "SELECT `value` FROM commands, alias_commands WHERE (alias_commands.command = commands.command AND alias_commands.alias = ?) OR commands.command = ?", "ss", [$request, $request]);
+    $query = "SELECT `value` 
+        FROM commands LEFT JOIN alias_commands ON alias_commands.command = commands.command
+        WHERE alias_commands.alias = ? OR commands.command = ?";
+
+    $result = db_query($db, $query, "ss", [$request, $request]);
     echo json_encode($result);
     exit();
 }
