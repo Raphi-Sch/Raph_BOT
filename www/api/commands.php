@@ -23,13 +23,7 @@ switch ($request_method) {
 
 // GET Functions
 function get_command($db, $request){
-    // Check for alias
-    $alias = db_query($db, "SELECT command FROM alias_commands WHERE alias = ?", "s", $request)['command'];
-
-    if(!empty($alias)){
-        $request = $alias;
-    }
-
-    $result = db_query($db, "SELECT `value` FROM commands WHERE command = ?", "s", $request)['value'];
+    $result = db_query($db, "SELECT `value` FROM commands, alias_commands WHERE (alias_commands.command = commands.command AND alias_commands.alias = ?) OR commands.command = ?", "ss", [$request, $request]);
     echo json_encode($result);
+    exit();
 }
