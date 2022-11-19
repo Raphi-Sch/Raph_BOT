@@ -25,6 +25,10 @@ function get_shout_words($db){
         array_push($data, ['original' => $row['original'], 'replacement' => $row['replacement']]);
     }
 
-    echo json_encode($data);
+    if($result == null)
+        echo json_encode(['0' => null]);
+    else
+        echo json_encode($data);
+
     exit();
 }

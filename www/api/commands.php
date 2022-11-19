@@ -27,6 +27,11 @@ function get_command($db, $request){
         WHERE alias_commands.alias = ? OR commands.command = ?";
 
     $result = db_query($db, $query, "ss", [$request, $request]);
-    echo json_encode($result);
+
+    if($result == null)
+        echo json_encode(['value' => null]);
+    else
+        echo json_encode($result);
+
     exit();
 }

@@ -43,7 +43,12 @@ function get_name($db, $request)
         WHERE alias_tanks.alias = ? OR tanks.trigger_word = ?";
 
     $result = db_query($db, $query, "ss", [$request, $request]);
-    echo json_encode($result);
+
+    if($result == null)
+        echo json_encode(['name' => null, 'mark' => 0, 'max_dmg' => 0, 'note' => 0]);
+    else
+        echo json_encode($result);
+
     exit();
 }
 
@@ -55,7 +60,12 @@ function get_type($db, $request)
         ORDER BY name ASC";
 
     $result = db_query($db, $query, "s", $request);
-    echo json_encode($result);
+
+    if($result == null)
+        echo json_encode(['value' => null]);
+    else
+        echo json_encode($result);
+
     exit();
 }
 
@@ -67,7 +77,12 @@ function get_tier($db, $request)
         ORDER BY name ASC";
 
     $result = db_query($db, $query, "i", $request);
-    echo json_encode($result);
+
+    if($result == null)
+        echo json_encode(['value' => null]);
+    else
+        echo json_encode($result);
+    
     exit();
 }
 
@@ -79,6 +94,11 @@ function get_nation($db, $request)
         ORDER BY name ASC";
 
     $result = db_query($db, $query, "ss", [$request, $request]);
-    echo json_encode($result);
+
+    if($result == null)
+        echo json_encode(['nation' => null, 'value' => null]);
+    else
+        echo json_encode($result);
+
     exit();
 }

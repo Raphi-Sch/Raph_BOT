@@ -27,6 +27,11 @@ function get_moderator($db, $request){
         WHERE moderator.trigger_word = ?" ;
 
     $result = db_query($db, $query, "s", $request);
-    echo json_encode($result);
+
+    if($result == null)
+        echo json_encode(['mod_action' => null, 'explanation' => null]);
+    else
+        echo json_encode($result);
+
     exit();
 }
