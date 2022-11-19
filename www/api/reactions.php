@@ -6,12 +6,14 @@ $db = db_connect("../../config.json");
 $request_method = $_SERVER["REQUEST_METHOD"];
 
 switch ($request_method) {
-    case 'GET':
-        if(isset($_GET["request"])){
-            get_reaction($db, $_GET['request']);
+    case 'POST':
+        $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
+
+        if($data["method"] == "get_reaction"){
+            get_reaction($db, $data["word_in"], $data["word_not_in"]);
             break;
         }
-        
+
         header("HTTP/1.0 400 Bad request");
         break;
     default:
@@ -21,12 +23,38 @@ switch ($request_method) {
 
 
 // GET Functions
-function get_reaction($db, $request){
-    $query = "SELECT reaction, frequency, `timeout`
-        FROM reactions
-        WHERE reactions.trigger_word = ?";
+function get_reaction($db, $word_in, $word_not_in){
+    $params_type = "";
 
-    $result = db_query($db, $query, "s", $request);
-    echo json_encode($result);
+    // Build word in
+    $word_in_count = count($word_in);
+    $trigger_word_in = join(',', array_fill(0, $word_in_count, '?'));
+    $params_type .= str_repeat('s', $word_in_count);
+    
+    // Build word not in
+    if($word_not_in > 0){
+        $word_not_in_count = count($word_not_in);
+        $trigger_word_not_in = " AND reactions.trigger_word NOT IN (" . join(',', array_fill(0, $word_not_in_count, '?')) . ")";
+        $params_type .= str_repeat('s', $word_not_in_count);
+    }
+
+    // Build list of all word (in and not in)
+    $values = array_merge($word_in, $word_not_in);
+    
+    $query = "SELECT trigger_word, reaction, frequency, `timeout`
+        FROM reactions
+        WHERE reactions.trigger_word IN (" . $trigger_word_in . ")" . $trigger_word_not_in . "ORDER BY RAND() LIMIT 1";
+
+    echo $query."\n";
+    echo $params_type."\n";
+    print_r($values);
+
+    $result = db_query($db, $query, $params_type, $values);
+
+    if($result == null)
+        echo json_encode(['trigger_word' => null, 'reaction' => null, 'frequency' => 0, 'timeout' => 0]);
+    else
+        echo json_encode($result);
+
     exit();
 }
