@@ -40,9 +40,7 @@ async function query_reaction(words) {
         trigger_word_not_in = `AND reactions.trigger_word NOT IN (${exclusion.map(() => "?").join(",")})`;
     }
 
-    const values = [];
-    filtered_words.forEach(word => values.push(word))
-    exclusion.forEach(word => values.push(word))
+    const values = [...filtered_words, ...exclusion];
 
     const res = await db.query(`SELECT trigger_word, reaction, frequency, timeout
                        FROM reactions
