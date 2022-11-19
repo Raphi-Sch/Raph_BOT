@@ -45,10 +45,6 @@ function get_reaction($db, $word_in, $word_not_in){
         FROM reactions
         WHERE reactions.trigger_word IN (" . $trigger_word_in . ")" . $trigger_word_not_in . "ORDER BY RAND() LIMIT 1";
 
-    echo $query."\n";
-    echo $params_type."\n";
-    print_r($values);
-
     $result = db_query($db, $query, $params_type, $values);
 
     if($result == null)
