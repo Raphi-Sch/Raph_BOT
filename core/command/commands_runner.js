@@ -1,7 +1,7 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const tools = require("../tools")
 const { config } = require("../config")
-const api_URL = require("../../config.json").API_URL;
+const API_URL = require("../../config.json").API_URL;
 
 let excluded_tanks = [];
 
@@ -33,7 +33,7 @@ async function api_command(command, param){
         }]
     }
 
-    const response = await fetch(api_URL + "commands.php", {
+    const response = await fetch(API_URL + "commands.php", {
         method: "post",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
