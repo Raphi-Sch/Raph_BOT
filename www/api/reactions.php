@@ -32,6 +32,7 @@ function get_reaction($db, $word_in, $word_not_in){
     $params_type .= str_repeat('s', $word_in_count);
     
     // Build word not in
+    $trigger_word_not_in = "";
     if(count($word_not_in) > 0){
         $word_not_in_count = count($word_not_in);
         $trigger_word_not_in = " AND reactions.trigger_word NOT IN (" . join(',', array_fill(0, $word_not_in_count, '?')) . ")";
