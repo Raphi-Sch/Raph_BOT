@@ -1,16 +1,17 @@
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const tools = require("../tools")
 const { config } = require("../config")
-const tanks = require("./tanks")
-const db = require("../db")
+const api_URL = require("../../config.json").API_URL;
+
+let excluded_tanks = [];
 
 async function run_command(user, message) {
     const fullCommand = tools.command_parser(message, config.cmd_prefix);
+
     if (fullCommand) {
-        const command = await get_alias(tools.normalize_string(fullCommand[1]));
-        if (command === "char") {
-            return tanks.run(tools.normalize_string(fullCommand[2]));
-        }
-        const result = await get_command(command);
+        let result = await api_command(fullCommand[1], fullCommand[2]);
+
+        // Put username if command required it
         if (result) {
             if (user) {
                 return result.replace("@username", user['display-name']);
@@ -22,20 +23,35 @@ async function run_command(user, message) {
     return null;
 }
 
-async function get_alias(request) {
-    const res = await db.query("SELECT command FROM alias_commands WHERE alias = ?", [request]);
-    if (res[0]) {
-        return res[0].command;
+async function api_command(command, param){
+    const body = {
+        data: [{
+            method: "get_command",
+            command: command,
+            param: param,
+            excluded_tanks: excluded_tanks
+        }]
     }
-    return request;
-}
 
-async function get_command(request) {
-    const res = await db.query("SELECT value FROM commands WHERE command= ?", [request]);
-    if (res[0]) {
-        return res[0].value;
+    const response = await fetch(api_URL + "commands.php", {
+        method: "post",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" }
+    })
+    
+    if (response.ok) {
+        let json = await response.json();
+
+        if(json.char_random){ // if true, command was '!char random'
+            if (json.exclude !== null) excluded_tanks.push(json.exclude);
+            if (excluded_tanks.length == json.total) excluded_tanks = [];
+        }
+            
+        return json.value;
+    } else {
+        console.error("API ERROR : " + response.status);
+        return null;
     }
-    return null;
 }
 
 module.exports = { run_command }
