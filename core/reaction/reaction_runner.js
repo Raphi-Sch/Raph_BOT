@@ -1,13 +1,13 @@
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const tools = require("../tools")
 const socket = require("../socket")
-const db = require("../db")
+const api_URL = require("../../config.json").API_URL;
 
 let exclusion = [];
 
 async function run_reaction(user, message) {
     let words = tools.normalize_string(message).replace(/['"]+/g, ' ').split(" ");
-
-    let result = await query_reaction(words);
+    let result = await api_reaction(words);
 
     try {
         if (result) {
@@ -31,24 +31,31 @@ async function run_reaction(user, message) {
     }
 }
 
-async function query_reaction(words) {
-    const filtered_words = words.filter(word => word !== '' && word !== null)
-    const trigger_word_in = filtered_words.map(() => "?").join(",")
+async function api_reaction(words){
+    const filtered_words = words.filter(word => word !== '' && word !== null);
 
-    let trigger_word_not_in = "";
-    if (exclusion.length > 0) {
-        trigger_word_not_in = `AND reactions.trigger_word NOT IN (${exclusion.map(() => "?").join(",")})`;
+    const body = {
+        data: [{
+            method: "get_reaction",
+            word_in: filtered_words,
+            word_not_in: exclusion
+        }]
     }
 
-    const values = [...filtered_words, ...exclusion];
+    const data_json = JSON.stringify(body);
 
-    const res = await db.query(`SELECT trigger_word, reaction, frequency, timeout
-                       FROM reactions
-                       WHERE reactions.trigger_word IN (${trigger_word_in})
-                       ${trigger_word_not_in}
-                       ORDER BY RAND() LIMIT 1`, values);
-
-    return tools.first_of_array(res);
+    const response = await fetch(api_URL + "reactions.php", {
+        method: "post",
+        body: data_json,
+        headers: { "Content-Type": "application/json" }
+    })
+    
+    if (response.ok) {
+        return await response.json();
+    } else {
+        console.error("API ERROR : " + response.status);
+        return null;
+    }
 }
 
 module.exports = { run_reaction }
