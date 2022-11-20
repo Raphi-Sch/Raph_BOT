@@ -10,7 +10,7 @@ const reaction = require("./reaction/reaction")
 const shout = require("./shout/shout")
 const audio = require("./audio/audio")
 
-const version = "v5.6.2";
+const version = "v5.7.0";
 
 config.load().then(() => {
     // discord.init(); // FIXME - discord don't work anymore
