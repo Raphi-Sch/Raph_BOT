@@ -69,16 +69,18 @@ function get_random($db, $excluded_tanks)
 
     // Build tanks not in
     $tanks_not_in = "";
+    $SQL_excluded_tanks = null;
     $tanks_not_in_count = count($excluded_tanks);
     if ($tanks_not_in_count > 0) {
         $tanks_not_in = "AND id NOT IN (" . join(',', array_fill(0, $tanks_not_in_count, '?')) . ")";
         $SQL_params_type .= str_repeat('s', $tanks_not_in_count);
+        $SQL_excluded_tanks = $excluded_tanks;
     }
 
     // Query
     $SQL_query = "SELECT id, name FROM tanks WHERE tier = 10 " . $tanks_not_in . " ORDER BY RAND() LIMIT 1";
 
-    $result = db_query($db, $SQL_query, $SQL_params_type, $excluded_tanks);
+    $result = db_query($db, $SQL_query, $SQL_params_type, $SQL_excluded_tanks);
 
     return ['value' => "@username Voici un char : " . $result['name'], 'exclude' => $result['id'], 'total' => $count, 'char_random' => true];
 }
