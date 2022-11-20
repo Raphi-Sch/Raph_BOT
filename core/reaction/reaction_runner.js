@@ -1,6 +1,6 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-const tools = require("../tools")
-const socket = require("../socket")
+const tools = require("../tools");
+const socket = require("../socket");
 const api_URL = require("../../config.json").API_URL;
 
 let exclusion = [];
@@ -17,7 +17,7 @@ async function run_reaction(user, message) {
 
                     setTimeout(function () {
                         exclusion.splice(exclusion.indexOf(result.trigger_word), 1);
-                        socket.log(`[REACTION] ${result.trigger_word} has been removed = require(the exclusion list`);
+                        socket.log(`[REACTION] ${result.trigger_word} has been removed from the exclusion list`);
                     }, result.timeout * 1000);
 
                     socket.log(`[REACTION] ${result.trigger_word} has been excluded for ${result.timeout}s`);
@@ -31,22 +31,18 @@ async function run_reaction(user, message) {
     }
 }
 
-async function api_reaction(words){
-    const filtered_words = words.filter(word => word !== '' && word !== null);
-
+async function api_reaction(words_in){
     const body = {
         data: [{
             method: "get_reaction",
-            word_in: filtered_words,
-            word_not_in: exclusion
+            words_in: words_in,
+            words_not_in: exclusion
         }]
     }
 
-    const data_json = JSON.stringify(body);
-
     const response = await fetch(api_URL + "reactions.php", {
         method: "post",
-        body: data_json,
+        body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
     })
     
