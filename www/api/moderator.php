@@ -23,22 +23,6 @@ switch ($request_method) {
 
 
 // GET Functions
-/*
-function get_moderator(mysqli $db, array $words){
-    $query = "SELECT mod_action, explanation
-        FROM moderator
-        WHERE moderator.trigger_word = ?" ;
-
-    $result = db_query($db, $query, "s", $request);
-
-    if($result == null)
-        echo json_encode(['mod_action' => null, 'explanation' => null]);
-    else
-        echo json_encode($result);
-
-    exit();
-}*/
-
 function get_moderator(mysqli $db, array $word_in){
     $SQL_params_type = "";
     $filtered_word_in = array();
