@@ -1,3 +1,4 @@
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const socket = require("../socket")
 const API_URL = require("../../config.json").API_URL;
 
