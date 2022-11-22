@@ -1,6 +1,6 @@
 const socket = require('./socket.js')
 
-const discord = require('./discord.js')
+//const discord = require('./discord.js')
 const twitch = require('./twitch.js')
 const config = require('./config.js')
 const commands = require("./command/commands")
