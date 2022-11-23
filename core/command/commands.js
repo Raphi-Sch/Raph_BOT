@@ -1,5 +1,7 @@
 const db = require('../db')
 const { run_command } = require('./commands_runner')
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const API_URL = require("../../config.json").API_URL;
 
 // Const declaration
 const { config } = require('../config')
@@ -63,8 +65,19 @@ function reboot_message_counter() {
 }
 
 async function load_auto_command() {
-    const sql = await db.query("SELECT command FROM commands WHERE auto = 1");
-    return sql.map(element => element.command);
+    const response = await fetch(API_URL + "commands.php?auto_command", {
+        method: "get",
+        headers: { "Content-Type": "application/json" }
+    })
+
+    if (response.ok) {
+        let json = await response.json();
+        return json;
+
+    } else {
+        console.error("API ERROR : " + response.status);
+        return null;
+    }
 }
 
 /**

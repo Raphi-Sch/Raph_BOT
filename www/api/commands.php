@@ -8,6 +8,14 @@ require_once('./tanks.php');
 $request_method = $_SERVER["REQUEST_METHOD"];
 
 switch ($request_method) {
+    case 'GET':
+        if(isset($_GET['auto_command'])){
+            get_auto_command($db);
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
     case 'POST':
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
@@ -43,5 +51,19 @@ function get_command(mysqli $db, string $command, string $param, array $excluded
     else
         echo json_encode($result);
 
+    return null;
+}
+
+function get_auto_command(mysqli $db){
+    $SQL_query = "SELECT command FROM commands WHERE commands.auto = 1";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+
+    while($row = $data->fetch_assoc()){
+        array_push($result, $row['command']);
+    }
+
+    echo json_encode($result);
     return null;
 }
