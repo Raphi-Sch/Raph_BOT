@@ -1,4 +1,3 @@
-const db = require('../db')
 const { run_command } = require('./commands_runner')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const API_URL = require("../../config.json").API_URL;
