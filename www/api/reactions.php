@@ -9,13 +9,14 @@ switch ($request_method) {
     case 'POST':
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
-        if($data["method"] == "get_reaction"){
+        if ($data["method"] == "get_reaction") {
             get_reaction($db, $data["words_in"], $data["words_not_in"]);
             break;
         }
 
         header("HTTP/1.0 400 Bad request");
         break;
+
     default:
         header("HTTP/1.0 405 Method Not Allowed");
         break;
@@ -24,20 +25,21 @@ switch ($request_method) {
 exit();
 
 // GET Functions
-function get_reaction(mysqli $db, array $word_in, array $word_not_in){
+function get_reaction(mysqli $db, array $word_in, array $word_not_in)
+{
     $SQL_params_type = "";
     $filtered_word_in = array();
     $filtered_word_not_in = array();
 
     // Filter words
-    foreach($word_in as $word){
-        if(!empty($word)){
+    foreach ($word_in as $word) {
+        if (!empty($word)) {
             array_push($filtered_word_in, $word);
         }
     }
 
-    foreach($word_not_in as $word){
-        if(!empty($word)){
+    foreach ($word_not_in as $word) {
+        if (!empty($word)) {
             array_push($filtered_word_not_in, $word);
         }
     }
@@ -46,10 +48,10 @@ function get_reaction(mysqli $db, array $word_in, array $word_not_in){
     $word_in_count = count($word_in);
     $trigger_word_in = join(',', array_fill(0, $word_in_count, '?'));
     $SQL_params_type .= str_repeat('s', $word_in_count);
-    
+
     // Build word not in
     $trigger_word_not_in = "";
-    if(count($word_not_in) > 0){
+    if (count($word_not_in) > 0) {
         $word_not_in_count = count($word_not_in);
         $trigger_word_not_in = " AND reactions.trigger_word NOT IN (" . join(',', array_fill(0, $word_not_in_count, '?')) . ")";
         $SQL_params_type .= str_repeat('s', $word_not_in_count);
@@ -57,14 +59,14 @@ function get_reaction(mysqli $db, array $word_in, array $word_not_in){
 
     // Build list of all word (in and not in)
     $SQL_values = array_merge($word_in, $word_not_in);
-    
+
     $SQL_query = "SELECT trigger_word, reaction, frequency, `timeout`
         FROM reactions
         WHERE reactions.trigger_word IN (" . $trigger_word_in . ")" . $trigger_word_not_in . " ORDER BY RAND() LIMIT 1";
 
     $result = db_query($db, $SQL_query, $SQL_params_type, $SQL_values);
 
-    if($result == null)
+    if ($result == null)
         echo json_encode(['trigger_word' => null, 'reaction' => null, 'frequency' => 0, 'timeout' => 0]);
     else
         echo json_encode($result);
