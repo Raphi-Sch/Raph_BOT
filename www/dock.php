@@ -23,10 +23,6 @@ $lastestlog = shell_exec('cat ' . dirname(__FILE__) . "/../core/" . 'lastest.log
                 <td><i class='glyphicon glyphicon-hourglass ico-orange' id='dock-twitch-statut'></i></td>
             </tr>
             <tr>
-                <th>Discord</th>
-                <td><i class='glyphicon glyphicon-hourglass ico-orange' id='dock-discord-statut'></i></td>
-            </tr>
-            <tr>
                 <th>Message</th>
                 <td><span id="dock-msg-text">0 / 0</span></td>
             </tr>

@@ -16,10 +16,6 @@ describe('load config', () => {
         expect(config.config.cmd_msg_interval).toBe(null)
         expect(config.config.cmd_prefix).toBe(null)
         expect(config.config.cmd_time_interval).toBe(null)
-        expect(config.config.discord_channel_1).toBe(null)
-        expect(config.config.discord_channel_2).toBe(null)
-        expect(config.config.discord_notification).toBe(null)
-        expect(config.config.discord_token).toBe(null)
         expect(config.config.plugin_audio).toBe(null)
         expect(config.config.plugin_commands).toBe(null)
         expect(config.config.plugin_moderator).toBe(null)
@@ -41,9 +37,6 @@ describe('load config', () => {
             {id: "bot_name", value: 'toto'},
             {id: "cmd_prefix", value: '!'},
             {id: "cmd_time_interval", value: 2},
-            {id: "discord_channel_1", value: 'raphi_55'},
-            {id: "discord_channel_2", value: 'nyphew_'},
-            {id: "discord_token", value: null},
             {id: "plugin_audio", value: 1},
             {id: "plugin_commands", value: 1},
             {id: "plugin_moderator", value: 1},
@@ -62,10 +55,6 @@ describe('load config', () => {
         expect(config.config.cmd_msg_interval).toBe(null)
         expect(config.config.cmd_prefix).toBe('!')
         expect(config.config.cmd_time_interval).toBe(2)
-        expect(config.config.discord_channel_1).toBe('raphi_55')
-        expect(config.config.discord_channel_2).toBe('nyphew_')
-        expect(config.config.discord_notification).toBe(null)
-        expect(config.config.discord_token).toBe(null)
         expect(config.config.plugin_audio).toBe(1)
         expect(config.config.plugin_commands).toBe(1)
         expect(config.config.plugin_moderator).toBe(1)

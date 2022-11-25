@@ -1,6 +1,5 @@
 const http = require('http')
 const fs = require('fs')
-//const discord = require('./discord.js')
 const config = require("./config").config
 
 const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'a' });
@@ -17,7 +16,6 @@ let web_client_connected = false;
 
 // GUI info
 const GUI = {
-    discord: false,
     twitch: false,
     shout: {
         current: 0,
@@ -52,10 +50,6 @@ io.sockets.on('connection', function (socket) {
         process.exit(0);
     });
 
-    socket.on('discord-notification', function () {
-        discord.send(config.discord_notification, 'annonce');
-    });
-
     socket.on('disconnect', function () {
         web_client_connected = false;
     });
@@ -65,11 +59,6 @@ io.sockets.on('connection', function (socket) {
 function GUI_update() {
     if (web_client_connected)
         web_client.emit('update', JSON.stringify(GUI));
-}
-
-function discord_state(state) {
-    GUI.discord = state;
-    GUI_update();
 }
 
 function twitch_state(state) {
@@ -113,4 +102,4 @@ function play_audio(data) {
 }
 
 
-module.exports = { init, twitch_state, discord_state, shout_update, time_trigger_update, msg_trigger_update, log, play_audio }
+module.exports = { init, twitch_state, shout_update, time_trigger_update, msg_trigger_update, log, play_audio }
