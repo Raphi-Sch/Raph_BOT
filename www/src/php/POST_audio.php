@@ -9,7 +9,7 @@ if ($_POST['action'] == "add" && !empty($_POST['name']) && !empty($_POST['trigge
     $volume = floatval($_POST['volume']);
     $freq = intval($_POST['freq']);
     $timeout = intval($_POST['timeout']);
-    $file_name = file_upload("audio", dirname(__FILE__) . "/src/audio", "", false, guidv4());
+    $file_name = file_upload("audio", dirname(__FILE__) . "/../audio", "", false, guidv4());
 
     if ($file_name) {
         db_query_no_result($db, "INSERT INTO audio VALUES (NULL, ?, ?, ?, ?, ?, ?)", "sssdii", [$name, $trigger, $file_name, $volume, $timeout, $freq]);

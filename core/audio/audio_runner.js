@@ -1,13 +1,14 @@
-const tools = require("../tools")
-const socket = require("../socket")
-const db = require("../db")
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const tools = require("../tools");
+const socket = require("../socket");
+const API_URL = require("../../config.json").API_URL;
 
 // Global var
 let exclusion = [];
 
 function run_audio(user, message) {
     const words = tools.normalize_string(message).replace(/['"]+/g, ' ').split(" ");
-    const result = query(words);
+    const result = api_audio(words);
 
     try {
         if (result) {
@@ -35,27 +36,27 @@ function run_audio(user, message) {
     return null;
 }
 
-function query(words) {
-    const filtered_words = words.filter(word => word !== '' && word !== null)
-    const trigger_word_in = filtered_words.map(() => "?").join(",")
-
-    let trigger_word_not_in = "";
-
-    if (exclusion.length > 0) {
-        trigger_word_not_in = `AND audio.trigger_word NOT IN (${exclusion.map(() => "?").join(",")})`;
+async function api_audio(words_in){
+    const body = {
+        data: [{
+            method: "get_audio",
+            words_in: words_in,
+            words_not_in: exclusion
+        }]
     }
 
-    const values = [];
-    filtered_words.forEach(word => values.push(word))
-    exclusion.forEach(word => values.push(word))
-
-    const res = db.query(`SELECT *
-                         FROM audio
-                         WHERE audio.trigger_word IN (${trigger_word_in})
-                         ${trigger_word_not_in}
-                         ORDER BY RAND() LIMIT 1`, values);
-
-    return tools.first_of_array(res);
+    const response = await fetch(API_URL + "audio.php", {
+        method: "post",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" }
+    })
+    
+    if (response.ok) {
+        return await response.json();
+    } else {
+        console.error("API ERROR : " + response.status);
+        return null;
+    }
 }
 
 module.exports = { run_audio }

@@ -1,6 +1,7 @@
-const socket = require("../socket")
-const db = require("../db")
-const { config } = require("../config")
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const socket = require("../socket");
+const { config } = require("../config");
+const API_URL = require("../../config.json").API_URL;
 
 let shout_counter = 0;
 
@@ -9,7 +10,9 @@ async function run_shout(user, message) {
     socket.shout_update(shout_counter, config.shout_interval);
 
     if (shout_counter > config.shout_interval) {
-        const res = run_french(user, message);
+        const res = await api_shout(message, "fr");
+        res = res.replace("@username", user['display-name']);
+        
         if (res) {
             shout_counter = 0;
             return res;
@@ -20,55 +23,27 @@ async function run_shout(user, message) {
     }
 }
 
-async function run_french(user, message) {
-    // Load shout remplacement
-    const shout_words = await load_shout_words();
-
-    //Split words of the sentence
-    const word_array = message.toLowerCase().split(" ");
-
-    //Do not take sentences too long
-    if (word_array.length > 15)
-        return false;
-
-    message = "";
-    let replaced_word = "";
-
-    for (const word of word_array) {
-        //If the word can not be replaced it does not change, otherwise it is modified
-        replaced_word = (shout_words[word] ? shout_words[word] : word);
-
-        //If the word contains "'", special treatment to replace the left and right part
-        if (word.includes("'")) {
-            //Split word with "'" in it
-            const word_split = word.split("'");
-            const replaced_word_L = shout_words[word_split[0]];
-            const replaced_word_R = shout_words[word_split[1]];
-
-            //If left side or right side of the word can be replaced
-            if (replaced_word_L && replaced_word_R) {
-                replaced_word = replaced_word_L + "'" + replaced_word_R;
-            }
-        }
-
-        //Add the word to the message
-        message += replaced_word + " ";
+async function api_shout(message, language){
+    const body = {
+        data: [{
+            method: "get_shout",
+            language: language,
+            messsage: message
+        }]
     }
 
-    return "AH OUAIS @" + user["display-name"] + ", " + message.toUpperCase() + "!";
-}
-
-async function load_shout_words() {
-    const sql = await db.query("SELECT * FROM shout");
-    const result = {};
-
-    try {
-        sql.forEach(element => {
-            result[element.original] = element.replacement
-        });
-        return result;
-    } catch (err) {
-        console.error(err);
+    const response = await fetch(API_URL + "reactions.php", {
+        method: "post",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" }
+    })
+    
+    if (response.ok) {
+        let res = await response.json();
+        return res.value;
+    } else {
+        console.error("API ERROR : " + response.status);
+        return null;
     }
 }
 
