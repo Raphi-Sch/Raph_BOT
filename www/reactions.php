@@ -52,10 +52,10 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM reactions")['value'];
             <thead>
                 <tr>
                     <th class="col-xs-2">Trigger</th>
-                    <th class="col-xs-7">Reaction</th>
+                    <th class="col-xs-6">Reaction</th>
                     <th class="col-xs-1">Frequency (%)</th>
                     <th class="col-xs-1">Timeout (s)</th>
-                    <th class="col-xs-1"></th>
+                    <th class="col-xs-2"></th>
                 </tr>
             </thead>
             <tbody>
