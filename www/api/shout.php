@@ -51,7 +51,7 @@ function get_shout_fr(mysqli $db, string $message)
 
     foreach ($word_array as $word) {
         //If the word can not be replaced it does not change, otherwise it is modified
-        $replaced_word = ($shout_words[$word] ? $shout_words[$word] : $word);
+        $replaced_word = (isset($shout_words[$word]) ? $shout_words[$word] : $word);
 
         //If the word contains "'", special treatment to replace the left and right part
         if (strpos($word, "'") !== false) {
