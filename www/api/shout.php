@@ -3,7 +3,7 @@
 require_once('../src/php/db.php');
 $db = db_connect("../../config.json");
 
-const MAX_SIZE_TEXT = 15;
+const MAX_WORDS = 15;
 
 $request_method = $_SERVER["REQUEST_METHOD"];
 
@@ -12,7 +12,7 @@ switch ($request_method) {
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
         if ($data["method"] == "get_shout" && $data["language"] == "fr") {
-            get_shout_fr($db, $data["text"]);
+            echo get_shout_fr($db, $data["message"]);
             break;
         }
 
@@ -32,17 +32,16 @@ function get_shout_fr(mysqli $db, string $message)
     // Basic clean
     $message = trim(strtolower($message));
 
+    //Split words of the sentence
+    $word_array = explode(" ", $message);
+
     //Do not take sentences too long
-    if (strlen($message) > MAX_SIZE_TEXT) {
-        echo json_encode(['value' => null]);
-        return null;
+    if (sizeof($word_array) > MAX_WORDS) {
+        return json_encode(['value' => null]);
     }
 
     // Load shout remplacement
     $shout_words = load_shout_words($db);
-
-    //Split words of the sentence
-    $word_array = explode(" ", $message);
 
     $message = "";
     $replaced_word = "";
@@ -74,8 +73,7 @@ function get_shout_fr(mysqli $db, string $message)
     $message = "AH OUAIS @username, " . strtoupper($message) . "!";
 
     // Send result
-    echo json_encode(['value' => $message]);
-    return null;
+    return json_encode(['value' => $message]);
 }
 
 function load_shout_words($db)
