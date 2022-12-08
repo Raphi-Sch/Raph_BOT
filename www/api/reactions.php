@@ -10,7 +10,7 @@ switch ($request_method) {
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
         if ($data["method"] == "get_reaction") {
-            get_reaction($db, $data["words_in"], $data["words_not_in"]);
+            echo get_reaction($db, $data["words_in"], $data["words_not_in"]);
             break;
         }
 
@@ -67,9 +67,7 @@ function get_reaction(mysqli $db, array $word_in, array $word_not_in)
     $result = db_query($db, $SQL_query, $SQL_params_type, $SQL_values);
 
     if ($result == null)
-        echo json_encode(['trigger_word' => null, 'reaction' => null, 'frequency' => 0, 'timeout' => 0]);
+        return json_encode(['trigger_word' => null, 'reaction' => null, 'frequency' => 0, 'timeout' => 0]);
     else
-        echo json_encode($result);
-
-    return null;
+        return json_encode($result);
 }

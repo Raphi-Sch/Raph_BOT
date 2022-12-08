@@ -10,7 +10,7 @@ switch ($request_method) {
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
         if ($data["method"] == "get_moderator") {
-            get_moderator($db, $data["words"]);
+            echo get_moderator($db, $data["words"]);
             break;
         }
 
@@ -51,9 +51,7 @@ function get_moderator(mysqli $db, array $word_in)
     $result = db_query($db, $SQL_query, $SQL_params_type, $SQL_values);
 
     if ($result == null)
-        echo json_encode(['mod_action' => null, 'explanation' => null]);
+        return json_encode(['mod_action' => null, 'explanation' => null]);
     else
-        echo json_encode($result);
-
-    return null;
+        return json_encode($result);
 }

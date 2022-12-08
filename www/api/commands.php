@@ -10,7 +10,7 @@ $request_method = $_SERVER["REQUEST_METHOD"];
 switch ($request_method) {
     case 'GET':
         if (isset($_GET['auto_command'])) {
-            get_auto_command($db);
+            echo get_auto_command($db);
             break;
         }
 
@@ -21,7 +21,7 @@ switch ($request_method) {
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
         if ($data['method'] == "get_command") {
-            get_command($db, trim($data['command']), trim($data['param']), $data['excluded_tanks']);
+            echo get_command($db, trim($data['command']), trim($data['param']), $data['excluded_tanks']);
             break;
         }
 
@@ -45,16 +45,13 @@ function get_command(mysqli $db, string $command, string $param, array $excluded
     $result = db_query($db, $SQL_query, "ss", [$command, $command]);
 
     if ($result['value'] == 'char') {
-        $tank_result = run_tank($db, $param, $excluded_tanks);
-        $result = $tank_result;
+        $result = run_tank($db, $param, $excluded_tanks);
     }
 
     if (empty($result))
-        echo json_encode(['value' => null]);
+        return json_encode(['value' => null]);
     else
-        echo json_encode($result);
-
-    return null;
+        return json_encode($result);
 }
 
 function get_auto_command(mysqli $db)
@@ -68,6 +65,5 @@ function get_auto_command(mysqli $db)
         array_push($result, $row['command']);
     }
 
-    echo json_encode($result);
-    return null;
+    return json_encode($result);
 }
