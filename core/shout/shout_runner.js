@@ -11,9 +11,11 @@ async function run_shout(user, message) {
 
     if (shout_counter > config.shout_interval) {
         const res = await api_shout(message, "fr");
-        res = res.replace("@username", user['display-name']);
         
         if (res) {
+            socket.log(`[SHOUT] ${user['display-name']} got shout`);
+
+            res = res.replace("@username", user['display-name']);
             shout_counter = 0;
             return res;
         } else {
@@ -28,11 +30,11 @@ async function api_shout(message, language){
         data: [{
             method: "get_shout",
             language: language,
-            messsage: message
+            message: message
         }]
     }
 
-    const response = await fetch(API_URL + "reactions.php", {
+    const response = await fetch(API_URL + "shout.php", {
         method: "post",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
