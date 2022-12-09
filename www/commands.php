@@ -1,26 +1,5 @@
 <?php
 require_once('src/php/header.php');
-
-$HTML = "";
-$result = db_query_raw($db, "SELECT * FROM commands");
-while ($row = mysqli_fetch_assoc($result)) {
-    $HTML .= "
-    <tr>
-        <td>" . $row["command"] . "</td>
-        <td>" . $row["value"] . "</td>
-        <td><input type='checkbox' class='checkbox' " . ($row['auto'] ? "checked" : "") . " disabled></td>
-        <td>
-          <span class='pull-right'>
-            <button onClick='edit_entry(\"" . $row["id"] . "\", \"" . $row['command'] . "\", \"" . $row["value"] . "\",  \"" . $row["auto"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
-            <button type='button' class='btn btn-danger' onclick='del_entry(\"" . $row['id'] . "\", \"" . $row['command'] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
-          </span>
-        </td>
-    </tr>";
-}
-
-// Count
-$count = db_query($db, "SELECT COUNT(`id`) as value FROM commands")['value'];
-
 ?>
 
 <!DOCTYPE html>
@@ -40,8 +19,9 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM commands")['value'];
 
     <!-- Main area -->
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">Commands (<?php echo $count; ?>)
+        <h1 class="page-header">Commands (<span id='count'>0</span>)
             <div class='pull-right'>
+                <button type="button" class="btn btn-info" onclick='list()'><i class="glyphicon glyphicon-refresh"></i></button>
                 <button type="button" class="btn btn-success" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button>
             </div>
         </h1>
@@ -56,8 +36,8 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM commands")['value'];
                     <th class="col-xs-1"></th>
                 </tr>
             </thead>
-            <tbody>
-                <?php echo $HTML; ?>
+            <tbody id='tbody-list'>
+                <!-- Dynamic -->
             </tbody>
         </table>
     </div>
@@ -69,6 +49,7 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM commands")['value'];
         $(document).ready(function() {
             // Active the corresponding button in the navbar
             document.getElementById("commands").className = "active";
+            list();
         });
     </script>
     <script src="src/js/commands.js"></script>

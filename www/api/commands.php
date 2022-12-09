@@ -12,6 +12,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if (isset($_GET['list'])) {
+            echo get_list($db);
+            break;
+        }
+
         header("HTTP/1.0 400 Bad request");
         break;
 
@@ -62,6 +67,24 @@ function get_auto_command(mysqli $db)
     while ($row = $data->fetch_assoc()) {
         array_push($result, $row['command']);
     }
+
+    return json_encode($result);
+}
+
+function get_list(mysqli $db)
+{
+    $SQL_query = "SELECT * FROM commands";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = $data->fetch_assoc()) {
+        $result += array($row['id'] => ["command" => $row['command'], "value" => $row['value'], "auto" => $row['auto']]);
+        $count++;
+    }
+
+    $result += array('count' => $count);
 
     return json_encode($result);
 }
