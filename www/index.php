@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="main col-lg-8 col-lg-offset-2 col-md-12">
         <!-- Titre -->
         <center>
-            <h2><b>Raph_BOT</b></h2>
+            <h2><b><?php echo $bot_name; ?></b></h2>
         </center>
 
         <!-- Login -->
