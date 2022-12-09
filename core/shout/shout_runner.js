@@ -9,23 +9,25 @@ async function run_shout(user, message) {
     shout_counter++;
     socket.shout_update(shout_counter, config.shout_interval);
 
-    if (shout_counter > config.shout_interval) {
-        const res = await api_shout(message, "fr");
-        
-        if (res) {
-            socket.log(`[SHOUT] ${user['display-name']} got shout`);
+    if (shout_counter >= config.shout_interval) {
+        let result = await api_shout(message, "fr");
 
-            res = res.replace("@username", user['display-name']);
+        if (result) {
+            socket.log(`[SHOUT] '${user['display-name']}' got shouted`);
+
+            result = result.replace("@username", user['display-name']);
             shout_counter = 0;
-            return res;
+
+            return result;
         } else {
             shout_counter = config.shout_interval - 1;
             return null;
         }
     }
+    return null;
 }
 
-async function api_shout(message, language){
+async function api_shout(message, language) {
     const body = {
         data: [{
             method: "get_shout",
@@ -39,7 +41,7 @@ async function api_shout(message, language){
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
     })
-    
+
     if (response.ok) {
         let res = await response.json();
         return res.value;
