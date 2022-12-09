@@ -4,6 +4,7 @@ require_once('../src/php/db.php');
 
 $db = db_connect("../../config.json");
 
+const MIN_WORDS = 3;
 const MAX_WORDS = 15;
 
 switch ($_SERVER["REQUEST_METHOD"]) {
@@ -35,7 +36,8 @@ function get_shout_fr(mysqli $db, string $message)
     $word_array = explode(" ", $message);
 
     //Do not take sentences too long
-    if (sizeof($word_array) > MAX_WORDS) {
+    $phrase_lenght = sizeof($word_array);
+    if ($phrase_lenght < MIN_WORDS || $phrase_lenght > MAX_WORDS) {
         return json_encode(['value' => null]);
     }
 
