@@ -7,8 +7,8 @@ $db = db_connect("../../config.json");
 
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
-        if (isset($_GET['auto_command'])) {
-            echo get_auto_command($db);
+        if (isset($_GET['auto'])) {
+            echo get_auto($db);
             break;
         }
 
@@ -57,7 +57,7 @@ function get_command(mysqli $db, string $command, string $param, array $excluded
         return json_encode($result);
 }
 
-function get_auto_command(mysqli $db)
+function get_auto(mysqli $db)
 {
     $SQL_query = "SELECT command FROM commands WHERE commands.auto = 1";
     $data = db_query_raw($db, $SQL_query);

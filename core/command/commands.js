@@ -64,7 +64,7 @@ function reboot_message_counter() {
 }
 
 async function load_auto_command() {
-    const response = await fetch(API_URL + "commands.php?auto_command", {
+    const response = await fetch(API_URL + "commands.php?auto", {
         method: "get",
         headers: { "Content-Type": "application/json" }
     })
