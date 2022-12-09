@@ -9,9 +9,6 @@ function list() {
             LIST.innerHTML = "";
 
             for (const id in data) {
-                console.log(id);
-                console.log(data[id]);
-
                 if (id != 'count') {
                     // Base TR
                     const TR = document.createElement('tr');
@@ -69,7 +66,6 @@ function list() {
             }
 
             document.getElementById('count').innerText = data['count'];
-
         },
         error: function (result, status, error) {
             Swal.fire({
