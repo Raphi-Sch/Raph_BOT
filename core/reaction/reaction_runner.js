@@ -17,10 +17,10 @@ async function run_reaction(user, message) {
 
                     setTimeout(function () {
                         exclusion.splice(exclusion.indexOf(result.trigger_word), 1);
-                        socket.log(`[REACTION] ${result.trigger_word} has been removed from the exclusion list`);
+                        socket.log(`[REACTION] '${result.trigger_word}' has been removed from the exclusion list`);
                     }, result.timeout * 1000);
 
-                    socket.log(`[REACTION] ${result.trigger_word} has been excluded for ${result.timeout}s`);
+                    socket.log(`[REACTION] '${result.trigger_word}' has been excluded for ${result.timeout}s`);
                 }
                 return result.reaction.replace("@username", user['display-name']);
             }
