@@ -1,13 +1,12 @@
 <?php
 
 require_once('../src/php/db.php');
+
 $db = db_connect("../../config.json");
 
 const MAX_WORDS = 15;
 
-$request_method = $_SERVER["REQUEST_METHOD"];
-
-switch ($request_method) {
+switch ($_SERVER["REQUEST_METHOD"]) {
     case 'POST':
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 

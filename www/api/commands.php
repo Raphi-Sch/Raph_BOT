@@ -1,13 +1,11 @@
 <?php
 
 require_once('../src/php/db.php');
-$db = db_connect("../../config.json");
-
 require_once('./tanks.php');
 
-$request_method = $_SERVER["REQUEST_METHOD"];
+$db = db_connect("../../config.json");
 
-switch ($request_method) {
+switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['auto_command'])) {
             echo get_auto_command($db);
