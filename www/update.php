@@ -71,9 +71,6 @@ $result .= "\n";
         </div>
     </div>
 
-    <!-- Footer -->
-    <?php include("src/html/footer.html"); ?>
-
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar

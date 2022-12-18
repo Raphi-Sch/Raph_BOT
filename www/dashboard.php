@@ -117,9 +117,6 @@ $lastestlog = shell_exec('cat ' . dirname(__FILE__) . "/../core/" . 'lastest.log
         </div>
     </div>
 
-    <!-- Footer -->
-    <?php include("src/html/footer.html"); ?>
-
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar

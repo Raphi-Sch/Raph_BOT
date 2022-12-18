@@ -41,9 +41,6 @@ $lastestlog = shell_exec('cat ' . dirname(__FILE__) . "/../core/" . 'lastest.log
         <pre id="log" class='log'><?php echo $lastestlog ?></pre>
     </div>
 
-    <!-- Footer -->
-    <?php include("src/html/footer.html"); ?>
-
     <script>
         const port = parseInt("<?php echo $port; ?>");
         const is_dashboard = false;
