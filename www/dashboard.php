@@ -106,7 +106,11 @@ require_once('src/php/header.php');
 
 
         <!-- Commands Section -->
-        <h2 class="sub-header">Log</h2>
+        <h2 class="sub-header">Log
+            <div class='pull-right'>
+                <button type="button" class="btn btn-info" onclick='log()'><i class="glyphicon glyphicon-refresh"></i></button>
+            </div>
+        </h2>
         <div class="row">
             <div class="col-sm-12 dash-log">
                 <pre id="log" class="log"></pre>

@@ -185,6 +185,7 @@ function log() {
         url: "api/config.php?log",
         type: "GET",
         success: function (result) {
+            document.getElementById("log").innerText = "";
             document.getElementById("log").innerText = result;
         },
         error: function (result, status, error) {
