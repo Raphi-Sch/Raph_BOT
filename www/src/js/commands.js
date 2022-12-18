@@ -104,7 +104,7 @@ function edit_entry(id, command, text, auto) {
 
     Swal.fire({
         title: 'Editing : "' + command + '"',
-        type: 'info',
+        icon: 'info',
         html: "<br /><form id='swal-form' method='post' action='src/php/POST_commands.php'>" +
             "<input type='hidden' name='action' value='edit'>" +
             "<input type='hidden' name='id' value='" + id + "'>" +
@@ -127,7 +127,7 @@ function edit_entry(id, command, text, auto) {
 function del_entry(id, command) {
     Swal.fire({
         title: "Delete '" + command + "' ?",
-        type: 'question',
+        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         confirmButtonText: 'Yes',
