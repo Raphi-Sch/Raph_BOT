@@ -60,7 +60,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
-            document.getElementById("plugin_shout").className += "active";
+            document.getElementById("plugin_shout").classList.add("active");
         });
     </script>
     <script src="src/js/shout.js"></script>

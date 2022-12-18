@@ -75,7 +75,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
-            document.getElementById("plugin_audio").className += "active";
+            document.getElementById("plugin_audio").classList.add("active");
         });
     </script>
     <script src="src/js/audio.js"></script>

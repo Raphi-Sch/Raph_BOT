@@ -49,8 +49,8 @@ require_once('src/php/header.php');
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
-            document.getElementById("tab-command").className += "active";
-            document.getElementById("plugin_commands").className += "active";
+            document.getElementById("tab-command").classList.add("active");
+            document.getElementById("plugin_commands").classList.add("active");
             list_commands();
         });
     </script>

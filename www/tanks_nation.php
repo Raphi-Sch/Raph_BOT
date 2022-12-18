@@ -62,8 +62,8 @@ while ($row = mysqli_fetch_assoc($data)) {
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
-            document.getElementById("tab-nation").className = "active";
-            document.getElementById("plugin_tanks").className += "active";
+            document.getElementById("tab-nation").classList.add("active");
+            document.getElementById("plugin_tanks").classList.add("active");
         });
     </script>
     <script src="src/js/tanks.js"></script>

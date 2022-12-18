@@ -64,7 +64,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
-            document.getElementById("plugin_reaction").className += "active";
+            document.getElementById("plugin_reaction").classList.add("active");
         });
     </script>
     <script src="src/js/reactions.js"></script>

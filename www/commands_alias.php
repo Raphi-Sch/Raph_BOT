@@ -55,7 +55,7 @@ while ($row = mysqli_fetch_assoc($data)) {
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
-            document.getElementById("tab-alias-command").className += "active";
+            document.getElementById("tab-alias-command").classList.add("active");
             document.getElementById("plugin_commands").className = "active";
             list_alias();
         });
