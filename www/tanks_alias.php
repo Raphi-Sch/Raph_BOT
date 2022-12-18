@@ -42,19 +42,22 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_tanks")['value
 
     <!-- Main area -->
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">Alias Tanks (<?php echo $count; ?>)
-            <span class='pull-right'>
-                <button type="button" class="btn btn-success" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button>
-            </span>
-        </h1>
+        <h1 class="page-header">Alias Tanks (<?php echo $count; ?>)</h1>
 
-        <!-- Add command -->
+        <!-- Tabs -->
+        <ul class="nav nav-tabs">
+            <li id="tab-tanks"><a href="tanks.php">Tanks</a></li>
+            <li id="tab-alias"><a href="tanks_alias.php">Alias</a></li>
+            <li id="tab-nation"><a href="tanks_nation.php">Nation</a></li>
+        </ul>
+
+        <!-- List -->
         <table class="table table-hover table-condensed">
             <thead>
                 <tr>
                     <th class="col-xs-6">Alias</th>
                     <th class="col-xs-6">Tank</th>
-                    <th class="col-xs-1"></th>
+                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
             </thead>
             <tbody>
@@ -66,7 +69,8 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_tanks")['value
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
-            document.getElementById("alias_tanks").className = "active";
+            document.getElementById("tab-alias").className += "active";
+            document.getElementById("plugin_tanks").className += "active";
         });
 
         const tanks = "<?php echo $options_tanks; ?>";
