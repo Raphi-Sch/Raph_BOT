@@ -2,8 +2,8 @@
 
 require_once("./header-post.php");
 
-// Add
-if ($_POST['action'] == "add" && !empty($_POST['form_key']) && !empty($_POST['form_nation']) && !empty($_POST['form_tier']) && !empty($_POST['form_type']) && !empty($_POST['form_name'])) {
+// Add tank
+if ($_POST['action'] == "add-tank" && !empty($_POST['form_key']) && !empty($_POST['form_nation']) && !empty($_POST['form_tier']) && !empty($_POST['form_type']) && !empty($_POST['form_name'])) {
     $trigger_word = strtolower(trim($_POST['form_key']));
     $nation = trim($_POST['form_nation']);
     $tier = intval($_POST['form_tier']);
@@ -21,8 +21,8 @@ if ($_POST['action'] == "add" && !empty($_POST['form_key']) && !empty($_POST['fo
     exit();
 }
 
-// Edit
-if ($_POST['action'] == "edit") {
+// Edit tank
+if ($_POST['action'] == "edit-tank") {
     $trigger_word = trim($_POST['swal-trigger']);
     $name = trim($_POST['swal-name']);
     $dmg = intval($_POST['swal-dmg']);
@@ -35,13 +35,47 @@ if ($_POST['action'] == "edit") {
     exit();
 }
 
+// Add nation
+if (isset($_POST['action']) && $_POST['action'] == "add-nation" && !empty($_POST['alias']) && !empty($_POST['value'])) {
+    $alias = strtolower(trim($_POST['alias']));
+    $nation = $_POST['value'];
+
+    db_query_no_result($db, "REPLACE INTO alias_nation VALUES (?, ?)", "ss", [$alias, $nation]);
+
+    header('Location: ../../tanks_nation.php');
+    exit();
+}
+
+// Add alias
+if ($_POST['action'] == "add-alias" && !empty($_POST['alias']) && !empty($_POST['value'])) {
+    $alias = strtolower(trim($_POST['alias']));
+    $tank = $_POST['value'];
+
+    db_query_no_result($db, "REPLACE INTO alias_tanks VALUES (?, ?)", "ss", [$alias, $tank]);
+
+    header('Location: ../../tanks_alias.php');
+    exit();
+}
+
 // SYNC
 // ----
 // ASYNC
 
-// Delete
-if ($_POST['action'] == "del") {
+// Delete tank
+if ($_POST['action'] == "del-tank") {
     db_query_no_result($db, "DELETE FROM tanks WHERE id= ?", "i", $_POST['id']);
+    exit();
+}
+
+// Delete nation
+if (isset($_POST['action']) && $_POST['action'] == "del-nation") {
+    db_query_no_result($db, "DELETE FROM alias_nation WHERE alias = ?", "s", $_POST['alias']);
+    exit();
+}
+
+// Delete alias
+if (isset($_POST) && $_POST['action'] == "del-alias") {
+    db_query_no_result($db, "DELETE FROM alias_tanks WHERE alias = ?", "s", $_POST['alias']);
     exit();
 }
 

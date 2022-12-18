@@ -16,7 +16,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     <tr>
         <td>" . $row["alias"] . "</td>
         <td>" . $row["tank"] . "</td>
-        <td><button type='button' class='btn btn-danger' onclick='del_entry(\"" . $row['alias'] . "\")'><i class='glyphicon glyphicon-remove'></i></button></td>
+        <td><button type='button' class='btn btn-danger' onclick='del_alias(\"" . $row['alias'] . "\")'><i class='glyphicon glyphicon-remove'></i></button></td>
     </tr>";
 }
 
@@ -57,7 +57,7 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_tanks")['value
                 <tr>
                     <th class="col-xs-6">Alias</th>
                     <th class="col-xs-6">Tank</th>
-                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_alias()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
             </thead>
             <tbody>
@@ -75,7 +75,7 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_tanks")['value
 
         const tanks = "<?php echo $options_tanks; ?>";
     </script>
-    <script src="src/js/alias_tanks.js"></script>
+    <script src="src/js/tanks.js"></script>
 
 </body>
 

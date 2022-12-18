@@ -11,7 +11,7 @@ while ($row = mysqli_fetch_assoc($data)) {
       <td>" . $row["nation"] . "</td>
       <td>
         <span clas='pull-right'>
-          <button type='button' class='btn btn-danger' onclick='del_entry(\"" . $row['alias'] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
+          <button type='button' class='btn btn-danger' onclick='del_nation(\"" . $row['alias'] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
         </span>
       </td>
   </tr>";
@@ -54,7 +54,7 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_nation", null,
                 <tr>
                     <th class="col-xs-6">Alias</th>
                     <th class="col-xs-6">Nation</th>
-                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_nation()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
             </thead>
             <?php echo $HTML; ?>
@@ -69,7 +69,7 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_nation", null,
             document.getElementById("plugin_tanks").className += "active";
         });
     </script>
-    <script src="src/js/alias_nation.js"></script>
+    <script src="src/js/tanks.js"></script>
 
 </body>
 

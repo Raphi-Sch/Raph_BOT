@@ -17,8 +17,8 @@ while ($row = mysqli_fetch_assoc($result)) {
     <td id='note'>" . $row["note"] . "</td>
     <td>
       <span class='pull-right'>
-        <button onClick='edit_entry(\"" . $row["id"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
-        <button type='button' class='btn btn-danger' onclick='del_entry(\"" . $row['id'] . "\", \"" . $row['name'] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
+        <button onClick='edit_tank(\"" . $row["id"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
+        <button type='button' class='btn btn-danger' onclick='del_tank(\"" . $row['id'] . "\", \"" . $row['name'] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
       </span>
     </td>
   </tr>";
@@ -67,7 +67,7 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM tanks")['value'];
                     <th class="col-xs-1">Damage</th>
                     <th class="col-xs-1">Type</th>
                     <th class="col-xs-3">Note</th>
-                    <th class="col-xs-1"><button class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                    <th class="col-xs-1"><button class="btn btn-success pull-right" onclick='add_tank()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
             </thead>
             <tbody>
