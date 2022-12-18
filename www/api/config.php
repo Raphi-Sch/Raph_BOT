@@ -11,6 +11,16 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if (isset($_GET['name'])) {
+            echo get_name($db);
+            break;
+        }
+
+        if (isset($_GET['socket-port'])) {
+            echo get_socket_port();
+            break;
+        }
+
         header("HTTP/1.0 400 Bad request");
         break;
 
@@ -34,4 +44,12 @@ function get_plugin(mysqli $db)
     }
 
     return json_encode($result);
+}
+
+function get_name(mysqli $db){
+    return json_encode(array("value" => db_query($db, "SELECT `value` FROM config WHERE id = 'bot_name'")["value"]));
+}
+
+function get_socket_port(){
+    return json_encode(array("value" => json_decode(file_get_contents("../../config.json"), true)['socket_port']));
 }
