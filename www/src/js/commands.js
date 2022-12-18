@@ -13,17 +13,17 @@ function list_commands() {
                     // Base TR
                     const TR = document.createElement('tr');
 
-                    // TD 1
+                    // TD 1 (Command)
                     const TD_1 = document.createElement('td');
                     TD_1.innerText = data[id]['command'];
                     TR.appendChild(TD_1);
 
-                    // TD 2
+                    // TD 2 (Text)
                     const TD_2 = document.createElement('td');
                     TD_2.innerText = data[id]['value'];
                     TR.appendChild(TD_2);
 
-                    // TD 3
+                    // TD 3 (Auto)
                     const TD_3 = document.createElement('td');
                     const INPUT = document.createElement('input');
 
@@ -34,7 +34,7 @@ function list_commands() {
                     TD_3.appendChild(INPUT);
                     TR.appendChild(TD_3);
 
-                    // TD 4
+                    // TD 4 (Btn)
                     const TD_4 = document.createElement('td');
                     const SPAN = document.createElement('span');
                     const BTN_1 = document.createElement('button');
@@ -50,6 +50,7 @@ function list_commands() {
                     ICO_1.className = "glyphicon glyphicon-pencil";
                     BTN_1.appendChild(ICO_1);
                     SPAN.appendChild(BTN_1);
+                    SPAN.appendChild(document.createTextNode(" "));
 
                     BTN_2.className = "btn btn-danger";
                     BTN_2.type = "button";
