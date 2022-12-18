@@ -9,7 +9,7 @@ while ($row = mysqli_fetch_assoc($data)) {
   <tr>
       <td>" . $row["alias"] . "</td>
       <td>" . $row["command"] . "</td>
-      <td><button type='button' class='btn btn-danger' onclick='del_entry(\"" . $row['alias'] . "\")'><i class='glyphicon glyphicon-remove'></i></button></td>
+      <td><button type='button' class='btn btn-danger' onclick='del_alias(\"" . $row['alias'] . "\")'><i class='glyphicon glyphicon-remove'></i></button></td>
   </tr>";
 }
 
@@ -49,7 +49,7 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_commands", nul
 
         <ul class="nav nav-tabs">
             <li id="tab-command"><a href="commands.php">Commands</a></li>
-            <li id="tab-alias-command"><a href="alias_commands.php">Alias</a></li>
+            <li id="tab-alias-command"><a href="commands_alias.php">Alias</a></li>
         </ul>
 
         <!-- Add alias command -->
@@ -58,7 +58,7 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_commands", nul
                 <tr>
                     <th class="col-xs-6">Alias</th>
                     <th class="col-xs-6">Command</th>
-                    <th class="col-xs-1"><button type="button" class="btn btn-success" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                    <th class="col-xs-1"><button type="button" class="btn btn-success" onclick='add_alias()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
             </thead>
             <tbody>
@@ -76,7 +76,7 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_commands", nul
 
         const commands = "<?php echo $command_options; ?>";
     </script>
-    <script src="src/js/alias_commands.js"></script>
+    <script src="src/js/commands.js"></script>
 
 </body>
 

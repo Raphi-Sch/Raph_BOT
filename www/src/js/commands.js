@@ -1,4 +1,4 @@
-function list() {
+function list_commands() {
     $.ajax({
         url: "api/commands.php?list",
         type: "GET",
@@ -79,7 +79,7 @@ function list() {
 
 function add_entry() {
     Swal.fire({
-        title: "Add entry",
+        title: "Add command",
         html: "<form id='swal-form' method='post' action='src/php/POST_commands.php'>" +
             "<input type='hidden' name='action' value='add'>" +
             "<label>Command</label><input type='text' class='form-control' name='command' placeholder='Command' required><br/>" +
@@ -126,10 +126,6 @@ function edit_entry(id, command, text, auto) {
     })
 }
 
-// SYNC
-// ----
-// ASYNC
-
 function del_entry(id, command) {
     Swal.fire({
         title: "Delete '" + command + "' ?",
@@ -142,6 +138,51 @@ function del_entry(id, command) {
     }).then((result) => {
         if (result.value) {
             $.post("src/php/POST_commands.php", { action: "del", id: id }, function () {
+                document.location.reload();
+            });
+        }
+    })
+}
+
+// Tab alias
+function add_alias() {
+    Swal.fire({
+        title: "Add command alias",
+        html: "<form id='swal-form' method='post' action='src/php/POST_alias_commands.php'>" +
+            "<input type='hidden' name='action' value='add'>" +
+            "<label>Alias</label><input type='text' class='form-control' name='alias' required><br/>" +
+            "<label>Command</label><select class='form-control' name='value' required><option disabled selected> - Select a command - </option>" +
+            `${commands}` +
+            "</select>" +
+            "</form>",
+        showCancelButton: true,
+        showConfirmButton: confirm,
+        focusConfirm: false,
+        allowOutsideClick: false,
+        width: "25%",
+        confirmButtonText: 'Add',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.value)
+            document.getElementById('swal-form').submit();
+    });
+}
+
+function del_alias(alias) {
+    Swal({
+        title: `Delete '${alias}' ?`,
+        type: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        focusCancel: true
+    }).then((result) => {
+        if (result.value) {
+            $.post("src/php/POST_alias_commands.php", {
+                action: "del",
+                alias: alias
+            }, function () {
                 document.location.reload();
             });
         }

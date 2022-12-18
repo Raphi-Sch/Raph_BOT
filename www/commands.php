@@ -28,7 +28,7 @@ require_once('src/php/header.php');
 
         <ul class="nav nav-tabs">
             <li id="tab-command"><a href="commands.php">Commands</a></li>
-            <li id="tab-alias-command"><a href="alias_commands.php">Alias</a></li>
+            <li id="tab-alias-command"><a href="commands_alias.php">Alias</a></li>
         </ul>
 
         <!-- Add command -->
@@ -52,7 +52,7 @@ require_once('src/php/header.php');
             // Active the corresponding button in the navbar
             document.getElementById("tab-command").className += "active";
             document.getElementById("plugin_commands").className += "active";
-            list();
+            list_commands();
         });
     </script>
     <script src="src/js/commands.js"></script>
