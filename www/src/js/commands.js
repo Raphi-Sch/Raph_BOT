@@ -148,8 +148,8 @@ function del_entry(id, command) {
 function add_alias() {
     Swal.fire({
         title: "Add command alias",
-        html: "<form id='swal-form' method='post' action='src/php/POST_alias_commands.php'>" +
-            "<input type='hidden' name='action' value='add'>" +
+        html: "<form id='swal-form' method='post' action='src/php/POST_commands.php'>" +
+            "<input type='hidden' name='action' value='add-alias'>" +
             "<label>Alias</label><input type='text' class='form-control' name='alias' required><br/>" +
             "<label>Command</label><select class='form-control' name='value' required><option disabled selected> - Select a command - </option>" +
             `${commands}` +
@@ -179,8 +179,8 @@ function del_alias(alias) {
         focusCancel: true
     }).then((result) => {
         if (result.value) {
-            $.post("src/php/POST_alias_commands.php", {
-                action: "del",
+            $.post("src/php/POST_commands.php", {
+                action: "del-alias",
                 alias: alias
             }, function () {
                 document.location.reload();
