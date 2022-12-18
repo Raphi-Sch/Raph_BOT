@@ -180,4 +180,19 @@ function connect_socket() {
     })
 }
 
-
+function log() {
+    $.ajax({
+        url: "api/config.php?log",
+        type: "GET",
+        success: function (result) {
+            document.getElementById("log").innerText = result;
+        },
+        error: function (result, status, error) {
+            Swal.fire({
+                title: "API Error while loading",
+                text: error,
+                type: 'error'
+            })
+        }
+    })
+}

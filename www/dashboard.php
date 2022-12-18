@@ -1,8 +1,5 @@
 <?php
 require_once('src/php/header.php');
-
-$lastestlog = shell_exec('cat ' . dirname(__FILE__) . "/../core/" . 'lastest.log');
-
 ?>
 
 <!DOCTYPE html>
@@ -112,7 +109,7 @@ $lastestlog = shell_exec('cat ' . dirname(__FILE__) . "/../core/" . 'lastest.log
         <h2 class="sub-header">Log</h2>
         <div class="row">
             <div class="col-sm-12 dash-log">
-                <pre id="log" class="log"><?php echo $lastestlog ?></pre>
+                <pre id="log" class="log"></pre>
             </div>
         </div>
     </div>
@@ -122,6 +119,7 @@ $lastestlog = shell_exec('cat ' . dirname(__FILE__) . "/../core/" . 'lastest.log
             // Active the corresponding button in the navbar
             document.getElementById("index").className = "active";
             connect_socket();
+            log();
         });
         const is_dashboard = true;
         const is_dock = false;

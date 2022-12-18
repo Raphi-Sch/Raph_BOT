@@ -1,6 +1,5 @@
 <?php
 require_once('src/php/header.php');
-$lastestlog = shell_exec('cat ' . dirname(__FILE__) . "/../core/" . 'lastest.log');
 ?>
 
 <!DOCTYPE html>
@@ -38,12 +37,13 @@ $lastestlog = shell_exec('cat ' . dirname(__FILE__) . "/../core/" . 'lastest.log
     </div>
 
     <div class='dock-right'>
-        <pre id="log" class='log'><?php echo $lastestlog ?></pre>
+        <pre id="log" class='log'></pre>
     </div>
 
     <script>
         $(document).ready(function() {
             connect_socket();
+            log();
         });
         const is_dashboard = false;
         const is_dock = true;

@@ -21,6 +21,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if (isset($_GET['log'])) {
+            echo get_log();
+            break;
+        }
+
         header("HTTP/1.0 400 Bad request");
         break;
 
@@ -52,4 +57,8 @@ function get_name(mysqli $db){
 
 function get_socket_port(){
     return json_encode(array("value" => json_decode(file_get_contents("../../config.json"), true)['socket_port']));
+}
+
+function get_log(){
+    return shell_exec('cat ' . dirname(__FILE__) . "/../../core/" . 'lastest.log');
 }
