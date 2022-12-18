@@ -68,10 +68,10 @@ function trigger_msg(data) {
 
 function start_stop() {
     if (core_state) {
-        swal({
+        swal.fire({
             title: 'Stop',
             text: "Are you sure you want to stop the bot ?",
-            type: 'warning',
+            icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
