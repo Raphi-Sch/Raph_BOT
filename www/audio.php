@@ -73,15 +73,12 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM audio")['value'];
     </div>
 
     <!-- Footer -->
-    <?php
-    require_once("src/html/footer.html");
-    require_once("src/php/alert.php");
-    ?>
+    <?php require_once("src/php/alert.php"); ?>
 
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
-            document.getElementById("audio").className = "active";
+            document.getElementById("plugin_audio").className += "active";
         });
     </script>
     <script src="src/js/audio.js"></script>

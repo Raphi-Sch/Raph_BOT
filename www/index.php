@@ -83,11 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 
-    <!-- Placed at the end of the document so the pages load faster -->
-    <?php
-    require_once("src/html/footer.html");
-    require_once("src/php/alert.php");
-    ?>
+    <?php require_once("src/php/alert.php"); ?>
 </body>
 
 </html>
