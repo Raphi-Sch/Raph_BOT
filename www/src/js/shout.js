@@ -22,7 +22,7 @@ function add_entry() {
 function edit_entry(id, original, replacement) {
     Swal.fire({
         title: 'Editing : "' + original + '"',
-        type: 'info',
+        icon: 'info',
         html: "<form id='swal-form' method='post' action='src/php/POST_shout.php'>" +
             "<input type='hidden' name='action' value='edit'>" +
             "<input type='hidden' name='id' value='" + id + "'>" +
@@ -47,7 +47,7 @@ function edit_entry(id, original, replacement) {
 function del_entry(id, original) {
     Swal.fire({
         title: "Delete '" + original + "' ?",
-        type: 'question',
+        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         confirmButtonText: 'Yes',

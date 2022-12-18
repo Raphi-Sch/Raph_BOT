@@ -1,7 +1,7 @@
 function edit_entry(key, value) {
-    Swal({
+    Swal.fire({
         title: 'Editing : "' + key + '"',
-        type: 'info',
+        icon: 'info',
         html: "<form id='swal-form' method='post' action='src/php/POST_config.php'>" +
             "<input type='hidden' name='action' value='edit'>" +
             "<input type='hidden' name='id' value='" + key + "'>" +

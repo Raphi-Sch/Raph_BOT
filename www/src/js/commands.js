@@ -167,9 +167,9 @@ function add_alias() {
 }
 
 function del_alias(alias) {
-    Swal({
+    Swal.fire({
         title: `Delete '${alias}' ?`,
-        type: 'question',
+        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         confirmButtonText: 'Yes',

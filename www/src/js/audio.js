@@ -55,7 +55,7 @@ function edit_entry(id, name, trigger, volume, freq, timeout) {
 function del_entry(id, name) {
     Swal({
         title: `Delete ${name} ?`,
-        type: 'question',
+        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         confirmButtonText: 'Yes',

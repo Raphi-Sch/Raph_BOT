@@ -22,8 +22,8 @@ function add_entry() {
 
 function edit_entry(id, trigger, mod, exp) {
     Swal.fire({
-        title: `Editing : "${trigger}"`,
-        type: 'info',
+        title: `Editing : '${trigger}'`,
+        icon: 'info',
         html: "<form id='swal-form' method='post' action='src/php/POST_moderator.php'><br/>" +
             "<input type='hidden' name='action' value='edit'>" +
             `<input type='hidden' name='id' value='${id}'>` +
@@ -50,7 +50,7 @@ function edit_entry(id, trigger, mod, exp) {
 function del_entry(id, trigger) {
     Swal.fire({
         title: `Delete "${trigger}" ?`,
-        type: 'question',
+        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         confirmButtonText: 'Yes',

@@ -46,7 +46,7 @@ function edit_tank(id) {
 
     Swal.fire({
         title: 'Editing : "' + trigger_word + '"',
-        type: 'info',
+        icon: 'info',
         html: "<form id='swal-form' method='post' class='form-vertical' action='src/php/POST_tanks.php'>" +
             "<input type='hidden' name='action' value='edit-tank'>" +
             "<input type='hidden' name='swal-key' value='" + id + "'>" +
@@ -71,7 +71,7 @@ function edit_tank(id) {
 function del_tank(id, name) {
     Swal.fire({
         title: "Delete '" + name + "' ?",
-        type: 'info',
+        icon: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -115,7 +115,7 @@ function add_alias() {
 function del_alias(alias) {
     Swal.fire({
         title: `Delete '${alias}' ?`,
-        type: 'question',
+        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         confirmButtonText: 'Yes',
@@ -170,7 +170,7 @@ function add_nation() {
 function del_nation(alias) {
     Swal.fire({
         title: `Delete '${alias}' ?`,
-        type: 'question',
+        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         confirmButtonText: 'Yes',
