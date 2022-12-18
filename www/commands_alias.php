@@ -20,9 +20,6 @@ while ($row = mysqli_fetch_assoc($data)) {
     $command_options .= '<option>' . $row["command"] . '</option>';
 }
 
-// Count
-$count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_commands", null, null)['value'];
-
 ?>
 
 <!DOCTYPE html>
@@ -41,11 +38,7 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_commands", nul
 
     <!-- Main area -->
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">Alias Commands (<?php echo $count; ?>)
-            <div class='pull-right'>
-                
-            </div>
-        </h1>
+        <h1 class="page-header">Commands</h1>
 
         <ul class="nav nav-tabs">
             <li id="tab-command"><a href="commands.php">Commands</a></li>

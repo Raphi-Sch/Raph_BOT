@@ -19,10 +19,9 @@ require_once('src/php/header.php');
 
     <!-- Main area -->
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">Commands (<span id='count'>0</span>)
+        <h1 class="page-header">Commands
             <div class='pull-right'>
                 <button type="button" class="btn btn-info" onclick='list()'><i class="glyphicon glyphicon-refresh"></i></button>
-                
             </div>
         </h1>
 

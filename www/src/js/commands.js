@@ -64,8 +64,6 @@ function list_commands() {
                     LIST.appendChild(TR);
                 }
             }
-
-            document.getElementById('count').innerText = data['count'];
         },
         error: function (result, status, error) {
             Swal.fire({

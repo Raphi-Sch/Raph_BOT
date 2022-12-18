@@ -25,9 +25,6 @@ while ($row = mysqli_fetch_assoc($result)) {
     </tr>";
 }
 
-// Count
-$count = db_query($db, "SELECT COUNT(`id`) as value FROM audio")['value'];
-
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +44,7 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM audio")['value'];
 
     <!-- Main area -->
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">Audio (<?php echo $count; ?>)
+        <h1 class="page-header">Audio
             <div class='pull-right'>
                 <button type="button" class="btn btn-success" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button>
             </div>
