@@ -60,13 +60,10 @@ $count = db_query($db, "SELECT COUNT(`original`) as value FROM shout")['value'];
         </table>
     </div>
 
-    <!-- Placed at the end of the document so the pages load faster -->
-    <?php include("src/html/footer.html"); ?>
-
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
-            document.getElementById("shout").className = "active";
+            document.getElementById("plugin_shout").className += "active";
         });
     </script>
     <script src="src/js/shout.js"></script>

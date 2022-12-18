@@ -65,7 +65,7 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM `moderator`")['value'];
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
-            document.getElementById("moderator").className = "active";
+            document.getElementById("plugin_moderator").className += "active";
         });
     </script>
     <script src="src/js/moderator.js"></script>

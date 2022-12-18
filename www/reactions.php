@@ -67,7 +67,7 @@ $count = db_query($db, "SELECT COUNT(`id`) as value FROM reactions")['value'];
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
-            document.getElementById("reactions").className = "active";
+            document.getElementById("plugin_reaction").className += "active";
         });
     </script>
     <script src="src/js/reactions.js"></script>
