@@ -98,66 +98,86 @@ function play_audio(file, volume) {
     }
 }
 
-socket = io.connect('http://' + window.location.hostname + ':' + port);
+function connect_socket() {
+    $.ajax({
+        url: "api/config.php?socket-port",
+        type: "GET",
+        success: function (result) {
+            data = JSON.parse(result);
+            port = data['value'];
 
-socket.on('connect', function () {
-    // Dashboard
-    if (is_dashboard) {
-        document.getElementById('core-statut').className = "progress-bar progress-bar-success";
-        document.getElementById('core-statut').innerHTML = "Connected";
-        document.getElementById("btn-start-stop").className = "btn btn-danger";
-        document.getElementById("ico-start-stop").className = "glyphicon glyphicon-stop";
-        document.getElementById("btn-start-stop").disabled = false;
-    }
+            socket = io.connect('http://' + window.location.hostname + ':' + port);
 
-    // Dock
-    if (is_dock) {
-        document.getElementById('dock-core-statut').className = "glyphicon glyphicon-ok ico-green";
-    }
+            socket.on('connect', function () {
+                // Dashboard
+                if (is_dashboard) {
+                    document.getElementById('core-statut').className = "progress-bar progress-bar-success";
+                    document.getElementById('core-statut').innerHTML = "Connected";
+                    document.getElementById("btn-start-stop").className = "btn btn-danger";
+                    document.getElementById("ico-start-stop").className = "glyphicon glyphicon-stop";
+                    document.getElementById("btn-start-stop").disabled = false;
+                }
 
-    // Toggle
-    core_state = true;
-})
+                // Dock
+                if (is_dock) {
+                    document.getElementById('dock-core-statut').className = "glyphicon glyphicon-ok ico-green";
+                }
 
-socket.on('disconnect', function () {
-    // Dashboard
-    if (is_dashboard) {
-        document.getElementById('core-statut').className = "progress-bar progress-bar-danger";
-        document.getElementById('core-statut').innerHTML = "Disconnected";
-        document.getElementById('twitch-statut').className = "progress-bar progress-bar-warning";
-        document.getElementById('twitch-statut').innerHTML = "Waiting for the core";
-        document.getElementById("btn-start-stop").className = "btn btn-success";
-        document.getElementById("ico-start-stop").className = "glyphicon glyphicon-play";
-    }
+                // Toggle
+                core_state = true;
+            })
 
-    // Dock
-    if (is_dock) {
-        document.getElementById('dock-core-statut').className = "glyphicon glyphicon-off ico-red";
-        document.getElementById('dock-twitch-statut').className = "glyphicon glyphicon-hourglass ico-orange";
-    }
+            socket.on('disconnect', function () {
+                // Dashboard
+                if (is_dashboard) {
+                    document.getElementById('core-statut').className = "progress-bar progress-bar-danger";
+                    document.getElementById('core-statut').innerHTML = "Disconnected";
+                    document.getElementById('twitch-statut').className = "progress-bar progress-bar-warning";
+                    document.getElementById('twitch-statut').innerHTML = "Waiting for the core";
+                    document.getElementById("btn-start-stop").className = "btn btn-success";
+                    document.getElementById("ico-start-stop").className = "glyphicon glyphicon-play";
+                }
 
-    core_state = false;
-})
+                // Dock
+                if (is_dock) {
+                    document.getElementById('dock-core-statut').className = "glyphicon glyphicon-off ico-red";
+                    document.getElementById('dock-twitch-statut').className = "glyphicon glyphicon-hourglass ico-orange";
+                }
 
-// Update
-socket.on('update', function (json) {
-    data = JSON.parse(json);
+                core_state = false;
+            })
 
-    twitch_state(data['twitch']);
-    shout(data['shout']);
-    trigger_time(data['trigger_time']);
-    trigger_msg(data['trigger_msg']);
-})
+            // Update
+            socket.on('update', function (json) {
+                data = JSON.parse(json);
 
-// Log
-socket.on('log', function (msg) {
-    log_element = document.getElementById("log");
-    log_element.innerText += msg;
-    log_element.scrollTop = log_element.scrollHeight;
-})
+                twitch_state(data['twitch']);
+                shout(data['shout']);
+                trigger_time(data['trigger_time']);
+                trigger_msg(data['trigger_msg']);
+            })
 
-// Audio
-socket.on('play-audio', function (json) {
-    data = JSON.parse(json);
-    play_audio(data['file'], data['volume']);
-})
+            // Log
+            socket.on('log', function (msg) {
+                log_element = document.getElementById("log");
+                log_element.innerText += msg;
+                log_element.scrollTop = log_element.scrollHeight;
+            })
+
+            // Audio
+            socket.on('play-audio', function (json) {
+                data = JSON.parse(json);
+                play_audio(data['file'], data['volume']);
+            })
+        },
+        error: function (result, status, error) {
+            Swal.fire({
+                title: "API Error while loading",
+                text: error,
+                type: 'error'
+            })
+        }
+    })
+}
+
+

@@ -42,7 +42,9 @@ $lastestlog = shell_exec('cat ' . dirname(__FILE__) . "/../core/" . 'lastest.log
     </div>
 
     <script>
-        const port = parseInt("<?php echo $port; ?>");
+        $(document).ready(function() {
+            connect_socket();
+        });
         const is_dashboard = false;
         const is_dock = true;
     </script>

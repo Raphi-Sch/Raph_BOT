@@ -121,8 +121,8 @@ $lastestlog = shell_exec('cat ' . dirname(__FILE__) . "/../core/" . 'lastest.log
         $(document).ready(function() {
             // Active the corresponding button in the navbar
             document.getElementById("index").className = "active";
+            connect_socket();
         });
-        const port = parseInt("<?php echo $port; ?>");
         const is_dashboard = true;
         const is_dock = false;
     </script>
