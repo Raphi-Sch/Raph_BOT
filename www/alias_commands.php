@@ -43,17 +43,22 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_commands", nul
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h1 class="page-header">Alias Commands (<?php echo $count; ?>)
             <div class='pull-right'>
-                <button type="button" class="btn btn-success" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button>
+                
             </div>
         </h1>
 
-        <!-- Add command -->
+        <ul class="nav nav-tabs">
+            <li id="tab-command"><a href="commands.php">Commands</a></li>
+            <li id="tab-alias-command"><a href="alias_commands.php">Alias</a></li>
+        </ul>
+
+        <!-- Add alias command -->
         <table class="table table-hover table-condensed">
             <thead>
                 <tr>
                     <th class="col-xs-6">Alias</th>
                     <th class="col-xs-6">Command</th>
-                    <th class="col-xs-1"></th>
+                    <th class="col-xs-1"><button type="button" class="btn btn-success" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
             </thead>
             <tbody>
@@ -65,7 +70,8 @@ $count = db_query($db, "SELECT COUNT(`alias`) as value FROM alias_commands", nul
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
-            document.getElementById("alias_commands").className = "active";
+            document.getElementById("tab-alias-command").className += "active";
+            document.getElementById("plugin_commands").className = "active";
         });
 
         const commands = "<?php echo $command_options; ?>";

@@ -22,9 +22,14 @@ require_once('src/php/header.php');
         <h1 class="page-header">Commands (<span id='count'>0</span>)
             <div class='pull-right'>
                 <button type="button" class="btn btn-info" onclick='list()'><i class="glyphicon glyphicon-refresh"></i></button>
-                <button type="button" class="btn btn-success" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button>
+                
             </div>
         </h1>
+
+        <ul class="nav nav-tabs">
+            <li id="tab-command"><a href="commands.php">Commands</a></li>
+            <li id="tab-alias-command"><a href="alias_commands.php">Alias</a></li>
+        </ul>
 
         <!-- Add command -->
         <table class="table table-hover table-condensed">
@@ -33,7 +38,7 @@ require_once('src/php/header.php');
                     <th class="col-xs-2">Command</th>
                     <th class="col-xs-8">Text</th>
                     <th class="col-xs-1">Auto</th>
-                    <th class="col-xs-1"></th>
+                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
             </thead>
             <tbody id='tbody-list'>
@@ -45,6 +50,7 @@ require_once('src/php/header.php');
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
+            document.getElementById("tab-command").className += "active";
             document.getElementById("plugin_commands").className += "active";
             list();
         });
