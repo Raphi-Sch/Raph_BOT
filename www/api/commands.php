@@ -17,6 +17,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if (isset($_GET['list-alias'])) {
+            echo get_list_alias($db);
+            break;
+        }
+
         header("HTTP/1.0 400 Bad request");
         break;
 
@@ -84,7 +89,21 @@ function get_list(mysqli $db)
         $count++;
     }
 
-    $result += array('count' => $count);
+    return json_encode($result);
+}
+
+function get_list_alias(mysqli $db)
+{
+    $SQL_query = "SELECT * FROM alias_commands ORDER BY command ASC";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = $data->fetch_assoc()) {
+        $result += array($row['alias'] => $row['command']);
+        $count++;
+    }
 
     return json_encode($result);
 }

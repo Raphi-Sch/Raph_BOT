@@ -9,61 +9,60 @@ function list_commands() {
             LIST.innerHTML = "";
 
             for (const id in data) {
-                if (id != 'count') {
-                    // Base TR
-                    const TR = document.createElement('tr');
+                // Base TR
+                const TR = document.createElement('tr');
 
-                    // TD 1 (Command)
-                    const TD_1 = document.createElement('td');
-                    TD_1.innerText = data[id]['command'];
-                    TR.appendChild(TD_1);
+                // TD 1 (Command)
+                const TD_1 = document.createElement('td');
+                TD_1.innerText = data[id]['command'];
+                TR.appendChild(TD_1);
 
-                    // TD 2 (Text)
-                    const TD_2 = document.createElement('td');
-                    TD_2.innerText = data[id]['value'];
-                    TR.appendChild(TD_2);
+                // TD 2 (Text)
+                const TD_2 = document.createElement('td');
+                TD_2.innerText = data[id]['value'];
+                TR.appendChild(TD_2);
 
-                    // TD 3 (Auto)
-                    const TD_3 = document.createElement('td');
-                    const INPUT = document.createElement('input');
+                // TD 3 (Auto)
+                const TD_3 = document.createElement('td');
+                const INPUT = document.createElement('input');
 
-                    INPUT.type = 'checkbox';
-                    INPUT.disabled = 'disabled';
-                    INPUT.checked = data[id]['auto'] ? "checked" : "";
+                INPUT.type = 'checkbox';
+                INPUT.disabled = 'disabled';
+                INPUT.checked = data[id]['auto'] ? "checked" : "";
 
-                    TD_3.appendChild(INPUT);
-                    TR.appendChild(TD_3);
+                TD_3.appendChild(INPUT);
+                TR.appendChild(TD_3);
 
-                    // TD 4 (Btn)
-                    const TD_4 = document.createElement('td');
-                    const SPAN = document.createElement('span');
-                    const BTN_1 = document.createElement('button');
-                    const BTN_2 = document.createElement('button');
-                    const ICO_1 = document.createElement('i');
-                    const ICO_2 = document.createElement('i');
+                // TD 4 (Btn)
+                const TD_4 = document.createElement('td');
+                const SPAN = document.createElement('span');
+                const BTN_1 = document.createElement('button');
+                const BTN_2 = document.createElement('button');
+                const ICO_1 = document.createElement('i');
+                const ICO_2 = document.createElement('i');
 
-                    SPAN.className = "pull-right";
-                    
-                    BTN_1.className = "btn btn-warning";
-                    BTN_1.type = "button";
-                    BTN_1.onclick = function() {edit_entry(id, data[id]['command'], data[id]['value'], data[id]['auto'])};
-                    ICO_1.className = "glyphicon glyphicon-pencil";
-                    BTN_1.appendChild(ICO_1);
-                    SPAN.appendChild(BTN_1);
-                    SPAN.appendChild(document.createTextNode(" "));
+                SPAN.className = "pull-right";
 
-                    BTN_2.className = "btn btn-danger";
-                    BTN_2.type = "button";
-                    BTN_2.onclick = function() {del_entry(id, data[id]['command'])}
-                    ICO_2.className = "glyphicon glyphicon-remove";
-                    BTN_2.appendChild(ICO_2);
-                    SPAN.appendChild(BTN_2);
+                BTN_1.className = "btn btn-warning";
+                BTN_1.type = "button";
+                BTN_1.onclick = function () { edit_entry(id, data[id]['command'], data[id]['value'], data[id]['auto']) };
+                ICO_1.className = "glyphicon glyphicon-pencil";
+                BTN_1.appendChild(ICO_1);
+                SPAN.appendChild(BTN_1);
+                SPAN.appendChild(document.createTextNode(" "));
 
-                    TD_4.appendChild(SPAN);
-                    TR.appendChild(TD_4);
+                BTN_2.className = "btn btn-danger";
+                BTN_2.type = "button";
+                BTN_2.onclick = function () { del_entry(id, data[id]['command']) }
+                ICO_2.className = "glyphicon glyphicon-remove";
+                BTN_2.appendChild(ICO_2);
+                SPAN.appendChild(BTN_2);
 
-                    LIST.appendChild(TR);
-                }
+                TD_4.appendChild(SPAN);
+                TR.appendChild(TD_4);
+
+                LIST.appendChild(TR);
+
             }
         },
         error: function (result, status, error) {
@@ -144,6 +143,62 @@ function del_entry(id, command) {
 }
 
 // Tab alias
+function list_alias() {
+    $.ajax({
+        url: "api/commands.php?list-alias",
+        type: "GET",
+        success: function (result) {
+            data = JSON.parse(result);
+
+            const LIST = document.getElementById('tbody-list');
+            LIST.innerHTML = "";
+
+            for (const id in data) {
+                // Base TR
+                const TR = document.createElement('tr');
+
+                // TD Command
+                const TD_1 = document.createElement('td');
+                TD_1.innerText = id;
+                TR.appendChild(TD_1);
+
+                // TD Text
+                const TD_2 = document.createElement('td');
+                TD_2.innerText = data[id];
+                TR.appendChild(TD_2);
+
+                // TD Btn
+                const TD_4 = document.createElement('td');
+                const SPAN = document.createElement('span');
+                const BTN_1 = document.createElement('button');
+                const ICO_1 = document.createElement('i');
+
+                SPAN.className = "pull-right";
+
+                BTN_1.className = "btn btn-danger";
+                BTN_1.type = "button";
+                BTN_1.onclick = function () { del_alias(id, data[id]) }
+                ICO_1.className = "glyphicon glyphicon-remove";
+                BTN_1.appendChild(ICO_1);
+                SPAN.appendChild(BTN_1);
+
+                TD_4.appendChild(SPAN);
+                TR.appendChild(TD_4);
+
+                LIST.appendChild(TR);
+            }
+
+        },
+        error: function (result, status, error) {
+            Swal.fire({
+                title: "API Error while loading",
+                text: error,
+                type: 'error'
+            })
+        }
+    })
+}
+
 function add_alias() {
     Swal.fire({
         title: "Add command alias",
