@@ -36,6 +36,10 @@
             "value" : 0,
             "hidden" : 0
         },
+        "plugin_tanks" : {
+            "value" : 0,
+            "hidden" : 0
+        },
         "shout_interval" : {
             "value" : 50,
             "hidden" : 0
