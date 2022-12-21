@@ -1,18 +1,20 @@
 <?php
 require_once('src/php/header.php');
 
+$type_string = array("Word", "Consonant", "Vowel");
+
 $HTML = "";
 $result = db_query_raw($db, "SELECT * FROM shout ORDER BY `language` ASC, `type` ASC, original ASC");
 while ($row = mysqli_fetch_assoc($result)) {
     $HTML .= "
     <tr>
         <td>" . $row["original"] . "</td>
-        <td id='value_" . $row["id"] . "'>" . $row["replacement"] . "</td>
-        <td id='language_" . $row["id"] . "'>" . $row["language"] . "</td>
-        <td id='type_" . $row["id"] . "'>" . $row["type"] . "</td>
+        <td>" . $row["replacement"] . "</td>
+        <td>" . $row["language"] . "</td>
+        <td>" . $type_string[$row["type"]] . "</td>
         <td>
           <span class='pull-right'>
-            <button onClick='edit_entry(\"" . $row["id"] . "\", \"" . $row["original"] . "\", \"" . $row["replacement"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
+            <button onClick='edit_entry(\"" . $row["id"] . "\", \"" . $row["original"] . "\", \"" . $row["replacement"] . "\", \"" . $row["language"] . "\", \"" . $row["type"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
             <button type='button' class='btn btn-danger' onclick='del_entry(\"" . $row['id'] . "\", \"" . $row["original"] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
           </span>
         </td>

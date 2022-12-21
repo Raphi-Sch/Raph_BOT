@@ -17,7 +17,7 @@ if ($_POST['action'] == "add" && !empty($_POST['original']) && !empty($_POST['re
 if ($_POST['action'] == "edit" && !empty($_POST['id']) && !empty($_POST['replacement'])) {
     $replacement = trim($_POST['replacement']);
 
-    db_query_no_result($db, "UPDATE `shout` SET `replacement` = ? WHERE `id` = ?", "si", [$replacement, $_POST['id']]);
+    db_query_no_result($db, "UPDATE `shout` SET `replacement` = ?, `language` = ?, `type` = ? WHERE `id` = ?", "ssii", [$replacement, $_POST['language'], $_POST['type'], $_POST['id']]);
 
     header('Location: ../../shout.php');
     exit();
