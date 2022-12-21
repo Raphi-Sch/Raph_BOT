@@ -95,13 +95,9 @@ function get_shout_fr_uwu(mysqli $db, string $message)
 {
     $message = get_shout_fr($db, $message);
 
-    // Consonant
+    // Remplacement data
     $consonant = load_shout_words($db, "fr-uwu", TYPE_CONSONANT);
-
-    // Vowel
     $vowel = load_shout_words($db, "fr-uwu", TYPE_VOWEL);
-
-    // Word
     $word = load_shout_words($db, "fr-uwu", TYPE_WORD);
 
     // Letter by letter
