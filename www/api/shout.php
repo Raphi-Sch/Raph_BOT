@@ -103,8 +103,6 @@ function get_shout_fr_uwu(mysqli $db, string $message)
 
     // Word
     $word = load_shout_words($db, "fr-uwu", TYPE_WORD);
-    $word_search = array_keys($word);
-    $word_replace = array_values($word);
 
     // Letter by letter
     $previous_letter_replaced = false;
@@ -129,7 +127,7 @@ function get_shout_fr_uwu(mysqli $db, string $message)
     $message = implode("", $message_exploded);
 
     // Word by word
-    $message = str_replace($word_search, $word_replace, $message);
+    $message = str_replace(array_keys($word), array_values($word), $message);
 
     return $message;
 }
