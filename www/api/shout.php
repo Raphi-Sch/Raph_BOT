@@ -4,15 +4,24 @@ require_once('../src/php/db.php');
 
 $db = db_connect("../../config.json");
 
+// Abort after 2s
+set_time_limit(2);
+
 const MIN_WORDS = 3;
 const MAX_WORDS = 15;
+const VOWELS = array("a", "e", "i", "o", "u", "y", "A", "E", "I", "O", "U", "Y");
 
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'POST':
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
         if ($data["method"] == "get_shout" && $data["language"] == "fr") {
-            echo get_shout_fr($db, $data["message"]);
+            echo json_encode(['value' => get_shout_fr($db, $data["message"])]);
+            break;
+        }
+
+        if ($data["method"] == "get_shout" && $data["language"] == "fr-uwu") {
+            echo json_encode(['value' => get_shout_fr_uwu($db, $data["message"])]);
             break;
         }
 
@@ -74,7 +83,49 @@ function get_shout_fr(mysqli $db, string $message)
     $message = "AH OUAIS @username, " . strtoupper($message) . "!";
 
     // Send result
-    return json_encode(['value' => $message]);
+    return $message;
+}
+
+function get_shout_fr_uwu(mysqli $db, string $message)
+{
+    $message = get_shout_fr($db, $message);
+
+    // Consonant
+    $consonant = array("R" => "W", "!" => "OWO !");
+
+    // Vowel
+    $vowel = array("U" => "UwU");
+
+    // Word
+    $word_search = array("...", "NON");
+    $word_replace = array("TwT", "NYON >w<");
+
+    // Letter by letter
+    $previous_letter_replaced = false;
+    $message_exploded = str_split($message, 1);
+    for ($i = 1; $i < count($message_exploded); $i++) {
+        if(array_key_exists($message_exploded[$i], $consonant)){
+            // Current letter can be replaced
+            $message_exploded[$i] = $consonant[$message_exploded[$i]];
+            $previous_letter_replaced = true;
+        }
+        else{
+            if (!in_array($message_exploded[$i - 1], VOWELS) && !$previous_letter_replaced) {
+                // Previous letter is not a vowel and not already replaced
+                if (array_key_exists($message_exploded[$i], $vowel)) {
+                    // Current letter can be replaced
+                    $message_exploded[$i] = $vowel[$message_exploded[$i]];
+                }
+            }
+            $previous_letter_replaced = false;
+        }
+    }
+    $message = implode("", $message_exploded);
+
+    // Word by word
+    $message = str_replace($word_search, $word_replace, $message);
+
+    return $message;
 }
 
 function load_shout_words($db)
