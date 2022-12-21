@@ -3,8 +3,10 @@ function add_entry() {
         title: "Add entry",
         html: "<form id='swal-form' method='post' action='src/php/POST_shout.php'>" +
             "<input type='hidden' name='action' value='add'>" +
-            "<input type='text' class='form-control' name='original' placeholder='Original' required><br/>" +
-            "<input type='text' class='form-control' name='replacement' placeholder='Replacement' required><br/>" +
+            "<label>Original</label><input type='text' class='form-control' name='original' placeholder='Original' required><br/>" +
+            "<label>Replacement</label><input type='text' class='form-control' name='replacement' placeholder='Replacement' required><br/>" +
+            "<label>Language</label><select class='form-control' name='language'><option>fr</option><option>fr-uwu</option></select><br/>" +
+            "<label>Type</label><input type='text' class='form-control' name='type' placeholder='Type' required><br/>" +
             "</form>",
         showCancelButton: true,
         showConfirmButton: confirm,

@@ -9,6 +9,11 @@ set_time_limit(2);
 
 const MIN_WORDS = 3;
 const MAX_WORDS = 15;
+
+const TYPE_WORD = 0;
+const TYPE_CONSONANT = 1;
+const TYPE_VOWEL = 2;
+
 const VOWELS = array("a", "e", "i", "o", "u", "y", "A", "E", "I", "O", "U", "Y");
 
 switch ($_SERVER["REQUEST_METHOD"]) {
@@ -51,7 +56,7 @@ function get_shout_fr(mysqli $db, string $message)
     }
 
     // Load shout remplacement
-    $shout_words = load_shout_words($db);
+    $shout_words = load_shout_words($db, "fr", 0);
 
     $message = "";
     $replaced_word = "";
@@ -91,14 +96,15 @@ function get_shout_fr_uwu(mysqli $db, string $message)
     $message = get_shout_fr($db, $message);
 
     // Consonant
-    $consonant = array("R" => "W", "!" => "OWO !");
+    $consonant = load_shout_words($db, "fr-uwu", TYPE_CONSONANT);
 
     // Vowel
-    $vowel = array("U" => "UwU");
+    $vowel = load_shout_words($db, "fr-uwu", TYPE_VOWEL);
 
     // Word
-    $word_search = array("...", "NON");
-    $word_replace = array("TwT", "NYON >w<");
+    $word = load_shout_words($db, "fr-uwu", TYPE_WORD);
+    $word_search = array_keys($word);
+    $word_replace = array_values($word);
 
     // Letter by letter
     $previous_letter_replaced = false;
@@ -128,10 +134,10 @@ function get_shout_fr_uwu(mysqli $db, string $message)
     return $message;
 }
 
-function load_shout_words($db)
+function load_shout_words(mysqli $db, string $language, int $type)
 {
-    $query = "SELECT * FROM shout";
-    $result = db_query_raw($db, $query);
+    $query = "SELECT * FROM shout WHERE `language` = ? AND `type` = ?";
+    $result = db_query_raw($db, $query, "si", [$language, $type]);
     $data = array();
 
     while ($row = $result->fetch_assoc()) {

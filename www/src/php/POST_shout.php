@@ -4,10 +4,10 @@ require_once("./header-post.php");
 
 // Add
 if ($_POST['action'] == "add" && !empty($_POST['original']) && !empty($_POST['replacement'])) {
-    $original = strtolower(trim($_POST['original']));
-    $replacement = strtolower(trim($_POST['replacement']));
+    $original = trim($_POST['original']);
+    $replacement = trim($_POST['replacement']);
 
-    db_query_no_result($db, "INSERT INTO shout VALUES (NULL, ?, ?)", "ss", [$original, $replacement]);
+    db_query_no_result($db, "INSERT INTO shout VALUES (NULL, ?, ?, ?, ?)", "sssi", [$original, $replacement, $_POST['language'], $_POST['type']]);
     
     header('Location: ../../shout.php');
     exit();

@@ -2,12 +2,14 @@
 require_once('src/php/header.php');
 
 $HTML = "";
-$result = db_query_raw($db, "SELECT * FROM shout ORDER BY shout.original ASC");
+$result = db_query_raw($db, "SELECT * FROM shout ORDER BY `language` ASC, `type` ASC, original ASC");
 while ($row = mysqli_fetch_assoc($result)) {
     $HTML .= "
     <tr>
         <td>" . $row["original"] . "</td>
-        <td id='value_" . $row["original"] . "'>" . $row["replacement"] . "</td>
+        <td id='value_" . $row["id"] . "'>" . $row["replacement"] . "</td>
+        <td id='language_" . $row["id"] . "'>" . $row["language"] . "</td>
+        <td id='type_" . $row["id"] . "'>" . $row["type"] . "</td>
         <td>
           <span class='pull-right'>
             <button onClick='edit_entry(\"" . $row["id"] . "\", \"" . $row["original"] . "\", \"" . $row["replacement"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
@@ -46,9 +48,11 @@ while ($row = mysqli_fetch_assoc($result)) {
         <table class="table table-hover table-condensed">
             <thead>
                 <tr>
-                    <th class="col-xs-4">Original</th>
-                    <th class="col-xs-4">Replacement</th>
-                    <th class="col-xs-4"></th>
+                    <th class="col-xs-2">Original</th>
+                    <th class="col-xs-2">Replacement</th>
+                    <th class="col-xs-2">Language</th>
+                    <th class="col-xs-2">Type</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
