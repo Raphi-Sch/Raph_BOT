@@ -11,6 +11,7 @@ const config = {
     plugin_reaction: null,
     plugin_shout: null,
     shout_interval: null,
+    shout_language: null,
     twitch_channel: null,
     twitch_connection_message: null,
     twitch_token: null

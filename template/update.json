@@ -44,6 +44,10 @@
             "value" : 50,
             "hidden" : 0
         },
+        "shout_language" : {
+            "value" : "",
+            "hidden" : 0
+        },
         "twitch_channel" : {
             "value" : "Your twitch channel",
             "hidden" : 0

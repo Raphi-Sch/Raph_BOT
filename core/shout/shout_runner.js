@@ -10,7 +10,7 @@ async function run_shout(user, message) {
     socket.shout_update(shout_counter, config.shout_interval);
 
     if (shout_counter >= config.shout_interval) {
-        let result = await api_shout(message, "fr");
+        let result = await api_shout(message, config.shout_language);
 
         if (result) {
             socket.log(`[SHOUT] '${user['display-name']}' got shouted`);
