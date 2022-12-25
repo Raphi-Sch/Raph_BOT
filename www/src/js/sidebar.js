@@ -12,7 +12,10 @@ $.ajax({
             }
         }
 
-        document.getElementById("plugin_title").className = (title_enable ? "" : "hidden");
+        if(title_enable)
+            document.getElementById("plugin_title").classList.remove("hidden");
+        else
+            document.getElementById("plugin_title").classList.add("hidden");
     },
     error: function (result, status, error) {
         Swal.fire({
