@@ -39,7 +39,7 @@ function init() {
 
     client.on('chat', async (channel, user, message, isSelf) => {
         // Do not react to himself
-        if (isSelf) return;
+        if (isSelf || user["display-name"] == config.bot_name) return;
 
         const message_trigger_result = await commands.message_trigger();
         if (message_trigger_result) {
