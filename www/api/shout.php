@@ -52,7 +52,7 @@ function get_shout_fr(mysqli $db, string $message)
     //Do not take sentences too long
     $phrase_lenght = sizeof($word_array);
     if ($phrase_lenght < MIN_WORDS || $phrase_lenght > MAX_WORDS) {
-        return json_encode(['value' => null]);
+        return null;
     }
 
     // Load shout remplacement
