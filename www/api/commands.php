@@ -78,14 +78,14 @@ function get_auto(mysqli $db)
 
 function get_list(mysqli $db)
 {
-    $SQL_query = "SELECT * FROM commands";
+    $SQL_query = "SELECT * FROM commands ORDER BY command ASC";
     $data = db_query_raw($db, $SQL_query);
 
     $result = array();
     $count = 0;
 
     while ($row = $data->fetch_assoc()) {
-        $result += array($row['id'] => ["command" => $row['command'], "value" => $row['value'], "auto" => $row['auto']]);
+        $result += array($count => ["id" => $row['id'], "command" => $row['command'], "value" => $row['value'], "auto" => $row['auto']]);
         $count++;
     }
 

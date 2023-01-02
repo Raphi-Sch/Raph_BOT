@@ -8,18 +8,18 @@ function list_commands() {
             const LIST = document.getElementById('tbody-list');
             LIST.innerHTML = "";
 
-            for (const id in data) {
+            for (const neddle in data) {
                 // Base TR
                 const TR = document.createElement('tr');
 
                 // TD 1 (Command)
                 const TD_1 = document.createElement('td');
-                TD_1.innerText = data[id]['command'];
+                TD_1.innerText = data[neddle]['command'];
                 TR.appendChild(TD_1);
 
                 // TD 2 (Text)
                 const TD_2 = document.createElement('td');
-                TD_2.innerText = data[id]['value'];
+                TD_2.innerText = data[neddle]['value'];
                 TR.appendChild(TD_2);
 
                 // TD 3 (Auto)
@@ -28,7 +28,7 @@ function list_commands() {
 
                 INPUT.type = 'checkbox';
                 INPUT.disabled = 'disabled';
-                INPUT.checked = data[id]['auto'] ? "checked" : "";
+                INPUT.checked = data[neddle]['auto'] ? "checked" : "";
 
                 TD_3.appendChild(INPUT);
                 TR.appendChild(TD_3);
@@ -45,7 +45,7 @@ function list_commands() {
 
                 BTN_1.className = "btn btn-warning";
                 BTN_1.type = "button";
-                BTN_1.onclick = function () { edit_entry(id, data[id]['command'], data[id]['value'], data[id]['auto']) };
+                BTN_1.onclick = function () { edit_entry(data[neddle]['id'], data[neddle]['command'], data[neddle]['value'], data[neddle]['auto']) };
                 ICO_1.className = "glyphicon glyphicon-pencil";
                 BTN_1.appendChild(ICO_1);
                 SPAN.appendChild(BTN_1);
@@ -53,7 +53,7 @@ function list_commands() {
 
                 BTN_2.className = "btn btn-danger";
                 BTN_2.type = "button";
-                BTN_2.onclick = function () { del_entry(id, data[id]['command']) }
+                BTN_2.onclick = function () { del_entry(data[neddle]['id'], data[neddle]['command']) }
                 ICO_2.className = "glyphicon glyphicon-remove";
                 BTN_2.appendChild(ICO_2);
                 SPAN.appendChild(BTN_2);
