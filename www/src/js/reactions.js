@@ -8,28 +8,28 @@ function list() {
             const LIST = document.getElementById('tbody-list');
             LIST.innerHTML = "";
 
-            for (const id in data) {
+            for (const neddle in data) {
                 // Base TR
                 const TR = document.createElement('tr');
 
                 // TD 1 (Trigger)
                 const TD_1 = document.createElement('td');
-                TD_1.innerText = data[id]['trigger_word'];
+                TD_1.innerText = data[neddle]['trigger_word'];
                 TR.appendChild(TD_1);
 
                 // TD 2 (Reaction)
                 const TD_2 = document.createElement('td');
-                TD_2.innerText = data[id]['reaction'];
+                TD_2.innerText = data[neddle]['reaction'];
                 TR.appendChild(TD_2);
 
                 // TD 3 (Freq)
                 const TD_3 = document.createElement('td');
-                TD_3.innerText = data[id]['frequency'];
+                TD_3.innerText = data[neddle]['frequency'];
                 TR.appendChild(TD_3);
 
                 // TD 4 (Freq)
                 const TD_4 = document.createElement('td');
-                TD_4.innerText = data[id]['timeout'];
+                TD_4.innerText = data[neddle]['timeout'];
                 TR.appendChild(TD_4);
 
                 // TD BTN (Btn)
@@ -44,7 +44,7 @@ function list() {
 
                 BTN_1.className = "btn btn-warning";
                 BTN_1.type = "button";
-                BTN_1.onclick = function () { edit_entry(id, data[id]['trigger_word'], data[id]['reaction'], data[id]['frequency'], data[id]['timeout']) };
+                BTN_1.onclick = function () { edit_entry(data[neddle]['id'], data[neddle]['trigger_word'], data[neddle]['reaction'], data[neddle]['frequency'], data[neddle]['timeout']) };
                 ICO_1.className = "glyphicon glyphicon-pencil";
                 BTN_1.appendChild(ICO_1);
                 SPAN.appendChild(BTN_1);
@@ -52,7 +52,7 @@ function list() {
 
                 BTN_2.className = "btn btn-danger";
                 BTN_2.type = "button";
-                BTN_2.onclick = function () { del_entry(id, data[id]['trigger_word']) }
+                BTN_2.onclick = function () { del_entry(data[neddle]['id'], data[neddle]['trigger_word']) }
                 ICO_2.className = "glyphicon glyphicon-remove";
                 BTN_2.appendChild(ICO_2);
                 SPAN.appendChild(BTN_2);

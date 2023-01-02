@@ -82,14 +82,14 @@ function get_reaction(mysqli $db, array $word_in, array $word_not_in)
 
 function get_list(mysqli $db)
 {
-    $SQL_query = "SELECT * FROM reactions";
+    $SQL_query = "SELECT * FROM reactions ORDER BY trigger_word ASC";
     $data = db_query_raw($db, $SQL_query);
 
     $result = array();
     $count = 0;
 
     while ($row = $data->fetch_assoc()) {
-        $result += array($row['id'] => ["trigger_word" => $row['trigger_word'], "reaction" => $row['reaction'], "frequency" => $row['frequency'], "timeout" => $row['timeout']]);
+        $result += array($count => ["id" => $row['id'], "trigger_word" => $row['trigger_word'], "reaction" => $row['reaction'], "frequency" => $row['frequency'], "timeout" => $row['timeout']]);
         $count++;
     }
 
