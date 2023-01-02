@@ -69,7 +69,7 @@ function list_commands() {
             Swal.fire({
                 title: "API Error while loading",
                 text: error,
-                type: 'error'
+                icon: 'error'
             })
         }
     })
