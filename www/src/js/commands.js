@@ -136,7 +136,7 @@ function del_entry(id, command) {
     }).then((result) => {
         if (result.value) {
             $.post("src/php/POST_commands.php", { action: "del", id: id }, function () {
-                document.location.reload();
+                list_commands(); // Dynamic reload
             });
         }
     })
@@ -237,7 +237,7 @@ function del_alias(alias) {
                 action: "del-alias",
                 alias: alias
             }, function () {
-                document.location.reload();
+                list_alias(); // Dynamic reload
             });
         }
     })
