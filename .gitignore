@@ -2,7 +2,7 @@
 *.log
 
 # Config File
-/config.json
+/config*.json
 
 # Test file
 test.*
