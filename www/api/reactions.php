@@ -5,6 +5,15 @@ require_once('../src/php/db.php');
 $db = db_connect("../../config.json");
 
 switch ($_SERVER["REQUEST_METHOD"]) {
+    case 'GET':
+        if (isset($_GET['list'])) {
+            echo get_list($db);
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
     case 'POST':
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
@@ -69,4 +78,20 @@ function get_reaction(mysqli $db, array $word_in, array $word_not_in)
         return json_encode(['trigger_word' => null, 'reaction' => null, 'frequency' => 0, 'timeout' => 0]);
     else
         return json_encode($result);
+}
+
+function get_list(mysqli $db)
+{
+    $SQL_query = "SELECT * FROM reactions";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = $data->fetch_assoc()) {
+        $result += array($row['id'] => ["trigger_word" => $row['trigger_word'], "reaction" => $row['reaction'], "frequency" => $row['frequency'], "timeout" => $row['timeout']]);
+        $count++;
+    }
+
+    return json_encode($result);
 }

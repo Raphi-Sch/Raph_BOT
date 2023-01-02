@@ -1,24 +1,5 @@
 <?php
 require_once('src/php/header.php');
-
-$HTML = "";
-$result = db_query_raw($db, "SELECT * FROM reactions");
-while ($row = mysqli_fetch_assoc($result)) {
-    $HTML .= "
-    <tr>
-        <td>" . $row["trigger_word"] . "</td>
-        <td>" . $row["reaction"] . "</td>
-        <td class='text-center'>" . $row["frequency"] . "</td>
-        <td class='text-center'>" . $row["timeout"] . "</td>
-        <td>
-          <span class='pull-right'>
-            <button onClick='edit_entry(\"" . $row["id"] . "\", \"" . $row["trigger_word"] . "\", \"" . $row["reaction"] . "\", \"" . $row["frequency"] . "\", \"" . $row["timeout"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
-            <button type='button' class='btn btn-danger' onclick='del_entry(\"" . $row['id'] . "\", \"" . $row['trigger_word'] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
-          </span>
-        </td>
-    </tr>";
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -55,8 +36,8 @@ while ($row = mysqli_fetch_assoc($result)) {
                     <th class="col-xs-2"></th>
                 </tr>
             </thead>
-            <tbody>
-                <?php echo $HTML; ?>
+            <tbody id='tbody-list'>
+                <!-- Dynamic -->
             </tbody>
         </table>
     </div>
@@ -65,6 +46,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         $(document).ready(function() {
             // Active the corresponding button in the navbar
             document.getElementById("plugin_reaction").classList.add("active");
+            list();
         });
     </script>
     <script src="src/js/reactions.js"></script>

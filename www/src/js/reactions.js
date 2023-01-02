@@ -1,3 +1,79 @@
+function list() {
+    $.ajax({
+        url: "api/reactions.php?list",
+        type: "GET",
+        success: function (result) {
+            data = JSON.parse(result);
+
+            const LIST = document.getElementById('tbody-list');
+            LIST.innerHTML = "";
+
+            for (const id in data) {
+                // Base TR
+                const TR = document.createElement('tr');
+
+                // TD 1 (Trigger)
+                const TD_1 = document.createElement('td');
+                TD_1.innerText = data[id]['trigger_word'];
+                TR.appendChild(TD_1);
+
+                // TD 2 (Reaction)
+                const TD_2 = document.createElement('td');
+                TD_2.innerText = data[id]['reaction'];
+                TR.appendChild(TD_2);
+
+                // TD 3 (Freq)
+                const TD_3 = document.createElement('td');
+                TD_3.innerText = data[id]['frequency'];
+                TR.appendChild(TD_3);
+
+                // TD 4 (Freq)
+                const TD_4 = document.createElement('td');
+                TD_4.innerText = data[id]['timeout'];
+                TR.appendChild(TD_4);
+
+                // TD BTN (Btn)
+                const TD_BTN = document.createElement('td');
+                const SPAN = document.createElement('span');
+                const BTN_1 = document.createElement('button');
+                const BTN_2 = document.createElement('button');
+                const ICO_1 = document.createElement('i');
+                const ICO_2 = document.createElement('i');
+
+                SPAN.className = "pull-right";
+
+                BTN_1.className = "btn btn-warning";
+                BTN_1.type = "button";
+                BTN_1.onclick = function () { edit_entry(id, data[id]['trigger_word'], data[id]['reaction'], data[id]['frequency'], data[id]['timeout']) };
+                ICO_1.className = "glyphicon glyphicon-pencil";
+                BTN_1.appendChild(ICO_1);
+                SPAN.appendChild(BTN_1);
+                SPAN.appendChild(document.createTextNode(" "));
+
+                BTN_2.className = "btn btn-danger";
+                BTN_2.type = "button";
+                BTN_2.onclick = function () { del_entry(id, data[id]['trigger_word']) }
+                ICO_2.className = "glyphicon glyphicon-remove";
+                BTN_2.appendChild(ICO_2);
+                SPAN.appendChild(BTN_2);
+
+                TD_BTN.appendChild(SPAN);
+                TR.appendChild(TD_BTN);
+
+                LIST.appendChild(TR);
+
+            }
+        },
+        error: function (result, status, error) {
+            Swal.fire({
+                title: "API Error while loading",
+                text: error,
+                icon: 'error'
+            })
+        }
+    })
+}
+
 function add_entry() {
     Swal.fire({
         title: "Add entry",
@@ -45,10 +121,6 @@ function edit_entry(id, trigger, text, freq, time) {
     })
 }
 
-// SYNC
-// ----
-// ASYNC
-
 function del_entry(id, trigger) {
     Swal.fire({
         title: "Delete '" + trigger + "' ?",
@@ -64,7 +136,7 @@ function del_entry(id, trigger) {
                 action: "del",
                 id: id
             }, function () {
-                document.location.reload();
+                list(); // Dynamic reload
             });
         }
     })
