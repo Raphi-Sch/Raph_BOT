@@ -1,0 +1,20 @@
+{
+    "table": {
+        "config": {
+            "fields": [
+                "id",
+                "value",
+                "hidden",
+                "type"
+            ]
+        },
+        "commands": {
+            "fields": [
+                "id",
+                "command",
+                "value",
+                "auto"
+            ]
+        }
+    }
+}

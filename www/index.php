@@ -2,88 +2,85 @@
 session_start();
 require_once('src/php/db.php');
 
+global $redirect;
+global $JSON_upgrade;
+
 $db = db_connect();
-$bot_name = db_query($db, "SELECT `value` FROM config WHERE id = 'bot_name'")["value"];
-
-$redirect = isset($_GET['redirect']) ? trim($_GET['redirect']) : "";
-
-// POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $row = db_query_raw($db, "SELECT `password` FROM `users` WHERE `username` = ?", "s", $username);
+$db_name = json_decode(file_get_contents("../config.json"), true)["db_name"];
+$JSON_upgrade = json_decode(file_get_contents("../template/integrity.json"), true);
+$result = "";
+$redirect = true;
 
 
-    if (mysqli_num_rows($row)) {
-        $row = mysqli_fetch_assoc($row);
-        // Password Reset
-        if (empty($row["password"]) && $password == "0") {
-            $_SESSION['username'] = $username;
-            $_SESSION['login'] = true;
-            $_SESSION['pass-reset'] = true;
-            header('Location: ./password.php');
-            exit();
+function check_column($db, $db_name, $table_name){
+    global $JSON_upgrade;
+    global $redirect;
+    $result = "\n\t- Checking columns :";
+
+    foreach ($JSON_upgrade["table"][$table_name]["fields"] as $field) {
+        $field_exist = db_query($db, "SELECT COUNT(*) as exist FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND column_name = ?", "sss", [$db_name, $table_name, $field])['exist'];
+        if($field_exist){
+            $result .= "\n\t\t - $field : EXIST";
         }
-
-        // PASS
-        if (password_verify($password, $row['password'])) {
-            $_SESSION['username'] = $username;
-            $_SESSION['login'] = true;
-
-            if (isset($_POST['redirect']) && !empty($_POST['redirect']))
-                header('Location: ' . $_POST['redirect']);
-            else
-                header('Location: ./dashboard.php');
-
-            exit();
+        else{
+            $redirect = false;
+            $result .= "\n\t\t - $field : MISSING -> check template";
         }
-    } else {
-        $_SESSION["alert"] = ["error", "Username doesn't exist", false];
-        header('Location: ./index.php');
-        exit();
     }
 
-    $_SESSION["alert"] = ["error", "Incorrect password", false];
-    header('Location: ./index.php');
+
+    return $result;
+}
+
+function check_table($db, $db_name, $table)
+{
+    global $redirect;
+    $result = "\nChecking '$table' :";
+
+    $table_exist = mysqli_num_rows(db_query_raw($db, "SELECT * FROM information_schema.tables WHERE table_schema = ? AND table_name = ? LIMIT 1", "ss", [$db_name, $table]));
+    if ($table_exist) {
+        $result .= "\n\t- Table exist";
+        $result .= check_column($db, $db_name, $table);
+    } else {
+        $redirect = false;
+
+    }
+
+    return $result;
+}
+
+// Main check
+foreach ($JSON_upgrade["table"] as $key => $data) {
+    $result .= check_table($db, $db_name, $key);
+}
+
+if($redirect){
+    header("Location: login.php");
     exit();
+}
+else{
+    $result .= "\n\nPlease check if all tables are set correctly, then refresh this page.";
 }
 
 ?>
-
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 
 <head>
+    <title>Index - Raph_BOT</title>
     <?php include("src/html/header.html"); ?>
-    <title>Login - <?php echo $bot_name; ?></title>
 </head>
 
 <body>
-    <div class="main col-lg-8 col-lg-offset-2 col-md-12">
-        <!-- Titre -->
-        <center>
-            <h2><b><?php echo $bot_name; ?></b></h2>
-        </center>
-
-        <!-- Login -->
-        <div class="login-form">
-            <form action="" method="post">
-                <input type="hidden" class="form-control" name="redirect" value="<?php echo $redirect; ?>">
-                <h2 class="text-center">Please login to access the dashboard</h2>
-                <div class="form-group">
-                    <input type="text" class="form-control" name="username" placeholder="Username" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" name="password" placeholder="Password" required>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">Log in</button>
-                </div>
-            </form>
+    <!-- Main area -->
+    <div class="col-md-10 col-md-offset-1 main">
+        <h1 class="page-header">Checking Raph_BOT integrity</h1>
+        <div class="row">
+            <div class="col-sm-12">
+                <pre class="log"><?php echo $result ?></pre>
+            </div>
         </div>
     </div>
-
-    <?php require_once("src/php/alert.php"); ?>
 </body>
 
 </html>
