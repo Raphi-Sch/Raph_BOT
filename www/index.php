@@ -24,7 +24,7 @@ function check_column($db, $db_name, $table_name){
         }
         else{
             $redirect = false;
-            $result .= "\n\t\t - $field : MISSING -> check your configuration and compare it to provided template";
+            $result .= "\n\t\t - $field : MISSING -> check your configuration and compare it to the provided template";
         }
     }
 
@@ -43,7 +43,7 @@ function check_table($db, $db_name, $table)
         $result .= check_column($db, $db_name, $table);
     } else {
         $redirect = false;
-        $result .= "\n\t- Table state : MISSING -> check your configuration and compare it to provided template";
+        $result .= "\n\t- Table state : MISSING -> check your configuration and compare it to the provided template";
     }
 
     return $result;
