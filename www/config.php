@@ -5,35 +5,36 @@ require_once('src/php/header.php');
 $data = db_query_raw($db, "SELECT * FROM config ORDER BY id");
 $list = "";
 while ($row = mysqli_fetch_assoc($data)) {
-    $value = "";
-
-    // Hidden value
-    if ($row['hidden']) {
-        for ($i = 0; $i <= strlen($row['value']); $i++) {
-            $value .= "*";
-        }
-    } else {
-        $value = $row["value"];
-    }
+    $HTML_value = "";
 
     // Type
     switch ($row['type']) {
         default:
         case 0:
             $js_function = "edit_text";
+            $HTML_value = $row["value"];
             break;
         case 1:
             $js_function = "edit_bool";
+            $HTML_value = $row["value"] ? "Enable" : "Disable"; 
             break;
         case 2:
             $js_function = "edit_number";
+            $HTML_value = $row["value"];
             break;
+    }
+
+    // Hidden value
+    if ($row['hidden']) {
+        for ($i = 0; $i <= strlen($row['value']); $i++) {
+            $HTML_value .= "*";
+        }
     }
 
     $list .= "
     <tr>
         <td>" . $row["id"] . "</td>
-        <td id='value_" . $row["id"] . "'>$value</td>
+        <td id='value_" . $row["id"] . "'>$HTML_value</td>
         <td><button onClick='$js_function(\"" . $row["id"] . "\", \"" . $row["value"] . "\")' class='btn btn-warning pull-right' type='button'><i class='glyphicon glyphicon-pencil'></i></button></td>
     </tr>";
 }
