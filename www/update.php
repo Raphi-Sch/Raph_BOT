@@ -12,7 +12,7 @@ function fix_config($db, $key, $data)
     $result .= "- config, id, $key : " . ($presence ? "OK" : "MISSING");
 
     if (!$presence) {
-        db_query_no_result($db, "INSERT INTO config (id, `value`, `hidden`) VALUES (?, ?, ?)", "sss", [$key, $data['value'], $data['hidden']]);
+        db_query_no_result($db, "INSERT INTO config (id, `value`, `hidden`, `type`) VALUES (?, ?, ?, ?)", "ssii", [$key, $data['value'], $data['hidden'], $data['type']]);
 
         $repaired = mysqli_num_rows(db_query_raw($db, "SELECT * FROM config WHERE id = ?", "s", $key));
         if ($repaired)
@@ -26,7 +26,7 @@ function fix_config($db, $key, $data)
     return $result;
 }
 
-// Getting users
+// Checking config entries
 $result = "Checking entries\n";
 
 foreach ($JSON as $table_name => $table_data) {

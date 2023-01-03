@@ -2,63 +2,78 @@
     "config": {
         "bot_name": {
             "value" : "Raph_BOT",
-            "hidden" : 0
+            "hidden" : 0,
+            "type" : 0
         },
         "cmd_msg_interval" : {
             "value" : 10,
-            "hidden" : 0
+            "hidden" : 0,
+            "type" : 2
         },
         "cmd_prefix" : {
             "value" : "!",
-            "hidden" : 0
+            "hidden" : 0,
+            "type" : 0
         },
         "cmd_time_interval" : {
             "value" : 10,
-            "hidden" : 0
+            "hidden" : 0,
+            "type" : 2
         },
         "plugin_audio" : {
             "value" : 0,
-            "hidden" : 0
+            "hidden" : 0,
+            "type" : 1
         },
         "plugin_commands" : {
             "value" : 0,
-            "hidden" : 0
+            "hidden" : 0,
+            "type" : 1
         },
         "plugin_moderator" : {
             "value" : 0,
-            "hidden" : 0
+            "hidden" : 0,
+            "type" : 1
         },
         "plugin_reaction" : {
             "value" : 0,
-            "hidden" : 0
+            "hidden" : 0,
+            "type" : 1
         },
         "plugin_shout" : {
             "value" : 0,
-            "hidden" : 0
+            "hidden" : 0,
+            "type" : 1
         },
         "plugin_tanks" : {
             "value" : 0,
-            "hidden" : 0
+            "hidden" : 0,
+            "type" : 1
         },
         "shout_interval" : {
             "value" : 50,
-            "hidden" : 0
+            "hidden" : 0,
+            "type" : 2
         },
         "shout_language" : {
             "value" : "",
-            "hidden" : 0
+            "hidden" : 0,
+            "type" : 0
         },
         "twitch_channel" : {
             "value" : "Your twitch channel",
-            "hidden" : 0
+            "hidden" : 0,
+            "type" : 0
         },
         "twitch_connection_message" : {
             "value" : "Hello I'm Raph_BOT",
-            "hidden" : 0
+            "hidden" : 0,
+            "type" : 0
         },
         "twitch_token" : {
             "value" : "",
-            "hidden" : 1
+            "hidden" : 1,
+            "type" : 0
         }
     }
 }
