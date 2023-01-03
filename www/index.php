@@ -20,11 +20,11 @@ function check_column($db, $db_name, $table_name){
     foreach ($JSON_upgrade["table"][$table_name]["fields"] as $field) {
         $field_exist = db_query($db, "SELECT COUNT(*) as exist FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND column_name = ?", "sss", [$db_name, $table_name, $field])['exist'];
         if($field_exist){
-            $result .= "\n\t\t - $field : EXIST";
+            $result .= "\n\t\t - $field : OK";
         }
         else{
             $redirect = false;
-            $result .= "\n\t\t - $field : MISSING -> check template";
+            $result .= "\n\t\t - $field : MISSING -> check your configuration and compare it to provided template";
         }
     }
 
@@ -39,11 +39,11 @@ function check_table($db, $db_name, $table)
 
     $table_exist = mysqli_num_rows(db_query_raw($db, "SELECT * FROM information_schema.tables WHERE table_schema = ? AND table_name = ? LIMIT 1", "ss", [$db_name, $table]));
     if ($table_exist) {
-        $result .= "\n\t- Table exist";
+        $result .= "\n\t- Table state : OK";
         $result .= check_column($db, $db_name, $table);
     } else {
         $redirect = false;
-
+        $result .= "\n\t- Table state : MISSING -> check your configuration and compare it to provided template";
     }
 
     return $result;
