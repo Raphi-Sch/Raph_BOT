@@ -1,5 +1,11 @@
 {
     "table": {
+        "users": {
+            "fields": [
+                "username",
+                "password"
+            ]
+        },
         "config": {
             "fields": [
                 "id",
