@@ -6,6 +6,7 @@ $data = db_query_raw($db, "SELECT * FROM config ORDER BY id");
 $list = "";
 while ($row = mysqli_fetch_assoc($data)) {
     $value = "";
+
     // Hidden value
     if ($row['hidden']) {
         for ($i = 0; $i <= strlen($row['value']); $i++) {
@@ -15,11 +16,25 @@ while ($row = mysqli_fetch_assoc($data)) {
         $value = $row["value"];
     }
 
+    // Type
+    switch ($row['type']) {
+        default:
+        case 0:
+            $js_function = "edit_text";
+            break;
+        case 1:
+            $js_function = "edit_bool";
+            break;
+        case 2:
+            $js_function = "edit_number";
+            break;
+    }
+
     $list .= "
     <tr>
         <td>" . $row["id"] . "</td>
         <td id='value_" . $row["id"] . "'>$value</td>
-        <td><button onClick='edit_entry(\"" . $row["id"] . "\", \"" . $row["value"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button></td>
+        <td><button onClick='$js_function(\"" . $row["id"] . "\", \"" . $row["value"] . "\")' class='btn btn-warning pull-right' type='button'><i class='glyphicon glyphicon-pencil'></i></button></td>
     </tr>";
 }
 
@@ -58,6 +73,8 @@ while ($row = mysqli_fetch_assoc($data)) {
             </tbody>
         </table>
     </div>
+
+    <?php include("src/php/alert.php"); ?>
 
     <script>
         $(document).ready(function() {
