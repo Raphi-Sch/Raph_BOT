@@ -26,8 +26,9 @@ while ($row = mysqli_fetch_assoc($data)) {
 
     // Hidden value
     if ($row['hidden']) {
+        $HTML_value = "";
         for ($i = 0; $i <= strlen($row['value']); $i++) {
-            $HTML_value .= "*";
+            $HTML_value .= "#";
         }
     }
 
