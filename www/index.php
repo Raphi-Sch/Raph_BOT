@@ -59,7 +59,7 @@ if($redirect){
     exit();
 }
 else{
-    $result .= "\n\nPlease check if all tables are set correctly, then refresh this page. You will be automatically redirected to the login page.";
+    $result .= "\n\nPlease check if all tables are set correctly, then refresh this page.\nYou will be automatically redirected to the login page.";
 }
 
 ?>
