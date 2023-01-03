@@ -7,6 +7,7 @@
         $alert_type = $_SESSION['alert'][0];
         $alert_title = $_SESSION['alert'][1];
         $alert_text = $_SESSION['alert'][2];
+        $alert_toast = $_SESSION['alert'][3];
 
         $_SESSION['alert'] = false;
     }
@@ -14,6 +15,6 @@
 
 <!-- Unified alert system -->
 <script>
-    $(document).ready(function() {<?php if(!empty($alert_type)) echo "Swal({type: \"$alert_type\", title: \"$alert_title\", text: \"$alert_text\"});"; ?>});
+    $(document).ready(function() {<?php if(!empty($alert_type)) echo "Swal.fire({icon: \"$alert_type\", title: \"$alert_title\", text: \"$alert_text\", toast: \"$alert_toast\"});"; ?>});
 </script>
 <!-- /Unified alert system -->
