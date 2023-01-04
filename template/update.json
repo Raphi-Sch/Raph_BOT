@@ -74,6 +74,11 @@
             "value" : "",
             "hidden" : 1,
             "type" : 0
+        },
+        "twitch_display_name" : {
+            "value" : "Display name of the bot",
+            "hidden" : 0,
+            "type" : 0
         }
     }
 }

@@ -14,7 +14,8 @@ const config = {
     shout_language: null,
     twitch_channel: null,
     twitch_connection_message: null,
-    twitch_token: null
+    twitch_token: null,
+    twitch_display_name: null
 };
 
 async function load() {
