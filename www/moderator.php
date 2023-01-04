@@ -1,23 +1,5 @@
 <?php
 require_once('src/php/header.php');
-
-$HTML = "";
-$result = db_query_raw($db, "SELECT * FROM `moderator`");
-while ($row = mysqli_fetch_assoc($result)) {
-    $HTML .= "
-    <tr>
-        <td>" . $row["trigger_word"] . "</td>
-        <td id='mod_" . $row["id"] . "'>" . $row["mod_action"] . "</td>
-        <td id='exp_" . $row["id"] . "'>" . $row["explanation"] . "</td>
-        <td>
-          <span class='pull-right'>
-            <button onClick='edit_entry(\"" . $row["id"] . "\", \"" . $row["trigger_word"] . "\", \"" . $row["mod_action"] . "\", \"" . $row["explanation"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
-            <button type='button' class='btn btn-danger' onclick='del_entry(\"" . $row['id'] . "\", \"" . $row['trigger_word'] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
-          </span>
-        </td>
-    </tr>";
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +21,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h1 class="page-header">Moderator
             <span class='pull-right'>
-                <button type="button" class="btn btn-success" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button>
+                <button type="button" class="btn btn-info" onclick='list()'><i class="glyphicon glyphicon-refresh"></i></button>
             </span>
         </h1>
 
@@ -50,11 +32,11 @@ while ($row = mysqli_fetch_assoc($result)) {
                     <th class="col-xs-2">Trigger</th>
                     <th class="col-xs-3">Moderator action</th>
                     <th class="col-xs-4">Explanation</th>
-                    <th class="col-xs-1"></th>
+                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
             </thead>
-            <tbody>
-                <?php echo $HTML; ?>
+            <tbody id='tbody-list'>
+                <!-- Dynamic -->
             </tbody>
         </table>
     </div>
@@ -63,6 +45,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         $(document).ready(function() {
             // Active the corresponding button in the navbar
             document.getElementById("plugin_moderator").classList.add("active");
+            list();
         });
     </script>
     <script src="src/js/moderator.js"></script>

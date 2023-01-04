@@ -5,11 +5,20 @@ require_once('../src/php/db.php');
 $db = db_connect("../../config.json");
 
 switch ($_SERVER["REQUEST_METHOD"]) {
+    case 'GET':
+        if (isset($_GET['list'])) {
+            echo json_encode(get_list($db));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
     case 'POST':
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
         if ($data["method"] == "get_moderator") {
-            echo get_moderator($db, $data["words"]);
+            echo json_encode(get_moderator($db, $data["words"]));
             break;
         }
 
@@ -50,7 +59,23 @@ function get_moderator(mysqli $db, array $word_in)
     $result = db_query($db, $SQL_query, $SQL_params_type, $SQL_values);
 
     if ($result == null)
-        return json_encode(['mod_action' => null, 'explanation' => null]);
+        return ['mod_action' => null, 'explanation' => null];
     else
-        return json_encode($result);
+        return $result;
+}
+
+function get_list(mysqli $db)
+{
+    $SQL_query = "SELECT * FROM moderator ORDER BY trigger_word ASC";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = $data->fetch_assoc()) {
+        $result += array($count => ["id" => $row['id'], "trigger_word" => $row['trigger_word'], "mod_action" => $row['mod_action'], "explanation" => $row['explanation']]);
+        $count++;
+    }
+
+    return $result;
 }
