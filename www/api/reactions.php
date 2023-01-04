@@ -7,7 +7,7 @@ $db = db_connect("../../config.json");
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['list'])) {
-            echo get_list($db);
+            echo json_encode(get_list($db));
             break;
         }
 
@@ -18,7 +18,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
         if ($data["method"] == "get_reaction") {
-            echo get_reaction($db, $data["words_in"], $data["words_not_in"]);
+            echo json_encode(get_reaction($db, $data["words_in"], $data["words_not_in"]));
             break;
         }
 
@@ -75,9 +75,9 @@ function get_reaction(mysqli $db, array $word_in, array $word_not_in)
     $result = db_query($db, $SQL_query, $SQL_params_type, $SQL_values);
 
     if ($result == null)
-        return json_encode(['trigger_word' => null, 'reaction' => null, 'frequency' => 0, 'timeout' => 0]);
+        return ['trigger_word' => null, 'reaction' => null, 'frequency' => 0, 'timeout' => 0];
     else
-        return json_encode($result);
+        return $result;
 }
 
 function get_list(mysqli $db)
@@ -93,5 +93,5 @@ function get_list(mysqli $db)
         $count++;
     }
 
-    return json_encode($result);
+    return $result;
 }

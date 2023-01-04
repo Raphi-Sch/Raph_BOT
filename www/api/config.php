@@ -7,17 +7,17 @@ $db = db_connect("../../config.json");
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['plugin'])) {
-            echo get_plugin($db);
+            echo json_encode(get_plugin($db));
             break;
         }
 
         if (isset($_GET['name'])) {
-            echo get_name($db);
+            echo json_encode(get_name($db));
             break;
         }
 
         if (isset($_GET['socket-port'])) {
-            echo get_socket_port();
+            echo json_encode(get_socket_port());
             break;
         }
 
@@ -48,15 +48,15 @@ function get_plugin(mysqli $db)
         $result += array($row['id'] => $row['value']);
     }
 
-    return json_encode($result);
+    return $result;
 }
 
 function get_name(mysqli $db){
-    return json_encode(array("value" => db_query($db, "SELECT `value` FROM config WHERE id = 'bot_name'")["value"]));
+    return array("value" => db_query($db, "SELECT `value` FROM config WHERE id = 'bot_name'")["value"]);
 }
 
 function get_socket_port(){
-    return json_encode(array("value" => json_decode(file_get_contents("../../config.json"), true)['socket_port']));
+    return array("value" => json_decode(file_get_contents("../../config.json"), true)['socket_port']);
 }
 
 function get_log(){
