@@ -21,22 +21,29 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     case 'POST':
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
-        if ($data["method"] == "get_shout" && $data["language"] == "fr") {
-            echo json_encode(['value' => get_shout_fr($db, $data["message"])]);
-            break;
-        }
-
-        if ($data["method"] == "get_shout" && $data["language"] == "fr-uwu") {
-            echo json_encode(['value' => get_shout_fr_uwu($db, $data["message"])]);
-            break;
+        if ($data["method"] == "get_shout") {
+            switch($data["language"]){
+                case "fr" :
+                    echo json_encode(['value' => get_shout_fr($db, $data["message"])]);
+                    break;
+                
+                case "fr-uwu" :
+                    echo json_encode(['value' => get_shout_fr_uwu($db, $data["message"])]);
+                    break;
+                    
+                default:
+                    header("HTTP/1.0 400 Bad request");
+                    break;
+            }
+            exit();
         }
 
         header("HTTP/1.0 400 Bad request");
-        break;
+        exit();
 
     default:
         header("HTTP/1.0 405 Method Not Allowed");
-        break;
+        exit();
 }
 
 exit();
