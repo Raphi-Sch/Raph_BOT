@@ -1,8 +1,8 @@
 $.ajax({
     url: "api/config.php?plugin",
     type: "GET",
-    success: function (result) {
-        data = JSON.parse(result);
+    dataType: "json",
+    success: function (data) {
         let title_enable = false;
 
         for (const id in data) {

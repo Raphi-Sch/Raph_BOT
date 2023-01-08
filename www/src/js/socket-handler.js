@@ -102,8 +102,8 @@ function connect_socket() {
     $.ajax({
         url: "api/config.php?socket-port",
         type: "GET",
-        success: function (result) {
-            data = JSON.parse(result);
+        dataType: "json",
+        success: function (data) {
             port = data['value'];
 
             socket = io.connect('http://' + window.location.hostname + ':' + port);

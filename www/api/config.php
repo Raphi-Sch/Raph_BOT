@@ -1,27 +1,30 @@
 <?php
 require_once('../src/php/db.php');
-header('Content-Type: application/json');
 
 $db = db_connect("../../config.json");
 
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['plugin'])) {
+            header('Content-Type: application/json');
             echo json_encode(get_plugin($db));
             break;
         }
 
         if (isset($_GET['name'])) {
+            header('Content-Type: application/json');
             echo json_encode(get_name($db));
             break;
         }
 
         if (isset($_GET['socket-port'])) {
+            header('Content-Type: application/json');
             echo json_encode(get_socket_port());
             break;
         }
 
         if (isset($_GET['log'])) {
+            header('Content-Type: text/plain');
             echo get_log();
             break;
         }

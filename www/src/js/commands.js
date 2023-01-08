@@ -2,9 +2,8 @@ function list_commands() {
     $.ajax({
         url: "api/commands.php?list",
         type: "GET",
-        success: function (result) {
-            data = JSON.parse(result);
-
+        dataType: "json",
+        success: function (data) {
             const LIST = document.getElementById('tbody-list');
             LIST.innerHTML = "";
 
