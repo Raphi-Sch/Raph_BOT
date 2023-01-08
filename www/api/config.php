@@ -1,6 +1,6 @@
 <?php
-
 require_once('../src/php/db.php');
+header('Content-Type: application/json');
 
 $db = db_connect("../../config.json");
 

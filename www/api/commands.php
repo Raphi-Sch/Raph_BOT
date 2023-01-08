@@ -2,6 +2,7 @@
 
 require_once('../src/php/db.php');
 require_once('./tanks.php');
+header('Content-Type: application/json');
 
 $db = db_connect("../../config.json");
 
