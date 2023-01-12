@@ -13,12 +13,12 @@ function list_commands() {
 
                 // TD 1 (Command)
                 const TD_1 = document.createElement('td');
-                TD_1.innerText = data[neddle]['command'];
+                TD_1.innerText = data[neddle].command;
                 TR.appendChild(TD_1);
 
                 // TD 2 (Text)
                 const TD_2 = document.createElement('td');
-                TD_2.innerText = data[neddle]['value'];
+                TD_2.innerText = data[neddle].value;
                 TR.appendChild(TD_2);
 
                 // TD 3 (Auto)
@@ -27,7 +27,7 @@ function list_commands() {
 
                 INPUT.type = 'checkbox';
                 INPUT.disabled = 'disabled';
-                INPUT.checked = data[neddle]['auto'] ? "checked" : "";
+                INPUT.checked = data[neddle].auto ? "checked" : "";
 
                 TD_3.appendChild(INPUT);
                 TR.appendChild(TD_3);
@@ -44,7 +44,7 @@ function list_commands() {
 
                 BTN_1.className = "btn btn-warning";
                 BTN_1.type = "button";
-                BTN_1.onclick = function () { edit_entry(data[neddle]['id'], data[neddle]['command'], data[neddle]['value'], data[neddle]['auto']) };
+                BTN_1.onclick = function () { edit_entry(data[neddle].id, data[neddle].command, data[neddle].value, data[neddle].auto) };
                 ICO_1.className = "glyphicon glyphicon-pencil";
                 BTN_1.appendChild(ICO_1);
                 SPAN.appendChild(BTN_1);
@@ -52,7 +52,7 @@ function list_commands() {
 
                 BTN_2.className = "btn btn-danger";
                 BTN_2.type = "button";
-                BTN_2.onclick = function () { del_entry(data[neddle]['id'], data[neddle]['command']) }
+                BTN_2.onclick = function () { del_entry(data[neddle].id, data[neddle].command) }
                 ICO_2.className = "glyphicon glyphicon-remove";
                 BTN_2.appendChild(ICO_2);
                 SPAN.appendChild(BTN_2);
@@ -146,24 +146,23 @@ function list_alias() {
     $.ajax({
         url: "api/commands.php?list-alias",
         type: "GET",
-        success: function (result) {
-            data = JSON.parse(result);
-
+        dataType: "json",
+        success: function (data) {
             const LIST = document.getElementById('tbody-list');
             LIST.innerHTML = "";
 
-            for (const id in data) {
+            for (const neddle in data) {
                 // Base TR
                 const TR = document.createElement('tr');
 
                 // TD Command
                 const TD_1 = document.createElement('td');
-                TD_1.innerText = id;
+                TD_1.innerText = data[neddle].alias;
                 TR.appendChild(TD_1);
 
                 // TD Text
                 const TD_2 = document.createElement('td');
-                TD_2.innerText = data[id];
+                TD_2.innerText = data[neddle].command;
                 TR.appendChild(TD_2);
 
                 // TD Btn
@@ -176,7 +175,7 @@ function list_alias() {
 
                 BTN_1.className = "btn btn-danger";
                 BTN_1.type = "button";
-                BTN_1.onclick = function () { del_alias(id, data[id]) }
+                BTN_1.onclick = function () { del_alias(data[neddle].alias, data[neddle].command) }
                 ICO_1.className = "glyphicon glyphicon-remove";
                 BTN_1.appendChild(ICO_1);
                 SPAN.appendChild(BTN_1);
