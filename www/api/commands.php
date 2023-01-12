@@ -9,17 +9,17 @@ $db = db_connect("../../config.json");
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['auto'])) {
-            echo get_auto($db);
+            echo json_encode(get_auto($db));
             break;
         }
 
         if (isset($_GET['list'])) {
-            echo get_list($db);
+            echo json_encode(get_list($db));
             break;
         }
 
         if (isset($_GET['list-alias'])) {
-            echo get_list_alias($db);
+            echo json_encode(get_list_alias($db));
             break;
         }
 
@@ -30,7 +30,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
         if ($data['method'] == "get_command") {
-            echo get_command($db, trim($data['command']), trim($data['param']), $data['excluded_tanks']);
+            echo json_encode(get_command($db, trim($data['command']), trim($data['param']), $data['excluded_tanks']));
             break;
         }
 
@@ -58,9 +58,9 @@ function get_command(mysqli $db, string $command, string $param, array $excluded
     }
 
     if (empty($result))
-        return json_encode(['value' => null]);
+        return ['value' => null];
     else
-        return json_encode($result);
+        return $result;
 }
 
 function get_auto(mysqli $db)
@@ -74,7 +74,7 @@ function get_auto(mysqli $db)
         array_push($result, $row['command']);
     }
 
-    return json_encode($result);
+    return $result;
 }
 
 function get_list(mysqli $db)
@@ -90,7 +90,7 @@ function get_list(mysqli $db)
         $count++;
     }
 
-    return json_encode($result);
+    return $result;
 }
 
 function get_list_alias(mysqli $db)
@@ -102,9 +102,9 @@ function get_list_alias(mysqli $db)
     $count = 0;
 
     while ($row = $data->fetch_assoc()) {
-        $result += array($row['alias'] => $row['command']);
+        $result += array($count => ["alias" => $row['alias'], "command" => $row['command']]);
         $count++;
     }
 
-    return json_encode($result);
+    return $result;
 }
