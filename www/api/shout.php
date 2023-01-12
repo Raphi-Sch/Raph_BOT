@@ -18,6 +18,15 @@ const TYPE_VOWEL = 2;
 const VOWELS = array("a", "e", "i", "o", "u", "y", "A", "E", "I", "O", "U", "Y");
 
 switch ($_SERVER["REQUEST_METHOD"]) {
+    case 'GET':
+        if (isset($_GET['list'])) {
+            echo json_encode(get_list($db));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
     case 'POST':
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
@@ -147,4 +156,20 @@ function load_shout_words(mysqli $db, string $language, int $type)
     }
 
     return $data;
+}
+
+function get_list(mysqli $db)
+{
+    $SQL_query = "SELECT * FROM shout ORDER BY `language` ASC, `type` ASC, original ASC";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = $data->fetch_assoc()) {
+        $result += array($count => ["id" => $row['id'], "original" => $row['original'], "replacement" => $row['replacement'], "language" => $row['language'], "type" => $row['type']]);
+        $count++;
+    }
+
+    return $result;
 }

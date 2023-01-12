@@ -1,3 +1,85 @@
+const type = ["Word", "Consonant", "Vowel"];
+
+function list() {
+    $.ajax({
+        url: "api/shout.php?list",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            const LIST = document.getElementById('tbody-list');
+            LIST.innerHTML = "";
+
+            for (const neddle in data) {
+                // Base TR
+                const TR = document.createElement('tr');
+
+                // TD 1 (original)
+                const TD_1 = document.createElement('td');
+                TD_1.classList.add('col-xs-2');
+                TD_1.innerText = data[neddle].original;
+                TR.appendChild(TD_1);
+
+                // TD 2 (replacement)
+                const TD_2 = document.createElement('td');
+                TD_2.classList.add('col-xs-2');
+                TD_2.innerText = data[neddle].replacement;
+                TR.appendChild(TD_2);
+
+                // TD 3 (language)
+                const TD_3 = document.createElement('td');
+                TD_3.classList.add('col-xs-2');
+                TD_3.innerText = data[neddle].language;
+                TR.appendChild(TD_3);
+
+                // TD 4 (Type)
+                const TD_4 = document.createElement('td');
+                TD_4.classList.add('col-xs-2');
+                TD_4.innerText = type[data[neddle].type];
+                TR.appendChild(TD_4);
+
+                // TD 4 (Btn)
+                const TD_BTN = document.createElement('td');
+                const SPAN = document.createElement('span');
+                const BTN_1 = document.createElement('button');
+                const BTN_2 = document.createElement('button');
+                const ICO_1 = document.createElement('i');
+                const ICO_2 = document.createElement('i');
+
+                TD_BTN.classList.add('col-xs-4');
+                SPAN.className = "pull-right";
+
+                BTN_1.className = "btn btn-warning";
+                BTN_1.type = "button";
+                BTN_1.onclick = function () { edit_entry(data[neddle].id, data[neddle].command, data[neddle].value, data[neddle].auto) };
+                ICO_1.className = "glyphicon glyphicon-pencil";
+                BTN_1.appendChild(ICO_1);
+                SPAN.appendChild(BTN_1);
+                SPAN.appendChild(document.createTextNode(" "));
+
+                BTN_2.className = "btn btn-danger";
+                BTN_2.type = "button";
+                BTN_2.onclick = function () { del_entry(data[neddle].id, data[neddle].command) }
+                ICO_2.className = "glyphicon glyphicon-remove";
+                BTN_2.appendChild(ICO_2);
+                SPAN.appendChild(BTN_2);
+
+                TD_BTN.appendChild(SPAN);
+                TR.appendChild(TD_BTN);
+
+                LIST.appendChild(TR);
+
+            }
+        },
+        error: function (result, status, error) {
+            Swal.fire({
+                title: "API Error while loading",
+                text: error,
+                icon: 'error'
+            })
+        }
+    })
+}
+
 function add_entry() {
     Swal.fire({
         title: "Add entry",
