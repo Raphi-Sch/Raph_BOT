@@ -43,7 +43,7 @@ function list_commands() {
                 const ICO_1 = document.createElement('i');
                 const ICO_2 = document.createElement('i');
 
-                TD_3.classList.add('col-xs-1');
+                TD_4.classList.add('col-xs-1');
                 SPAN.className = "pull-right";
 
                 BTN_1.className = "btn btn-warning";
