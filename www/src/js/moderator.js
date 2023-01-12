@@ -78,7 +78,7 @@ function add_entry() {
             "<input type='hidden' name='action' value='add'>" +
             "<label>Trigger word</label><input type='text' class='form-control' name='trigger_word' placeholder='Trigger' required><br/>" +
             "<label>Mod action</label><input type='text' class='form-control' name='mod_action' placeholder='Moderator action' required><br/>" +
-            "<label>Explanation</label><input type='text' class='form-control' name='explanation' placeholder='Explanation' required><br/>" +
+            "<label>Explanation</label><textarea type='text' class='form-control' name='explanation' placeholder='Explanation' required></textarea><br/>" +
             "</form>",
         showCancelButton: true,
         showConfirmButton: confirm,
@@ -102,7 +102,7 @@ function edit_entry(id, trigger, mod, exp) {
             `<input type='hidden' name='id' value='${id}'>` +
             `<label>Trigger</label><input class='form-control' type='text' name='trigger' value="${trigger}"><br/>` +
             `<label>Mod action</label><input class='form-control' type='text' name='mod_action' value="${mod}"><br/>` +
-            `<label>Explanation</label><input class='form-control' type='text' name='explanation' value="${exp}"><br/>` +
+            `<label>Explanation</label><textarea class='form-control' type='text' name='explanation'>${exp}</textarea><br/>` +
             "</form>",
         showCancelButton: true,
         focusConfirm: false,
