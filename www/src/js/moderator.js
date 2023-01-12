@@ -13,16 +13,19 @@ function list() {
 
                 // TD 1 (Trigger)
                 const TD_1 = document.createElement('td');
+                TD_1.classList.add('col-xs-2');
                 TD_1.innerText = data[neddle]['trigger_word'];
                 TR.appendChild(TD_1);
 
                 // TD 2 (Mod action)
                 const TD_2 = document.createElement('td');
+                TD_2.classList.add('col-xs-3');
                 TD_2.innerText = data[neddle]['mod_action'];
                 TR.appendChild(TD_2);
 
                 // TD 3 (Explanation)
                 const TD_3 = document.createElement('td');
+                TD_3.classList.add('col-xs-4');
                 TD_3.innerText = data[neddle]['explanation'];
                 TR.appendChild(TD_3);
 

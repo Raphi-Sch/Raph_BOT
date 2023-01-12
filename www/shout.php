@@ -8,10 +8,10 @@ $result = db_query_raw($db, "SELECT * FROM shout ORDER BY `language` ASC, `type`
 while ($row = mysqli_fetch_assoc($result)) {
     $HTML .= "
     <tr>
-        <td>" . $row["original"] . "</td>
-        <td>" . $row["replacement"] . "</td>
-        <td>" . $row["language"] . "</td>
-        <td>" . $type_string[$row["type"]] . "</td>
+        <td class='col-xs-2'>" . $row["original"] . "</td>
+        <td class='col-xs-2'>" . $row["replacement"] . "</td>
+        <td class='col-xs-2'>" . $row["language"] . "</td>
+        <td class='col-xs-2'>" . $type_string[$row["type"]] . "</td>
         <td>
           <span class='pull-right'>
             <button onClick='edit_entry(\"" . $row["id"] . "\", \"" . $row["original"] . "\", \"" . $row["replacement"] . "\", \"" . $row["language"] . "\", \"" . $row["type"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
@@ -47,17 +47,18 @@ while ($row = mysqli_fetch_assoc($result)) {
         </h1>
 
         <!-- Add command -->
-        <table class="table table-hover table-condensed">
+        <table class="table table-hover table-condensed table-scroll">
             <thead>
                 <tr>
                     <th class="col-xs-2">Original</th>
                     <th class="col-xs-2">Replacement</th>
                     <th class="col-xs-2">Language</th>
                     <th class="col-xs-2">Type</th>
-                    <th></th>
+                    <th class="table-scroll-th-fix"></th>
+                    <th class="col-xs-4"></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="table-scroll-td">
                 <?php echo $HTML; ?>
             </tbody>
         </table>

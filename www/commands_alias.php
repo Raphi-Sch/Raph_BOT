@@ -38,15 +38,16 @@ while ($row = mysqli_fetch_assoc($data)) {
         </ul>
 
         <!-- Add alias command -->
-        <table class="table table-hover table-condensed">
+        <table class="table table-hover table-condensed table-scroll">
             <thead>
                 <tr>
-                    <th class="col-xs-6">Alias</th>
-                    <th class="col-xs-6">Command</th>
-                    <th class="col-xs-1"><button type="button" class="btn btn-success" onclick='add_alias()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                    <th class="col-xs-5">Alias</th>
+                    <th class="col-xs-5">Command</th>
+                    <th class="table-scroll-th-fix"></th>
+                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_alias()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
             </thead>
-            <tbody id='tbody-list'>
+            <tbody class="table-scroll-td" id='tbody-list'>
                 <!-- Dynamic -->
             </tbody>
         </table>

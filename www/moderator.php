@@ -26,16 +26,17 @@ require_once('src/php/header.php');
         </h1>
 
         <!-- Add command -->
-        <table class="table table-hover table-condensed">
+        <table class="table table-hover table-condensed table-scroll">
             <thead>
                 <tr>
                     <th class="col-xs-2">Trigger</th>
                     <th class="col-xs-3">Moderator action</th>
                     <th class="col-xs-4">Explanation</th>
+                    <th class="table-scroll-th-fix"></th>
                     <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
             </thead>
-            <tbody id='tbody-list'>
+            <tbody class="table-scroll-td" id='tbody-list'>
                 <!-- Dynamic -->
             </tbody>
         </table>
