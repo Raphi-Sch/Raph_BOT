@@ -13,7 +13,7 @@ Linux package :
 - NodeJS (v16)
 - Screen
 
-Node module required (and tested): 
+Node module required (and tested, package.json provided): 
 - console-stamp@3.0.3
 - mysql.js@1.0.2
 - socket.io@2.4.1
