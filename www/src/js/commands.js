@@ -5,6 +5,7 @@ function view(param){
             document.getElementById("tab-command").classList.remove("active");
             document.getElementById('th-alias').classList.remove('hidden');
             document.getElementById('th-command').classList.add('hidden');
+            document.getElementById('btn-refresh').onclick = () => list_alias();
             list_alias();
             return;
         case 'commands':
@@ -12,6 +13,7 @@ function view(param){
             document.getElementById("tab-command").classList.add("active");
             document.getElementById('th-alias').classList.add('hidden');
             document.getElementById('th-command').classList.remove('hidden');
+            document.getElementById('btn-refresh').onclick = () => list_commands();
             list_commands();
             return;
     }
