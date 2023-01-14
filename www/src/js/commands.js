@@ -1,3 +1,22 @@
+function view(param){
+    switch(param){
+        case 'alias':
+            document.getElementById("tab-alias-command").classList.add("active");
+            document.getElementById("tab-command").classList.remove("active");
+            document.getElementById('th-alias').classList.remove('hidden');
+            document.getElementById('th-command').classList.add('hidden');
+            list_alias();
+            return;
+        case 'commands':
+            document.getElementById("tab-alias-command").classList.remove("active");
+            document.getElementById("tab-command").classList.add("active");
+            document.getElementById('th-alias').classList.add('hidden');
+            document.getElementById('th-command').classList.remove('hidden');
+            list_commands();
+            return;
+    }
+}
+
 function list_commands() {
     $.ajax({
         url: "api/commands.php?list",
@@ -107,11 +126,11 @@ function edit_entry(id, command, text, auto) {
         checkbox = "";
 
     Swal.fire({
-        title: 'Editing : "' + command + '"',
+        title: `Editing : "${command}"`,
         icon: 'info',
         html: "<br /><form id='swal-form' method='post' action='src/php/POST_commands.php'>" +
             "<input type='hidden' name='action' value='edit'>" +
-            "<input type='hidden' name='id' value='" + id + "'>" +
+            `<input type='hidden' name='id' value='${id}'>` +
             `<label>Command</label><input class='form-control' type='text' name='command' value="${command}"><br />` +
             `<label>Text</label><textarea class='form-control' type='text' name='text'>${text}</textarea><br />` +
             `<label>Auto</label><input class='form-control' type='checkbox' name='auto' ${checkbox}><br />` +
@@ -130,7 +149,7 @@ function edit_entry(id, command, text, auto) {
 
 function del_entry(id, command) {
     Swal.fire({
-        title: "Delete '" + command + "' ?",
+        title: `Delete "${command}" ?`,
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -204,15 +223,38 @@ function list_alias() {
     })
 }
 
+function list_option_commands() {
+    $.ajax({
+        url: "api/commands.php?list",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            let select = document.getElementById('swal-select');
+
+            for (const neddle in data) {
+                const option = document.createElement('option');
+                option.innerText = data[neddle].command;
+                option.value = data[neddle].command;
+                select.appendChild(option);
+            }
+        },
+        error: function (result, status, error) {
+            Swal.fire({
+                title: "API Error while loading",
+                text: error,
+                icon: 'error'
+            })
+        }
+    })
+}
+
 function add_alias() {
     Swal.fire({
         title: "Add command alias",
         html: "<form id='swal-form' method='post' action='src/php/POST_commands.php'>" +
-            "<input type='hidden' name='action' value='add-alias'>" +
+            "<input type='hidden' name='action' value='add-alias'/>" +
             "<label>Alias</label><input type='text' class='form-control' name='alias' required><br/>" +
-            "<label>Command</label><select class='form-control' name='value' required><option disabled selected> - Select a command - </option>" +
-            `${commands}` +
-            "</select>" +
+            "<label>Command</label><select id='swal-select' class='form-control' name='value' required><option disabled selected> - Select a command - </option></select>" +
             "</form>",
         showCancelButton: true,
         showConfirmButton: confirm,
@@ -220,7 +262,10 @@ function add_alias() {
         allowOutsideClick: false,
         width: "25%",
         confirmButtonText: 'Add',
-        cancelButtonText: 'Cancel'
+        cancelButtonText: 'Cancel',
+        didOpen: () => {
+            list_option_commands();
+        }
     }).then((result) => {
         if (result.value)
             document.getElementById('swal-form').submit();

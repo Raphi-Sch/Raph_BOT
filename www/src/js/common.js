@@ -1,0 +1,22 @@
+function get_parameter(p) {
+    var url = window.location.search.substring(1);
+    var varUrl = url.split('&');
+    for (var i = 0; i < varUrl.length; i++) {
+        var parameter = varUrl[i].split('=');
+        if (parameter[0] == p) {
+            return parameter[1];
+        }
+    }
+}
+
+function is_get_param_set(p) {
+    var url = window.location.search.substring(1);
+    var varUrl = url.split('&');
+    for (var i = 0; i < varUrl.length; i++) {
+        var parameter = varUrl[i].split('=');
+        if (parameter[0] == p) {
+            return true;
+        }
+        return false;
+    }
+}

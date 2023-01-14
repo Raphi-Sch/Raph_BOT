@@ -26,36 +26,51 @@ require_once('src/php/header.php');
         </h1>
 
         <ul class="nav nav-tabs">
-            <li id="tab-command"><a href="commands.php">Commands</a></li>
-            <li id="tab-alias-command"><a href="commands_alias.php">Alias</a></li>
+            <li id="tab-command"><a href="#" onclick='view("commands")'>Commands</a></li>
+            <li id="tab-alias-command"><a href="#" onclick='view("alias")'>Alias</a></li>
         </ul>
 
         <!-- Add command -->
         <table class="table table-hover table-condensed table-scroll">
             <thead>
-                <tr>
+                <tr id='th-command'>
                     <th class="col-xs-2">Command</th>
                     <th class="col-xs-8">Text</th>
                     <th class="col-xs-1">Auto</th>
                     <th class="table-scroll-th-fix"></th>
                     <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
+                <tr id='th-alias' class='hidden'>
+                    <th class="col-xs-5">Alias</th>
+                    <th class="col-xs-5">Command</th>
+                    <th class="table-scroll-th-fix"></th>
+                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_alias()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                </tr>
             </thead>
-            <tbody class="table-scroll-td" id='tbody-list' >
+            <tbody class="table-scroll-td" id='tbody-list'>
                 <!-- Dynamic -->
             </tbody>
         </table>
     </div>
 
+    <?php include("src/php/alert.php"); ?>
+
+    <script src="src/js/common.js"></script>
+    <script src="src/js/commands.js"></script>
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
-            document.getElementById("tab-command").classList.add("active");
             document.getElementById("plugin_commands").classList.add("active");
-            list_commands();
+
+            if (is_get_param_set("alias")){
+                view('alias');
+            }
+            else{
+                view('commands');
+            }
         });
     </script>
-    <script src="src/js/commands.js"></script>
+
 
 </body>
 
