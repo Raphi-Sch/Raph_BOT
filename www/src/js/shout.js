@@ -1,6 +1,6 @@
 const type = ["Word", "Consonant", "Vowel"];
 
-function list() {
+function list(reload = false) {
     $.ajax({
         url: "api/shout.php?list",
         type: "GET",
@@ -50,7 +50,7 @@ function list() {
 
                 BTN_1.className = "btn btn-warning";
                 BTN_1.type = "button";
-                BTN_1.onclick = function () { edit_entry(data[neddle].id, data[neddle].command, data[neddle].value, data[neddle].auto) };
+                BTN_1.onclick = function () { edit_entry(data[neddle].id, data[neddle].original, data[neddle].replacement, data[neddle].language, data[neddle].type) };
                 ICO_1.className = "glyphicon glyphicon-pencil";
                 BTN_1.appendChild(ICO_1);
                 SPAN.appendChild(BTN_1);
@@ -58,7 +58,7 @@ function list() {
 
                 BTN_2.className = "btn btn-danger";
                 BTN_2.type = "button";
-                BTN_2.onclick = function () { del_entry(data[neddle].id, data[neddle].command) }
+                BTN_2.onclick = function () { del_entry(data[neddle].id, data[neddle].original) }
                 ICO_2.className = "glyphicon glyphicon-remove";
                 BTN_2.appendChild(ICO_2);
                 SPAN.appendChild(BTN_2);
@@ -67,8 +67,10 @@ function list() {
                 TR.appendChild(TD_BTN);
 
                 LIST.appendChild(TR);
-
             }
+
+            if(reload)
+                reload_success();
         },
         error: function (result, status, error) {
             Swal.fire({
@@ -129,10 +131,6 @@ function edit_entry(id, original, replacement, language, type) {
     document.getElementById('swal-select-type').value = type;
 }
 
-// SYNC
-// ----
-// ASYNC
-
 function del_entry(id, original) {
     Swal.fire({
         title: "Delete '" + original + "' ?",
@@ -148,7 +146,7 @@ function del_entry(id, original) {
                 action: "del",
                 id: id
             }, function () {
-                document.location.reload();
+                list(true);
             });
         }
     })
