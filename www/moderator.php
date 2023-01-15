@@ -21,7 +21,7 @@ require_once('src/php/header.php');
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h1 class="page-header">Moderator
             <span class='pull-right'>
-                <button type="button" class="btn btn-info" onclick='list()'><i class="glyphicon glyphicon-refresh"></i></button>
+                <button type="button" class="btn btn-info" onclick='list(true)'><i class="glyphicon glyphicon-refresh"></i></button>
             </span>
         </h1>
 
@@ -42,6 +42,8 @@ require_once('src/php/header.php');
         </table>
     </div>
 
+    <script src="src/js/common.js"></script>
+    <script src="src/js/moderator.js"></script>
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
@@ -49,7 +51,7 @@ require_once('src/php/header.php');
             list();
         });
     </script>
-    <script src="src/js/moderator.js"></script>
+    
 
 </body>
 

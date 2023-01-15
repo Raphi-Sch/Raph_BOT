@@ -1,4 +1,4 @@
-function list() {
+function list(reload = false) {
     $.ajax({
         url: "api/reactions.php?list",
         type: "GET",
@@ -64,8 +64,10 @@ function list() {
                 TR.appendChild(TD_BTN);
 
                 LIST.appendChild(TR);
-
             }
+
+            if(reload)
+                reload_success();
         },
         error: function (result, status, error) {
             Swal.fire({
@@ -139,7 +141,7 @@ function del_entry(id, trigger) {
                 action: "del",
                 id: id
             }, function () {
-                list(); // Dynamic reload
+                list(true); // Dynamic reload
             });
         }
     })

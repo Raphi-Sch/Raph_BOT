@@ -5,7 +5,7 @@ function view(param){
             document.getElementById("tab-command").classList.remove("active");
             document.getElementById('th-alias').classList.remove('hidden');
             document.getElementById('th-command').classList.add('hidden');
-            document.getElementById('btn-refresh').onclick = () => list_alias();
+            document.getElementById('btn-refresh').onclick = () => list_alias(true);
             list_alias();
             return;
         case 'commands':
@@ -13,13 +13,13 @@ function view(param){
             document.getElementById("tab-command").classList.add("active");
             document.getElementById('th-alias').classList.add('hidden');
             document.getElementById('th-command').classList.remove('hidden');
-            document.getElementById('btn-refresh').onclick = () => list_commands();
+            document.getElementById('btn-refresh').onclick = () => list_commands(true);
             list_commands();
             return;
     }
 }
 
-function list_commands() {
+function list_commands(reload = false) {
     $.ajax({
         url: "api/commands.php?list",
         type: "GET",
@@ -88,6 +88,9 @@ function list_commands() {
                 LIST.appendChild(TR);
 
             }
+
+            if(reload)
+                reload_success();
         },
         error: function (result, status, error) {
             Swal.fire({
@@ -168,7 +171,7 @@ function del_entry(id, command) {
 }
 
 // Tab alias
-function list_alias() {
+function list_alias(reload = false) {
     $.ajax({
         url: "api/commands.php?list-alias",
         type: "GET",
@@ -214,6 +217,8 @@ function list_alias() {
                 LIST.appendChild(TR);
             }
 
+            if(reload)
+                reload_success();
         },
         error: function (result, status, error) {
             Swal.fire({

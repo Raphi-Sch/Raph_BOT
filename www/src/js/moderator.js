@@ -1,4 +1,4 @@
-function list() {
+function list(reload = false) {
     $.ajax({
         url: "api/moderator.php?list",
         type: "GET",
@@ -60,6 +60,9 @@ function list() {
                 LIST.appendChild(TR);
 
             }
+
+            if(reload)
+                reload_success();
         },
         error: function (result, status, error) {
             Swal.fire({

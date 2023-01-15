@@ -20,3 +20,15 @@ function is_get_param_set(p) {
         return false;
     }
 }
+
+function reload_success() {
+    Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        icon: 'success',
+        title: 'Reload successful !'
+    })
+}
