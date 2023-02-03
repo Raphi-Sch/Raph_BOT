@@ -37,21 +37,6 @@ exit();
 function get_reaction(mysqli $db, array $word_in, array $word_not_in)
 {
     $SQL_params_type = "";
-    $filtered_word_in = array();
-    $filtered_word_not_in = array();
-
-    // Filter words
-    foreach ($word_in as $word) {
-        if (!empty($word)) {
-            array_push($filtered_word_in, $word);
-        }
-    }
-
-    foreach ($word_not_in as $word) {
-        if (!empty($word)) {
-            array_push($filtered_word_not_in, $word);
-        }
-    }
 
     // Build word in
     $word_in_count = count($word_in);
