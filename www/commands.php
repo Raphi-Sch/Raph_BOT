@@ -55,6 +55,7 @@ require_once('src/php/header.php');
                     <th class="col-xs-1">Volume (%)</th>
                     <th class="col-xs-1">Timeout (s)</th>
                     <th class="col-xs-1">Active</th>
+                    <th class="col-xs-2">Player</th>
                     <th class="table-scroll-th-fix"></th>
                     <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_audio()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>

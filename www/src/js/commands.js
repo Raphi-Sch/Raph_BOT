@@ -393,7 +393,7 @@ function list_audio(reload = false) {
                 const BTN_2 = document.createElement('button');
                 const ICO_2 = document.createElement('i');
 
-                // TD 3 (Auto)
+                // TD Active
                 const TD_ACTIVE = document.createElement('td');
                 const INPUT_ACTIVE = document.createElement('input');
 
@@ -405,6 +405,20 @@ function list_audio(reload = false) {
                 TD_ACTIVE.appendChild(INPUT_ACTIVE);
                 TR.appendChild(TD_ACTIVE);
 
+                // TD Player
+                const TD_PLAYER = document.createElement('td');
+                const PLAYER = document.createElement('audio');
+
+                TD_PLAYER.classList.add('col-xs-2');
+                PLAYER.src = "src/audio/" + data[neddle].file;
+                PLAYER.volume = parseFloat(data[neddle].volume);
+                PLAYER.preload = "none";
+                PLAYER.controls = "enable";
+
+                TD_PLAYER.appendChild(PLAYER);
+                TR.appendChild(TD_PLAYER);
+
+                // Boutons
                 SPAN.className = "pull-right";
 
                 BTN_2.className = "btn btn-warning";
