@@ -20,6 +20,8 @@ function view(param) {
 
             document.getElementById('th-alias').classList.add('hidden');
             document.getElementById('th-command').classList.remove('hidden');
+            document.getElementById('th-audio').classList.add('hidden');
+
             document.getElementById('btn-refresh').onclick = () => list_commands(true);
             list_commands();
             return;
