@@ -252,7 +252,7 @@ function list_alias(reload = false) {
     })
 }
 
-function list_option_commands() {
+function list_option_alias() {
     $.ajax({
         url: "api/commands.php?list",
         type: "GET",
@@ -262,8 +262,31 @@ function list_option_commands() {
 
             for (const neddle in data) {
                 const option = document.createElement('option');
-                option.innerText = data[neddle].command;
+                option.innerText = data[neddle].command + ' (text)';
                 option.value = data[neddle].command;
+                select.appendChild(option);
+            }
+        },
+        error: function (result, status, error) {
+            Swal.fire({
+                title: "API Error while loading",
+                text: error,
+                icon: 'error'
+            })
+        }
+    })
+
+    $.ajax({
+        url: "api/commands.php?list-audio",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            let select = document.getElementById('swal-select');
+
+            for (const neddle in data) {
+                const option = document.createElement('option');
+                option.innerText = data[neddle].trigger_word + ' (audio)';
+                option.value = data[neddle].trigger_word;
                 select.appendChild(option);
             }
         },
@@ -283,8 +306,10 @@ function add_alias() {
         html: "<form id='swal-form' method='post' action='src/php/POST_commands.php'>" +
             "<input type='hidden' name='action' value='add-alias'/>" +
             "<label>Alias</label><input type='text' class='form-control' name='alias' required><br/>" +
-            "<label>Command</label><select id='swal-select' class='form-control' name='value' required><option disabled selected> - Select a command - </option></select>" +
-            "</form>",
+            "<label>Command</label><select id='swal-select' class='form-control' name='value' required>" +
+            "<option disabled selected> - Select a command - </option>" +
+            "<option value='tank'>tank (built-in)</option>" +
+            "</select></form>",
         showCancelButton: true,
         showConfirmButton: confirm,
         focusConfirm: false,
@@ -293,7 +318,7 @@ function add_alias() {
         confirmButtonText: 'Add',
         cancelButtonText: 'Cancel',
         didOpen: () => {
-            list_option_commands();
+            list_option_alias();
         }
     }).then((result) => {
         if (result.value)
