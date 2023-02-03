@@ -62,7 +62,7 @@ function get_command(mysqli $db, string $command, string $param, array $excluded
         $result = run_tank($db, $param, $excluded_tanks);
     }
 
-    if (substr($result['value'], 0, 5) == "audio"){
+    if (substr($result['value'], 0, 5) == "audio") {
         $result = run_audio($db, $result['value'], $excluded_audio);
     }
 
@@ -136,7 +136,16 @@ function get_list_audio(mysqli $db)
 
 function run_audio(mysqli $db, string $command, array $excluded_audio)
 {
-    $SQL_query = "SELECT trigger_word, `timeout`, `file`, `name`, volume FROM commands_audio WHERE trigger_word = ?";
+    $SQL_params_type = "";
+
+    // Build audio not in
+    if (count($excluded_audio) > 0) {
+        $word_not_in_count = count($excluded_audio);
+        $trigger_word_not_in = " AND trigger_word NOT IN (" . join(',', array_fill(0, $word_not_in_count, '?')) . ")";
+        $SQL_params_type .= str_repeat('s', $word_not_in_count);
+    }
+
+    $SQL_query = "SELECT trigger_word, `timeout`, `file`, `name`, volume FROM commands_audio WHERE trigger_word = ? $trigger_word_not_in";
     $result = db_query($db, $SQL_query, "s", $command);
 
     if ($result == null)
