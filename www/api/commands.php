@@ -153,7 +153,7 @@ function run_audio(mysqli $db, string $command, array $excluded_audio)
         $SQL_params_type .= str_repeat('s', $word_not_in_count);
     }
 
-    $SQL_query = "SELECT * FROM commands_audio WHERE trigger_word = ? $trigger_word_not_in";
+    $SQL_query = "SELECT * FROM commands_audio WHERE trigger_word = ? AND active = 1 $trigger_word_not_in";
     $result = db_query($db, $SQL_query, "s", $command);
 
     if ($result == null)
