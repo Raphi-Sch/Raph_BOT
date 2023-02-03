@@ -1,20 +1,40 @@
-function view(param){
-    switch(param){
+function view(param) {
+    switch (param) {
         case 'alias':
-            document.getElementById("tab-alias-command").classList.add("active");
-            document.getElementById("tab-command").classList.remove("active");
-            document.getElementById('th-alias').classList.remove('hidden');
+            document.getElementById("tab-text").classList.remove("active");
+            document.getElementById("tab-alias").classList.add("active");
+            document.getElementById("tab-audio").classList.remove("active");
+
             document.getElementById('th-command').classList.add('hidden');
+            document.getElementById('th-alias').classList.remove('hidden');
+            document.getElementById('th-audio').classList.add('hidden');
+
             document.getElementById('btn-refresh').onclick = () => list_alias(true);
             list_alias();
             return;
+
         case 'commands':
-            document.getElementById("tab-alias-command").classList.remove("active");
-            document.getElementById("tab-command").classList.add("active");
+            document.getElementById("tab-text").classList.add("active");
+            document.getElementById("tab-alias").classList.remove("active");
+            document.getElementById("tab-audio").classList.remove("active");
+
             document.getElementById('th-alias').classList.add('hidden');
             document.getElementById('th-command').classList.remove('hidden');
             document.getElementById('btn-refresh').onclick = () => list_commands(true);
             list_commands();
+            return;
+
+        case 'audio':
+            document.getElementById("tab-text").classList.remove("active");
+            document.getElementById("tab-alias").classList.remove("active");
+            document.getElementById("tab-audio").classList.add("active");
+
+            document.getElementById('th-alias').classList.add('hidden');
+            document.getElementById('th-command').classList.add('hidden');
+            document.getElementById('th-audio').classList.remove('hidden');
+
+            document.getElementById('btn-refresh').onclick = () => list_audio(true);
+            list_audio();
             return;
     }
 }
@@ -89,7 +109,7 @@ function list_commands(reload = false) {
 
             }
 
-            if(reload)
+            if (reload)
                 reload_success();
         },
         error: function (result, status, error) {
@@ -217,7 +237,7 @@ function list_alias(reload = false) {
                 LIST.appendChild(TR);
             }
 
-            if(reload)
+            if (reload)
                 reload_success();
         },
         error: function (result, status, error) {
@@ -298,4 +318,157 @@ function del_alias(alias) {
             });
         }
     })
+}
+
+// Audio
+function list_audio(reload = false) {
+    $.ajax({
+        url: "api/commands.php?list-audio",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            const LIST = document.getElementById('tbody-list');
+            LIST.innerHTML = "";
+
+            for (const neddle in data) {
+                // Base TR
+                const TR = document.createElement('tr');
+
+                // TD Name
+                const TD_1 = document.createElement('td');
+                TD_1.classList.add('col-xs-2');
+                TD_1.innerText = data[neddle].name;
+                TR.appendChild(TD_1);
+
+                // TD Trigger
+                const TD_2 = document.createElement('td');
+                TD_2.classList.add('col-xs-2');
+                TD_2.innerText = data[neddle].trigger_word;
+                TR.appendChild(TD_2);
+
+                // TD Trigger
+                const TD_3 = document.createElement('td');
+                TD_3.classList.add('col-xs-1');
+                TD_3.innerText = data[neddle].volume;
+                TR.appendChild(TD_3);
+
+                // TD Trigger
+                const TD_4 = document.createElement('td');
+                TD_4.classList.add('col-xs-1');
+                TD_4.innerText = data[neddle].timeout;
+                TR.appendChild(TD_4);
+
+                // TD Volume
+                const TD_5 = document.createElement('td');
+                const SPAN = document.createElement('span');
+                const BTN_1 = document.createElement('button');
+                const ICO_1 = document.createElement('i');
+                const BTN_2 = document.createElement('button');
+                const ICO_2 = document.createElement('i');
+
+                SPAN.className = "pull-right";
+
+                BTN_2.className = "btn btn-warning";
+                BTN_2.type = "button";
+                BTN_2.onclick = function () { edit_audio(data[neddle].id, data[neddle].name, data[neddle].trigger_word, data[neddle].volume, data[neddle].timeout) }
+                ICO_2.className = "glyphicon glyphicon-pencil";
+                BTN_2.appendChild(ICO_2);
+                SPAN.appendChild(BTN_2);
+
+                SPAN.appendChild(document.createTextNode(" "));
+
+                BTN_1.className = "btn btn-danger";
+                BTN_1.type = "button";
+                BTN_1.onclick = function () { del_audio(data[neddle].id, data[neddle].name) }
+                ICO_1.className = "glyphicon glyphicon-remove";
+                BTN_1.appendChild(ICO_1);
+                SPAN.appendChild(BTN_1);
+
+                TD_5.appendChild(SPAN);
+                TR.appendChild(TD_5);
+
+                LIST.appendChild(TR);
+            }
+
+            if (reload)
+                reload_success();
+
+        },
+        error: function (result, status, error) {
+            Swal.fire({
+                title: "API Error while loading",
+                text: error,
+                icon: 'error'
+            })
+        }
+    })
+}
+
+function add_audio() {
+    Swal.fire({
+        title: "Import audio file",
+        html: "<form id='swal-form' method='post' enctype='multipart/form-data' action='src/php/POST_commands.php'>" +
+            "<input type='hidden' name='action' value='add-audio'>" +
+            "<label>Name</label><input type='text' class='form-control' name='name' required><br/>" +
+            "<label>Trigger</label><input type='text' class='form-control' name='trigger' required><br/>" +
+            "<label>Volume</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.01 value=0.5)><br/>" +
+            "<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 )><br/>" +
+            "<label>File</label><input type='file' class='form-control' name='audio' accept='.mp3' required>" +
+            "</form>",
+        showCancelButton: true,
+        showConfirmButton: confirm,
+        focusConfirm: false,
+        allowOutsideClick: false,
+        width: "25%",
+        confirmButtonText: 'Import',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.value)
+            document.getElementById('swal-form').submit();
+    });
+}
+
+function del_audio(id, name) {
+    Swal.fire({
+        title: `Delete ${name} ?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        focusCancel: true
+    }).then((result) => {
+        if (result.value) {
+            $.post("src/php/POST_commands.php", {
+                action: "del-audio",
+                id: id
+            }, function () {
+                document.location.reload();
+            });
+        }
+    })
+}
+
+function edit_audio(id, name, trigger, volume, timeout) {
+    Swal.fire({
+        title: "Edit entry '" + name + "'",
+        html: "<form id='swal-form' method='post' action='src/php/POST_commands.php'>" +
+            "<input type='hidden' name='action' value='edit-audio'>" +
+            "<input type='hidden' name='id' value='" + id + "'>" +
+            "<label>Name</label><input type='text' class='form-control' name='name' value='" + name + "' required><br/>" +
+            "<label>Trigger</label><input type='text' class='form-control' name='trigger' value='" + trigger + "'  required><br/>" +
+            "<label>Volume</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.01 value='" + volume + "')><br/>" +
+            "<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 value='" + timeout + "')><br/>" +
+            "</form>",
+        showCancelButton: true,
+        showConfirmButton: confirm,
+        focusConfirm: false,
+        allowOutsideClick: false,
+        width: "25%",
+        confirmButtonText: 'Edit',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.value)
+            document.getElementById('swal-form').submit();
+    });
 }

@@ -59,5 +59,49 @@ if ($_POST['action'] == "del-alias" && !empty($_POST['alias'])) {
     exit();
 }
 
+// Audio
+if ($_POST['action'] == "add-audio" && !empty($_POST['name']) && !empty($_POST['trigger'])) {
+    $name = trim($_POST['name']);
+    $trigger = trim($_POST['trigger']);
+    $volume = floatval($_POST['volume']);
+    $timeout = intval($_POST['timeout']);
+    $file_name = file_upload("audio", dirname(__FILE__) . "/../audio", "", false, guidv4());
+
+    if ($file_name) {
+        db_query_no_result($db, "INSERT INTO commands_audio VALUES (NULL, ?, ?, ?, ?, ?)", "sssdi", [$name, $trigger, $file_name, $volume, $timeout]);
+    }
+
+    header('Location: ../../commands.php?audio');
+    exit();
+}
+
+if ($_POST['action'] == "edit-audio" && !empty($_POST['id'])) {
+    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $trigger = $_POST['trigger'];
+    $volume = floatval($_POST['volume']);
+    $timeout = intval($_POST['timeout']);
+
+    db_query_no_result($db, "UPDATE `commands_audio` SET `name` = ?, `trigger_word` = ?, `volume` = ?, `timeout` = ? WHERE id = ?", "ssdii", [$name, $trigger, $volume, $timeout, $id]);
+
+    header('Location: ../../commands.php?audio');
+    exit();
+}
+
+if ($_POST['action'] == "del-audio" && !empty($_POST['id'])) {
+    $id = $_POST['id'];
+
+    // Get filename
+    $file = db_query($db, "SELECT `file` FROM commands_audio WHERE id = ?", "i", $id)['file'];
+
+    // Remove file
+    shell_exec("rm src/audio/$file");
+
+    // Remove from database
+    db_query_no_result($db, "DELETE FROM commands_audio WHERE id = ?", "i", $id);
+
+    exit();
+}
+
 
 exit();
