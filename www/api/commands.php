@@ -23,6 +23,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if (isset($_GET['list-audio'])) {
+            echo json_encode(get_list_audio($db));
+            break;
+        }
+
         header("HTTP/1.0 400 Bad request");
         break;
 
@@ -103,6 +108,22 @@ function get_list_alias(mysqli $db)
 
     while ($row = $data->fetch_assoc()) {
         $result += array($count => ["alias" => $row['alias'], "command" => $row['command']]);
+        $count++;
+    }
+
+    return $result;
+}
+
+function get_list_audio(mysqli $db)
+{
+    $SQL_query = "SELECT * FROM commands_audio ORDER BY 'name' ASC";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = mysqli_fetch_assoc($data)) {
+        $result += array($count => ["id" => $row['id'], "name" => $row["name"], "trigger_word" => $row["trigger_word"], "volume" => $row["volume"], "timeout" => $row["timeout"], "file" => $row['file']]);
         $count++;
     }
 
