@@ -167,7 +167,7 @@ function connect_socket() {
             // Audio
             socket.on('play-audio', function (json) {
                 data = JSON.parse(json);
-                play_audio(data['file'], data['volume']);
+                play_audio(data.file, data.volume);
             })
         },
         error: function (result, status, error) {

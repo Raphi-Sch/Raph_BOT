@@ -35,7 +35,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
         if ($data['method'] == "get_command") {
-            echo json_encode(get_command($db, trim($data['command']), trim($data['param']), $data['excluded_tanks']));
+            echo json_encode(get_command($db, trim($data['command']), trim($data['param']), $data['excluded_tanks'], $data['excluded_audio']));
             break;
         }
 
@@ -50,7 +50,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 exit();
 
 // GET Functions
-function get_command(mysqli $db, string $command, string $param, array $excluded_tanks)
+function get_command(mysqli $db, string $command, string $param, array $excluded_tanks, array $excluded_audio)
 {
     $SQL_query = "SELECT `value` 
         FROM commands LEFT JOIN alias_commands ON alias_commands.command = commands.command
@@ -60,6 +60,10 @@ function get_command(mysqli $db, string $command, string $param, array $excluded
 
     if ($result['value'] == 'char') {
         $result = run_tank($db, $param, $excluded_tanks);
+    }
+
+    if (substr($result['value'], 0, 5) == "audio"){
+        $result = run_audio($db, $result['value'], $excluded_audio);
     }
 
     if (empty($result))
@@ -128,4 +132,15 @@ function get_list_audio(mysqli $db)
     }
 
     return $result;
+}
+
+function run_audio(mysqli $db, string $command, array $excluded_audio)
+{
+    $SQL_query = "SELECT trigger_word, `timeout`, `file`, `name`, volume FROM commands_audio WHERE trigger_word = ?";
+    $result = db_query($db, $SQL_query, "s", $command);
+
+    if ($result == null)
+        return ["id" => null, 'trigger_word' => null, 'timeout' => 0, 'file' => null, 'name' => null, 'volume' => 0, 'audio' => false];
+    else
+        return ["id" => $result['id'], 'trigger_word' => $result['trigger_word'], 'timeout' => $result['timeout'], 'file' => $result['file'], 'name' => $result['name'], 'volume' => $result['volume'], 'command_audio' => true];
 }

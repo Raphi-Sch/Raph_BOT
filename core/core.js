@@ -5,18 +5,19 @@ const commands = require("./command/commands")
 const moderator = require("./moderator/moderator")
 const reaction = require("./reaction/reaction")
 const shout = require("./shout/shout")
-const audio = require("./audio/audio")
 
-const version = "v5.7.0";
+const version = "v5.8.0";
 
 config.load().then(() => {
+    // UI
     socket.init(version);
 
+    // Plugins
     commands.init()
     moderator.init()
     reaction.init()
     shout.init()
-    audio.init()
 
+    // Main thread
     twitch.init();
 })
