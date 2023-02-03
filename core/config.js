@@ -5,7 +5,6 @@ const config = {
     cmd_msg_interval: null,
     cmd_prefix: null,
     cmd_time_interval: null,
-    plugin_audio: null,
     plugin_commands: null,
     plugin_moderator: null,
     plugin_reaction: null,
