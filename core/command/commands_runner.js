@@ -53,7 +53,6 @@ async function api_command(command, param) {
 
         // if true, command was an audio command
         if (json.command_audio) {
-            console.log("commande audio");
             // Handle timeout
             if (json.timeout > 0) {
                 excluded_audio.push(json.trigger_word);
