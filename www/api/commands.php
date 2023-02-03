@@ -127,7 +127,7 @@ function get_list_audio(mysqli $db)
     $count = 0;
 
     while ($row = mysqli_fetch_assoc($data)) {
-        $result += array($count => ["id" => $row['id'], "name" => $row["name"], "trigger_word" => $row["trigger_word"], "volume" => $row["volume"], "timeout" => $row["timeout"], "file" => $row['file']]);
+        $result += array($count => ["id" => $row['id'], "name" => $row["name"], "trigger_word" => $row["trigger_word"], "volume" => $row["volume"], "timeout" => $row["timeout"], "file" => $row['file'], "active" => $row['active']]);
         $count++;
     }
 

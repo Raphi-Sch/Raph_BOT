@@ -368,11 +368,23 @@ function list_audio(reload = false) {
                 const BTN_2 = document.createElement('button');
                 const ICO_2 = document.createElement('i');
 
+                // TD 3 (Auto)
+                const TD_ACTIVE = document.createElement('td');
+                const INPUT_ACTIVE = document.createElement('input');
+
+                TD_ACTIVE.classList.add('col-xs-1');
+                INPUT_ACTIVE.type = 'checkbox';
+                INPUT_ACTIVE.disabled = 'disabled';
+                INPUT_ACTIVE.checked = data[neddle].active ? "checked" : "";
+
+                TD_ACTIVE.appendChild(INPUT_ACTIVE);
+                TR.appendChild(TD_ACTIVE);
+
                 SPAN.className = "pull-right";
 
                 BTN_2.className = "btn btn-warning";
                 BTN_2.type = "button";
-                BTN_2.onclick = function () { edit_audio(data[neddle].id, data[neddle].name, data[neddle].trigger_word, data[neddle].volume, data[neddle].timeout) }
+                BTN_2.onclick = function () { edit_audio(data[neddle].id, data[neddle].name, data[neddle].trigger_word, data[neddle].volume, data[neddle].timeout, data[neddle].active) }
                 ICO_2.className = "glyphicon glyphicon-pencil";
                 BTN_2.appendChild(ICO_2);
                 SPAN.appendChild(BTN_2);
@@ -451,16 +463,22 @@ function del_audio(id, name) {
     })
 }
 
-function edit_audio(id, name, trigger, volume, timeout) {
+function edit_audio(id, name, trigger, volume, timeout, active) {
+    if (active == 1)
+        checkbox = "checked";
+    else
+        checkbox = "";
+
     Swal.fire({
-        title: "Edit entry '" + name + "'",
+        title: `Edit entry '${name}'`,
         html: "<form id='swal-form' method='post' action='src/php/POST_commands.php'>" +
             "<input type='hidden' name='action' value='edit-audio'>" +
-            "<input type='hidden' name='id' value='" + id + "'>" +
-            "<label>Name</label><input type='text' class='form-control' name='name' value='" + name + "' required><br/>" +
-            "<label>Trigger</label><input type='text' class='form-control' name='trigger' value='" + trigger + "'  required><br/>" +
-            "<label>Volume</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.01 value='" + volume + "')><br/>" +
-            "<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 value='" + timeout + "')><br/>" +
+            `<input type='hidden' name='id' value='${id}'>` +
+            `<label>Name</label><input type='text' class='form-control' name='name' value="${name}" required><br/>` +
+            `<label>Trigger</label><input type='text' class='form-control' name='trigger' value='${trigger}'  required><br/>` +
+            `<label>Volume</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.01 value='${volume}')><br/>` +
+            `<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 value='${timeout}')><br/>` +
+            `<label>Active</label><input class='form-control' type='checkbox' name='active' ${checkbox}><br />` +
             "</form>",
         showCancelButton: true,
         showConfirmButton: confirm,
