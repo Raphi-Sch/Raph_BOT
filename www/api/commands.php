@@ -52,24 +52,31 @@ exit();
 // GET Functions
 function get_command(mysqli $db, string $command, string $param, array $excluded_tanks, array $excluded_audio)
 {
-    $SQL_query = "SELECT `value` 
-        FROM commands LEFT JOIN alias_commands ON alias_commands.command = commands.command
-        WHERE alias_commands.alias = ? OR commands.command = ?";
-
-    $result = db_query($db, $SQL_query, "ss", [$command, $command]);
-
-    if ($result['value'] == 'char') {
-        $result = run_tank($db, $param, $excluded_tanks);
+    // Check for alias
+    $result = db_query($db, "SELECT `command` FROM alias_commands WHERE alias = ?", "s", $command);
+    if(!empty($result['command'])){
+        $command = $result['command'];
     }
 
-    if (substr($result['value'], 0, 5) == "audio") {
-        $result = run_audio($db, $result['value'], $excluded_audio);
+    // Query Text
+    $result = db_query($db, "SELECT `value` FROM commands  WHERE command = ?", "s", $command);
+    if(!empty($result['value'])){
+        return ['response_type' => 'text', 'value' => $result['value']];
     }
 
-    if (empty($result))
-        return ['value' => null];
-    else
+    // Query Tank
+    if ($command == 'tank') {
+        return run_tank($db, $param, $excluded_tanks);
+    }
+
+    // Query Audio
+    $result = run_audio($db, $command, $excluded_audio);
+    if (!empty($result)) {
         return $result;
+    }
+
+    // Default
+    return ['value' => null];
 }
 
 function get_auto(mysqli $db)
@@ -137,6 +144,7 @@ function get_list_audio(mysqli $db)
 function run_audio(mysqli $db, string $command, array $excluded_audio)
 {
     $SQL_params_type = "";
+    $trigger_word_not_in = "";
 
     // Build audio not in
     if (count($excluded_audio) > 0) {
@@ -145,11 +153,11 @@ function run_audio(mysqli $db, string $command, array $excluded_audio)
         $SQL_params_type .= str_repeat('s', $word_not_in_count);
     }
 
-    $SQL_query = "SELECT trigger_word, `timeout`, `file`, `name`, volume FROM commands_audio WHERE trigger_word = ? $trigger_word_not_in";
+    $SQL_query = "SELECT * FROM commands_audio WHERE trigger_word = ? $trigger_word_not_in";
     $result = db_query($db, $SQL_query, "s", $command);
 
     if ($result == null)
-        return ["id" => null, 'trigger_word' => null, 'timeout' => 0, 'file' => null, 'name' => null, 'volume' => 0, 'audio' => false];
+        return null;
     else
-        return ["id" => $result['id'], 'trigger_word' => $result['trigger_word'], 'timeout' => $result['timeout'], 'file' => $result['file'], 'name' => $result['name'], 'volume' => $result['volume'], 'command_audio' => true];
+        return ['response_type' => 'audio', "id" => $result['id'], 'trigger_word' => $result['trigger_word'], 'timeout' => $result['timeout'], 'file' => $result['file'], 'name' => $result['name'], 'volume' => $result['volume']];
 }

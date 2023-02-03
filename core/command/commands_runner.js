@@ -43,35 +43,41 @@ async function api_command(command, param) {
     })
 
     if (response.ok) {
-        let json = await response.json();
+        let data = await response.json();
 
-        // if true, command was '!char random'
-        if (json.char_random) {
-            if (json.exclude !== null) excluded_tanks.push(json.exclude);
-            if (excluded_tanks.length == json.total) excluded_tanks = [];
+        // Reponse is 'text' or 'tank'
+        if(data.response_type == "text" || data.response_type == "tank"){
+            return data.value;
         }
 
-        // if true, command was an audio command
-        if (json.command_audio) {
+        // Response is 'tank-random
+        if (data.response_type == "tank-random") {
+            if (data.exclude !== null) excluded_tanks.push(data.exclude);
+            if (excluded_tanks.length == data.total) excluded_tanks = [];
+            return data.value;
+        }
+
+        // Response is 'audio'
+        if (data.response_type == "audio") {
             // Handle timeout
-            if (json.timeout > 0) {
-                excluded_audio.push(json.trigger_word);
-                socket.log(`[AUDIO] ${json.name} has been excluded for ${json.timeout}s`);
+            if (data.timeout > 0) {
+                excluded_audio.push(data.trigger_word);
+                socket.log(`[AUDIO] '${data.name}' has been excluded for ${data.timeout}s`);
 
                 setTimeout(function () {
-                    excluded_audio.splice(excluded_audio.indexOf(json.trigger_word), 1);
-                    socket.log(`[AUDIO] ${json.name} has been removed from the exclusion list`);
-                }, json.timeout * 1000);
+                    excluded_audio.splice(excluded_audio.indexOf(data.trigger_word), 1);
+                    socket.log(`[AUDIO] '${data.name}' has been removed from the exclusion list`);
+                }, data.timeout * 1000);
             }
 
             // Send play request
-            socket.play_audio(json);
+            socket.play_audio(data);
 
             // No result in Twitch chat
             return null;
         }
 
-        return json.value;
+        return null;
     } else {
         console.error("API ERROR : " + response.status);
         return null;
