@@ -62,12 +62,15 @@ async function api_command(command, param) {
             // Handle timeout
             if (data.timeout > 0) {
                 excluded_audio.push(data.trigger_word);
-                socket.log(`[AUDIO] '${data.name}' has been excluded for ${data.timeout}s`);
+                socket.log(`[AUDIO] '${data.name}' has been played (timeout : ${data.timeout}s )`);
 
                 setTimeout(function () {
                     excluded_audio.splice(excluded_audio.indexOf(data.trigger_word), 1);
                     socket.log(`[AUDIO] '${data.name}' has been removed from the exclusion list`);
                 }, data.timeout * 1000);
+            }
+            else {
+                socket.log(`[AUDIO] '${data.name}' has been played (no timeout)`);
             }
 
             // Send play request
