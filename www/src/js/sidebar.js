@@ -8,7 +8,8 @@ $.ajax({
         for (const id in data) {
             if (data[id] == "1") {
                 title_enable = true;
-                document.getElementById(id).classList.remove("hidden");
+                if(document.getElementById(id))
+                    document.getElementById(id).classList.remove("hidden");
             }
         }
 
