@@ -92,9 +92,12 @@ function start_stop() {
 
 function play_audio(file, volume) {
     if (is_dashboard) {
-        document.getElementById('player').src = "src/audio/" + file;
-        document.getElementById('player').volume = parseFloat(volume);
-        document.getElementById('player').play();
+        const PLAYER = document.createElement('audio');
+        document.getElementById('players').appendChild(PLAYER);
+        PLAYER.src = "src/audio/" + file;
+        PLAYER.volume = parseFloat(volume);
+        PLAYER.play();
+        PLAYER.onended = function () { PLAYER.remove() };
     }
 }
 

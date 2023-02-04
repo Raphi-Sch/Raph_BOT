@@ -48,18 +48,6 @@ require_once('src/php/header.php');
                         </div>
                     </div>
                 </div>
-
-                <!-- Audio -->
-                <div class="row">
-                    <div class="col-sm-3">Audio</div>
-                    <div class="col-sm-9">
-                        <!-- Audio player -->
-                        <audio id='player' preload=none controls>
-                            <source src='' type='audio/mpeg'>
-                        </audio>
-                    </div>
-                </div>
-
             </div>
 
             <div class="col-sm-8 col-sm-offset-1">
@@ -103,8 +91,6 @@ require_once('src/php/header.php');
             </div>
         </div>
 
-
-
         <!-- Commands Section -->
         <h2 class="sub-header">Log
             <div class='pull-right'>
@@ -116,6 +102,10 @@ require_once('src/php/header.php');
                 <pre id="log" class="log"></pre>
             </div>
         </div>
+
+        <!-- Player spawn -->
+        <div id='players'></div>
+
     </div>
 
     <script>
