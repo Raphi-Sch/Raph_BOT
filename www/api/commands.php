@@ -131,7 +131,7 @@ function get_list_alias(mysqli $db)
 
 function get_list_audio(mysqli $db)
 {
-    $SQL_query = "SELECT * FROM commands_audio ORDER BY 'name' ASC";
+    $SQL_query = "SELECT * FROM commands_audio ORDER BY `name` ASC";
     $data = db_query_raw($db, $SQL_query);
 
     $result = array();
