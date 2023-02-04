@@ -62,7 +62,7 @@ async function api_command(command, param) {
             // Handle timeout
             if (data.timeout > 0) {
                 excluded_audio.push(data.trigger_word);
-                socket.log(`[AUDIO] '${data.name}' has been played (timeout : ${data.timeout}s )`);
+                socket.log(`[AUDIO] '${data.name}' has been played (timeout : ${data.timeout}s)`);
 
                 setTimeout(function () {
                     excluded_audio.splice(excluded_audio.indexOf(data.trigger_word), 1);
