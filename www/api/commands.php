@@ -34,8 +34,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     case 'POST':
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'][0];
 
-        if ($data['method'] == "get_command") {
-            echo json_encode(get_command($db, trim($data['command']), trim($data['param']), $data['excluded_tanks'], $data['excluded_audio']));
+        if ($data['method'] == "get_command" && isset($data['command'])) {
+            $param = isset($data['param']) ? trim($data['param']) : "";
+            $excluded_tanks = isset($data['excluded_tanks']) ? $data['excluded_tanks'] : array();
+            $excluded_audio = isset($data['excluded_audio']) ? $data['excluded_audio'] : array();
+
+            echo json_encode(get_command($db, trim($data['command']), $param, $excluded_tanks, $excluded_audio));
             break;
         }
 
