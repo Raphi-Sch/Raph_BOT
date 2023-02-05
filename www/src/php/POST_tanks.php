@@ -40,7 +40,7 @@ if (isset($_POST['action']) && $_POST['action'] == "add-nation" && !empty($_POST
     $alias = strtolower(trim($_POST['alias']));
     $nation = $_POST['value'];
 
-    db_query_no_result($db, "REPLACE INTO alias_nation VALUES (?, ?)", "ss", [$alias, $nation]);
+    db_query_no_result($db, "REPLACE INTO tanks_nation VALUES (?, ?)", "ss", [$alias, $nation]);
 
     header('Location: ../../tanks_nation.php');
     exit();
@@ -51,7 +51,7 @@ if ($_POST['action'] == "add-alias" && !empty($_POST['alias']) && !empty($_POST[
     $alias = strtolower(trim($_POST['alias']));
     $tank = $_POST['value'];
 
-    db_query_no_result($db, "REPLACE INTO alias_tanks VALUES (?, ?)", "ss", [$alias, $tank]);
+    db_query_no_result($db, "REPLACE INTO tanks_alias VALUES (?, ?)", "ss", [$alias, $tank]);
 
     header('Location: ../../tanks_alias.php');
     exit();
@@ -69,13 +69,13 @@ if ($_POST['action'] == "del-tank") {
 
 // Delete nation
 if (isset($_POST['action']) && $_POST['action'] == "del-nation") {
-    db_query_no_result($db, "DELETE FROM alias_nation WHERE alias = ?", "s", $_POST['alias']);
+    db_query_no_result($db, "DELETE FROM tanks_nation WHERE alias = ?", "s", $_POST['alias']);
     exit();
 }
 
 // Delete alias
 if (isset($_POST) && $_POST['action'] == "del-alias") {
-    db_query_no_result($db, "DELETE FROM alias_tanks WHERE alias = ?", "s", $_POST['alias']);
+    db_query_no_result($db, "DELETE FROM tanks_alias WHERE alias = ?", "s", $_POST['alias']);
     exit();
 }
 

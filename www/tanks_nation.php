@@ -3,7 +3,7 @@ require_once('src/php/header.php');
 
 // List
 $HTML = "";
-$data = db_query_raw($db, "SELECT * FROM alias_nation ORDER BY alias_nation.nation ASC");
+$data = db_query_raw($db, "SELECT * FROM tanks_nation ORDER BY nation ASC");
 while ($row = mysqli_fetch_assoc($data)) {
     $HTML .= "
   <tr>

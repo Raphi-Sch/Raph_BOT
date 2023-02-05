@@ -9,7 +9,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 // List alias
-$result = db_query_raw($db, "SELECT * FROM alias_tanks ORDER BY alias_tanks.tank ASC");
+$result = db_query_raw($db, "SELECT * FROM tanks_alias ORDER BY tank ASC");
 $alias = "";
 while ($row = mysqli_fetch_assoc($result)) {
     $alias .= "
