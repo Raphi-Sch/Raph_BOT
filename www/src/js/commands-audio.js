@@ -147,7 +147,7 @@ function del_audio(id, name) {
                 action: "del-audio",
                 id: id
             }, function () {
-                document.location.reload();
+                list_audio(true);
             });
         }
     })
@@ -161,7 +161,7 @@ function edit_audio(id, name, trigger, volume, timeout, active) {
 
     Swal.fire({
         title: `Edit : '${name}'`,
-        html: "<form id='swal-form' method='post' action='src/php/POST_commands.php'>" +
+        html: "<form id='swal-form' method='post'>" +
             "<input type='hidden' name='action' value='edit-audio'>" +
             `<input type='hidden' name='id' value='${id}'>` +
             `<label>Name</label><input type='text' class='form-control' name='name' value="${name}" required><br/>` +
@@ -178,7 +178,11 @@ function edit_audio(id, name, trigger, volume, timeout, active) {
         confirmButtonText: 'Edit',
         cancelButtonText: 'Cancel'
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value) {
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_commands.php', FORM_DATA).done(function () {
+                list_audio(true);
+            });
+        }
     });
 }

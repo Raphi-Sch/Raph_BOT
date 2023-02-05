@@ -141,8 +141,12 @@ function add_entry() {
         confirmButtonText: 'Add',
         cancelButtonText: 'Cancel'
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value){
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_commands.php', FORM_DATA).done(function () {
+                list_commands(true);
+            });
+        }
     });
 }
 
@@ -155,7 +159,7 @@ function edit_entry(id, command, text, auto) {
     Swal.fire({
         title: `Editing : "${command}"`,
         icon: 'info',
-        html: "<br /><form id='swal-form' method='post' action='src/php/POST_commands.php'>" +
+        html: "<br /><form id='swal-form' method='post'>" +
             "<input type='hidden' name='action' value='edit'>" +
             `<input type='hidden' name='id' value='${id}'>` +
             `<label>Command</label><input class='form-control' type='text' name='command' value="${command}"><br />` +
@@ -169,8 +173,12 @@ function edit_entry(id, command, text, auto) {
         confirmButtonText: 'Edit',
         cancelButtonText: 'Cancel'
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value){
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_commands.php', FORM_DATA).done(function () {
+                list_commands(true);
+            });
+        }
     })
 }
 
@@ -186,7 +194,7 @@ function del_entry(id, command) {
     }).then((result) => {
         if (result.value) {
             $.post("src/php/POST_commands.php", { action: "del", id: id }, function () {
-                list_commands(); // Dynamic reload
+                list_commands(true); // Dynamic reload
             });
         }
     })

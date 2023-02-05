@@ -110,7 +110,7 @@ function list_option_alias() {
 function add_alias() {
     Swal.fire({
         title: "Add command alias",
-        html: "<form id='swal-form' method='post' action='src/php/POST_commands.php'>" +
+        html: "<form id='swal-form' method='post'>" +
             "<input type='hidden' name='action' value='add-alias'/>" +
             "<label>Alias</label><input type='text' class='form-control' name='alias' required><br/>" +
             "<label>Command</label><select id='swal-select' class='form-control' name='value' required>" +
@@ -128,8 +128,12 @@ function add_alias() {
             list_option_alias();
         }
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value){
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_commands.php', FORM_DATA).done(function () {
+                list_alias(true);
+            });
+        }
     });
 }
 
@@ -148,7 +152,7 @@ function del_alias(alias) {
                 action: "del-alias",
                 alias: alias
             }, function () {
-                list_alias(); // Dynamic reload
+                list_alias(true);
             });
         }
     })
