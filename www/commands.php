@@ -52,10 +52,10 @@ require_once('src/php/header.php');
                 <tr id='th-audio' class='hidden'>
                     <th class="col-xs-2">Name</th>
                     <th class="col-xs-2">Trigger</th>
-                    <th class="col-xs-1">Volume (%)</th>
-                    <th class="col-xs-1">Timeout (s)</th>
-                    <th class="col-xs-1">Active</th>
-                    <th class="col-xs-2">Player</th>
+                    <th class="col-xs-1 text-center">Volume (%)</th>
+                    <th class="col-xs-1 text-center">Timeout (s)</th>
+                    <th class="col-xs-1 text-center">Active</th>
+                    <th class="col-xs-2 text-center">Player</th>
                     <th class="table-scroll-th-fix"></th>
                     <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_audio()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
@@ -70,6 +70,8 @@ require_once('src/php/header.php');
 
     <script src="src/js/common.js"></script>
     <script src="src/js/commands.js"></script>
+    <script src="src/js/commands-alias.js"></script>
+    <script src="src/js/commands-audio.js"></script>
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
