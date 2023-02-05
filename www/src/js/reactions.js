@@ -19,20 +19,22 @@ function list(reload = false) {
 
                 // TD 2 (Reaction)
                 const TD_2 = document.createElement('td');
-                TD_2.classList.add('col-xs-6');
+                TD_2.classList.add('col-xs-5');
                 TD_2.innerText = data[neddle]['reaction'];
                 TR.appendChild(TD_2);
 
                 // TD 3 (Freq)
                 const TD_3 = document.createElement('td');
                 TD_3.classList.add('col-xs-1');
-                TD_3.innerText = data[neddle]['frequency'];
+                TD_3.classList.add('text-center');
+                TD_3.innerText = data[neddle]['frequency'] + "%";
                 TR.appendChild(TD_3);
 
                 // TD 4 (Freq)
                 const TD_4 = document.createElement('td');
                 TD_4.classList.add('col-xs-1');
-                TD_4.innerText = data[neddle]['timeout'];
+                TD_4.classList.add('text-center');
+                TD_4.innerText = data[neddle]['timeout'] + "s";
                 TR.appendChild(TD_4);
 
                 // TD BTN (Btn)
@@ -86,7 +88,7 @@ function add_entry() {
             "<input type='hidden' name='action' value='add'>" +
             "<label>Trigger</label><input type='text' class='form-control' name='trigger' placeholder='Trigger' required><br/>" +
             "<label>Reaction</label><textarea type='text' class='form-control' name='reaction' placeholder='Reaction' required></textarea><br/>" +
-            "<label>Frequency</label><input type='number' class='form-control' name='frequency' min=0 step=1 max=100 required><br/>" +
+            `<label>Frequency (<span id='swal-freq'>50</span>%)</label><input type='range' class='form-control' name='frequency' min=0 max=100 step=1 value='50' oninput="document.getElementById('swal-freq').innerText = parseInt((this.value))"><br/>` +
             "<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 step=1 required><br/>" +
             "</form>",
         showCancelButton: true,
@@ -115,7 +117,7 @@ function edit_entry(id, trigger, text, freq, time) {
             `<input type='hidden' name='id' value='${id}'>` +
             `<label>Trigger</label><input class='form-control' type='text' name='trigger' value="${trigger}"><br/>` +
             `<label>Reaction</label><textarea class='form-control' type='text' name='reaction'>${text}</textarea><br/>` +
-            `<label>Frequency (%)</label><input class='form-control' type='number' name='frequency' min=0 step=1 max=100 value="${freq}"><br/>` +
+            `<label>Frequency (<span id='swal-freq'>${freq}</span>%)</label><input type='range' class='form-control' name='frequency' min=0 max=100 step=1 value='${freq}' oninput="document.getElementById('swal-freq').innerText = parseInt((this.value))"><br/>` +
             `<label>Timeout (s)</label><input class='form-control' type='number' name='timeout' min=0 step=1 value="${time}"><br/>` +
             "</form>",
         showCancelButton: true,

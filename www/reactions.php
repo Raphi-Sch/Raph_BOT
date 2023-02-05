@@ -30,9 +30,9 @@ require_once('src/php/header.php');
             <thead>
                 <tr>
                     <th class="col-xs-2">Trigger</th>
-                    <th class="col-xs-6">Reaction</th>
-                    <th class="col-xs-1">Frequency (%)</th>
-                    <th class="col-xs-1">Timeout (s)</th>
+                    <th class="col-xs-5">Reaction</th>
+                    <th class="col-xs-1 text-center">Frequency</th>
+                    <th class="col-xs-1 text-center">Timeout</th>
                     <th class="table-scroll-th-fix"></th>
                     <th class="col-xs-2"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>

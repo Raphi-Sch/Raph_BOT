@@ -27,14 +27,14 @@ function list_audio(reload = false) {
                 const TD_VOLUME = document.createElement('td');
                 TD_VOLUME.classList.add('col-xs-1');
                 TD_VOLUME.classList.add('text-center');
-                TD_VOLUME.innerText = parseInt(data[neddle].volume * 100) + " %";
+                TD_VOLUME.innerText = parseInt(data[neddle].volume * 100) + "%";
                 TR.appendChild(TD_VOLUME);
 
                 // TD Timeout
                 const TD_TIMEOUT = document.createElement('td');
                 TD_TIMEOUT.classList.add('col-xs-1');
                 TD_TIMEOUT.classList.add('text-center');
-                TD_TIMEOUT.innerText = data[neddle].timeout;
+                TD_TIMEOUT.innerText = data[neddle].timeout + "s";
                 TR.appendChild(TD_TIMEOUT);
 
                 // TD Active
@@ -166,7 +166,7 @@ function edit_audio(id, name, trigger, volume, timeout, active) {
             `<input type='hidden' name='id' value='${id}'>` +
             `<label>Name</label><input type='text' class='form-control' name='name' value="${name}" required><br/>` +
             `<label>Trigger</label><input type='text' class='form-control' name='trigger' value='${trigger}'  required><br/>` +
-            `<label>Volume (<SPAN_BTN id='swal-volume'>${volume * 100}</SPAN_BTN>%)</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.05 value='${volume}' oninput="document.getElementById('swal-volume').innerText = parseInt((this.value*100))"><br/>` +
+            `<label>Volume (<span id='swal-volume'>${volume * 100}</span>%)</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.05 value='${volume}' oninput="document.getElementById('swal-volume').innerText = parseInt((this.value*100))"><br/>` +
             `<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 value='${timeout}')><br/>` +
             `<label>Active</label><input class='form-control' type='checkbox' name='active' ${checkbox}><br />` +
             "</form>",

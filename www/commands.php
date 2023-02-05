@@ -52,8 +52,8 @@ require_once('src/php/header.php');
                 <tr id='th-audio' class='hidden'>
                     <th class="col-xs-2">Name</th>
                     <th class="col-xs-2">Trigger</th>
-                    <th class="col-xs-1 text-center">Volume (%)</th>
-                    <th class="col-xs-1 text-center">Timeout (s)</th>
+                    <th class="col-xs-1 text-center">Volume</th>
+                    <th class="col-xs-1 text-center">Timeout</th>
                     <th class="col-xs-1 text-center">Active</th>
                     <th class="col-xs-2 text-center">Player</th>
                     <th class="table-scroll-th-fix"></th>
