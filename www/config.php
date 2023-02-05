@@ -47,7 +47,7 @@ while ($row = mysqli_fetch_assoc($data)) {
 <html>
 
 <head>
-    <title>Configuration - <?php echo $bot_name; ?></title>
+    <title id='bot_name'>Configuration - </title>
     <?php include("src/html/header.html"); ?>
 </head>
 
@@ -84,6 +84,7 @@ while ($row = mysqli_fetch_assoc($data)) {
             document.getElementById("core").className = "active";
         });
     </script>
+    <script src="src/js/common.js"></script>
     <script src="src/js/config.js"></script>
 
 </body>

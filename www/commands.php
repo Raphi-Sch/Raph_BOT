@@ -6,7 +6,7 @@ require_once('src/php/header.php');
 <html lang="fr">
 
 <head>
-    <title>Commands - <?php echo $bot_name; ?></title>
+    <title id='bot_name'>Commands - </title>
     <?php include("src/html/header.html"); ?>
 </head>
 

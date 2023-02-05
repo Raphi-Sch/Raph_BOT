@@ -26,7 +26,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 <html>
 
 <head>
-    <title>Alias Tanks - <?php echo $bot_name; ?></title>
+    <title id='bot_name'>Alias Tanks - </title>
     <?php include("src/html/header.html"); ?>
 </head>
 
@@ -72,6 +72,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
         const tanks = "<?php echo $options_tanks; ?>";
     </script>
+    <script src="src/js/common.js"></script>
     <script src="src/js/tanks.js"></script>
 
 </body>

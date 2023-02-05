@@ -30,7 +30,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 <html>
 
 <head>
-    <title>Tanks - <?php echo $bot_name; ?></title>
+    <title id='bot_name'>Tanks - </title>
     <?php include("src/html/header.html"); ?>
 </head>
 
@@ -80,6 +80,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             document.getElementById("plugin_tanks").classList.add("active");
         });
     </script>
+    <script src="src/js/common.js"></script>
     <script src="src/js/tanks.js"></script>
 
 </body>

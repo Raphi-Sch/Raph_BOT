@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <head>
     <?php include("src/html/header.html"); ?>
-    <title>Password - <?php echo $bot_name; ?></title>
+    <title id='bot_name'>Password - </title>
 </head>
 
 <body>
@@ -132,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- Placed at the end of the document so the pages load faster -->
     <?php require_once('../src/php/alert.php'); ?>
+    <script src="src/js/common.js"></script>
 
 </body>
 

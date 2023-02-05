@@ -6,7 +6,7 @@ require_once('src/php/header.php');
 <html lang="fr">
 
 <head>
-    <title>Dock - <?php echo $bot_name; ?></title>
+    <title id='bot_name'>Dock - </title>
     <?php include("src/html/header.html"); ?>
 </head>
 
@@ -48,7 +48,7 @@ require_once('src/php/header.php');
         const is_dashboard = false;
         const is_dock = true;
     </script>
-
+    <script src="src/js/common.js"></script>
     <script src="src/js/socket.io.js"></script>
     <script src="src/js/socket-handler.js"></script>
 

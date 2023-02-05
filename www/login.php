@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <head>
     <?php include("src/html/header.html"); ?>
-    <title>Login - <?php echo $bot_name; ?></title>
+    <title id='bot_name'>Login - </title>
 </head>
 
 <body>
@@ -82,6 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </form>
         </div>
     </div>
+
+    <script src="src/js/common.js"></script>
 
     <?php require_once("src/php/alert.php"); ?>
 </body>

@@ -50,7 +50,7 @@ $result .= "\n";
 <html>
 
 <head>
-    <title>Update - Raph_BOT</title>
+    <title id='bot_name'>Update - </title>
     <?php include("src/html/header.html"); ?>
 </head>
 
@@ -77,6 +77,7 @@ $result .= "\n";
             document.getElementById("update").className = "active";
         });
     </script>
+    <script src="src/js/common.js"></script>
 
 </body>
 

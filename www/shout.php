@@ -6,7 +6,7 @@ require_once('src/php/header.php');
 <html>
 
 <head>
-    <title>Shout - <?php echo $bot_name; ?></title>
+    <title id='bot_name'>Shout - </title>
     <?php include("src/html/header.html"); ?>
 </head>
 

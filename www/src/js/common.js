@@ -41,3 +41,22 @@ function reload_success() {
         title: 'Reload successful !'
     })
 }
+
+$(document).ready(function() {
+    $.ajax({
+        url: "api/config.php?name",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            if(document.getElementById('bot_name'))
+                document.getElementById('bot_name').innerText = document.getElementById('bot_name').innerText + data.value;
+        },
+        error: function (result, status, error) {
+            Swal.fire({
+                title: "API Error while loading",
+                text: error,
+                icon: 'error'
+            })
+        }
+    })
+});
