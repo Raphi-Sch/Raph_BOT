@@ -62,7 +62,7 @@ function list_commands(reload = false) {
 
                 // TD 2 (Text)
                 const TD_VALUE = document.createElement('td');
-                TD_VALUE.classList.add('col-xs-8');
+                TD_VALUE.classList.add('col-xs-7');
                 TD_VALUE.innerText = data[neddle].value;
                 TR.appendChild(TD_VALUE);
 
@@ -71,6 +71,7 @@ function list_commands(reload = false) {
                 const INPUT_ACTIVE = document.createElement('input');
 
                 TD_ACTIVE.classList.add('col-xs-1');
+                TD_ACTIVE.classList.add('text-center');
                 INPUT_ACTIVE.type = 'checkbox';
                 INPUT_ACTIVE.disabled = 'disabled';
                 INPUT_ACTIVE.checked = data[neddle].auto ? "checked" : "";
@@ -86,9 +87,7 @@ function list_commands(reload = false) {
                 const ICO_EDIT = document.createElement('i');
                 const ICO_DELETE = document.createElement('i');
 
-                TD_BTN.classList.add('col-xs-1');
                 SPAN_BTN.className = "pull-right";
-
                 BTN_EDIT.className = "btn btn-warning";
                 BTN_EDIT.type = "button";
                 BTN_EDIT.onclick = function () { edit_entry(data[neddle].id, data[neddle].command, data[neddle].value, data[neddle].auto) };
