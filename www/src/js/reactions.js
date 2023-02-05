@@ -66,7 +66,7 @@ function list(reload = false) {
                 LIST.appendChild(TR);
             }
 
-            if(reload)
+            if (reload)
                 reload_success();
         },
         error: function (result, status, error) {
@@ -82,7 +82,7 @@ function list(reload = false) {
 function add_entry() {
     Swal.fire({
         title: "Add entry",
-        html: "<form id='swal-form' method='post' action='src/php/POST_reactions.php'>" +
+        html: "<form id='swal-form' method='post'>" +
             "<input type='hidden' name='action' value='add'>" +
             "<label>Trigger</label><input type='text' class='form-control' name='trigger' placeholder='Trigger' required><br/>" +
             "<label>Reaction</label><textarea type='text' class='form-control' name='reaction' placeholder='Reaction' required></textarea><br/>" +
@@ -97,8 +97,12 @@ function add_entry() {
         confirmButtonText: 'Add',
         cancelButtonText: 'Cancel'
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value) {
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_reactions.php', FORM_DATA).done(function () {
+                list(true);
+            });
+        }
     });
 }
 
@@ -106,7 +110,7 @@ function edit_entry(id, trigger, text, freq, time) {
     Swal.fire({
         title: `Editing : "${trigger}"`,
         icon: 'info',
-        html: "<form id='swal-form' method='post' action='src/php/POST_reactions.php'><br/>" +
+        html: "<form id='swal-form' method='post'><br/>" +
             "<input type='hidden' name='action' value='edit'>" +
             `<input type='hidden' name='id' value='${id}'>` +
             `<label>Trigger</label><input class='form-control' type='text' name='trigger' value="${trigger}"><br/>` +
@@ -121,8 +125,12 @@ function edit_entry(id, trigger, text, freq, time) {
         confirmButtonText: 'Edit',
         cancelButtonText: 'Cancel'
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value) {
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_reactions.php', FORM_DATA).done(function () {
+                list(true);
+            });
+        }
     })
 }
 
@@ -141,7 +149,7 @@ function del_entry(id, trigger) {
                 action: "del",
                 id: id
             }, function () {
-                list(true); // Dynamic reload
+                list(true);
             });
         }
     })

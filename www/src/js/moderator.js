@@ -61,7 +61,7 @@ function list(reload = false) {
 
             }
 
-            if(reload)
+            if (reload)
                 reload_success();
         },
         error: function (result, status, error) {
@@ -77,7 +77,7 @@ function list(reload = false) {
 function add_entry() {
     Swal.fire({
         title: "Add entry",
-        html: "<form id='swal-form' method='post' action='src/php/POST_moderator.php'>" +
+        html: "<form id='swal-form' method='post'>" +
             "<input type='hidden' name='action' value='add'>" +
             "<label>Trigger word</label><input type='text' class='form-control' name='trigger_word' placeholder='Trigger' required><br/>" +
             "<label>Mod action</label><input type='text' class='form-control' name='mod_action' placeholder='Moderator action' required><br/>" +
@@ -91,8 +91,12 @@ function add_entry() {
         confirmButtonText: 'Add',
         cancelButtonText: 'Cancel'
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value) {
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_moderator.php', FORM_DATA).done(function () {
+                list(true);
+            });
+        }
     });
 }
 
@@ -100,7 +104,7 @@ function edit_entry(id, trigger, mod, exp) {
     Swal.fire({
         title: `Editing : '${trigger}'`,
         icon: 'info',
-        html: "<form id='swal-form' method='post' action='src/php/POST_moderator.php'><br/>" +
+        html: "<form id='swal-form' method='post'><br/>" +
             "<input type='hidden' name='action' value='edit'>" +
             `<input type='hidden' name='id' value='${id}'>` +
             `<label>Trigger</label><input class='form-control' type='text' name='trigger' value="${trigger}"><br/>` +
@@ -114,8 +118,12 @@ function edit_entry(id, trigger, mod, exp) {
         confirmButtonText: 'Edit',
         cancelButtonText: 'Cancel'
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value) {
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_moderator.php', FORM_DATA).done(function () {
+                list(true);
+            });
+        }
     })
 }
 
@@ -134,7 +142,7 @@ function del_entry(id, trigger) {
                 action: "del",
                 id: id
             }, function () {
-                document.location.reload();
+                list(true);
             });
         }
     })

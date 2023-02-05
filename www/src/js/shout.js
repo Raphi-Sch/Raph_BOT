@@ -69,7 +69,7 @@ function list(reload = false) {
                 LIST.appendChild(TR);
             }
 
-            if(reload)
+            if (reload)
                 reload_success();
         },
         error: function (result, status, error) {
@@ -85,7 +85,7 @@ function list(reload = false) {
 function add_entry() {
     Swal.fire({
         title: "Add entry",
-        html: "<form id='swal-form' method='post' action='src/php/POST_shout.php'>" +
+        html: "<form id='swal-form' method='post'>" +
             "<input type='hidden' name='action' value='add'>" +
             "<label>Original</label><input type='text' class='form-control' name='original' placeholder='Original' required><br/>" +
             "<label>Replacement</label><input type='text' class='form-control' name='replacement' placeholder='Replacement' required><br/>" +
@@ -100,8 +100,12 @@ function add_entry() {
         confirmButtonText: 'Add',
         cancelButtonText: 'Cancel'
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value) {
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_shout.php', FORM_DATA).done(function () {
+                list(true);
+            });
+        }
     });
 }
 
@@ -123,8 +127,12 @@ function edit_entry(id, original, replacement, language, type) {
         confirmButtonText: 'Edit',
         cancelButtonText: 'Cancel'
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value) {
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_shout.php', FORM_DATA).done(function () {
+                list(true);
+            });
+        }
     })
 
     document.getElementById('swal-select-lang').value = language;
