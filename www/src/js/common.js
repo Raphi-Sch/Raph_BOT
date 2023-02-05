@@ -48,8 +48,12 @@ $(document).ready(function() {
         type: "GET",
         dataType: "json",
         success: function (data) {
-            if(document.getElementById('bot_name'))
+            if(document.getElementById('bot_name')){
                 document.getElementById('bot_name').innerText = document.getElementById('bot_name').innerText + data.value;
+            }
+            if(document.getElementById('bot_name_nav')){
+                document.getElementById('bot_name_nav').innerText = data.value;
+            }
         },
         error: function (result, status, error) {
             Swal.fire({

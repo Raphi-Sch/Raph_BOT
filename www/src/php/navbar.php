@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <span class="navbar-brand" href="#" id="bot_name_nav"><?php echo $bot_name; ?></span>
+            <span class="navbar-brand" href="#" id="bot_name_nav"></span>
         </div>
         <div id='navbar' class='collapse navbar-collapse'>
             <ul class='nav navbar-nav navbar-right'>
