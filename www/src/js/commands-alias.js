@@ -25,7 +25,7 @@ function list_alias(reload = false) {
 
                 // TD Btn
                 const TD_BTN = document.createElement('td');
-                const SPAN_BTN = document.createElement('SPAN_BTN');
+                const SPAN_BTN = document.createElement('span');
                 const BTN_DELETE = document.createElement('button');
                 const ICO_DELETE = document.createElement('i');
 

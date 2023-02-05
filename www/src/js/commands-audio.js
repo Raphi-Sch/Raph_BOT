@@ -65,7 +65,7 @@ function list_audio(reload = false) {
 
                 // TD BTN
                 const TD_BTN = document.createElement('td');
-                const SPAN_BTN = document.createElement('SPAN_BTN');
+                const SPAN_BTN = document.createElement('span');
                 const BTN_DELETE = document.createElement('button');
                 const ICO_DELETE = document.createElement('i');
                 const BTN_EDIT = document.createElement('button');
