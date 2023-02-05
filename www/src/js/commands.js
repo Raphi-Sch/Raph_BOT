@@ -55,57 +55,57 @@ function list_commands(reload = false) {
                 const TR = document.createElement('tr');
 
                 // TD 1 (Command)
-                const TD_1 = document.createElement('td');
-                TD_1.classList.add('col-xs-2');
-                TD_1.innerText = data[neddle].command;
-                TR.appendChild(TD_1);
+                const TD_COMMAND = document.createElement('td');
+                TD_COMMAND.classList.add('col-xs-2');
+                TD_COMMAND.innerText = data[neddle].command;
+                TR.appendChild(TD_COMMAND);
 
                 // TD 2 (Text)
-                const TD_2 = document.createElement('td');
-                TD_2.classList.add('col-xs-8');
-                TD_2.innerText = data[neddle].value;
-                TR.appendChild(TD_2);
+                const TD_VALUE = document.createElement('td');
+                TD_VALUE.classList.add('col-xs-8');
+                TD_VALUE.innerText = data[neddle].value;
+                TR.appendChild(TD_VALUE);
 
                 // TD 3 (Auto)
-                const TD_3 = document.createElement('td');
-                const INPUT = document.createElement('input');
+                const TD_ACTIVE = document.createElement('td');
+                const INPUT_ACTIVE = document.createElement('input');
 
-                TD_3.classList.add('col-xs-1');
-                INPUT.type = 'checkbox';
-                INPUT.disabled = 'disabled';
-                INPUT.checked = data[neddle].auto ? "checked" : "";
+                TD_ACTIVE.classList.add('col-xs-1');
+                INPUT_ACTIVE.type = 'checkbox';
+                INPUT_ACTIVE.disabled = 'disabled';
+                INPUT_ACTIVE.checked = data[neddle].auto ? "checked" : "";
 
-                TD_3.appendChild(INPUT);
-                TR.appendChild(TD_3);
+                TD_ACTIVE.appendChild(INPUT_ACTIVE);
+                TR.appendChild(TD_ACTIVE);
 
                 // TD 4 (Btn)
-                const TD_4 = document.createElement('td');
-                const SPAN = document.createElement('span');
-                const BTN_1 = document.createElement('button');
-                const BTN_2 = document.createElement('button');
-                const ICO_1 = document.createElement('i');
-                const ICO_2 = document.createElement('i');
+                const TD_BTN = document.createElement('td');
+                const SPAN_BTN = document.createElement('span');
+                const BTN_EDIT = document.createElement('button');
+                const BTN_DELETE = document.createElement('button');
+                const ICO_EDIT = document.createElement('i');
+                const ICO_DELETE = document.createElement('i');
 
-                TD_4.classList.add('col-xs-1');
-                SPAN.className = "pull-right";
+                TD_BTN.classList.add('col-xs-1');
+                SPAN_BTN.className = "pull-right";
 
-                BTN_1.className = "btn btn-warning";
-                BTN_1.type = "button";
-                BTN_1.onclick = function () { edit_entry(data[neddle].id, data[neddle].command, data[neddle].value, data[neddle].auto) };
-                ICO_1.className = "glyphicon glyphicon-pencil";
-                BTN_1.appendChild(ICO_1);
-                SPAN.appendChild(BTN_1);
-                SPAN.appendChild(document.createTextNode(" "));
+                BTN_EDIT.className = "btn btn-warning";
+                BTN_EDIT.type = "button";
+                BTN_EDIT.onclick = function () { edit_entry(data[neddle].id, data[neddle].command, data[neddle].value, data[neddle].auto) };
+                ICO_EDIT.className = "glyphicon glyphicon-pencil";
+                BTN_EDIT.appendChild(ICO_EDIT);
+                SPAN_BTN.appendChild(BTN_EDIT);
+                SPAN_BTN.appendChild(document.createTextNode(" "));
 
-                BTN_2.className = "btn btn-danger";
-                BTN_2.type = "button";
-                BTN_2.onclick = function () { del_entry(data[neddle].id, data[neddle].command) }
-                ICO_2.className = "glyphicon glyphicon-remove";
-                BTN_2.appendChild(ICO_2);
-                SPAN.appendChild(BTN_2);
+                BTN_DELETE.className = "btn btn-danger";
+                BTN_DELETE.type = "button";
+                BTN_DELETE.onclick = function () { del_entry(data[neddle].id, data[neddle].command) }
+                ICO_DELETE.className = "glyphicon glyphicon-remove";
+                BTN_DELETE.appendChild(ICO_DELETE);
+                SPAN_BTN.appendChild(BTN_DELETE);
 
-                TD_4.appendChild(SPAN);
-                TR.appendChild(TD_4);
+                TD_BTN.appendChild(SPAN_BTN);
+                TR.appendChild(TD_BTN);
 
                 LIST.appendChild(TR);
 
