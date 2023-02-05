@@ -42,16 +42,29 @@ function reload_success() {
     })
 }
 
-$(document).ready(function() {
+function timeout_to_string(seconds) {
+    if(seconds >= 3600)
+        return parseInt(seconds / 3600) + " hour";
+
+    if(seconds >= 60)
+        return parseInt(seconds / 60) + " min";
+
+    if(seconds == 0)
+        return "No timeout";
+
+    return seconds + "s";
+}
+
+$(document).ready(function () {
     $.ajax({
         url: "api/config.php?name",
         type: "GET",
         dataType: "json",
         success: function (data) {
-            if(document.getElementById('bot_name')){
+            if (document.getElementById('bot_name')) {
                 document.getElementById('bot_name').innerText = document.getElementById('bot_name').innerText + data.value;
             }
-            if(document.getElementById('bot_name_nav')){
+            if (document.getElementById('bot_name_nav')) {
                 document.getElementById('bot_name_nav').innerText = data.value;
             }
         },

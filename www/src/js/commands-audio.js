@@ -34,7 +34,7 @@ function list_audio(reload = false) {
                 const TD_TIMEOUT = document.createElement('td');
                 TD_TIMEOUT.classList.add('col-xs-1');
                 TD_TIMEOUT.classList.add('text-center');
-                TD_TIMEOUT.innerText = data[neddle].timeout + "s";
+                TD_TIMEOUT.innerText = timeout_to_string(data[neddle].timeout);
                 TR.appendChild(TD_TIMEOUT);
 
                 // TD Active
