@@ -88,8 +88,8 @@ function add_entry() {
             "<input type='hidden' name='action' value='add'>" +
             "<label>Trigger</label><input type='text' class='form-control' name='trigger' placeholder='Trigger' required><br/>" +
             "<label>Reaction</label><textarea type='text' class='form-control' name='reaction' placeholder='Reaction' required></textarea><br/>" +
-            `<label>Frequency (<span id='swal-freq'>50</span>%)</label><input type='range' class='form-control' name='frequency' min=0 max=100 step=1 value='50' oninput="document.getElementById('swal-freq').innerText = parseInt((this.value))"><br/>` +
-            "<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 step=1 required><br/>" +
+            `<label>Frequency (<span id='swal-freq'>50</span>%)</label><input type='range' class='form-control' name='frequency' min=0 max=100 step=1 value=50 oninput="document.getElementById('swal-freq').innerText = parseInt((this.value))"><br/>` +
+            "<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 step=1 value=0 required><br/>" +
             "</form>",
         showCancelButton: true,
         showConfirmButton: confirm,

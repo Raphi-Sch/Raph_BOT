@@ -116,7 +116,7 @@ function add_audio() {
             "<label>Name</label><input type='text' class='form-control' name='name' required><br/>" +
             "<label>Trigger</label><input type='text' class='form-control' name='trigger' required><br/>" +
             "<label>Volume</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.05 value=0.5)><br/>" +
-            "<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 )><br/>" +
+            "<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 step=1 value=0><br/>" +
             "<label>File</label><input type='file' class='form-control' name='audio' accept='.mp3' required>" +
             "</form>",
         showCancelButton: true,
