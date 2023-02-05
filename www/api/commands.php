@@ -57,7 +57,7 @@ exit();
 function get_command(mysqli $db, string $command, string $param, array $excluded_tanks, array $excluded_audio)
 {
     // Check for alias
-    $result = db_query($db, "SELECT `command` FROM alias_commands WHERE alias = ?", "s", $command);
+    $result = db_query($db, "SELECT `command` FROM commands_alias WHERE alias = ?", "s", $command);
     if(!empty($result['command'])){
         $command = $result['command'];
     }
@@ -115,7 +115,7 @@ function get_list(mysqli $db)
 
 function get_list_alias(mysqli $db)
 {
-    $SQL_query = "SELECT * FROM alias_commands ORDER BY command ASC";
+    $SQL_query = "SELECT * FROM commands_alias ORDER BY command ASC";
     $data = db_query_raw($db, $SQL_query);
 
     $result = array();
