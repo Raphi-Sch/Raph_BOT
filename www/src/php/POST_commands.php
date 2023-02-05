@@ -96,7 +96,7 @@ if ($_POST['action'] == "del-audio" && !empty($_POST['id'])) {
     $file = db_query($db, "SELECT `file` FROM commands_audio WHERE id = ?", "i", $id)['file'];
 
     // Remove file
-    shell_exec("rm src/audio/$file");
+    shell_exec("rm ../audio/$file");
 
     // Remove from database
     db_query_no_result($db, "DELETE FROM commands_audio WHERE id = ?", "i", $id);
