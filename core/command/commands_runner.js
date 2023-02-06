@@ -15,21 +15,31 @@ async function run_command(user, message) {
 
         if (command) {
             // Replace @username with current username
-            if (user) {
+            if (user && command.response_type != 'audio') {
                 command.value = command.value.replace("@username", user['display-name']);
             }
 
-            // Command is mod_only / broadcaster
-            if (command.mod_only && (user.mod || user.username == config.twitch_channel))
-                return command.value;
+            // Command is 'text'
+            if (command.response_type == "text") {
+                return run_text(command, user);
+            }
 
-            // Command is sub_only
-            if (command.sub_only && user.subscriber)
-                return command.value;
+            // Response is 'audio'
+            if (command.response_type == "audio") {
+                return run_audio(command, user);
+            }
 
-            // Command is for everyone
-            if (!command.mod_only && !command.sub_only)
+            // Command is 'tank'
+            if (command.response_type == "tank") {
                 return command.value;
+            }
+
+            // Command is 'tank-random
+            if (command.response_type == "tank-random") {
+                if (command.exclude !== null) excluded_tanks.push(command.exclude);
+                if (excluded_tanks.length == command.total) excluded_tanks = [];
+                return command.value;
+            }
         }
     }
     return null;
@@ -53,47 +63,63 @@ async function api_command(command, param) {
     })
 
     if (response.ok) {
-        let data = await response.json();
-
-        // Reponse is 'text' or 'tank'
-        if (data.response_type == "text" || data.response_type == "tank") {
-            return data;
-        }
-
-        // Response is 'tank-random
-        if (data.response_type == "tank-random") {
-            if (data.exclude !== null) excluded_tanks.push(data.exclude);
-            if (excluded_tanks.length == data.total) excluded_tanks = [];
-            return data;
-        }
-
-        // Response is 'audio'
-        if (data.response_type == "audio") {
-            // Handle timeout
-            if (data.timeout > 0) {
-                excluded_audio.push(data.trigger_word);
-                socket.log(`[AUDIO] '${data.name}' has been played (timeout : ${data.timeout}s)`);
-
-                setTimeout(function () {
-                    excluded_audio.splice(excluded_audio.indexOf(data.trigger_word), 1);
-                    socket.log(`[AUDIO] '${data.name}' has been removed from the exclusion list`);
-                }, data.timeout * 1000);
-            }
-            else {
-                socket.log(`[AUDIO] '${data.name}' has been played (no timeout)`);
-            }
-
-            // Send play request
-            socket.play_audio(data);
-
-            // No result in Twitch chat
-            return null;
-        }
-
-        return null;
+        return response.json();
     } else {
         console.error("API ERROR : " + response.status);
         return null;
+    }
+}
+
+function run_text(command, user) {
+    // Command is mod_only / broadcaster
+    if (command.mod_only && (user.mod || user.username == config.twitch_channel))
+        return command.value;
+
+    // Command is sub_only
+    if (command.sub_only && user.subscriber)
+        return command.value;
+
+    // Command is for everyone
+    if (!command.mod_only && !command.sub_only)
+        return command.value;
+}
+
+function run_audio(command, user) {
+    // Audio command is mod_only / broadcaster
+    if (command.mod_only && (user.mod || user.username == config.twitch_channel)) {
+        timeout_audio(command);
+        socket.play_audio(command);
+        return null;
+    }
+
+    // Audio command is sub_only
+    if (command.sub_only && user.subscriber) {
+        timeout_audio(command);
+        socket.play_audio(command);
+        return null;
+    }
+
+    // Audio command is for everyone
+    if (!command.mod_only && !command.sub_only) {
+        timeout_audio(command);
+        socket.play_audio(command);
+        return null;
+    }
+}
+
+function timeout_audio(command) {
+    // Handle timeout
+    if (command.timeout > 0) {
+        excluded_audio.push(command.trigger_word);
+        socket.log(`[AUDIO] '${command.name}' has been played (timeout : ${command.timeout}s)`);
+
+        setTimeout(function () {
+            excluded_audio.splice(excluded_audio.indexOf(command.trigger_word), 1);
+            socket.log(`[AUDIO] '${command.name}' has been removed from the exclusion list`);
+        }, command.timeout * 1000);
+    }
+    else {
+        socket.log(`[AUDIO] '${command.name}' has been played (no timeout)`);
     }
 }
 
