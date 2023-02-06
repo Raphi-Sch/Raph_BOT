@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : Dim 05 fév. 2023 à 12:24
+-- Généré le : lun. 06 fév. 2023 à 13:09
 -- Version du serveur :  10.5.15-MariaDB-0+deb11u1
 -- Version de PHP : 7.4.33
 
@@ -31,7 +31,9 @@ CREATE TABLE `commands` (
   `id` int(11) NOT NULL,
   `command` text NOT NULL,
   `value` text NOT NULL,
-  `auto` tinyint(1) NOT NULL DEFAULT 0
+  `auto` tinyint(1) NOT NULL DEFAULT 0,
+  `mod_only` tinyint(1) NOT NULL DEFAULT 0,
+  `sub_only` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -58,7 +60,9 @@ CREATE TABLE `commands_audio` (
   `file` text NOT NULL,
   `volume` float NOT NULL DEFAULT 1,
   `timeout` int(11) NOT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT 1
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  `mod_only` tinyint(1) NOT NULL DEFAULT 0,
+  `sub_only` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
