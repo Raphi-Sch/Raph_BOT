@@ -53,10 +53,12 @@ require_once('src/php/header.php');
 
                 <tr id='th-audio' class='hidden'>
                     <th class="col-xs-2">Name</th>
-                    <th class="col-xs-2">Trigger</th>
+                    <th class="col-xs-1">Trigger</th>
                     <th class="col-xs-1 text-center">Volume</th>
                     <th class="col-xs-1 text-center">Timeout</th>
                     <th class="col-xs-1 text-center">Active</th>
+                    <th class="col-xs-1 text-center">Mod Only</th>
+                    <th class="col-xs-1 text-center">Sub Only</th>
                     <th class="col-xs-2 text-center">Player</th>
                     <th class="table-scroll-th-fix"></th>
                     <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_audio()'><i class="glyphicon glyphicon-plus"></i></button></th>

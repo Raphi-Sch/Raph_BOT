@@ -29,7 +29,8 @@ if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
     $mod_only = (isset($_POST['mod_only']) ? 1 : 0) || (isset($_POST['sub_only']) ? 1 : 0);
     $sub_only = isset($_POST['sub_only']) ? 1 : 0;
 
-    db_query_no_result($db, "UPDATE `commands` SET `command` = ?, `value` = ?, `auto` = ?, `mod_only` = ?, `sub_only` = ? WHERE id = ?", "ssiiii", [$command, $text, $auto, $mod_only, $sub_only, $_POST['id']]);
+    db_query_no_result($db, "UPDATE `commands` SET `command` = ?, `value` = ?, `auto` = ?, `mod_only` = ?, `sub_only` = ? WHERE id = ?", 
+        "ssiiii", [$command, $text, $auto, $mod_only, $sub_only, $_POST['id']]);
 
     header('Location: ../../commands.php');
     exit();
@@ -70,9 +71,12 @@ if ($_POST['action'] == "add-audio" && !empty($_POST['name']) && !empty($_POST['
     $volume = floatval($_POST['volume']);
     $timeout = intval($_POST['timeout']);
     $file_name = file_upload("audio", dirname(__FILE__) . "/../audio", "", false, guidv4());
+    $mod_only = (isset($_POST['mod_only']) ? 1 : 0) || (isset($_POST['sub_only']) ? 1 : 0);
+    $sub_only = isset($_POST['sub_only']) ? 1 : 0;
 
     if ($file_name) {
-        db_query_no_result($db, "INSERT INTO commands_audio VALUES (NULL, ?, ?, ?, ?, ?, 1)", "sssdi", [$name, $trigger, $file_name, $volume, $timeout]);
+        db_query_no_result($db, "INSERT INTO commands_audio VALUES (NULL, ?, ?, ?, ?, ?, 1, ?, ?)", 
+            "sssdiii", [$name, $trigger, $file_name, $volume, $timeout, $mod_only, $sub_only]);
     }
 
     header('Location: ../../commands.php?audio');
@@ -86,8 +90,11 @@ if ($_POST['action'] == "edit-audio" && !empty($_POST['id'])) {
     $volume = floatval($_POST['volume']);
     $timeout = intval($_POST['timeout']);
     $active = isset($_POST['active']) ? 1 : 0;
+    $mod_only = (isset($_POST['mod_only']) ? 1 : 0) || (isset($_POST['sub_only']) ? 1 : 0);
+    $sub_only = isset($_POST['sub_only']) ? 1 : 0;
 
-    db_query_no_result($db, "UPDATE `commands_audio` SET `name` = ?, `trigger_word` = ?, `volume` = ?, `timeout` = ?, `active` = ? WHERE id = ?", "ssdiii", [$name, $trigger, $volume, $timeout, $active, $id]);
+    db_query_no_result($db, "UPDATE `commands_audio` SET `name` = ?, `trigger_word` = ?, `volume` = ?, `timeout` = ?, `active` = ?, `mod_only` = ?, `sub_only` = ? WHERE id = ?", 
+        "ssdiiiii", [$name, $trigger, $volume, $timeout, $active, $mod_only, $sub_only, $id]);
 
     header('Location: ../../commands.php?audio');
     exit();

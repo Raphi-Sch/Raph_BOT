@@ -19,7 +19,7 @@ function list_audio(reload = false) {
 
                 // TD Trigger
                 const TD_TRIGGER = document.createElement('td');
-                TD_TRIGGER.classList.add('col-xs-2');
+                TD_TRIGGER.classList.add('col-xs-1');
                 TD_TRIGGER.innerText = data[neddle].trigger_word;
                 TR.appendChild(TD_TRIGGER);
 
@@ -50,6 +50,32 @@ function list_audio(reload = false) {
                 TD_ACTIVE.appendChild(INPUT_ACTIVE);
                 TR.appendChild(TD_ACTIVE);
 
+                // TD Mod
+                const TD_MOD = document.createElement('td');
+                const INPUT_MOD = document.createElement('input');
+
+                TD_MOD.classList.add('col-xs-1');
+                TD_MOD.classList.add('text-center');
+                INPUT_MOD.type = 'checkbox';
+                INPUT_MOD.disabled = 'disabled';
+                INPUT_MOD.checked = data[neddle].mod_only ? "checked" : "";
+
+                TD_MOD.appendChild(INPUT_MOD);
+                TR.appendChild(TD_MOD);
+
+                // TD Sub
+                const TD_SUB = document.createElement('td');
+                const INPUT_SUB = document.createElement('input');
+
+                TD_SUB.classList.add('col-xs-1');
+                TD_SUB.classList.add('text-center');
+                INPUT_SUB.type = 'checkbox';
+                INPUT_SUB.disabled = 'disabled';
+                INPUT_SUB.checked = data[neddle].sub_only ? "checked" : "";
+
+                TD_SUB.appendChild(INPUT_SUB);
+                TR.appendChild(TD_SUB);
+
                 // TD Player
                 const TD_PLAYER = document.createElement('td');
                 const PLAYER = document.createElement('audio');
@@ -74,7 +100,7 @@ function list_audio(reload = false) {
                 SPAN_BTN.className = "pull-right";
                 BTN_EDIT.className = "btn btn-warning";
                 BTN_EDIT.type = "button";
-                BTN_EDIT.onclick = function () { edit_audio(data[neddle].id, data[neddle].name, data[neddle].trigger_word, data[neddle].volume, data[neddle].timeout, data[neddle].active) }
+                BTN_EDIT.onclick = function () { edit_audio(data[neddle].id, data[neddle].name, data[neddle].trigger_word, data[neddle].volume, data[neddle].timeout, data[neddle].active, data[neddle].mod_only, data[neddle].sub_only) }
                 ICO_EDIT.className = "glyphicon glyphicon-pencil";
                 BTN_EDIT.appendChild(ICO_EDIT);
                 SPAN_BTN.appendChild(BTN_EDIT);
@@ -117,6 +143,8 @@ function add_audio() {
             "<label>Trigger</label><input type='text' class='form-control' name='trigger' required><br/>" +
             "<label>Volume</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.05 value=0.5)><br/>" +
             "<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 step=1 value=0><br/>" +
+            `<label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only'><br />` +
+            `<label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only'><br />` +
             "<label>File</label><input type='file' class='form-control' name='audio' accept='.mp3' required>" +
             "</form>",
         showCancelButton: true,
@@ -153,11 +181,10 @@ function del_audio(id, name) {
     })
 }
 
-function edit_audio(id, name, trigger, volume, timeout, active) {
-    if (active == 1)
-        checkbox = "checked";
-    else
-        checkbox = "";
+function edit_audio(id, name, trigger, volume, timeout, active, mod_only, sub_only) {
+    checkbox_active = active ? "checked" : "";
+    checkbox_mod = mod_only ? "checked" : "";
+    checkbox_sub = sub_only ? "checked" : "";
 
     Swal.fire({
         title: `Edit : '${name}'`,
@@ -168,7 +195,9 @@ function edit_audio(id, name, trigger, volume, timeout, active) {
             `<label>Trigger</label><input type='text' class='form-control' name='trigger' value='${trigger}'  required><br/>` +
             `<label>Volume (<span id='swal-volume'>${parseInt(volume * 100)}</span>%)</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.05 value='${volume}' oninput="document.getElementById('swal-volume').innerText = parseInt(this.value*100)"><br/>` +
             `<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 value='${timeout}')><br/>` +
-            `<label>Active</label><input class='form-control' type='checkbox' name='active' ${checkbox}><br />` +
+            `<label>Active</label><input class='form-control' type='checkbox' name='active' ${checkbox_active}><br />` +
+            `<label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only' ${checkbox_mod}><br />` +
+            `<label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only' ${checkbox_sub}><br />` +
             "</form>",
         showCancelButton: true,
         showConfirmButton: confirm,

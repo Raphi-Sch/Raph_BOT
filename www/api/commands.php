@@ -138,7 +138,7 @@ function get_list_audio(mysqli $db)
     $count = 0;
 
     while ($row = mysqli_fetch_assoc($data)) {
-        $result += array($count => ["id" => $row['id'], "name" => $row["name"], "trigger_word" => $row["trigger_word"], "volume" => $row["volume"], "timeout" => $row["timeout"], "file" => $row['file'], "active" => $row['active']]);
+        $result += array($count => ["id" => $row['id'], "name" => $row["name"], "trigger_word" => $row["trigger_word"], "volume" => $row["volume"], "timeout" => $row["timeout"], "file" => $row['file'], "active" => $row['active'], 'mod_only' => $row['mod_only'], 'sub_only' => $row['sub_only']]);
         $count++;
     }
 
@@ -169,5 +169,5 @@ function run_audio(mysqli $db, string $command, array $excluded_audio)
     if ($result == null)
         return null;
     else
-        return ['response_type' => 'audio', "id" => $result['id'], 'trigger_word' => $result['trigger_word'], 'timeout' => $result['timeout'], 'file' => $result['file'], 'name' => $result['name'], 'volume' => $result['volume']];
+        return ['response_type' => 'audio', "id" => $result['id'], 'trigger_word' => $result['trigger_word'], 'timeout' => $result['timeout'], 'file' => $result['file'], 'name' => $result['name'], 'volume' => $result['volume'], 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
 }
