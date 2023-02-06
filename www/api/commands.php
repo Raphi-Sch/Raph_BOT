@@ -63,9 +63,9 @@ function get_command(mysqli $db, string $command, string $param, array $excluded
     }
 
     // Query Text
-    $result = db_query($db, "SELECT `value` FROM commands  WHERE command = ?", "s", $command);
+    $result = db_query($db, "SELECT * FROM commands  WHERE command = ?", "s", $command);
     if(!empty($result['value'])){
-        return ['response_type' => 'text', 'value' => $result['value']];
+        return ['response_type' => 'text', 'value' => $result['value'], 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
     }
 
     // Query Tank
@@ -106,7 +106,7 @@ function get_list(mysqli $db)
     $count = 0;
 
     while ($row = $data->fetch_assoc()) {
-        $result += array($count => ["id" => $row['id'], "command" => $row['command'], "value" => $row['value'], "auto" => $row['auto']]);
+        $result += array($count => ["id" => $row['id'], "command" => $row['command'], "value" => $row['value'], "auto" => $row['auto'], 'mod_only' => $row['mod_only'], 'sub_only' => $row['sub_only']]);
         $count++;
     }
 

@@ -11,15 +11,25 @@ async function run_command(user, message) {
     const fullCommand = tools.command_parser(message, config.cmd_prefix);
 
     if (fullCommand) {
-        let result = await api_command(fullCommand[1], fullCommand[2]);
+        let command = await api_command(fullCommand[1], fullCommand[2]);
 
-        // Put username if command required it
-        if (result) {
+        if (command) {
+            // Replace @username with current username
             if (user) {
-                return result.replace("@username", user['display-name']);
-            } else {
-                return result;
+                command.value = command.value.replace("@username", user['display-name']);
             }
+
+            // Command is mod_only / broadcaster
+            if (command.mod_only && (user.mod || user.username == config.twitch_channel))
+                return command.value;
+
+            // Command is sub_only
+            if (command.sub_only && user.subscriber)
+                return command.value;
+
+            // Command is for everyone
+            if (!command.mod_only && !command.sub_only)
+                return command.value;
         }
     }
     return null;
@@ -46,15 +56,15 @@ async function api_command(command, param) {
         let data = await response.json();
 
         // Reponse is 'text' or 'tank'
-        if(data.response_type == "text" || data.response_type == "tank"){
-            return data.value;
+        if (data.response_type == "text" || data.response_type == "tank") {
+            return data;
         }
 
         // Response is 'tank-random
         if (data.response_type == "tank-random") {
             if (data.exclude !== null) excluded_tanks.push(data.exclude);
             if (excluded_tanks.length == data.total) excluded_tanks = [];
-            return data.value;
+            return data;
         }
 
         // Response is 'audio'

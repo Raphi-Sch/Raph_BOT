@@ -13,8 +13,10 @@ if ($_POST['action'] == "add") {
     $command = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($_POST['command'])));
     $text = trim($_POST['text']);
     $auto = isset($_POST['auto']) ? 1 : 0;
+    $mod_only = (isset($_POST['mod_only']) ? 1 : 0) || (isset($_POST['sub_only']) ? 1 : 0);
+    $sub_only = isset($_POST['sub_only']) ? 1 : 0;
 
-    db_query_no_result($db, "INSERT INTO commands VALUES (NULL, ?, ?, ?)", "ssi", [$command, $text, $auto]);
+    db_query_no_result($db, "INSERT INTO commands VALUES (NULL, ?, ?, ?, ?, ?)", "ssiii", [$command, $text, $auto, $mod_only, $sub_only]);
 
     header('Location: ../../commands.php');
     exit();
@@ -24,8 +26,10 @@ if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
     $command = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($_POST['command'])));
     $text = trim($_POST['text']);
     $auto = isset($_POST['auto']) ? 1 : 0;
+    $mod_only = (isset($_POST['mod_only']) ? 1 : 0) || (isset($_POST['sub_only']) ? 1 : 0);
+    $sub_only = isset($_POST['sub_only']) ? 1 : 0;
 
-    db_query_no_result($db, "UPDATE `commands` SET `command` = ?, `value` = ?, `auto` = ? WHERE id = ?", "ssii", [$command, $text, $auto, $_POST['id']]);
+    db_query_no_result($db, "UPDATE `commands` SET `command` = ?, `value` = ?, `auto` = ?, `mod_only` = ?, `sub_only` = ? WHERE id = ?", "ssiiii", [$command, $text, $auto, $mod_only, $sub_only, $_POST['id']]);
 
     header('Location: ../../commands.php');
     exit();

@@ -54,19 +54,19 @@ function list_commands(reload = false) {
                 // Base TR
                 const TR = document.createElement('tr');
 
-                // TD 1 (Command)
+                // TD Command
                 const TD_COMMAND = document.createElement('td');
                 TD_COMMAND.classList.add('col-xs-2');
                 TD_COMMAND.innerText = data[neddle].command;
                 TR.appendChild(TD_COMMAND);
 
-                // TD 2 (Text)
+                // TD Text
                 const TD_VALUE = document.createElement('td');
-                TD_VALUE.classList.add('col-xs-7');
+                TD_VALUE.classList.add('col-xs-5');
                 TD_VALUE.innerText = data[neddle].value;
                 TR.appendChild(TD_VALUE);
 
-                // TD 3 (Auto)
+                // TD Auto
                 const TD_ACTIVE = document.createElement('td');
                 const INPUT_ACTIVE = document.createElement('input');
 
@@ -79,7 +79,33 @@ function list_commands(reload = false) {
                 TD_ACTIVE.appendChild(INPUT_ACTIVE);
                 TR.appendChild(TD_ACTIVE);
 
-                // TD 4 (Btn)
+                // TD Mod
+                const TD_MOD = document.createElement('td');
+                const INPUT_MOD = document.createElement('input');
+
+                TD_MOD.classList.add('col-xs-1');
+                TD_MOD.classList.add('text-center');
+                INPUT_MOD.type = 'checkbox';
+                INPUT_MOD.disabled = 'disabled';
+                INPUT_MOD.checked = data[neddle].mod_only ? "checked" : "";
+
+                TD_MOD.appendChild(INPUT_MOD);
+                TR.appendChild(TD_MOD);
+
+                // TD Sub
+                const TD_SUB = document.createElement('td');
+                const INPUT_SUB = document.createElement('input');
+
+                TD_SUB.classList.add('col-xs-1');
+                TD_SUB.classList.add('text-center');
+                INPUT_SUB.type = 'checkbox';
+                INPUT_SUB.disabled = 'disabled';
+                INPUT_SUB.checked = data[neddle].sub_only ? "checked" : "";
+
+                TD_SUB.appendChild(INPUT_SUB);
+                TR.appendChild(TD_SUB);
+
+                // TD Btn
                 const TD_BTN = document.createElement('td');
                 const SPAN_BTN = document.createElement('span');
                 const BTN_EDIT = document.createElement('button');
@@ -90,7 +116,7 @@ function list_commands(reload = false) {
                 SPAN_BTN.className = "pull-right";
                 BTN_EDIT.className = "btn btn-warning";
                 BTN_EDIT.type = "button";
-                BTN_EDIT.onclick = function () { edit_entry(data[neddle].id, data[neddle].command, data[neddle].value, data[neddle].auto) };
+                BTN_EDIT.onclick = function () { edit_entry(data[neddle].id, data[neddle].command, data[neddle].value, data[neddle].auto, data[neddle].mod_only, data[neddle].sub_only) };
                 ICO_EDIT.className = "glyphicon glyphicon-pencil";
                 BTN_EDIT.appendChild(ICO_EDIT);
                 SPAN_BTN.appendChild(BTN_EDIT);
@@ -131,6 +157,8 @@ function add_entry() {
             "<label>Command</label><input type='text' class='form-control' name='command' placeholder='Command' required><br/>" +
             "<label>Text</label><textarea type='text' class='form-control' name='text' placeholder='Text' required></textarea><br/>" +
             `<label>Auto</label><input class='form-control' type='checkbox' name='auto'><br />` +
+            `<label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only'><br />` +
+            `<label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only'><br />` +
             "</form>",
         showCancelButton: true,
         showConfirmButton: confirm,
@@ -140,7 +168,7 @@ function add_entry() {
         confirmButtonText: 'Add',
         cancelButtonText: 'Cancel'
     }).then((result) => {
-        if (result.value){
+        if (result.value) {
             const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
             $.post('src/php/POST_commands.php', FORM_DATA).done(function () {
                 list_commands(true);
@@ -149,11 +177,10 @@ function add_entry() {
     });
 }
 
-function edit_entry(id, command, text, auto) {
-    if (auto == 1)
-        checkbox = "checked";
-    else
-        checkbox = "";
+function edit_entry(id, command, text, auto, mod_only, sub_only) {
+    checkbox_auto = auto ? "checked" : "";
+    checkbox_mod = mod_only ? "checked" : "";
+    checkbox_sub = sub_only ? "checked" : "";
 
     Swal.fire({
         title: `Editing : "${command}"`,
@@ -163,7 +190,9 @@ function edit_entry(id, command, text, auto) {
             `<input type='hidden' name='id' value='${id}'>` +
             `<label>Command</label><input class='form-control' type='text' name='command' value="${command}"><br />` +
             `<label>Text</label><textarea class='form-control' type='text' name='text'>${text}</textarea><br />` +
-            `<label>Auto</label><input class='form-control' type='checkbox' name='auto' ${checkbox}><br />` +
+            `<label>Auto</label><input class='form-control' type='checkbox' name='auto' ${checkbox_auto}><br />` +
+            `<label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only' ${checkbox_mod}><br />` +
+            `<label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only' ${checkbox_sub}><br />` +
             "</form>",
         showCancelButton: true,
         focusConfirm: false,
@@ -172,7 +201,7 @@ function edit_entry(id, command, text, auto) {
         confirmButtonText: 'Edit',
         cancelButtonText: 'Cancel'
     }).then((result) => {
-        if (result.value){
+        if (result.value) {
             const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
             $.post('src/php/POST_commands.php', FORM_DATA).done(function () {
                 list_commands(true);
