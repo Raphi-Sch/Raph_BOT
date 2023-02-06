@@ -34,5 +34,7 @@ In the folder "template" :
 
 # DISCLAIMER
 
-This software is provided "as is", not guarantee it work.
-Security is not guaranted too.
+This software is provided "as is", which mean :
+- No guarantee it work
+- Security is not guaranted
+- No support provided
