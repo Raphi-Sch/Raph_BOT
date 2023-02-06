@@ -1,9 +1,32 @@
 {
     "table": {
-        "users": {
+        "commands": {
             "fields": [
-                "username",
-                "password"
+                "id",
+                "command",
+                "value",
+                "auto",
+                "mod_only",
+                "sub_only"
+            ]
+        },
+        "commands_alias": {
+            "fields": [
+                "alias",
+                "command"
+            ]
+        },
+        "commands_audio": {
+            "fields": [
+                "id",
+                "name",
+                "trigger_word",
+                "file",
+                "volume",
+                "timeout",
+                "active",
+                "mod_only",
+                "sub_only"
             ]
         },
         "config": {
@@ -14,12 +37,61 @@
                 "type"
             ]
         },
-        "commands": {
+        "moderator": {
             "fields": [
                 "id",
-                "command",
-                "value",
-                "auto"
+                "trigger_word",
+                "mod_action",
+                "explanation"
+            ]
+        },
+        "reactions": {
+            "fields": [
+                "id",
+                "trigger_word",
+                "reaction",
+                "frequency",
+                "timeout"
+            ]
+        },
+        "shout": {
+            "fields": [
+                "id",
+                "original",
+                "replacement",
+                "language",
+                "type"
+            ]
+        },
+        "tanks": {
+            "fields": [
+                "id",
+                "trigger_word",
+                "nation",
+                "tier",
+                "name",
+                "mark",
+                "max_dmg",
+                "note",
+                "type"
+            ]
+        },
+        "tanks_alias": {
+            "fields": [
+                "alias",
+                "tank"
+            ]
+        },
+        "tanks_nation": {
+            "fields": [
+                "alias",
+                "nation"
+            ]
+        },
+        "users": {
+            "fields": [
+                "username",
+                "password"
             ]
         }
     }
