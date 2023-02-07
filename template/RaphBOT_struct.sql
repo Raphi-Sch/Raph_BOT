@@ -101,7 +101,7 @@ CREATE TABLE `reactions` (
   `id` int(11) NOT NULL,
   `trigger_word` varchar(30) NOT NULL,
   `reaction` text NOT NULL,
-  `frequency` int(11) NOT NULL,
+  `frequency` tinyint(4) NOT NULL,
   `timeout` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -115,7 +115,7 @@ CREATE TABLE `shout` (
   `id` int(11) NOT NULL,
   `original` text NOT NULL,
   `replacement` text NOT NULL,
-  `language` text DEFAULT NULL,
+  `language` text NOT NULL,
   `type` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -129,11 +129,11 @@ CREATE TABLE `tanks` (
   `id` int(11) NOT NULL,
   `trigger_word` varchar(30) NOT NULL,
   `nation` text NOT NULL,
-  `tier` int(2) NOT NULL,
+  `tier` tinyint(2) NOT NULL,
   `name` text NOT NULL,
-  `mark` int(1) NOT NULL,
+  `mark` tinyint(1) NOT NULL,
   `max_dmg` int(5) NOT NULL,
-  `note` text NOT NULL,
+  `note` text NULL,
   `type` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -167,7 +167,7 @@ CREATE TABLE `tanks_nation` (
 
 CREATE TABLE `users` (
   `username` varchar(20) NOT NULL,
-  `password` text DEFAULT NULL
+  `password` text DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
