@@ -9,7 +9,7 @@ if ($_POST['action'] == "add" && !empty($_POST['trigger']) && !empty($_POST['rea
     $frequency = intval($_POST['frequency']);
     $timeout = intval($_POST['timeout']);
 
-    db_query_no_result($db, "INSERT INTO reactions VALUES (NULL, ?, ?, ?, ?)", "ssii", [$trigger, $reaction, $frequency, $timeout]);
+    db_query_no_result($db, "INSERT INTO reactions (`id`, `trigger_word`, `reaction`, `frequency`, `timeout`) VALUES (NULL, ?, ?, ?, ?)", "ssii", [$trigger, $reaction, $frequency, $timeout]);
 
     header('Location: ../../reactions.php');
     exit();

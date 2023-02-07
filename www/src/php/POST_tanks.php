@@ -15,7 +15,7 @@ if ($_POST['action'] == "add-tank" && !empty($_POST['form_key']) && !empty($_POS
 
     $max_dmg = empty($max_dmg) ? 0 : $max_dmg;
 
-    db_query_no_result($db, "INSERT INTO tanks VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)", "ssisiiss", [$trigger_word, $nation, $tier, $name, $mark, $max_dmg, $note, $type]);
+    db_query_no_result($db, "INSERT INTO tanks (`id`, `trigger_word`, `nation`, `tier`, `name`, `mark`, `max_dmg`, `note`, `type`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)", "ssisiiss", [$trigger_word, $nation, $tier, $name, $mark, $max_dmg, $note, $type]);
 
     header('Location: ../../tanks.php');
     exit();
@@ -40,7 +40,7 @@ if (isset($_POST['action']) && $_POST['action'] == "add-nation" && !empty($_POST
     $alias = strtolower(trim($_POST['alias']));
     $nation = $_POST['value'];
 
-    db_query_no_result($db, "REPLACE INTO tanks_nation VALUES (?, ?)", "ss", [$alias, $nation]);
+    db_query_no_result($db, "REPLACE INTO tanks_nation (`alias`, `nation`) VALUES (?, ?)", "ss", [$alias, $nation]);
 
     header('Location: ../../tanks_nation.php');
     exit();
@@ -51,7 +51,7 @@ if ($_POST['action'] == "add-alias" && !empty($_POST['alias']) && !empty($_POST[
     $alias = strtolower(trim($_POST['alias']));
     $tank = $_POST['value'];
 
-    db_query_no_result($db, "REPLACE INTO tanks_alias VALUES (?, ?)", "ss", [$alias, $tank]);
+    db_query_no_result($db, "REPLACE INTO tanks_alias (`alias`, `tank`) VALUES (?, ?)", "ss", [$alias, $tank]);
 
     header('Location: ../../tanks_alias.php');
     exit();

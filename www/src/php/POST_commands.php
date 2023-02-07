@@ -16,7 +16,7 @@ if ($_POST['action'] == "add") {
     $mod_only = (isset($_POST['mod_only']) ? 1 : 0) || (isset($_POST['sub_only']) ? 1 : 0);
     $sub_only = isset($_POST['sub_only']) ? 1 : 0;
 
-    db_query_no_result($db, "INSERT INTO commands VALUES (NULL, ?, ?, ?, ?, ?)", "ssiii", [$command, $text, $auto, $mod_only, $sub_only]);
+    db_query_no_result($db, "INSERT INTO commands (`id`, `command`, `value`, `auto`, `mod_only`, `sub_only`) VALUES (NULL, ?, ?, ?, ?, ?)", "ssiii", [$command, $text, $auto, $mod_only, $sub_only]);
 
     header('Location: ../../commands.php');
     exit();
@@ -53,7 +53,7 @@ if ($_POST['action'] == "add-alias") {
     $alias = strtolower(trim($_POST['alias']));
     $command = trim($_POST['value']);
 
-    db_query_no_result($db, "REPLACE INTO commands_alias (alias, command) VALUES (?, ?)", "ss", [$alias, $command]);
+    db_query_no_result($db, "REPLACE INTO commands_alias (`alias`, `command`) VALUES (?, ?)", "ss", [$alias, $command]);
 
     header('Location: ../../commands.php?alias');
     exit();
@@ -75,7 +75,7 @@ if ($_POST['action'] == "add-audio" && !empty($_POST['name']) && !empty($_POST['
     $sub_only = isset($_POST['sub_only']) ? 1 : 0;
 
     if ($file_name) {
-        db_query_no_result($db, "INSERT INTO commands_audio VALUES (NULL, ?, ?, ?, ?, ?, 1, ?, ?)", 
+        db_query_no_result($db, "INSERT INTO commands_audio (`id`, `name`, `trigger_word`, `file`, `volume`, `timeout`, `active`, `mod_only`, `sub_only`) VALUES (NULL, ?, ?, ?, ?, ?, 1, ?, ?)", 
             "sssdiii", [$name, $trigger, $file_name, $volume, $timeout, $mod_only, $sub_only]);
     }
 

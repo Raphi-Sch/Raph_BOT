@@ -7,7 +7,7 @@ if ($_POST['action'] == "add" && !empty($_POST['original']) && !empty($_POST['re
     $original = trim($_POST['original']);
     $replacement = trim($_POST['replacement']);
 
-    db_query_no_result($db, "INSERT INTO shout VALUES (NULL, ?, ?, ?, ?)", "sssi", [$original, $replacement, $_POST['language'], $_POST['type']]);
+    db_query_no_result($db, "INSERT INTO shout (`id`, `original`, `replacement`, `language`, `type`) VALUES (NULL, ?, ?, ?, ?)", "sssi", [$original, $replacement, $_POST['language'], $_POST['type']]);
     
     header('Location: ../../shout.php');
     exit();
