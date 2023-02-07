@@ -11,29 +11,36 @@ $JSON_upgrade = json_decode(file_get_contents("../template/upgrade.json"), true)
 $result = "";
 $redirect = true;
 
-function fix_column($db, $table_name, $column_name, $column_type)
+function column_fix($db, $db_name,$table_name, $column_name, $column_type)
 {
     if (!empty($column_name) && !empty($column_type)) {
         db_query_no_result($db, "ALTER TABLE $table_name ADD $column_name $column_type");
-        return "OK";
+
+        if(column_exist($db, $db_name, $table_name, $column_name))
+            return "OK";
+        else
+            return "Auto-fix failed";
     }
 
     return "Not enough data to perform auto-fix";
 }
 
-function check_column($db, $db_name, $table_name)
+function column_exist($db, $db_name, $table_name, $column){
+    return db_query($db, "SELECT COUNT(*) as exist FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND column_name = ?", "sss", [$db_name, $table_name, $column])['exist'];
+}
+
+function check_all_column($db, $db_name, $table_name)
 {
     global $JSON_upgrade;
     global $redirect;
     $result = "\n\t- Checking columns :";
 
     foreach ($JSON_upgrade["table"][$table_name]["fields"] as $field) {
-        $field_exist = db_query($db, "SELECT COUNT(*) as exist FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND column_name = ?", "sss", [$db_name, $table_name, $field])['exist'];
-        if ($field_exist) {
+        if (column_exist($db, $db_name, $table_name, $field)) {
             $result .= "\n\t\t - $field : OK";
         } else {
             $redirect = false;
-            $result .= "\n\t\t - $field : MISSING -> Attempting auto-fix -> " . fix_column($db, $table_name, $field, $JSON_upgrade["table"][$table_name]['types'][$field]);
+            $result .= "\n\t\t - $field : MISSING -> Attempting auto-fix -> " . column_fix($db, $db_name, $table_name, $field, $JSON_upgrade["table"][$table_name]['types'][$field]);
         }
     }
 
@@ -49,7 +56,7 @@ function check_table($db, $db_name, $table)
     $table_exist = mysqli_num_rows(db_query_raw($db, "SELECT * FROM information_schema.tables WHERE table_schema = ? AND table_name = ? LIMIT 1", "ss", [$db_name, $table]));
     if ($table_exist) {
         $result .= "\n\t- Table state : OK";
-        $result .= check_column($db, $db_name, $table);
+        $result .= check_all_column($db, $db_name, $table);
     } else {
         $redirect = false;
         $result .= "\n\t- Table state : MISSING -> check your configuration and compare it to the provided template";
@@ -67,7 +74,7 @@ if ($redirect) {
     header("Location: login.php");
     exit();
 } else {
-    $result .= "\n\nPlease check if all tables are set correctly, then refresh this page.\nYou will be automatically redirected to the login page.";
+    $result .= "\n\nPlease review this log and check if all tables are set correctly, then refresh this page.\nYou will be automatically redirected to the login page.";
 }
 
 ?>
