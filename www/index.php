@@ -7,24 +7,33 @@ global $JSON_upgrade;
 
 $db = db_connect();
 $db_name = json_decode(file_get_contents("../config.json"), true)["db_name"];
-$JSON_upgrade = json_decode(file_get_contents("../template/integrity.json"), true);
+$JSON_upgrade = json_decode(file_get_contents("../template/upgrade.json"), true);
 $result = "";
 $redirect = true;
 
+function fix_column($db, $table_name, $column_name, $column_type)
+{
+    if (!empty($column_name) && !empty($column_type)) {
+        db_query_no_result($db, "ALTER TABLE $table_name ADD $column_name $column_type");
+        return "OK";
+    }
 
-function check_column($db, $db_name, $table_name){
+    return "Not enough data to perform auto-fix";
+}
+
+function check_column($db, $db_name, $table_name)
+{
     global $JSON_upgrade;
     global $redirect;
     $result = "\n\t- Checking columns :";
 
     foreach ($JSON_upgrade["table"][$table_name]["fields"] as $field) {
         $field_exist = db_query($db, "SELECT COUNT(*) as exist FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND column_name = ?", "sss", [$db_name, $table_name, $field])['exist'];
-        if($field_exist){
+        if ($field_exist) {
             $result .= "\n\t\t - $field : OK";
-        }
-        else{
+        } else {
             $redirect = false;
-            $result .= "\n\t\t - $field : MISSING -> check your configuration and compare it to the provided template";
+            $result .= "\n\t\t - $field : MISSING -> Attempting auto-fix -> " . fix_column($db, $table_name, $field, $JSON_upgrade["table"][$table_name]['types'][$field]);
         }
     }
 
@@ -54,11 +63,10 @@ foreach ($JSON_upgrade["table"] as $key => $data) {
     $result .= check_table($db, $db_name, $key);
 }
 
-if($redirect){
+if ($redirect) {
     header("Location: login.php");
     exit();
-}
-else{
+} else {
     $result .= "\n\nPlease check if all tables are set correctly, then refresh this page.\nYou will be automatically redirected to the login page.";
 }
 
@@ -74,7 +82,7 @@ else{
 <body>
     <!-- Main area -->
     <div class="col-md-10 col-md-offset-1 main">
-        <h1 class="page-header">Checking Raph_BOT integrity</h1>
+        <h1 class="page-header">Checking Raph_BOT integrity / upgrades</h1>
         <div class="row">
             <div class="col-sm-12">
                 <pre class="log"><?php echo $result ?></pre>

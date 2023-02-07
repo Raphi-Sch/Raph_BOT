@@ -1,0 +1,171 @@
+{
+    "version":"5.9.0",
+    "table": {
+        "commands": {
+            "fields": [
+                "id",
+                "command",
+                "value",
+                "auto",
+                "mod_only",
+                "sub_only"
+            ],
+            "types": { 
+                "id" : "INT(11) NULL DEFAULT NULL",
+                "command" : "TEXT NULL",
+                "value" : "TEXT NULL",
+                "auto" : "BOOLEAN NOT NULL DEFAULT FALSE",
+                "mod_only" : "BOOLEAN NOT NULL DEFAULT FALSE",
+                "sub_only" : "BOOLEAN NOT NULL DEFAULT FALSE"
+            }            
+        },
+        "commands_alias": {
+            "fields": [
+                "alias",
+                "command"
+            ],
+            "types":{
+                "alias" : "varchar(30) NOT NULL",
+                "command" : "text NOT NULL"
+            }
+        },
+        "commands_audio": {
+            "fields": [
+                "id",
+                "name",
+                "trigger_word",
+                "file",
+                "volume",
+                "timeout",
+                "active",
+                "mod_only",
+                "sub_only"
+            ],
+            "types": {
+                "id" : "int(11) NOT NULL",
+                "name" : "text NOT NULL",
+                "trigger_word" : "varchar(20) NOT NULL",
+                "file" : "text NOT NULL",
+                "volume" : "float NOT NULL DEFAULT 1",
+                "timeout" : "int(11) NOT NULL",
+                "active" : "tinyint(1) NOT NULL DEFAULT 1",
+                "mod_only" : "tinyint(1) NOT NULL DEFAULT 0",
+                "sub_only" : "tinyint(1) NOT NULL DEFAULT 0"
+            }
+        },
+        "config": {
+            "fields": [
+                "id",
+                "value",
+                "hidden",
+                "type"
+            ],
+            "types": {
+                "id" : "varchar(30) NOT NULL",
+                "value" : "text NOT NULL",
+                "hidden" : "tinyint(1) DEFAULT 0",
+                "type" : "tinyint(4) NOT NULL DEFAULT 0"
+            }
+        },
+        "moderator": {
+            "fields": [
+                "id",
+                "trigger_word",
+                "mod_action",
+                "explanation"
+            ],
+            "types": {
+                "id" : "int(11) NOT NULL",
+                "trigger_word" : "text NOT NULL",
+                "mod_action" : "text NOT NULL",
+                "explanation" : "text NOT NULL"
+            }
+        },
+        "reactions": {
+            "fields": [
+                "id",
+                "trigger_word",
+                "reaction",
+                "frequency",
+                "timeout"
+            ],
+            "types": {
+                "id" : "int(11) NOT NULL",
+                "trigger_word" : "varchar(30) NOT NULL",
+                "reaction" : "text NOT NULL",
+                "frequency" : "tinyint(4) NOT NULL",
+                "timeout" : "int(11) NOT NULL"
+            }
+        },
+        "shout": {
+            "fields": [
+                "id",
+                "original",
+                "replacement",
+                "language",
+                "type"
+            ],
+            "types": {
+                "id" : "int(11) NOT NULL",
+                "original" : "text NOT NULL",
+                "replacement" : "text NOT NULL",
+                "language" : "text NOT NULL",
+                "type" : "int(11) NOT NULL DEFAULT 0"
+            }
+        },
+        "tanks": {
+            "fields": [
+                "id",
+                "trigger_word",
+                "nation",
+                "tier",
+                "name",
+                "mark",
+                "max_dmg",
+                "note",
+                "type"
+            ],
+            "types": {
+                "id" : "int(11) NOT NULL",
+                "trigger_word" : "varchar(30) NOT NULL",
+                "nation" : "text NOT NULL",
+                "tier" : "tinyint(2) NOT NULL",
+                "name" : "text NOT NULL",
+                "mark" : "tinyint(1) NOT NULL",
+                "max_dmg" : "int(5) NOT NULL",
+                "note" : "text NULL",
+                "type" : "varchar(10) NOT NULL"
+            }
+        },
+        "tanks_alias": {
+            "fields": [
+                "alias",
+                "tank"
+            ],
+            "types": {
+                "alias" : "varchar(30) NOT NULL",
+                "tank" : "text NOT NULL"
+            }
+        },
+        "tanks_nation": {
+            "fields": [
+                "alias",
+                "nation"
+            ],
+            "types": {
+                "alias" : "varchar(30) NOT NULL",
+                "nation" : "text NOT NULL"
+            }
+        },
+        "users": {
+            "fields": [
+                "username",
+                "password"
+            ],
+            "types": {
+                "username" : "varchar(20) NOT NULL",
+                "password" : "text DEFAULT 0"
+            }
+        }
+    }
+}
