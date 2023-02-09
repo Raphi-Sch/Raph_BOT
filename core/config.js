@@ -1,4 +1,5 @@
-const db = require('./db')
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const API_URL = require("../config.json").API_URL;
 
 const config = {
     bot_name: null,
@@ -18,13 +19,22 @@ const config = {
 };
 
 async function load() {
-    const sql = await db.query("SELECT * FROM config")
-    try {
-        sql.forEach(element => {
-            config[element.id] = element.value;
-        });
-    } catch (err) {
-        console.error(err);
+    const response = await fetch(API_URL + "config.php?config", {
+        method: "get",
+        headers: { "Content-Type": "application/json" }
+    })
+
+    if (response.ok) {
+        const data = await response.json();
+
+        for (const neddle in data) {
+            config[neddle] = data[neddle];
+        }
+        
+        return null;
+    } else {
+        console.error("Unable to load configuration from API, starting aborted.")
+        console.error("API ERROR : " + response.status);
         process.exit(1);
     }
 }

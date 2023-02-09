@@ -29,6 +29,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if(isset($_GET['config'])){
+            header('Content-Type: application/json');
+            echo json_encode(get_config($db));
+            break;
+        }
+
         header("HTTP/1.0 400 Bad request");
         break;
 
@@ -64,4 +70,17 @@ function get_socket_port(){
 
 function get_log(){
     return shell_exec('cat ' . dirname(__FILE__) . "/../../core/" . 'lastest.log');
+}
+
+function get_config(mysqli $db){
+    $SQL_query = "SELECT * FROM `config`";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+
+    while ($row = $data->fetch_assoc()) {
+        $result += array($row['id'] => $row['value']);
+    }
+
+    return $result;
 }

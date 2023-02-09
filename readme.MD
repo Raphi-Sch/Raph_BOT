@@ -15,7 +15,6 @@ Linux package :
 
 NodeJS module (and tested, package.json provided): 
 - console-stamp@3.0.3
-- mysql.js@1.0.2
 - socket.io@2.4.1
 - tmi.js@1.8.5
 
