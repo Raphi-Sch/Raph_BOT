@@ -2,14 +2,16 @@
 session_start();
 require_once('src/php/db.php');
 
-global $redirect;
+global $can_redirect;
 global $JSON_upgrade;
+
+$redirect = isset($_GET['redirect']) ? trim($_GET['redirect']) : "";
 
 $db = db_connect();
 $db_name = json_decode(file_get_contents("../config.json"), true)["db_name"];
 $JSON_upgrade = json_decode(file_get_contents("../template/upgrade.json"), true);
 $result = "";
-$redirect = true;
+$can_redirect = true;
 
 function column_fix($db, $db_name,$table_name, $column_name, $column_type)
 {
@@ -32,14 +34,14 @@ function column_exist($db, $db_name, $table_name, $column){
 function check_all_column($db, $db_name, $table_name)
 {
     global $JSON_upgrade;
-    global $redirect;
+    global $can_redirect;
     $result = "\n\t- Checking columns :";
 
     foreach ($JSON_upgrade["table"][$table_name]["fields"] as $field) {
         if (column_exist($db, $db_name, $table_name, $field)) {
             $result .= "\n\t\t - $field : OK";
         } else {
-            $redirect = false;
+            $can_redirect = false;
             $result .= "\n\t\t - $field : MISSING -> Attempting auto-fix -> " . column_fix($db, $db_name, $table_name, $field, $JSON_upgrade["table"][$table_name]['types'][$field]);
         }
     }
@@ -50,7 +52,7 @@ function check_all_column($db, $db_name, $table_name)
 
 function check_table($db, $db_name, $table)
 {
-    global $redirect;
+    global $can_redirect;
     $result = "\nChecking '$table' :";
 
     $table_exist = mysqli_num_rows(db_query_raw($db, "SELECT * FROM information_schema.tables WHERE table_schema = ? AND table_name = ? LIMIT 1", "ss", [$db_name, $table]));
@@ -58,7 +60,7 @@ function check_table($db, $db_name, $table)
         $result .= "\n\t- Table state : OK";
         $result .= check_all_column($db, $db_name, $table);
     } else {
-        $redirect = false;
+        $can_redirect = false;
         $result .= "\n\t- Table state : MISSING -> check your configuration and compare it to the provided template";
     }
 
@@ -70,8 +72,8 @@ foreach ($JSON_upgrade["table"] as $key => $data) {
     $result .= check_table($db, $db_name, $key);
 }
 
-if ($redirect) {
-    header("Location: login.php");
+if ($can_redirect) {
+    header("Location: login.php?redirect=$redirect");
     exit();
 } else {
     $result .= "\n\nPlease review this log and check if all tables are set correctly, then refresh this page.\nYou will be automatically redirected to the login page.";
