@@ -80,7 +80,7 @@ function get_command(mysqli $db, string $command, string $param, array $excluded
     }
 
     // Default
-    return ['value' => null];
+    return ['response_type' => null];
 }
 
 function get_auto(mysqli $db)

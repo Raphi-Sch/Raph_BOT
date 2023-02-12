@@ -13,7 +13,7 @@ async function run_command(user, message) {
     if (fullCommand) {
         let command = await api_command(fullCommand[1], fullCommand[2]);
 
-        if (command) {
+        if (command.response_type) {
             // Replace @username with current username
             if (user && command.response_type != 'audio') {
                 command.value = command.value.replace("@username", user['display-name']);
