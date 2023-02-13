@@ -184,8 +184,36 @@ function connect_socket() {
 }
 
 function log() {
+    if(is_dashboard){
+        document.getElementById('tab-log').classList.add('active');
+        document.getElementById('tab-debug').classList.remove('active');
+    }
+
     $.ajax({
         url: "api/config.php?log",
+        type: "GET",
+        success: function (result) {
+            document.getElementById("log").innerText = "";
+            document.getElementById("log").innerText = result;
+        },
+        error: function (result, status, error) {
+            Swal.fire({
+                title: "API Error while loading",
+                text: error,
+                type: 'error'
+            })
+        }
+    })
+}
+
+function debug() {
+    if(is_dashboard){
+        document.getElementById('tab-debug').classList.add('active');
+        document.getElementById('tab-log').classList.remove('active');
+    }
+
+    $.ajax({
+        url: "api/config.php?debug",
         type: "GET",
         success: function (result) {
             document.getElementById("log").innerText = "";

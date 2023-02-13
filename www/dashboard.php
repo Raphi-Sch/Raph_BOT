@@ -19,11 +19,10 @@ require_once('src/php/header.php');
 
     <!-- Main area -->
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">Dashboard
-            <button onclick="start_stop()" type="button" class="btn btn-success" id="btn-start-stop"><i id="ico-start-stop" class="glyphicon glyphicon-play"></i></button>
-        </h1>
-
-        <div class="row">
+        <div class="col-md-12 row">
+            <h1 class="page-header">Dashboard
+                <button onclick="start_stop()" type="button" class="btn btn-success" id="btn-start-stop"><i id="ico-start-stop" class="glyphicon glyphicon-play"></i></button>
+            </h1>
             <div class="col-sm-3">
                 <!-- Core Connection -->
                 <div class="row">
@@ -92,13 +91,19 @@ require_once('src/php/header.php');
         </div>
 
         <!-- Commands Section -->
-        <h2 class="sub-header">Log
-            <div class='pull-right'>
-                <button type="button" class="btn btn-info" onclick='log()'><i class="glyphicon glyphicon-refresh"></i></button>
-            </div>
-        </h2>
-        <div class="row">
-            <div class="col-sm-12 dash-log">
+        <div class="row col-md-12">
+            <h2 class="sub-header">Log
+                <div class='pull-right'>
+                    <button type="button" class="btn btn-info" onclick='log()'><i class="glyphicon glyphicon-refresh"></i></button>
+                </div>
+            </h2>
+
+            <ul class="nav nav-tabs">
+                <li id="tab-log"><a href="#" onclick='log()'>Log</a></li>
+                <li id="tab-debug"><a href="#" onclick='debug()'>Debug</a></li>
+            </ul>
+
+            <div class="dash-log">
                 <pre id="log" class="log"></pre>
             </div>
         </div>

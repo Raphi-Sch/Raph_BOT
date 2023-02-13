@@ -29,6 +29,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if (isset($_GET['debug'])) {
+            header('Content-Type: text/plain');
+            echo get_debug();
+            break;
+        }
+
         if(isset($_GET['config'])){
             header('Content-Type: application/json');
             echo json_encode(get_config($db));
@@ -70,6 +76,10 @@ function get_socket_port(){
 
 function get_log(){
     return shell_exec('cat ' . dirname(__FILE__) . "/../../core/" . 'lastest.log');
+}
+
+function get_debug(){
+    return shell_exec('cat ' . dirname(__FILE__) . "/../../core/" . 'debug.log');
 }
 
 function get_config(mysqli $db){
