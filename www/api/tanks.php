@@ -82,17 +82,17 @@ function get_random($db, $excluded_tanks)
 
     $result = db_query($db, $SQL_query, $SQL_params_type, $SQL_excluded_tanks);
 
-    return ['response_type' => 'tank-random', 'value' => "@username Voici un char : " . $result['name'], 'exclude' => $result['id'], 'total' => $count, 'char_random' => true];
+    return ['response_type' => 'tank-random', 'value' => "@username Voici un char : " . $result['name'], 'exclude' => $result['id'], 'total' => $count, 'mod_only' => 0, 'sub_only' => 0];
 }
 
 function run_tank(mysqli $db, string $param, array $excluded_tanks = null)
 {
     if (empty($param)) {
-        return ['response_type' => 'tank', 'value' => "@username Ecrit \"!char 5\" pour les chars de tier 5 ou \"!char e100\" pour les détails du E100, \"!char fr\" pour les chars Français, ..."];
+        return ['response_type' => 'text', 'value' => "@username Ecrit \"!char 5\" pour les chars de tier 5 ou \"!char e100\" pour les détails du E100, \"!char fr\" pour les chars Français, ...", 'mod_only' => 0, 'sub_only' => 0];
     }
 
     if (intval($param) != 0 && (intval($param) < TIER_MIN || intval($param) > TIER_MAX)) {
-        return ['response_type' => 'tank', 'value' => "@username Le tier que tu m'as demandé est trop bas ou trop haut (entre " . TIER_MIN . " et " . TIER_MAX . ")"];
+        return ['response_type' => 'text', 'value' => "@username Le tier que tu m'as demandé est trop bas ou trop haut (entre " . TIER_MIN . " et " . TIER_MAX . ")", 'mod_only' => 0, 'sub_only' => 0];
     }
 
     if ($param == "random") {
@@ -101,21 +101,21 @@ function run_tank(mysqli $db, string $param, array $excluded_tanks = null)
 
     $tank_by_tier = get_tier($db, $param);
     if (!empty($tank_by_tier)) {
-        return ['response_type' => 'tank', 'value' => "@username " . $tank_by_tier];
+        return ['response_type' => 'text', 'value' => "@username " . $tank_by_tier, 'mod_only' => 0, 'sub_only' => 0];
     }
 
     $tank_by_nation = get_nation($db, $param);
     if (!empty($tank_by_nation)) {
-        return ['response_type' => 'tank', 'value' => "@username " . $tank_by_nation];
+        return ['response_type' => 'text', 'value' => "@username " . $tank_by_nation, 'mod_only' => 0, 'sub_only' => 0];
     }
 
     $tank_by_name = get_name($db, $param);
     if (!empty($tank_by_name)) {
-        return ['response_type' => 'tank', 'value' => "@username " . $tank_by_name];
+        return ['response_type' => 'text', 'value' => "@username " . $tank_by_name, 'mod_only' => 0, 'sub_only' => 0];
     }
 
     $tank_by_type = get_type($db, $param);
     if (!empty($tank_by_type)) {
-        return ['response_type' => 'tank', 'value' => "@username " . $tank_by_type];
+        return ['response_type' => 'text', 'value' => "@username " . $tank_by_type, 'mod_only' => 0, 'sub_only' => 0];
     }
 }

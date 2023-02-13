@@ -15,30 +15,24 @@ async function run_command(user, message) {
 
         if (command.response_type) {
             // Replace @username with current username
-            if (user && command.response_type != 'audio') {
+            if (user && command.value) {
                 command.value = command.value.replace("@username", user['display-name']);
             }
 
-            // Command is 'text'
-            if (command.response_type == "text") {
-                return run_text(command, user);
-            }
+            switch(command.response_type){
+                case "text":
+                    return run_text(command, user);
+                
+                case "audio":
+                    return run_audio(command, user);
 
-            // Response is 'audio'
-            if (command.response_type == "audio") {
-                return run_audio(command, user);
-            }
+                case "tank-random":
+                    if (command.exclude !== null) excluded_tanks.push(command.exclude);
+                    if (excluded_tanks.length == command.total) excluded_tanks = [];
+                    return command.value;
 
-            // Command is 'tank'
-            if (command.response_type == "tank") {
-                return command.value;
-            }
-
-            // Command is 'tank-random
-            if (command.response_type == "tank-random") {
-                if (command.exclude !== null) excluded_tanks.push(command.exclude);
-                if (excluded_tanks.length == command.total) excluded_tanks = [];
-                return command.value;
+                default:
+                    return null;
             }
         }
     }
