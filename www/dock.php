@@ -50,7 +50,7 @@ require_once('src/php/header.php');
     </script>
     <script src="src/js/common.js"></script>
     <script src="src/js/socket.io.js"></script>
-    <script src="src/js/socket-handler.js"></script>
+    <script src="src/js/dashboard.js"></script>
 
 </body>
 
