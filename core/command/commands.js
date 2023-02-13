@@ -32,14 +32,14 @@ async function time_trigger() {
     timer++;
     socket.time_trigger_update(timer, time_interval, total_auto_cmd_time);
     if (timer >= time_interval) {
-        reboot_timer()
+        reset_timer()
         total_auto_cmd_time++;
         return auto_command();
     }
     return null;
 }
 
-function reboot_timer() {
+function reset_timer() {
     timer = 0
 }
 
@@ -52,14 +52,14 @@ async function message_trigger() {
     message_counter++
     socket.msg_trigger_update(message_counter, message_interval, total_auto_cmd_msg)
     if (message_counter >= message_interval) {
-        reboot_message_counter()
+        reset_message_counter()
         total_auto_cmd_msg++
         return auto_command()
     }
     return null
 }
 
-function reboot_message_counter() {
+function reset_message_counter() {
     message_counter = 0
 }
 
@@ -99,4 +99,4 @@ function run(user, message) {
     return runnable.run(user, message)
 }
 
-module.exports = { init, run, time_trigger, message_trigger, reboot_message_counter, reboot_timer }
+module.exports = { init, run, time_trigger, message_trigger, reset_message_counter, reset_timer }
