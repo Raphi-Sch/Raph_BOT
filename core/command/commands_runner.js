@@ -64,37 +64,43 @@ async function api_command(command, param) {
     }
 }
 
+function is_command_moderator_only(command, user){
+    return (command.mod_only && (user.mod || user.username === config.twitch_channel))
+}
+
+function is_command_subscriber_only(command, user){
+    return (command.sub_only && user.subscriber);
+}
+
+function is_command_everyone(command, user){
+    (!command.mod_only && !command.sub_only)
+}
+
 function run_text(command, user) {
-    // Command is mod_only / broadcaster
-    if (command.mod_only && (user.mod || user.username == config.twitch_channel))
+    if (is_command_moderator_only(command, user))
         return command.value;
 
-    // Command is sub_only
-    if (command.sub_only && user.subscriber)
+    if (is_command_subscriber_only(command, user))
         return command.value;
 
-    // Command is for everyone
-    if (!command.mod_only && !command.sub_only)
+    if (is_command_everyone(command, user))
         return command.value;
 }
 
 function run_audio(command, user) {
-    // Audio command is mod_only / broadcaster
-    if (command.mod_only && (user.mod || user.username == config.twitch_channel)) {
+    if (is_command_moderator_only(command, user)) {
         timeout_audio(command);
         socket.play_audio(command);
         return null;
     }
 
-    // Audio command is sub_only
-    if (command.sub_only && user.subscriber) {
+    if (is_command_subscriber_only(command, user)) {
         timeout_audio(command);
         socket.play_audio(command);
         return null;
     }
 
-    // Audio command is for everyone
-    if (!command.mod_only && !command.sub_only) {
+    if (is_command_everyone(command, user)) {
         timeout_audio(command);
         socket.play_audio(command);
         return null;
@@ -102,7 +108,6 @@ function run_audio(command, user) {
 }
 
 function timeout_audio(command) {
-    // Handle timeout
     if (command.timeout > 0) {
         excluded_audio.push(command.trigger_word);
         socket.log(`[AUDIO] '${command.name}' has been played (timeout : ${command.timeout}s)`);
