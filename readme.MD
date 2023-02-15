@@ -13,7 +13,7 @@ Linux package :
 - NodeJS (v16)
 - Screen
 
-NodeJS module (package.json provided): 
+NodeJS module: 
 - socket.io@2.4.1
 - tmi.js@1.8.5
 - node-fetch@3.3.0,
