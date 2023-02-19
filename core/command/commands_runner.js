@@ -72,8 +72,8 @@ function is_command_subscriber_only(command, user){
     return (command.sub_only && user.subscriber);
 }
 
-function is_command_everyone(command, user){
-    (!command.mod_only && !command.sub_only)
+function is_command_everyone(command){
+    return (!command.mod_only && !command.sub_only)
 }
 
 function run_text(command, user) {
@@ -83,7 +83,7 @@ function run_text(command, user) {
     if (is_command_subscriber_only(command, user))
         return command.value;
 
-    if (is_command_everyone(command, user))
+    if (is_command_everyone(command))
         return command.value;
 }
 
@@ -100,7 +100,7 @@ function run_audio(command, user) {
         return null;
     }
 
-    if (is_command_everyone(command, user)) {
+    if (is_command_everyone(command)) {
         timeout_audio(command);
         socket.play_audio(command);
         return null;
