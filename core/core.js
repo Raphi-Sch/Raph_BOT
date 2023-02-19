@@ -6,7 +6,7 @@ const moderator = require("./moderator/moderator")
 const reaction = require("./reaction/reaction")
 const shout = require("./shout/shout")
 
-const version = "v5.9.1";
+const version = "v5.9.2";
 
 config.load().then(() => {
     // UI
