@@ -65,7 +65,7 @@ async function api_command(command, param) {
 }
 
 function is_command_moderator_only(command, user){
-    return (command.mod_only && (user.mod || user.username === config.twitch_channel))
+    return (command.mod_only && (user.mod || user.username === config.twitch_channel.toLowerCase()))
 }
 
 function is_command_subscriber_only(command, user){
