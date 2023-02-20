@@ -1,8 +1,12 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-const API_URL = require("../config.json").API_URL;
+const config_file = require("../config.json");
 
 const config = {
-    api_url: API_URL,
+    // From file
+    api_url: config_file.API_URL,
+    socket_port: config_file.socket_port,
+
+    // From DB
     bot_name: null,
     cmd_msg_interval: null,
     cmd_prefix: null,
@@ -20,7 +24,7 @@ const config = {
 };
 
 async function load() {
-    const response = await fetch(API_URL + "config.php?config", {
+    const response = await fetch(config.api_url + "config.php?config", {
         method: "get",
         headers: { "Content-Type": "application/json" }
     })
