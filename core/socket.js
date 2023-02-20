@@ -1,18 +1,15 @@
 const http = require('http')
 const fs = require('fs')
 const { config } = require('./config');
-
 const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'a' });
 
-const port = require('../config.json').socket_port;
 // Basic HTTP server
 const server = http.createServer();
-
 const io = require('socket.io').listen(server);
+
 // Variables
 let web_client = null;
 let web_client_connected = false;
-
 
 // GUI info
 const GUI = {
@@ -35,7 +32,7 @@ const GUI = {
 
 function init(version) {
     log("[CORE] Started (" + version + ")");
-    server.listen(port);
+    server.listen(config.socket_port);
 }
 
 // When web_client is connected, update all info
