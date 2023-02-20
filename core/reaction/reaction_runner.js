@@ -1,8 +1,7 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const tools = require("../tools");
 const socket = require("../socket");
-const API_URL = require("../../config.json").API_URL;
-
+const { config } = require("../config");
 let exclusion = [];
 
 async function run_reaction(user, message) {
@@ -40,7 +39,7 @@ async function api_reaction(words_in){
         }]
     }
 
-    const response = await fetch(API_URL + "reactions.php", {
+    const response = await fetch(config.api_url + "reactions.php", {
         method: "post",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }

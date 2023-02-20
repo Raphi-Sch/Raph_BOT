@@ -2,6 +2,7 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 const API_URL = require("../config.json").API_URL;
 
 const config = {
+    api_url: API_URL,
     bot_name: null,
     cmd_msg_interval: null,
     cmd_prefix: null,
