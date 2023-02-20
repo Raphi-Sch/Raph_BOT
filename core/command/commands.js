@@ -1,9 +1,8 @@
 const { run_command } = require('./commands_runner')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-const API_URL = require("../../config.json").API_URL;
 
 // Const declaration
-const { config } = require('../config')
+const { config } = require('../config');
 const socket = require('../socket.js');
 
 // Global Var
@@ -64,7 +63,7 @@ function reset_message_counter() {
 }
 
 async function load_auto_command() {
-    const response = await fetch(API_URL + "commands.php?auto", {
+    const response = await fetch(config.api_url + "commands.php?auto", {
         method: "get",
         headers: { "Content-Type": "application/json" }
     })

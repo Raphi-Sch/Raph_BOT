@@ -2,7 +2,6 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 const tools = require("../tools");
 const socket = require("../socket");
 const { config } = require("../config");
-const API_URL = require("../../config.json").API_URL;
 
 let excluded_tanks = [];
 let excluded_audio = [];
@@ -50,7 +49,7 @@ async function api_command(command, param) {
         }]
     }
 
-    const response = await fetch(API_URL + "commands.php", {
+    const response = await fetch(config.api_url + "commands.php", {
         method: "post",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
@@ -64,43 +63,43 @@ async function api_command(command, param) {
     }
 }
 
-function is_command_moderator_only(command, user){
-    return (command.mod_only && (user.mod || user.username === config.twitch_channel.toLowerCase()))
+function is_command_for_moderator(command, user){
+    return (command.mod_only && user && (user.mod || user.username === config.twitch_channel.toLowerCase()))
 }
 
-function is_command_subscriber_only(command, user){
-    return (command.sub_only && user.subscriber);
+function is_command_for_subscriber(command, user){
+    return (command.sub_only && user && user.subscriber);
 }
 
-function is_command_everyone(command){
+function is_command_for_everyone(command){
     return (!command.mod_only && !command.sub_only)
 }
 
 function run_text(command, user) {
-    if (is_command_moderator_only(command, user))
+    if (is_command_for_moderator(command, user))
         return command.value;
 
-    if (is_command_subscriber_only(command, user))
+    if (is_command_for_subscriber(command, user))
         return command.value;
 
-    if (is_command_everyone(command))
+    if (is_command_for_everyone(command))
         return command.value;
 }
 
 function run_audio(command, user) {
-    if (is_command_moderator_only(command, user)) {
+    if (is_command_for_moderator(command, user)) {
         timeout_audio(command);
         socket.play_audio(command);
         return null;
     }
 
-    if (is_command_subscriber_only(command, user)) {
+    if (is_command_for_subscriber(command, user)) {
         timeout_audio(command);
         socket.play_audio(command);
         return null;
     }
 
-    if (is_command_everyone(command)) {
+    if (is_command_for_everyone(command)) {
         timeout_audio(command);
         socket.play_audio(command);
         return null;

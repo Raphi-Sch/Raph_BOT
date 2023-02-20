@@ -1,6 +1,6 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-const socket = require("../socket")
-const API_URL = require("../../config.json").API_URL;
+const socket = require("../socket");
+const { config } = require("../config");
 
 const { re } = require("@babel/core/lib/vendor/import-meta-resolve");
 
@@ -32,7 +32,7 @@ async function api_moderator(words){
         }]
     }
 
-    const response = await fetch(API_URL + "moderator.php", {
+    const response = await fetch(config.api_url + "moderator.php", {
         method: "post",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }

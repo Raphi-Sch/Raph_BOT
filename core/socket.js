@@ -1,6 +1,6 @@
 const http = require('http')
 const fs = require('fs')
-const config = require("./config").config
+const { config } = require('./config');
 
 const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'a' });
 

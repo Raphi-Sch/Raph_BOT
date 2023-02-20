@@ -1,7 +1,6 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const socket = require("../socket");
 const { config } = require("../config");
-const API_URL = require("../../config.json").API_URL;
 
 let shout_counter = 0;
 
@@ -36,7 +35,7 @@ async function api_shout(message, language) {
         }]
     }
 
-    const response = await fetch(API_URL + "shout.php", {
+    const response = await fetch(config.api_url + "shout.php", {
         method: "post",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
