@@ -26,4 +26,17 @@ function first_of_array(array) {
     }
 }
 
-module.exports = { command_parser, get_random_int, normalize_string, first_of_array }
+function timeout_to_string(seconds) {
+    if(seconds >= 3600)
+        return parseInt(seconds / 3600) + " hour";
+
+    if(seconds >= 60)
+        return parseInt(seconds / 60) + " min";
+
+    if(seconds == 0)
+        return "No timeout";
+
+    return seconds + "s";
+}
+
+module.exports = { command_parser, get_random_int, normalize_string, first_of_array, timeout_to_string }
