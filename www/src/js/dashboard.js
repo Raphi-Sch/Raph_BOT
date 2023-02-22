@@ -1,5 +1,6 @@
 let socket = null;
 let core_state = false;
+let is_tab_log = false;
 
 function twitch_state(state) {
     // Dashboard
@@ -162,9 +163,11 @@ function connect_socket() {
 
             // Log
             socket.on('log', function (msg) {
-                log_element = document.getElementById("log");
-                log_element.innerText += msg;
-                log_element.scrollTop = log_element.scrollHeight;
+                if((is_dashboard && is_tab_log) || is_dock){
+                    log_element = document.getElementById("log");
+                    log_element.innerText += msg;
+                    log_element.scrollTop = log_element.scrollHeight;
+                }
             })
 
             // Audio
@@ -187,6 +190,7 @@ function log() {
     if(is_dashboard){
         document.getElementById('tab-log').classList.add('active');
         document.getElementById('tab-debug').classList.remove('active');
+        is_tab_log = true;
     }
 
     $.ajax({
@@ -210,6 +214,7 @@ function debug() {
     if(is_dashboard){
         document.getElementById('tab-debug').classList.add('active');
         document.getElementById('tab-log').classList.remove('active');
+        is_tab_log = false;
     }
 
     $.ajax({
