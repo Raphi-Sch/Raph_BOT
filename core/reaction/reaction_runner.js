@@ -11,16 +11,7 @@ async function run_reaction(user, message) {
     try {
         if (result) {
             if (tools.get_random_int(100) <= result.frequency) {
-                if (result.timeout > 0) {
-                    exclusion.push(result.trigger_word);
-
-                    setTimeout(function () {
-                        exclusion.splice(exclusion.indexOf(result.trigger_word), 1);
-                        socket.log(`[REACTION] '${result.trigger_word}' has been removed from the exclusion list`);
-                    }, result.timeout * 1000);
-
-                    socket.log(`[REACTION] '${result.trigger_word}' has been excluded for ${result.timeout}s`);
-                }
+                log_and_timeout(result, user);
                 return result.reaction.replace("@username", user['display-name']);
             }
         }
@@ -50,6 +41,22 @@ async function api_reaction(words_in){
     } else {
         console.error("API ERROR : " + response.status);
         return null;
+    }
+}
+
+function log_and_timeout(reaction, user){
+    if (reaction.timeout > 0) {
+        exclusion.push(reaction.trigger_word);
+
+        setTimeout(function () {
+            exclusion.splice(exclusion.indexOf(reaction.trigger_word), 1);
+            socket.log(`[REACTION] '${reaction.trigger_word}' has been removed from the exclusion list`);
+        }, reaction.timeout * 1000);
+
+        socket.log(`[REACTION] '${reaction.trigger_word}' triggered by '${user['display-name']}' (timeout : ${tools.timeout_to_string(reaction.timeout)})`);
+    }
+    else{
+        socket.log(`[REACTION] '${reaction.trigger_word}' triggered by '${user['display-name']}' (no timeout) `);
     }
 }
 

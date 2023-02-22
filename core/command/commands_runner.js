@@ -88,28 +88,28 @@ function run_text(command, user) {
 
 function run_audio(command, user) {
     if (is_command_for_moderator(command, user)) {
-        timeout_audio(command);
+        log_and_timeout_audio(command, user);
         socket.play_audio(command);
         return null;
     }
 
     if (is_command_for_subscriber(command, user)) {
-        timeout_audio(command);
+        log_and_timeout_audio(command, user);
         socket.play_audio(command);
         return null;
     }
 
     if (is_command_for_everyone(command)) {
-        timeout_audio(command);
+        log_and_timeout_audio(command, user);
         socket.play_audio(command);
         return null;
     }
 }
 
-function timeout_audio(command) {
+function log_and_timeout_audio(command, user) {
     if (command.timeout > 0) {
         excluded_audio.push(command.trigger_word);
-        socket.log(`[AUDIO] '${command.name}' has been played (timeout : ${command.timeout}s)`);
+        socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeout_to_string(command.timeout)})`);
 
         setTimeout(function () {
             excluded_audio.splice(excluded_audio.indexOf(command.trigger_word), 1);
@@ -117,7 +117,7 @@ function timeout_audio(command) {
         }, command.timeout * 1000);
     }
     else {
-        socket.log(`[AUDIO] '${command.name}' has been played (no timeout)`);
+        socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (no timeout)`);
     }
 }
 
