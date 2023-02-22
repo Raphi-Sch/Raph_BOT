@@ -33,11 +33,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         if ($data["method"] == "get_shout") {
             switch($data["language"]){
                 case "fr" :
-                    echo json_encode(['value' => get_shout_fr($db, $data["message"])]);
+                    echo json_encode(get_shout_fr($db, $data["message"]));
                     break;
                 
                 case "fr-uwu" :
-                    echo json_encode(['value' => get_shout_fr_uwu($db, $data["message"])]);
+                    echo json_encode(get_shout_fr_uwu($db, $data["message"]));
                     break;
                     
                 default:
@@ -105,12 +105,12 @@ function get_shout_fr(mysqli $db, string $message)
     $message = "AH OUAIS @username, " . strtoupper($message) . "!";
 
     // Send result
-    return $message;
+    return ['value' => $message];
 }
 
 function get_shout_fr_uwu(mysqli $db, string $message)
 {
-    $message = get_shout_fr($db, $message);
+    $message = get_shout_fr($db, $message)['value'];
 
     // Remplacement data
     $consonant = load_shout_words($db, "fr-uwu", TYPE_CONSONANT);
@@ -142,7 +142,7 @@ function get_shout_fr_uwu(mysqli $db, string $message)
     // Word by word
     $message = str_replace(array_keys($word), array_values($word), $message);
 
-    return $message;
+    return ['value' => $message];
 }
 
 function load_shout_words(mysqli $db, string $language, int $type)
