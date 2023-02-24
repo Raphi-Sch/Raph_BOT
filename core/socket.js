@@ -16,16 +16,16 @@ const GUI = {
     twitch: false,
     shout: {
         current: 0,
-        max: config.shout_interval
+        max: 0
     },
     trigger_time: {
         current: 0,
-        max: config.cmd_time_interval,
+        max: 0,
         nb: 0
     },
     trigger_msg: {
         current: 0,
-        max: config.cmd_msg_interval,
+        max: 0,
         nb: 0
     },
 };
@@ -33,6 +33,11 @@ const GUI = {
 function init(version) {
     log("[CORE] Started (" + version + ")");
     server.listen(config.socket_port);
+
+    // GUI Value
+    GUI.shout.max = config.shout_interval;
+    GUI.trigger_time.max = config.cmd_time_interval;
+    GUI.trigger_msg.max = config.cmd_msg_interval;
 }
 
 // When web_client is connected, update all info
