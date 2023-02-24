@@ -29,41 +29,41 @@ function twitch_state(state) {
 function shout(data) {
     // Dashboard
     if (is_dashboard) {
-        document.getElementById('shout-bar').style.width = (data['current'] / data['max']) * 100 + "%";
-        document.getElementById('shout-text').innerHTML = data['current'] + " / " + data['max'];
+        document.getElementById('shout-bar').style.width = (data.current / data.max) * 100 + "%";
+        document.getElementById('shout-text').innerHTML = data.current + " / " + data.max;
     }
 
     // Dock
     if (is_dock) {
-        document.getElementById('dock-shout-text').innerHTML = data['current'] + " / " + data['max'];
+        document.getElementById('dock-shout-text').innerHTML = data.current + " / " + data.max;
     }
 }
 
 function trigger_time(data) {
     // Dashboard
     if (is_dashboard) {
-        document.getElementById('auto-cmd-time-bar').style.width = (data['current'] / data['max']) * 100 + "%";
-        document.getElementById('auto-cmd-time-text').innerHTML = data['current'] + " / " + data['max'];
-        document.getElementById('auto-cmd-time-counter').innerHTML = data['nb'];
+        document.getElementById('auto-cmd-time-bar').style.width = (data.current / data.max) * 100 + "%";
+        document.getElementById('auto-cmd-time-text').innerHTML = data.current + " / " + data.max;
+        document.getElementById('auto-cmd-time-counter').innerHTML = data.nb;
     }
 
     // Dock
     if (is_dock) {
-        document.getElementById('dock-time-text').innerHTML = data['current'] + " / " + data['max'];
+        document.getElementById('dock-time-text').innerHTML = data.current + " / " + data.max;
     }
 }
 
 function trigger_msg(data) {
     // Dashboard
     if (is_dashboard) {
-        document.getElementById('auto-cmd-msg-bar').style.width = (data['current'] / data['max']) * 100 + "%";
-        document.getElementById('auto-cmd-msg-text').innerHTML = data['current'] + " / " + data['max'];
-        document.getElementById('auto-cmd-msg-counter').innerHTML = data['nb'];
+        document.getElementById('auto-cmd-msg-bar').style.width = (data.current / data.max) * 100 + "%";
+        document.getElementById('auto-cmd-msg-text').innerHTML = data.current + " / " + data.max;
+        document.getElementById('auto-cmd-msg-counter').innerHTML = data.nb;
     }
 
     // Dock
     if (is_dock) {
-        document.getElementById('dock-msg-text').innerHTML = data['current'] + " / " + data['max'];
+        document.getElementById('dock-msg-text').innerHTML = data.current + " / " + data.max;
     }
 }
 
@@ -155,10 +155,10 @@ function connect_socket() {
             socket.on('update', function (json) {
                 data = JSON.parse(json);
 
-                twitch_state(data['twitch']);
-                shout(data['shout']);
-                trigger_time(data['trigger_time']);
-                trigger_msg(data['trigger_msg']);
+                twitch_state(data.twitch);
+                shout(data.shout);
+                trigger_time(data.trigger_time);
+                trigger_msg(data.trigger_msg);
             })
 
             // Log
