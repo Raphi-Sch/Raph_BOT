@@ -41,7 +41,10 @@ async function api_moderator(words){
     if (response.ok) {
         return await response.json();
     } else {
-        console.error("API ERROR : " + response.status);
+        console.error("[MODERATOR] API ERROR : " + response.status);
+        console.error("Context : ");
+        console.error(words);
+        console.error("-------------------");
         return null;
     }
 }

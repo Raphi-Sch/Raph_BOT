@@ -58,7 +58,13 @@ async function api_command(command, param) {
     if (response.ok) {
         return response.json();
     } else {
-        console.error("API ERROR : " + response.status);
+        console.error("[COMMAND] API ERROR : " + response.status);
+        console.error("Context : ");
+        console.error(command);
+        console.error(param);
+        console.error(excluded_tanks);
+        console.error(excluded_audio);
+        console.error("-------------------");
         return null;
     }
 }

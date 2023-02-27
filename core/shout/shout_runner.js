@@ -45,7 +45,11 @@ async function api_shout(message, language) {
         let res = await response.json();
         return res.value;
     } else {
-        console.error("API ERROR : " + response.status);
+        console.error("[SHOUT] API ERROR : " + response.status);
+        console.error("Context : ");
+        console.error(language);
+        console.error(message);
+        console.error("-------------------");
         return null;
     }
 }

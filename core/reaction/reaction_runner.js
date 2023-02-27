@@ -16,7 +16,11 @@ async function run_reaction(user, message) {
             }
         }
     } catch (err) {
+        console.error("[REACTION] CORE ERROR");
         console.error(err);
+        console.error("Context : ");
+        console.error(user);
+        console.error(message);
         return null;
     }
 }
@@ -39,7 +43,11 @@ async function api_reaction(words_in){
     if (response.ok) {
         return await response.json();
     } else {
-        console.error("API ERROR : " + response.status);
+        console.error("[REACTION] API ERROR : " + response.status);
+        console.error("Context : ");
+        console.error(words_in);
+        console.error(exclusion);
+        console.error("-------------------");
         return null;
     }
 }
