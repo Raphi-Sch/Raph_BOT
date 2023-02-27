@@ -9,7 +9,7 @@ async function run_reaction(user, message) {
     let result = await api_reaction(words);
 
     try {
-        if (result.reaction) {
+        if (result !== null) {
             if (tools.get_random_int(100) <= result.frequency) {
                 log_and_timeout(result, user);
                 return result.reaction.replace("@username", user['display-name']);
