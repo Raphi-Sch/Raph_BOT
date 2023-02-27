@@ -62,15 +62,22 @@ function get_command(mysqli $db, string $command, string $param, array $excluded
         $command = $result['command'];
     }
 
+    // Built-in commands
+    // Tank
+    if ($command == 'tank') {
+        return run_tank($db, $param, $excluded_tanks);
+    }
+
+    // List audio
+    if ($command == 'audio') {
+        return list_audio_text($db);
+    }
+
+    // Custom commands
     // Query Text
     $result = db_query($db, "SELECT * FROM commands  WHERE command = ?", "s", $command);
     if(!empty($result['value'])){
         return ['response_type' => 'text', 'value' => $result['value'], 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
-    }
-
-    // Query Tank
-    if ($command == 'tank') {
-        return run_tank($db, $param, $excluded_tanks);
     }
 
     // Query Audio
@@ -143,6 +150,23 @@ function get_list_audio(mysqli $db)
     }
 
     return $result;
+}
+
+function list_audio_text(mysqli $db){
+    $result = "Commandes sonore : ";
+    $first = true;
+
+    $data = db_query_raw($db, "SELECT * FROM commands_audio WHERE active = 1 AND sub_only = 0 AND mod_only = 0 ORDER BY `trigger_word` ASC");
+    while ($row = mysqli_fetch_assoc($data)) {
+        if ($first){
+            $result .= "!" . $row['trigger_word'];
+            $first = false;
+        }
+        else
+            $result .= ", !" . $row['trigger_word'];
+    }
+
+    return ['response_type' => 'text', 'value' => $result];
 }
 
 function run_audio(mysqli $db, string $command, array $excluded_audio)

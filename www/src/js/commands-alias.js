@@ -68,7 +68,7 @@ function list_option_alias() {
 
             for (const neddle in data) {
                 const option = document.createElement('option');
-                option.innerText = 'text - ' + data[neddle].command;
+                option.innerText = data[neddle].command + ' (text)';
                 option.value = data[neddle].command;
                 select.appendChild(option);
             }
@@ -92,7 +92,7 @@ function list_option_alias() {
 
             for (const neddle in data) {
                 const option = document.createElement('option');
-                option.innerText = 'audio - ' + data[neddle].trigger_word;
+                option.innerText = data[neddle].trigger_word + ' (audio)';
                 option.value = data[neddle].trigger_word;
                 select.appendChild(option);
             }
@@ -115,7 +115,8 @@ function add_alias() {
             "<label>Alias</label><input type='text' class='form-control' name='alias' required><br/>" +
             "<label>Command</label><select id='swal-select' class='form-control' name='value' required>" +
             "<option disabled selected> - Select a command - </option>" +
-            "<option value='tank'>built-in - tank</option>" +
+            "<option value='audio'>audio (built-in)</option>" +
+            "<option value='tank'>tank (built-in)</option>" +
             "</select></form>",
         showCancelButton: true,
         showConfirmButton: confirm,
