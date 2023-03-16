@@ -61,3 +61,21 @@ function edit_number(key, value) {
             document.getElementById('swal-form').submit();
     })
 }
+
+function twitch_token(hash) {
+    let token = "oauth:" + hash.substring(hash.search("access_token=") + 13, hash.search("&"));
+
+    $.post("src/php/POST_config.php", { action: "edit", id: "twitch_token", value: token }, function () {
+        Swal.fire({
+            title: `Twitch token updated !`,
+            icon: 'info',
+            showCancelButton: false,
+            focusConfirm: false,
+            allowOutsideClick: false,
+            confirmButtonText: 'Ok',
+        }).then((result) => {
+            if (result.value)
+                window.location = window.location.origin + window.location.pathname;
+        })
+    });
+}

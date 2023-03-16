@@ -40,6 +40,11 @@ while ($row = mysqli_fetch_assoc($data)) {
     </tr>";
 }
 
+$token_id = db_query($db, "SELECT `value` FROM config WHERE id = 'token_client_id'")['value'];
+$token_scope = db_query($db, "SELECT `value` FROM config WHERE id = 'token_scope'")['value'];
+$token_return = db_query($db, "SELECT `value` FROM config WHERE id = 'token_redirect_uri'")['value'];
+
+$token_URL = "https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=$token_id&redirect_uri=$token_return&scope=$token_scope";
 
 ?>
 
@@ -74,19 +79,27 @@ while ($row = mysqli_fetch_assoc($data)) {
                 <?php echo $list; ?>
             </tbody>
         </table>
+
+        <a class='btn btn-info' href="<?php echo $token_URL;?>">Renew Twitch API key</a>
+
     </div>
 
     <?php include("src/php/alert.php"); ?>
 
+    <script src="src/js/common.js"></script>
+    <script src="src/js/config.js"></script>
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
             document.getElementById("core").className = "active";
         });
-    </script>
-    <script src="src/js/common.js"></script>
-    <script src="src/js/config.js"></script>
 
+        if(window.location.hash !== ""){
+            twitch_token(window.location.hash);
+        }
+
+    </script>
+    
 </body>
 
 </html>
