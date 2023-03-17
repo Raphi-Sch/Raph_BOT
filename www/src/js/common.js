@@ -43,16 +43,61 @@ function reload_success() {
 }
 
 function timeout_to_string(seconds) {
-    if(seconds >= 3600)
+    if (seconds >= 3600)
         return parseInt(seconds / 3600) + " hour";
 
-    if(seconds >= 60)
+    if (seconds >= 60)
         return parseInt(seconds / 60) + " min";
 
-    if(seconds == 0)
+    if (seconds == 0)
         return "No timeout";
 
-    return seconds + "s";
+    return seconds + " s";
+}
+
+function createTableData(data, class_name) {
+    const TD = document.createElement('td');
+    TD.classList.add(class_name);
+    TD.innerText = data;
+    return TD;
+}
+
+function createCheckbox(checked) {
+    const TD = document.createElement('td');
+    TD.classList.add('col-xs-1');
+    TD.classList.add('text-center');
+
+    const INPUT = document.createElement('input');
+    INPUT.type = 'checkbox';
+    INPUT.disabled = 'disabled';
+    INPUT.checked = checked ? "checked" : "";
+
+    TD.appendChild(INPUT);
+    return TD;
+}
+
+function createButton(btn_class, ico_class, onclick) {
+    const BTN = document.createElement('button');
+    BTN.className = btn_class;
+    BTN.type = "button";
+    BTN.onclick = onclick;
+
+    const ICO = document.createElement('i');
+    ICO.className = ico_class;
+
+    BTN.appendChild(ICO);
+    return BTN;
+}
+
+function createButtonGroup(editFunction, deleteFunction) {
+    const TD = document.createElement('td');
+    const SPAN = document.createElement('span');
+    SPAN.className = "pull-right";
+    SPAN.appendChild(createButton("btn btn-warning", "glyphicon glyphicon-pencil", editFunction));
+    SPAN.appendChild(document.createTextNode(" "));
+    SPAN.appendChild(createButton("btn btn-danger", "glyphicon glyphicon-remove", deleteFunction));
+    TD.appendChild(SPAN);
+    return TD;
 }
 
 $(document).ready(function () {
