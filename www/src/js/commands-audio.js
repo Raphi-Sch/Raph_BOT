@@ -100,7 +100,7 @@ function list_audio(reload = false) {
                 SPAN_BTN.className = "pull-right";
                 BTN_EDIT.className = "btn btn-warning";
                 BTN_EDIT.type = "button";
-                BTN_EDIT.onclick = function () { edit_audio(data[neddle].id, data[neddle].name, data[neddle].trigger_word, data[neddle].volume, data[neddle].timeout, data[neddle].active, data[neddle].mod_only, data[neddle].sub_only) }
+                BTN_EDIT.onclick = function () { edit_audio(data[neddle]) }
                 ICO_EDIT.className = "glyphicon glyphicon-pencil";
                 BTN_EDIT.appendChild(ICO_EDIT);
                 SPAN_BTN.appendChild(BTN_EDIT);
@@ -109,7 +109,7 @@ function list_audio(reload = false) {
 
                 BTN_DELETE.className = "btn btn-danger";
                 BTN_DELETE.type = "button";
-                BTN_DELETE.onclick = function () { del_audio(data[neddle].id, data[neddle].name) }
+                BTN_DELETE.onclick = function () { del_audio(data[neddle]) }
                 ICO_DELETE.className = "glyphicon glyphicon-remove";
                 BTN_DELETE.appendChild(ICO_DELETE);
                 SPAN_BTN.appendChild(BTN_DELETE);
@@ -160,9 +160,9 @@ function add_audio() {
     });
 }
 
-function del_audio(id, name) {
+function del_audio(data) {
     Swal.fire({
-        title: `Delete : '${name}' ?`,
+        title: `Delete : '${data.name}' ?`,
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -173,7 +173,7 @@ function del_audio(id, name) {
         if (result.value) {
             $.post("src/php/POST_commands.php", {
                 action: "del-audio",
-                id: id
+                id: data.id
             }, function () {
                 list_audio(true);
             });
@@ -181,20 +181,20 @@ function del_audio(id, name) {
     })
 }
 
-function edit_audio(id, name, trigger, volume, timeout, active, mod_only, sub_only) {
-    checkbox_active = active ? "checked" : "";
-    checkbox_mod = mod_only ? "checked" : "";
-    checkbox_sub = sub_only ? "checked" : "";
+function edit_audio(data) {
+    checkbox_active = data.active ? "checked" : "";
+    checkbox_mod = data.mod_only ? "checked" : "";
+    checkbox_sub = data.sub_only ? "checked" : "";
 
     Swal.fire({
-        title: `Edit : '${name}'`,
+        title: `Edit : '${data.name}'`,
         html: "<form id='swal-form' method='post'>" +
             "<input type='hidden' name='action' value='edit-audio'>" +
-            `<input type='hidden' name='id' value='${id}'>` +
-            `<label>Name</label><input type='text' class='form-control' name='name' value="${name}" required><br/>` +
-            `<label>Trigger</label><input type='text' class='form-control' name='trigger' value='${trigger}'  required><br/>` +
-            `<label>Volume (<span id='swal-volume'>${parseInt(volume * 100)}</span>%)</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.05 value='${volume}' oninput="document.getElementById('swal-volume').innerText = parseInt(this.value*100)"><br/>` +
-            `<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 value='${timeout}')><br/>` +
+            `<input type='hidden' name='id' value='${data.id}'>` +
+            `<label>Name</label><input type='text' class='form-control' name='name' value="${data.name}" required><br/>` +
+            `<label>Trigger</label><input type='text' class='form-control' name='trigger' value='${data.trigger_word}'  required><br/>` +
+            `<label>Volume (<span id='swal-volume'>${parseInt(data.volume * 100)}</span>%)</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.05 value='${data.volume}' oninput="document.getElementById('swal-volume').innerText = parseInt(this.value*100)"><br/>` +
+            `<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 value='${data.timeout}')><br/>` +
             `<label>Active</label><input class='form-control' type='checkbox' name='active' ${checkbox_active}><br />` +
             `<label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only' ${checkbox_mod}><br />` +
             `<label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only' ${checkbox_sub}><br />` +

@@ -116,7 +116,7 @@ function list_commands(reload = false) {
                 SPAN_BTN.className = "pull-right";
                 BTN_EDIT.className = "btn btn-warning";
                 BTN_EDIT.type = "button";
-                BTN_EDIT.onclick = function () { edit_entry(data[neddle].id, data[neddle].command, data[neddle].value, data[neddle].auto, data[neddle].mod_only, data[neddle].sub_only) };
+                BTN_EDIT.onclick = function () { edit_entry(data[neddle]) };
                 ICO_EDIT.className = "glyphicon glyphicon-pencil";
                 BTN_EDIT.appendChild(ICO_EDIT);
                 SPAN_BTN.appendChild(BTN_EDIT);
@@ -124,7 +124,7 @@ function list_commands(reload = false) {
 
                 BTN_DELETE.className = "btn btn-danger";
                 BTN_DELETE.type = "button";
-                BTN_DELETE.onclick = function () { del_entry(data[neddle].id, data[neddle].command) }
+                BTN_DELETE.onclick = function () { del_entry(data[neddle]) }
                 ICO_DELETE.className = "glyphicon glyphicon-remove";
                 BTN_DELETE.appendChild(ICO_DELETE);
                 SPAN_BTN.appendChild(BTN_DELETE);
@@ -177,19 +177,19 @@ function add_entry() {
     });
 }
 
-function edit_entry(id, command, text, auto, mod_only, sub_only) {
-    checkbox_auto = auto ? "checked" : "";
-    checkbox_mod = mod_only ? "checked" : "";
-    checkbox_sub = sub_only ? "checked" : "";
+function edit_entry(data) {
+    checkbox_auto = data.auto ? "checked" : "";
+    checkbox_mod = data.mod_only ? "checked" : "";
+    checkbox_sub = data.sub_only ? "checked" : "";
 
     Swal.fire({
-        title: `Editing : "${command}"`,
+        title: `Editing : "${data.command}"`,
         icon: 'info',
         html: "<br /><form id='swal-form' method='post'>" +
             "<input type='hidden' name='action' value='edit'>" +
-            `<input type='hidden' name='id' value='${id}'>` +
-            `<label>Command</label><input class='form-control' type='text' name='command' value="${command}"><br />` +
-            `<label>Text</label><textarea class='form-control' type='text' name='text'>${text}</textarea><br />` +
+            `<input type='hidden' name='id' value='${data.id}'>` +
+            `<label>Command</label><input class='form-control' type='text' name='command' value="${data.command}"><br />` +
+            `<label>Text</label><textarea class='form-control' type='text' name='text'>${data.value}</textarea><br />` +
             `<label>Auto</label><input class='form-control' type='checkbox' name='auto' ${checkbox_auto}><br />` +
             `<label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only' ${checkbox_mod}><br />` +
             `<label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only' ${checkbox_sub}><br />` +
@@ -210,9 +210,9 @@ function edit_entry(id, command, text, auto, mod_only, sub_only) {
     })
 }
 
-function del_entry(id, command) {
+function del_entry(data) {
     Swal.fire({
-        title: `Delete "${command}" ?`,
+        title: `Delete "${data.command}" ?`,
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -221,7 +221,7 @@ function del_entry(id, command) {
         focusCancel: true
     }).then((result) => {
         if (result.value) {
-            $.post("src/php/POST_commands.php", { action: "del", id: id }, function () {
+            $.post("src/php/POST_commands.php", { action: "del", id: data.id }, function () {
                 list_commands(true); // Dynamic reload
             });
         }

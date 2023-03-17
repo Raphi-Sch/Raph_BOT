@@ -33,7 +33,7 @@ function list_alias(reload = false) {
 
                 BTN_DELETE.className = "btn btn-danger";
                 BTN_DELETE.type = "button";
-                BTN_DELETE.onclick = function () { del_alias(data[neddle].alias, data[neddle].command) }
+                BTN_DELETE.onclick = function () { del_alias(data[neddle]) }
                 ICO_DELETE.className = "glyphicon glyphicon-remove";
                 BTN_DELETE.appendChild(ICO_DELETE);
                 SPAN_BTN.appendChild(BTN_DELETE);
@@ -138,9 +138,9 @@ function add_alias() {
     });
 }
 
-function del_alias(alias) {
+function del_alias(data) {
     Swal.fire({
-        title: `Delete : '${alias}' ?`,
+        title: `Delete : '${data.alias}' ?`,
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -151,7 +151,7 @@ function del_alias(alias) {
         if (result.value) {
             $.post("src/php/POST_commands.php", {
                 action: "del-alias",
-                alias: alias
+                alias: data.alias
             }, function () {
                 list_alias(true);
             });
