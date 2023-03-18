@@ -11,7 +11,7 @@ function list_alias(reload = false) {
                 const TR = document.createElement('tr');
                 TR.appendChild(createTableData(element.alias, 'col-xs-5'));
                 TR.appendChild(createTableData(element.command, 'col-xs-5'));
-                TR.appendChild(createButtonGroup(() => edit_entry(element), () => del_entry(element)));
+                TR.appendChild(createDeleteButton(() => del_alias(element)));
                 LIST.appendChild(TR);
             })
 
@@ -100,7 +100,7 @@ function add_alias() {
             list_option_alias();
         }
     }).then((result) => {
-        if (result.value){
+        if (result.value) {
             const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
             $.post('src/php/POST_commands.php', FORM_DATA).done(function () {
                 list_alias(true);
