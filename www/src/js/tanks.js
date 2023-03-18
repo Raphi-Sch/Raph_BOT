@@ -73,13 +73,7 @@ function list_tanks(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: function (result, status, error) {
-            Swal.fire({
-                title: "API Error while loading",
-                text: error,
-                icon: 'error'
-            })
-        }
+        error: (result, status, error) => errorAPI(result, status, error)
     })
 }
 

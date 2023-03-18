@@ -18,13 +18,7 @@ function list_alias(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: function (result, status, error) {
-            Swal.fire({
-                title: "API Error while loading",
-                text: error,
-                icon: 'error'
-            })
-        }
+        error: (result, status, error) => errorAPI(result, status, error)
     }) 
 }
 
@@ -37,19 +31,10 @@ function list_option_alias() {
             let select = document.getElementById('swal-select');
 
             data.forEach(element => {
-                const option = document.createElement('option');
-                option.innerText = element.trigger_word;
-                option.value = element.trigger_word;
-                select.appendChild(option);
+                select.appendChild(createOption(element.trigger_word, element.trigger_word));
             })
         },
-        error: function (result, status, error) {
-            Swal.fire({
-                title: "API Error while loading",
-                text: error,
-                icon: 'error'
-            })
-        }
+        error: (result, status, error) => errorAPI(result, status, error)
     })
 }
 

@@ -18,11 +18,5 @@ $.ajax({
         else
             document.getElementById("plugin_title").classList.add("hidden");
     },
-    error: function (result, status, error) {
-        Swal.fire({
-            title: "API Error while loading",
-            text: error,
-            type: 'error'
-        })
-    }
+    error: (result, status, error) => errorAPI(result, status, error)
 })

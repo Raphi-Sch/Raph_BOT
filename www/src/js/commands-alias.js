@@ -18,13 +18,7 @@ function list_alias(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: function (result, status, error) {
-            Swal.fire({
-                title: "API Error while loading",
-                text: error,
-                type: 'error'
-            })
-        }
+        error: (result, status, error) => errorAPI(result, status, error)
     })
 }
 
@@ -38,43 +32,25 @@ function list_option_alias() {
             let select = document.getElementById('swal-select');
 
             data.forEach(element => {
-                const option = document.createElement('option');
-                option.innerText = element.command + ' (text)';
-                option.value = element.command;
-                select.appendChild(option);
+                select.appendChild(createOption(element.command + ' (text)', element.command));
             })
         },
-        error: function (result, status, error) {
-            Swal.fire({
-                title: "API Error while loading",
-                text: error,
-                icon: 'error'
-            })
-        }
+        error: (result, status, error) => errorAPI(result, status, error)
     })
 
     // List audio
     $.ajax({
-        url: "api/commands.php?list-audio",
+        url: "api/commands.php?list-audi",
         type: "GET",
         dataType: "json",
         success: function (data) {
             let select = document.getElementById('swal-select');
 
             data.forEach(element => {
-                const option = document.createElement('option');
-                option.innerText = element.trigger_word + ' (audio)';
-                option.value = element.trigger_word;
-                select.appendChild(option);
+                select.appendChild(createOption(element.trigger_word + ' (audio)', element.trigger_word));
             })
         },
-        error: function (result, status, error) {
-            Swal.fire({
-                title: "API Error while loading",
-                text: error,
-                icon: 'error'
-            })
-        }
+        error: (result, status, error) => errorAPI(result, status, error)
     })
 }
 

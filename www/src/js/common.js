@@ -86,6 +86,21 @@ function createDeleteButton(deleteFunction) {
     return TD;
 }
 
+function createOption(text, value){
+    const OPTION = document.createElement('option');
+    OPTION.innerText = text;
+    OPTION.value = value;
+    return OPTION;
+}
+
+function errorAPI(result, status, error){
+    Swal.fire({
+        title: "API Error while loading",
+        icon: 'error',
+        text: error
+    })
+}
+
 $(document).ready(function () {
     $.ajax({
         url: "api/config.php?name",
