@@ -62,7 +62,7 @@ function list_commands(reload = false) {
             })
 
             if (reload)
-                reload_success();
+                reloadSuccess();
         },
         error: function (result, status, error) {
             Swal.fire({

@@ -34,7 +34,7 @@ function list_audio(reload = false) {
             })
 
             if (reload)
-                reload_success();
+                reloadSuccess();
 
         },
         error: function (result, status, error) {

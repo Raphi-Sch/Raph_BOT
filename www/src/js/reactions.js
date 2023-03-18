@@ -18,7 +18,7 @@ function list(reload = false) {
             })
 
             if (reload)
-                reload_success();
+                reloadSuccess();
         },
         error: function (result, status, error) {
             Swal.fire({
