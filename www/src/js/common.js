@@ -114,12 +114,6 @@ $(document).ready(function () {
                 document.getElementById('bot_name_nav').innerText = data.value;
             }
         },
-        error: function (result, status, error) {
-            Swal.fire({
-                title: "API Error while loading",
-                text: error,
-                icon: 'error'
-            })
-        }
+        error: (result, status, error) => errorAPI(result, status, error)
     })
 });
