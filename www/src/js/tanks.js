@@ -66,7 +66,7 @@ function list_tanks(reload = false) {
                 TR.appendChild(createTableData(element.max_dmg, 'col-xs-1'));
                 TR.appendChild(createTableData(element.type, 'col-xs-1'));
                 TR.appendChild(createTableData(element.note, 'col-xs-1'));
-                TR.appendChild(createButtonGroup(() => edit_tank(element)), () => del_tank(element));
+                TR.appendChild(createButtonGroup(() => edit_tank(element), () => del_tank(element)));
                 LIST.appendChild(TR);
             })
 
@@ -86,15 +86,48 @@ function list_tanks(reload = false) {
 function add_tank() {
     Swal.fire({
         title: "New tank",
-        html: `<form id='swal-form' method='post' action='src/php/POST_tanks.php'>
+        html: `<form id='swal-form'>
             <input type='hidden' name='action' value='add-tank'>
             <label>Tank trigger</label><input type='text' class='form-control' name='form_key' required></br>
             <label>Tank name</label><input type='text' class='form-control' name='form_name' required></br>
-            <label>Nation</label><select class='form-control' name='form_nation' required><option>china</option><option>czechoslovakia</option><option>france</option>
-            <option>germany</option><option>italy</option><option>japan</option><option>poland</option><option>sweden</option><option>uk</option><option>usa</option><option>ussr</option></select></br>
-            <label>Tier</label><select class='form-control' name='form_tier' required><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></br>
-            <label>Type</label><select class='form-control' name='form_type' required><option>light</option><option>medium</option><option>heavy</option><option>td</option><option>spg</option></select></br>
-            <label>MoE</label><select class='form-control' name='form_mark' required><option>0</option><option>1</option><option>2</option><option>3</option></select></br>
+            <label>Nation</label>
+            <select class='form-control' name='form_nation' required>
+                <option>china</option>
+                <option>czechoslovakia</option>
+                <option>france</option>
+                <option>germany</option>
+                <option>italy</option>
+                <option>japan</option>
+                <option>poland</option>
+                <option>sweden</option>
+                <option>uk</option>
+                <option>usa</option>
+                <option>ussr</option>
+            </select></br>
+            <label>Tier</label>
+            <select class='form-control' name='form_tier' required>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+            </select></br>
+            <label>Type</label>
+            <select class='form-control' name='form_type' required>
+                <option>light</option>
+                <option>medium</option>
+                <option>heavy</option>
+                <option>td</option>
+                <option>spg</option>
+            </select></br>
+            <label>MoE</label>
+            <select class='form-control' name='form_mark' required>
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+            </select></br>
             <label>Damage max</label><input type='text' class='form-control' name='form_max_dmg' required></br>
             <label>Note</label><input type='text' class='form-control' name='form_note'/>
             </form>`,
@@ -106,8 +139,12 @@ function add_tank() {
         confirmButtonText: 'Add',
         cancelButtonText: 'Cancel'
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value) {
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_tanks.php', FORM_DATA).done(function () {
+                list_tanks(true);
+            });
+        }
     });
 }
 
@@ -115,9 +152,9 @@ function edit_tank(data) {
     Swal.fire({
         title: `Editing : ${data.trigger_word}`,
         icon: 'info',
-        html: `<form id='swal-form' method='post' class='form-vertical' action='src/php/POST_tanks.php'>
+        html: `<form id='swal-form'>
             <input type='hidden' name='action' value='edit-tank'>
-            <input type='hidden' name='swal-key' value='" + data.id + "'>
+            <input type='hidden' name='swal-key' value='${data.id}'>
             <label>Trigger</label><input class='form-control' type='text' name='swal-trigger' value='${data.trigger_word}'></br>
             <label>Tank name</label><input class='form-control' type='text' name='swal-name' value='${data.name}'></br>
             <label>Mark</label><input class='form-control' type='number' min=0 max=3 name='swal-mark' value='${data.mark}'></br>
@@ -131,8 +168,12 @@ function edit_tank(data) {
         confirmButtonText: 'Edit',
         cancelButtonText: 'Cancel'
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value) {
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_tanks.php', FORM_DATA).done(function () {
+                list_tanks(true);
+            });
+        }
     })
 }
 
