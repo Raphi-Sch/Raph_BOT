@@ -81,7 +81,7 @@ require_once('src/php/header.php');
             // Active the corresponding button in the navbar
             document.getElementById("plugin_commands").classList.add("active");
 
-            const param_name = get_parameter_name(0);
+            const param_name = getParameterName(0);
             if(param_name)
                 view(param_name);
             else
