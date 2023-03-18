@@ -83,7 +83,7 @@ function list_commands(reload = false) {
 function add_entry() {
     Swal.fire({
         title: "Add command",
-        html: `<form id='swal-form' method='post' action='src/php/POST_commands.php'>
+        html: `<form id='swal-form'>
             <input type='hidden' name='action' value='add'>
             <label>Command</label><input type='text' class='form-control' name='command' placeholder='Command' required><br/>
             <label>Text</label><textarea type='text' class='form-control' name='text' placeholder='Text' required></textarea><br/>
@@ -116,7 +116,7 @@ function edit_entry(data) {
     Swal.fire({
         title: `Editing : "${data.command}"`,
         icon: 'info',
-        html: `<form id='swal-form' method='post'>
+        html: `<form id='swal-form'>
             <input type='hidden' name='action' value='edit'>
             <input type='hidden' name='id' value='${data.id}'>
             <label>Command</label><input class='form-control' type='text' name='command' value="${data.command}"><br />
