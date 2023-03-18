@@ -1,29 +1,5 @@
 <?php
 require_once('src/php/header.php');
-
-// List tank
-$HTML = "";
-$result = db_query_raw($db, "SELECT * FROM tanks ORDER BY `trigger_word` ASC");
-while ($row = mysqli_fetch_assoc($result)) {
-    $HTML .= "
-  <tr id='" . $row["id"] . "'>
-    <td id='trigger_word'>" . $row["trigger_word"] . "</td>
-    <td id='name'>" . $row["name"] . "</td>
-    <td id='nation'>" . $row["nation"] . "</td>
-    <td id='tier'>" . $row["tier"] . "</td>
-    <td id='mark'>" . $row["mark"] . "</td>
-    <td id='max_dmg'>" . $row["max_dmg"] . "</td>
-    <td id='type'>" . $row["type"] . "</td>
-    <td id='note'>" . $row["note"] . "</td>
-    <td>
-      <span class='pull-right'>
-        <button onClick='edit_tank(\"" . $row["id"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
-        <button type='button' class='btn btn-danger' onclick='del_tank(\"" . $row['id'] . "\", \"" . $row['name'] . "\")'><i class='glyphicon glyphicon-remove'></i></button>
-      </span>
-    </td>
-  </tr>";
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -43,19 +19,23 @@ while ($row = mysqli_fetch_assoc($result)) {
 
     <!-- Main area -->
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">Tanks</h1>
+        <h1 class="page-header">Tanks
+            <div class='pull-right'>
+                <button type="button" class="btn btn-info" id="btn-refresh"><i class="glyphicon glyphicon-refresh"></i></button>
+            </div>
+        </h1>
 
         <!-- Tabs -->
         <ul class="nav nav-tabs">
-            <li id="tab-tanks"><a href="tanks.php">Tanks</a></li>
-            <li id="tab-alias"><a href="tanks_alias.php">Alias</a></li>
-            <li id="tab-nation"><a href="tanks_nation.php">Nation</a></li>
+            <li id="tab-tanks"><a href="#" onclick='view("tanks")'>Tanks</a></li>
+            <li id="tab-alias"><a href="#" onclick='view("alias")'>Alias</a></li>
+            <li id="tab-nation"><a href="#" onclick='view("nation")'>Nation</a></li>
         </ul>
 
         <!-- List -->
-        <table class="table table-hover table-condensed">
+        <table class="table table-hover table-condensed table-scroll">
             <thead>
-                <tr>
+                <tr id='th-tanks' class='hidden'>
                     <th class="col-xs-1">Trigger</th>
                     <th class="col-xs-2">Name</th>
                     <th class="col-xs-1">Nation</th>
@@ -66,22 +46,39 @@ while ($row = mysqli_fetch_assoc($result)) {
                     <th class="col-xs-3">Note</th>
                     <th class="col-xs-1"><button class="btn btn-success pull-right" onclick='add_tank()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
+
+                <tr id='th-alias' class='hidden'>
+                    <th class="col-xs-6">Alias</th>
+                    <th class="col-xs-5">Tank</th>
+                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_alias()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                </tr>
+
+                <tr id='th-nation' class='hidden'>
+                    <th class="col-xs-6">Alias</th>
+                    <th class="col-xs-5">Nation</th>
+                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_nation()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                </tr>
             </thead>
-            <tbody>
-                <?php echo $HTML; ?>
+            <tbody class="table-scroll-td" id='tbody-list'>
+                <!-- Dynamic -->
             </tbody>
         </table>
     </div>
 
-    <script>
-        $(document).ready(function() {
-            // Active the corresponding button in the navbar
-            document.getElementById("tab-tanks").classList.add("active");
-            document.getElementById("plugin_tanks").classList.add("active");
-        });
-    </script>
     <script src="src/js/common.js"></script>
     <script src="src/js/tanks.js"></script>
+    <script src="src/js/tanks-alias.js"></script>
+    <script src="src/js/tanks-nation.js"></script>
+    <script>
+        $(document).ready(function() {
+            document.getElementById("plugin_tanks").classList.add("active");
+            const param_name = getParameterName(0);
+            if(param_name)
+                view(param_name);
+            else
+                view('tanks');
+        });
+    </script>
 
 </body>
 

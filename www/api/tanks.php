@@ -1,121 +1,81 @@
 <?php
 
-const TIER_MIN = 5;
-const TIER_MAX = 10;
+require_once('../src/php/db.php');
+header('Content-Type: application/json');
 
-function get_name($db, $request)
-{
-    $query = "SELECT DISTINCT `name`, mark, max_dmg, note 
-        FROM tanks LEFT JOIN alias_tanks ON alias_tanks.tank = tanks.trigger_word
-        WHERE alias_tanks.alias = ? OR tanks.trigger_word = ?";
+$db = db_connect("../../config.json");
 
-    $result = db_query($db, $query, "ss", [$request, $request]);
+switch ($_SERVER["REQUEST_METHOD"]) {
+    case 'GET':
+        if (isset($_GET['list-tanks'])) {
+            echo json_encode(get_list_tanks($db));
+            break;
+        }
 
-    if (empty($result['name']))
-        return null;
-    else
-        return $result['name'] . " : " . $result['mark'] . " marque(s) - Dégats max : " . $result['max_dmg'];
+        if (isset($_GET['list-alias'])) {
+            echo json_encode(get_list_alias($db));
+            break;
+        }
+
+        if (isset($_GET['list-nation'])) {
+            echo json_encode(get_list_nation($db));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
+    default:
+        header("HTTP/1.0 405 Method Not Allowed");
+        break;
 }
 
-function get_type($db, $request)
+exit();
+
+function get_list_tanks(mysqli $db)
 {
-    $query = "SELECT GROUP_CONCAT(name SEPARATOR ', ') as value
-        FROM tanks
-        WHERE tanks.type = ?
-        ORDER BY name ASC";
+    $SQL_query = "SELECT * FROM tanks ORDER BY `trigger_word` ASC";
+    $data = db_query_raw($db, $SQL_query);
 
-    $result = db_query($db, $query, "s", $request);
+    $result = array();
+    $count = 0;
 
-    if (empty($result['value']))
-        return null;
-    else
-        return "Char(s) " . $request . " : " . $result['value'];
+    while ($row = $data->fetch_assoc()) {
+        $result += array($count => ['id' => $row['id'], 'trigger_word' => $row['trigger_word'], 'name' => $row['name'], 'nation' => $row['nation'], 'tier' => $row['tier'], 'mark' => $row["mark"], 'max_dmg' =>  $row["max_dmg"], 'type' => $row['type'], 'note' => $row['note']]);
+        $count++;
+    }
+
+    return $result;
 }
 
-function get_tier($db, $request)
+function get_list_alias(mysqli $db)
 {
-    $query = "SELECT GROUP_CONCAT(name SEPARATOR ', ') as value
-        FROM tanks
-        WHERE tanks.tier = ?
-        ORDER BY name ASC";
+    $SQL_query = "SELECT * FROM tanks_alias ORDER BY tank ASC";
+    $data = db_query_raw($db, $SQL_query);
 
-    $result = db_query($db, $query, "i", $request);
+    $result = array();
+    $count = 0;
 
-    if (empty($result['value']))
-        return null;
-    else
-        return "Char(s) tier " . $request . " : " . $result['value'];
+    while ($row = $data->fetch_assoc()) {
+        $result += array($count => ['alias' => $row['alias'], 'tank' => $row['tank']]);
+        $count++;
+    }
+
+    return $result;
 }
 
-function get_nation($db, $request)
+function get_list_nation(mysqli $db)
 {
-    $query = "SELECT tanks.nation as nation, GROUP_CONCAT(name SEPARATOR ', ') as value
-        FROM tanks LEFT JOIN alias_nation ON alias_nation.nation = tanks.nation
-        WHERE alias_nation.alias = ? OR tanks.nation = ?
-        ORDER BY name ASC";
+    $SQL_query = "SELECT * FROM tanks_nation ORDER BY nation ASC";
+    $data = db_query_raw($db, $SQL_query);
 
-    $result = db_query($db, $query, "ss", [$request, $request]);
+    $result = array();
+    $count = 0;
 
-    if (empty($result['value']))
-        return null;
-    else
-        return "Char(s) " . $result['nation'] . " : " . $result['value'];
-}
-
-function get_random($db, $excluded_tanks)
-{
-    $count = db_query($db, "SELECT COUNT(id) as count FROM tanks WHERE tier = 10")['count'];
-    $SQL_params_type = "";
-
-    // Build tanks not in
-    $tanks_not_in = "";
-    $SQL_excluded_tanks = null;
-    $tanks_not_in_count = count($excluded_tanks);
-    if ($tanks_not_in_count > 0) {
-        $tanks_not_in = "AND id NOT IN (" . join(',', array_fill(0, $tanks_not_in_count, '?')) . ")";
-        $SQL_params_type .= str_repeat('s', $tanks_not_in_count);
-        $SQL_excluded_tanks = $excluded_tanks;
+    while ($row = $data->fetch_assoc()) {
+        $result += array($count => ['alias' => $row['alias'], 'nation' => $row['nation']]);
+        $count++;
     }
 
-    // Query
-    $SQL_query = "SELECT id, name FROM tanks WHERE tier = 10 " . $tanks_not_in . " ORDER BY RAND() LIMIT 1";
-
-    $result = db_query($db, $SQL_query, $SQL_params_type, $SQL_excluded_tanks);
-
-    return ['response_type' => 'tank-random', 'value' => "@username Voici un char : " . $result['name'], 'exclude' => $result['id'], 'total' => $count, 'mod_only' => 0, 'sub_only' => 0];
-}
-
-function run_tank(mysqli $db, string $param, array $excluded_tanks = null)
-{
-    if (empty($param)) {
-        return ['response_type' => 'text', 'value' => "@username Ecrit \"!char 5\" pour les chars de tier 5 ou \"!char e100\" pour les détails du E100, \"!char fr\" pour les chars Français, ...", 'mod_only' => 0, 'sub_only' => 0];
-    }
-
-    if (intval($param) != 0 && (intval($param) < TIER_MIN || intval($param) > TIER_MAX)) {
-        return ['response_type' => 'text', 'value' => "@username Le tier que tu m'as demandé est trop bas ou trop haut (entre " . TIER_MIN . " et " . TIER_MAX . ")", 'mod_only' => 0, 'sub_only' => 0];
-    }
-
-    if ($param == "random") {
-        return get_random($db, $excluded_tanks);
-    }
-
-    $tank_by_tier = get_tier($db, $param);
-    if (!empty($tank_by_tier)) {
-        return ['response_type' => 'text', 'value' => "@username " . $tank_by_tier, 'mod_only' => 0, 'sub_only' => 0];
-    }
-
-    $tank_by_nation = get_nation($db, $param);
-    if (!empty($tank_by_nation)) {
-        return ['response_type' => 'text', 'value' => "@username " . $tank_by_nation, 'mod_only' => 0, 'sub_only' => 0];
-    }
-
-    $tank_by_name = get_name($db, $param);
-    if (!empty($tank_by_name)) {
-        return ['response_type' => 'text', 'value' => "@username " . $tank_by_name, 'mod_only' => 0, 'sub_only' => 0];
-    }
-
-    $tank_by_type = get_type($db, $param);
-    if (!empty($tank_by_type)) {
-        return ['response_type' => 'text', 'value' => "@username " . $tank_by_type, 'mod_only' => 0, 'sub_only' => 0];
-    }
+    return $result;
 }

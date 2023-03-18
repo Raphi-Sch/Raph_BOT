@@ -1,28 +1,97 @@
-// Tab tanks
+function view(param) {
+    switch (param) {
+        case 'tanks':
+            document.getElementById("tab-tanks").classList.add("active");
+            document.getElementById("tab-alias").classList.remove("active");
+            document.getElementById("tab-nation").classList.remove("active");
+
+            document.getElementById('th-tanks').classList.remove('hidden');
+            document.getElementById('th-alias').classList.add('hidden');
+            document.getElementById('th-nation').classList.add('hidden');
+
+            document.getElementById('btn-refresh').onclick = () => list_tanks(true);
+            list_tanks();
+            return;
+
+        case 'alias':
+            document.getElementById("tab-tanks").classList.remove("active");
+            document.getElementById("tab-alias").classList.add("active");
+            document.getElementById("tab-nation").classList.remove("active");
+
+            document.getElementById('th-tanks').classList.add('hidden');
+            document.getElementById('th-alias').classList.remove('hidden');
+            document.getElementById('th-nation').classList.add('hidden');
+
+            document.getElementById('btn-refresh').onclick = () => list_alias(true);
+            list_alias();
+            return;
+
+        case 'nation':
+            document.getElementById("tab-tanks").classList.remove("active");
+            document.getElementById("tab-alias").classList.remove("active");
+            document.getElementById("tab-nation").classList.add("active");
+
+            document.getElementById('th-tanks').classList.add('hidden');
+            document.getElementById('th-alias').classList.add('hidden');
+            document.getElementById('th-nation').classList.remove('hidden');
+
+            document.getElementById('btn-refresh').onclick = () => list_nation(true);
+            list_nation();
+            return;
+    }
+}
+
+function list_tanks(reload = false) {
+    $.ajax({
+        url: "api/tanks.php?list-tanks",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            const LIST = document.getElementById('tbody-list');
+            LIST.innerHTML = "";
+
+            data.forEach(element => {
+                const TR = document.createElement('tr');
+                TR.appendChild(createTableData(element.trigger_word, 'col-xs-1'));
+                TR.appendChild(createTableData(element.name, 'col-xs-2'));
+                TR.appendChild(createTableData(element.nation, 'col-xs-1'));
+                TR.appendChild(createTableData(element.tier, 'col-xs-1'));
+                TR.appendChild(createTableData(element.mark, 'col-xs-1'));
+                TR.appendChild(createTableData(element.max_dmg, 'col-xs-1'));
+                TR.appendChild(createTableData(element.type, 'col-xs-1'));
+                TR.appendChild(createTableData(element.note, 'col-xs-1'));
+                TR.appendChild(createButtonGroup(() => edit_tank(element)), () => del_tank(element));
+                LIST.appendChild(TR);
+            })
+
+            if (reload)
+                reloadSuccess();
+        },
+        error: function (result, status, error) {
+            Swal.fire({
+                title: "API Error while loading",
+                text: error,
+                icon: 'error'
+            })
+        }
+    })
+}
 
 function add_tank() {
     Swal.fire({
         title: "New tank",
-        html: "<form id='swal-form' method='post' action='src/php/POST_tanks.php'>" +
-            "<input type='hidden' name='action' value='add-tank'>" +
-            // Key
-            "<label>Tank trigger</label><input type='text' class='form-control' name='form_key' required></br>" +
-            // Name
-            "<label>Tank name</label><input type='text' class='form-control' name='form_name' required></br>" +
-            // Nation
-            "<label>Nation</label><select class='form-control' name='form_nation' required><option>china</option><option>czechoslovakia</option><option>france</option>" +
-            "<option>germany</option><option>italy</option><option>japan</option><option>poland</option><option>sweden</option><option>uk</option><option>usa</option><option>ussr</option></select></br>" +
-            // Tier
-            "<label>Tier</label><select class='form-control' name='form_tier' required><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></br>" +
-            // Type
-            "<label>Type</label><select class='form-control' name='form_type' required><option>light</option><option>medium</option><option>heavy</option><option>td</option><option>spg</option></select></br>" +
-            // Mark
-            "<label>MoE</label><select class='form-control' name='form_mark' required><option>0</option><option>1</option><option>2</option><option>3</option></select></br>" +
-            // Max dmg
-            "<label>Damage max</label><input type='text' class='form-control' name='form_max_dmg' required></br>" +
-            // Note
-            "<label>Note</label><input type='text' class='form-control' name='form_note'/>" +
-            "</form>",
+        html: `<form id='swal-form' method='post' action='src/php/POST_tanks.php'>
+            <input type='hidden' name='action' value='add-tank'>
+            <label>Tank trigger</label><input type='text' class='form-control' name='form_key' required></br>
+            <label>Tank name</label><input type='text' class='form-control' name='form_name' required></br>
+            <label>Nation</label><select class='form-control' name='form_nation' required><option>china</option><option>czechoslovakia</option><option>france</option>
+            <option>germany</option><option>italy</option><option>japan</option><option>poland</option><option>sweden</option><option>uk</option><option>usa</option><option>ussr</option></select></br>
+            <label>Tier</label><select class='form-control' name='form_tier' required><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></br>
+            <label>Type</label><select class='form-control' name='form_type' required><option>light</option><option>medium</option><option>heavy</option><option>td</option><option>spg</option></select></br>
+            <label>MoE</label><select class='form-control' name='form_mark' required><option>0</option><option>1</option><option>2</option><option>3</option></select></br>
+            <label>Damage max</label><input type='text' class='form-control' name='form_max_dmg' required></br>
+            <label>Note</label><input type='text' class='form-control' name='form_note'/>
+            </form>`,
         showCancelButton: true,
         showConfirmButton: confirm,
         focusConfirm: false,
@@ -36,26 +105,19 @@ function add_tank() {
     });
 }
 
-function edit_tank(id) {
-    var tank = document.getElementById(id).children;
-    var trigger_word = tank.trigger_word.textContent;
-    var name = tank.name.textContent;
-    var mark = tank.mark.textContent;
-    var max_dmg = tank.max_dmg.textContent;
-    var note = tank.note.textContent;
-
+function edit_tank(data) {
     Swal.fire({
-        title: 'Editing : "' + trigger_word + '"',
+        title: `Editing : ${data.trigger_word}`,
         icon: 'info',
-        html: "<form id='swal-form' method='post' class='form-vertical' action='src/php/POST_tanks.php'>" +
-            "<input type='hidden' name='action' value='edit-tank'>" +
-            "<input type='hidden' name='swal-key' value='" + id + "'>" +
-            "<label>Trigger</label><input class='form-control' type='text' name='swal-trigger' value='" + trigger_word + "'></br>" +
-            "<label>Tank name</label><input class='form-control' type='text' name='swal-name' value='" + name + "'></br>" +
-            "<label>Mark</label><input class='form-control' type='number' min=0 max=3 name='swal-mark' value='" + mark + "'></br>" +
-            "<label>Damage max</label><input class='form-control' type='number' name='swal-dmg' value='" + max_dmg + "'></br>" +
-            "<label>Note</label><input class='form-control' type='text' name='swal-note' value='" + note + "'></br>" +
-            "</form>",
+        html: `<form id='swal-form' method='post' class='form-vertical' action='src/php/POST_tanks.php'>
+            <input type='hidden' name='action' value='edit-tank'>
+            <input type='hidden' name='swal-key' value='" + data.id + "'>
+            <label>Trigger</label><input class='form-control' type='text' name='swal-trigger' value='${data.trigger_word}'></br>
+            <label>Tank name</label><input class='form-control' type='text' name='swal-name' value='${data.name}'></br>
+            <label>Mark</label><input class='form-control' type='number' min=0 max=3 name='swal-mark' value='${data.mark}'></br>
+            <label>Damage max</label><input class='form-control' type='number' name='swal-dmg' value='${data.max_dmg}'></br>
+            <label>Note</label><input class='form-control' type='text' name='swal-note' value='${data.note}'></br>
+            </form>`,
         showCancelButton: true,
         focusConfirm: false,
         allowOutsideClick: false,
@@ -68,9 +130,9 @@ function edit_tank(id) {
     })
 }
 
-function del_tank(id, name) {
+function del_tank(data) {
     Swal.fire({
-        title: "Delete '" + name + "' ?",
+        title: `Delete '${data.name}' ?`,
         icon: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -81,108 +143,9 @@ function del_tank(id, name) {
         if (result.value) {
             $.post("src/php/POST_tanks.php", {
                 action: "del-tank",
-                id: id
+                id: data.id
             }, function () {
-                document.location.reload();
-            });
-        }
-    })
-}
-
-// Tab Alias
-function add_alias() {
-    Swal.fire({
-        title: "Add entry",
-        html: "<form id='swal-form' method='post' action='src/php/POST_tanks.php'>" +
-            "<input type='hidden' name='action' value='add-alias'>" +
-            "<label>Alias</label><input type='text' class='form-control' name='alias' required><br/>" +
-            "<label>Tank</label><select class='form-control' name='value' required><option disabled selected> - Select a tank - </option>" +
-            `${tanks}` +
-            "</select></form>",
-        showCancelButton: true,
-        showConfirmButton: confirm,
-        focusConfirm: false,
-        allowOutsideClick: false,
-        width: "25%",
-        confirmButtonText: 'Add',
-        cancelButtonText: 'Cancel'
-    }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
-    });
-}
-
-function del_alias(alias) {
-    Swal.fire({
-        title: `Delete '${alias}' ?`,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
-        focusCancel: true
-    }).then((result) => {
-        if (result.value) {
-            $.post("src/php/POST_tanks.php", {
-                action: "del-alias",
-                alias: alias
-            }, function () {
-                document.location.reload();
-            });
-        }
-    })
-}
-
-// Tab Nation
-function add_nation() {
-    Swal.fire({
-        title: "Add entry",
-        html: "<form id='swal-form' method='post' action='src/php/POST_tanks.php'>" +
-            "<input type='hidden' name='action' value='add-nation'>" +
-            "<label>Alias</label><input type='text' class='form-control' name='alias' required><br/>" +
-            "<label>Nation</label><select class='form-control' name='value' required>"+
-            "<option selected disabled> - Select a nation - </option>"+
-            "<option>china</option>" +
-            "<option>czechoslovakia</option>"+
-            "<option>france</option>"+
-            "<option>germany</option>" +
-            "<option>italy</option>"+
-            "<option>japan</option>"+
-            "<option>poland</option>"+
-            "<option>sweden</option>"+
-            "<option>uk</option>"+
-            "<option>usa</option>"+
-            "<option>ussr</option></select>" +
-            "</form>",
-        showCancelButton: true,
-        showConfirmButton: confirm,
-        focusConfirm: false,
-        allowOutsideClick: false,
-        width: "25%",
-        confirmButtonText: 'Add',
-        cancelButtonText: 'Cancel'
-    }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
-    });
-}
-
-function del_nation(alias) {
-    Swal.fire({
-        title: `Delete '${alias}' ?`,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
-        focusCancel: true
-    }).then((result) => {
-        if (result.value) {
-            $.post("src/php/POST_tanks.php", {
-                action: "del-nation",
-                alias: alias
-            }, function() {
-                document.location.reload();
+                list_tanks(true)
             });
         }
     })
