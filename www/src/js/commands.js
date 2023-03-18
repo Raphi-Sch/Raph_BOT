@@ -10,6 +10,8 @@ function view(param) {
             document.getElementById('th-audio').classList.add('hidden');
 
             document.getElementById('btn-refresh').onclick = () => list_alias(true);
+
+            window.history.pushState(null, '', 'commands.php?alias');
             list_alias();
             return;
 
@@ -23,6 +25,8 @@ function view(param) {
             document.getElementById('th-audio').classList.add('hidden');
 
             document.getElementById('btn-refresh').onclick = () => list_commands(true);
+
+            window.history.pushState(null, '', 'commands.php?commands');
             list_commands();
             return;
 
@@ -36,6 +40,8 @@ function view(param) {
             document.getElementById('th-audio').classList.remove('hidden');
 
             document.getElementById('btn-refresh').onclick = () => list_audio(true);
+
+            window.history.pushState(null, '', 'commands.php?audio');
             list_audio();
             return;
     }

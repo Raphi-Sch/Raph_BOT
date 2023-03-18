@@ -10,6 +10,8 @@ function view(param) {
             document.getElementById('th-nation').classList.add('hidden');
 
             document.getElementById('btn-refresh').onclick = () => list_tanks(true);
+
+            window.history.pushState(null, '', 'tanks.php?tanks');
             list_tanks();
             return;
 
@@ -23,6 +25,8 @@ function view(param) {
             document.getElementById('th-nation').classList.add('hidden');
 
             document.getElementById('btn-refresh').onclick = () => list_alias(true);
+
+            window.history.pushState(null, '', 'tanks.php?alias');
             list_alias();
             return;
 
@@ -36,6 +40,8 @@ function view(param) {
             document.getElementById('th-nation').classList.remove('hidden');
 
             document.getElementById('btn-refresh').onclick = () => list_nation(true);
+
+            window.history.pushState(null, '', 'tanks.php?nation');
             list_nation();
             return;
     }
