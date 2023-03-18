@@ -1,15 +1,3 @@
-function createPlayer(data){
-    const TD_PLAYER = document.createElement('td');
-    const PLAYER = document.createElement('audio');
-    TD_PLAYER.classList.add('col-xs-2');
-    PLAYER.src = "src/audio/" + data.file;
-    PLAYER.volume = parseFloat(data.volume);
-    PLAYER.preload = "none";
-    PLAYER.controls = "enable";
-    TD_PLAYER.appendChild(PLAYER);
-    return TD_PLAYER;
-}
-
 function list_audio(reload = false) {
     $.ajax({
         url: "api/commands.php?list-audio",

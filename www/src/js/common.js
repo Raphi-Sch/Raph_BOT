@@ -93,6 +93,18 @@ function createOption(text, value){
     return OPTION;
 }
 
+function createPlayer(data){
+    const TD_PLAYER = document.createElement('td');
+    const PLAYER = document.createElement('audio');
+    TD_PLAYER.classList.add('col-xs-2');
+    PLAYER.src = "src/audio/" + data.file;
+    PLAYER.volume = parseFloat(data.volume);
+    PLAYER.preload = "none";
+    PLAYER.controls = "enable";
+    TD_PLAYER.appendChild(PLAYER);
+    return TD_PLAYER;
+}
+
 function errorAPI(result, status, error){
     Swal.fire({
         title: "API Error while loading",
