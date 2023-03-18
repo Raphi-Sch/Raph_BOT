@@ -18,7 +18,7 @@ function list_alias(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: (result, status, error) => errorAPI(result, status, error)
+        error: errorAPI
     }) 
 }
 
@@ -34,7 +34,7 @@ function list_option_alias() {
                 select.appendChild(createOption(element.trigger_word, element.trigger_word));
             })
         },
-        error: (result, status, error) => errorAPI(result, status, error)
+        error: errorAPI
     })
 }
 

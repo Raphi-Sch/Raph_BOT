@@ -25,23 +25,23 @@ function list_audio(reload = false) {
                 reloadSuccess();
 
         },
-        error: (result, status, error) => errorAPI(result, status, error)
+        error: errorAPI
     })
 }
 
 function add_audio() {
     Swal.fire({
         title: "Add audio command",
-        html: "<form id='swal-form' method='post' enctype='multipart/form-data' action='src/php/POST_commands.php'>" +
-            "<input type='hidden' name='action' value='add-audio'>" +
-            "<label>Name</label><input type='text' class='form-control' name='name' required><br/>" +
-            "<label>Trigger</label><input type='text' class='form-control' name='trigger' required><br/>" +
-            "<label>Volume</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.05 value=0.5)><br/>" +
-            "<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 step=1 value=0><br/>" +
-            `<label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only'><br />` +
-            `<label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only'><br />` +
-            "<label>File</label><input type='file' class='form-control' name='audio' accept='.mp3' required>" +
-            "</form>",
+        html: `<form id='swal-form' method='post' enctype='multipart/form-data' action='src/php/POST_commands.php'>
+            <input type='hidden' name='action' value='add-audio'>
+            <label>Name</label><input type='text' class='form-control' name='name' required><br/>
+            <label>Trigger</label><input type='text' class='form-control' name='trigger' required><br/>
+            <label>Volume</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.05 value=0.5)><br/>
+            <label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 step=1 value=0><br/>
+            <label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only'><br />
+            <label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only'><br />
+            <label>File</label><input type='file' class='form-control' name='audio' accept='.mp3' required>
+            </form>`,
         showCancelButton: true,
         showConfirmButton: true,
         focusConfirm: false,
@@ -77,23 +77,20 @@ function del_audio(data) {
 }
 
 function edit_audio(data) {
-    checkbox_active = data.active ? "checked" : "";
-    checkbox_mod = data.mod_only ? "checked" : "";
-    checkbox_sub = data.sub_only ? "checked" : "";
-
     Swal.fire({
         title: `Edit : '${data.name}'`,
-        html: "<form id='swal-form' method='post'>" +
-            "<input type='hidden' name='action' value='edit-audio'>" +
-            `<input type='hidden' name='id' value='${data.id}'>` +
-            `<label>Name</label><input type='text' class='form-control' name='name' value="${data.name}" required><br/>` +
-            `<label>Trigger</label><input type='text' class='form-control' name='trigger' value='${data.trigger_word}'  required><br/>` +
-            `<label>Volume (<span id='swal-volume'>${parseInt(data.volume * 100)}</span>%)</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.05 value='${data.volume}' oninput="document.getElementById('swal-volume').innerText = parseInt(this.value*100)"><br/>` +
-            `<label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 value='${data.timeout}')><br/>` +
-            `<label>Active</label><input class='form-control' type='checkbox' name='active' ${checkbox_active}><br />` +
-            `<label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only' ${checkbox_mod}><br />` +
-            `<label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only' ${checkbox_sub}><br />` +
-            "</form>",
+        html: `<form id='swal-form' method='post'>
+            <input type='hidden' name='action' value='edit-audio'>
+            <input type='hidden' name='id' value='${data.id}'>
+            <label>Name</label><input type='text' class='form-control' name='name' value="${data.name}" required><br/>
+            <label>Trigger</label><input type='text' class='form-control' name='trigger' value='${data.trigger_word}'  required><br/>
+            <label>Volume (<span id='swal-volume'>${parseInt(data.volume * 100)}</span>%)</label>
+            <input type='range' class='form-control' name='volume' min=0 max=1 step=0.05 value='${data.volume}' oninput="document.getElementById('swal-volume').innerText = parseInt(this.value*100)"><br/>
+            <label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 value='${data.timeout}')><br/>
+            <label>Active</label><input class='form-control' type='checkbox' name='active' ${data.active ? "checked" : ""}><br />
+            <label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only' ${data.mod_only ? "checked" : ""}><br />
+            <label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only' ${data.sub_only ? "checked" : ""}><br />
+            </form>`,
         showCancelButton: true,
         showConfirmButton: confirm,
         focusConfirm: false,

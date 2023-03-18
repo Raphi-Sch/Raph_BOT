@@ -20,7 +20,7 @@ function list(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: (result, status, error) => errorAPI(result, status, error)
+        error: errorAPI
     })
 }
 
