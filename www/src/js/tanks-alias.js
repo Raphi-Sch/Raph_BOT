@@ -56,7 +56,7 @@ function list_option_alias() {
 function add_alias() {
     Swal.fire({
         title: "Add entry",
-        html: `<form id='swal-form' method='post' action='src/php/POST_tanks.php'>
+        html: `<form id='swal-form'>
             <input type='hidden' name='action' value='add-alias'>
             <label>Alias</label><input type='text' class='form-control' name='alias' required><br/>
             <label>Tank</label><select id='swal-select' class='form-control' name='value' required><option disabled selected> - Select a tank - </option></select>
@@ -72,8 +72,12 @@ function add_alias() {
             list_option_alias();
         }
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value) {
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_tanks.php', FORM_DATA).done(function () {
+                list_alias(true);
+            });
+        }
     });
 }
 

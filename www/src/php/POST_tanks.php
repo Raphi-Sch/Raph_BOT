@@ -13,9 +13,7 @@ if ($_POST['action'] == "add-tank" && !empty($_POST['form_key']) && !empty($_POS
     $type = trim($_POST['form_type']);
     $note = trim($_POST['form_note']);
     $max_dmg = empty($max_dmg) ? 0 : $max_dmg;
-
     db_query_no_result($db, "INSERT INTO tanks (`id`, `trigger_word`, `nation`, `tier`, `name`, `mark`, `max_dmg`, `note`, `type`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)", "ssisiiss", [$trigger_word, $nation, $tier, $name, $mark, $max_dmg, $note, $type]);
-
     exit();
 }
 
@@ -26,37 +24,9 @@ if ($_POST['action'] == "edit-tank") {
     $dmg = intval($_POST['swal-dmg']);
     $mark = intval($_POST['swal-mark']);
     $note = trim($_POST['swal-note']);
-
     db_query_no_result($db, "UPDATE `tanks` SET `trigger_word` = ?, `name` = ?, `mark` = ?, `max_dmg` = ?, `note` = ? WHERE `id` = ?", "ssiisi", [$trigger_word, $name, $mark, $dmg, $note, $_POST['swal-key']]);
-
     exit();
 }
-
-// Add nation
-if (isset($_POST['action']) && $_POST['action'] == "add-nation" && !empty($_POST['alias']) && !empty($_POST['value'])) {
-    $alias = strtolower(trim($_POST['alias']));
-    $nation = $_POST['value'];
-
-    db_query_no_result($db, "REPLACE INTO tanks_nation (`alias`, `nation`) VALUES (?, ?)", "ss", [$alias, $nation]);
-
-    header('Location: ../../tanks_nation.php');
-    exit();
-}
-
-// Add alias
-if ($_POST['action'] == "add-alias" && !empty($_POST['alias']) && !empty($_POST['value'])) {
-    $alias = strtolower(trim($_POST['alias']));
-    $tank = $_POST['value'];
-
-    db_query_no_result($db, "REPLACE INTO tanks_alias (`alias`, `tank`) VALUES (?, ?)", "ss", [$alias, $tank]);
-
-    header('Location: ../../tanks_alias.php');
-    exit();
-}
-
-// SYNC
-// ----
-// ASYNC
 
 // Delete tank
 if ($_POST['action'] == "del-tank") {
@@ -64,9 +34,25 @@ if ($_POST['action'] == "del-tank") {
     exit();
 }
 
+// Add nation
+if (isset($_POST['action']) && $_POST['action'] == "add-nation" && !empty($_POST['alias']) && !empty($_POST['value'])) {
+    $alias = strtolower(trim($_POST['alias']));
+    $nation = $_POST['value'];
+    db_query_no_result($db, "REPLACE INTO tanks_nation (`alias`, `nation`) VALUES (?, ?)", "ss", [$alias, $nation]);
+    exit();
+}
+
 // Delete nation
 if (isset($_POST['action']) && $_POST['action'] == "del-nation") {
     db_query_no_result($db, "DELETE FROM tanks_nation WHERE alias = ?", "s", $_POST['alias']);
+    exit();
+}
+
+// Add alias
+if ($_POST['action'] == "add-alias" && !empty($_POST['alias']) && !empty($_POST['value'])) {
+    $alias = strtolower(trim($_POST['alias']));
+    $tank = $_POST['value'];
+    db_query_no_result($db, "REPLACE INTO tanks_alias (`alias`, `tank`) VALUES (?, ?)", "ss", [$alias, $tank]);
     exit();
 }
 

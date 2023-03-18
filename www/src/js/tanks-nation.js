@@ -31,7 +31,7 @@ function list_nation(reload = false){
 function add_nation() {
     Swal.fire({
         title: "Add entry",
-        html: `<form id='swal-form' method='post' action='src/php/POST_tanks.php'>
+        html: `<form id='swal-form'>
             <input type='hidden' name='action' value='add-nation'>
             <label>Alias</label><input type='text' class='form-control' name='alias' required><br/>
             <label>Nation</label><select class='form-control' name='value' required>
@@ -56,8 +56,12 @@ function add_nation() {
         confirmButtonText: 'Add',
         cancelButtonText: 'Cancel'
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value) {
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_tanks.php', FORM_DATA).done(function () {
+                list_nation(true);
+            });
+        }
     });
 }
 
