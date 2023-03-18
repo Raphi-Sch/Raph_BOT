@@ -40,7 +40,7 @@ function list_option_alias() {
 
     // List audio
     $.ajax({
-        url: "api/commands.php?list-audi",
+        url: "api/commands.php?list-audio",
         type: "GET",
         dataType: "json",
         success: function (data) {
