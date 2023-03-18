@@ -1,3 +1,15 @@
+function createPlayer(data){
+    const TD_PLAYER = document.createElement('td');
+    const PLAYER = document.createElement('audio');
+    TD_PLAYER.classList.add('col-xs-2');
+    PLAYER.src = "src/audio/" + data.file;
+    PLAYER.volume = parseFloat(data.volume);
+    PLAYER.preload = "none";
+    PLAYER.controls = "enable";
+    TD_PLAYER.appendChild(PLAYER);
+    return TD_PLAYER;
+}
+
 function list_audio(reload = false) {
     $.ajax({
         url: "api/commands.php?list-audio",
@@ -7,118 +19,19 @@ function list_audio(reload = false) {
             const LIST = document.getElementById('tbody-list');
             LIST.innerHTML = "";
 
-            for (const neddle in data) {
-                // Base TR
+            data.forEach(element => {
                 const TR = document.createElement('tr');
-
-                // TD Name
-                const TD_NAME = document.createElement('td');
-                TD_NAME.classList.add('col-xs-2');
-                TD_NAME.innerText = data[neddle].name;
-                TR.appendChild(TD_NAME);
-
-                // TD Trigger
-                const TD_TRIGGER = document.createElement('td');
-                TD_TRIGGER.classList.add('col-xs-1');
-                TD_TRIGGER.innerText = data[neddle].trigger_word;
-                TR.appendChild(TD_TRIGGER);
-
-                // TD Volume
-                const TD_VOLUME = document.createElement('td');
-                TD_VOLUME.classList.add('col-xs-1');
-                TD_VOLUME.classList.add('text-center');
-                TD_VOLUME.innerText = parseInt(data[neddle].volume * 100) + "%";
-                TR.appendChild(TD_VOLUME);
-
-                // TD Timeout
-                const TD_TIMEOUT = document.createElement('td');
-                TD_TIMEOUT.classList.add('col-xs-1');
-                TD_TIMEOUT.classList.add('text-center');
-                TD_TIMEOUT.innerText = timeout_to_string(data[neddle].timeout);
-                TR.appendChild(TD_TIMEOUT);
-
-                // TD Active
-                const TD_ACTIVE = document.createElement('td');
-                const INPUT_ACTIVE = document.createElement('input');
-
-                TD_ACTIVE.classList.add('col-xs-1');
-                TD_ACTIVE.classList.add('text-center');
-                INPUT_ACTIVE.type = 'checkbox';
-                INPUT_ACTIVE.disabled = 'disabled';
-                INPUT_ACTIVE.checked = data[neddle].active ? "checked" : "";
-
-                TD_ACTIVE.appendChild(INPUT_ACTIVE);
-                TR.appendChild(TD_ACTIVE);
-
-                // TD Mod
-                const TD_MOD = document.createElement('td');
-                const INPUT_MOD = document.createElement('input');
-
-                TD_MOD.classList.add('col-xs-1');
-                TD_MOD.classList.add('text-center');
-                INPUT_MOD.type = 'checkbox';
-                INPUT_MOD.disabled = 'disabled';
-                INPUT_MOD.checked = data[neddle].mod_only ? "checked" : "";
-
-                TD_MOD.appendChild(INPUT_MOD);
-                TR.appendChild(TD_MOD);
-
-                // TD Sub
-                const TD_SUB = document.createElement('td');
-                const INPUT_SUB = document.createElement('input');
-
-                TD_SUB.classList.add('col-xs-1');
-                TD_SUB.classList.add('text-center');
-                INPUT_SUB.type = 'checkbox';
-                INPUT_SUB.disabled = 'disabled';
-                INPUT_SUB.checked = data[neddle].sub_only ? "checked" : "";
-
-                TD_SUB.appendChild(INPUT_SUB);
-                TR.appendChild(TD_SUB);
-
-                // TD Player
-                const TD_PLAYER = document.createElement('td');
-                const PLAYER = document.createElement('audio');
-
-                TD_PLAYER.classList.add('col-xs-2');
-                PLAYER.src = "src/audio/" + data[neddle].file;
-                PLAYER.volume = parseFloat(data[neddle].volume);
-                PLAYER.preload = "none";
-                PLAYER.controls = "enable";
-
-                TD_PLAYER.appendChild(PLAYER);
-                TR.appendChild(TD_PLAYER);
-
-                // TD BTN
-                const TD_BTN = document.createElement('td');
-                const SPAN_BTN = document.createElement('span');
-                const BTN_DELETE = document.createElement('button');
-                const ICO_DELETE = document.createElement('i');
-                const BTN_EDIT = document.createElement('button');
-                const ICO_EDIT = document.createElement('i');
-
-                SPAN_BTN.className = "pull-right";
-                BTN_EDIT.className = "btn btn-warning";
-                BTN_EDIT.type = "button";
-                BTN_EDIT.onclick = function () { edit_audio(data[neddle]) }
-                ICO_EDIT.className = "glyphicon glyphicon-pencil";
-                BTN_EDIT.appendChild(ICO_EDIT);
-                SPAN_BTN.appendChild(BTN_EDIT);
-
-                SPAN_BTN.appendChild(document.createTextNode(" "));
-
-                BTN_DELETE.className = "btn btn-danger";
-                BTN_DELETE.type = "button";
-                BTN_DELETE.onclick = function () { del_audio(data[neddle]) }
-                ICO_DELETE.className = "glyphicon glyphicon-remove";
-                BTN_DELETE.appendChild(ICO_DELETE);
-                SPAN_BTN.appendChild(BTN_DELETE);
-
-                TD_BTN.appendChild(SPAN_BTN);
-                TR.appendChild(TD_BTN);
-
+                TR.appendChild(createTableData(element.name, 'col-xs-2'));
+                TR.appendChild(createTableData(element.trigger_word, 'col-xs-1'));
+                TR.appendChild(createTableData(parseInt(element.volume * 100) + '%', 'col-xs-1 text-center'));
+                TR.appendChild(createTableData(timeoutToString(element.timeout), 'col-xs-1 text-center'));
+                TR.appendChild(createCheckbox(element.active));
+                TR.appendChild(createCheckbox(element.mod_only));
+                TR.appendChild(createCheckbox(element.sub_only));
+                TR.appendChild(createPlayer(element));
+                TR.appendChild(createButtonGroup(() => edit_audio(element), () => del_audio(element)))
                 LIST.appendChild(TR);
-            }
+            })
 
             if (reload)
                 reload_success();

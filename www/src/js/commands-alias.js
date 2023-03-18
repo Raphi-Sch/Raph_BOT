@@ -7,42 +7,13 @@ function list_alias(reload = false) {
             const LIST = document.getElementById('tbody-list');
             LIST.innerHTML = "";
 
-            for (const neddle in data) {
-                // Base TR
+            data.forEach(element => {
                 const TR = document.createElement('tr');
-
-                // TD Command
-                const TD_ALIAS = document.createElement('td');
-                TD_ALIAS.classList.add('col-xs-5');
-                TD_ALIAS.innerText = data[neddle].alias;
-                TR.appendChild(TD_ALIAS);
-
-                // TD Text
-                const TD_COMMAND = document.createElement('td');
-                TD_COMMAND.classList.add('col-xs-5');
-                TD_COMMAND.innerText = data[neddle].command;
-                TR.appendChild(TD_COMMAND);
-
-                // TD Btn
-                const TD_BTN = document.createElement('td');
-                const SPAN_BTN = document.createElement('span');
-                const BTN_DELETE = document.createElement('button');
-                const ICO_DELETE = document.createElement('i');
-
-                SPAN_BTN.className = "pull-right";
-
-                BTN_DELETE.className = "btn btn-danger";
-                BTN_DELETE.type = "button";
-                BTN_DELETE.onclick = function () { del_alias(data[neddle]) }
-                ICO_DELETE.className = "glyphicon glyphicon-remove";
-                BTN_DELETE.appendChild(ICO_DELETE);
-                SPAN_BTN.appendChild(BTN_DELETE);
-
-                TD_BTN.appendChild(SPAN_BTN);
-                TR.appendChild(TD_BTN);
-
+                TR.appendChild(createTableData(element.alias, 'col-xs-5'));
+                TR.appendChild(createTableData(element.command, 'col-xs-5'));
+                TR.appendChild(createButtonGroup(() => edit_entry(element), () => del_entry(element)));
                 LIST.appendChild(TR);
-            }
+            })
 
             if (reload)
                 reload_success();
@@ -66,12 +37,12 @@ function list_option_alias() {
         success: function (data) {
             let select = document.getElementById('swal-select');
 
-            for (const neddle in data) {
+            data.forEach(element => {
                 const option = document.createElement('option');
-                option.innerText = data[neddle].command + ' (text)';
-                option.value = data[neddle].command;
+                option.innerText = element.command + ' (text)';
+                option.value = element.command;
                 select.appendChild(option);
-            }
+            })
         },
         error: function (result, status, error) {
             Swal.fire({
@@ -90,12 +61,12 @@ function list_option_alias() {
         success: function (data) {
             let select = document.getElementById('swal-select');
 
-            for (const neddle in data) {
+            data.forEach(element => {
                 const option = document.createElement('option');
-                option.innerText = data[neddle].trigger_word + ' (audio)';
-                option.value = data[neddle].trigger_word;
+                option.innerText = element.trigger_word + ' (audio)';
+                option.value = element.trigger_word;
                 select.appendChild(option);
-            }
+            })
         },
         error: function (result, status, error) {
             Swal.fire({

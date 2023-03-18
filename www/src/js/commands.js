@@ -50,16 +50,16 @@ function list_commands(reload = false) {
             const LIST = document.getElementById('tbody-list');
             LIST.innerHTML = "";
 
-            for (const neddle in data) {
+            data.forEach(element => {
                 const TR = document.createElement('tr');
-                TR.appendChild(createTableData(data[neddle].command, 'col-xs-2'));
-                TR.appendChild(createTableData(data[neddle].value, 'col-xs-5'));
-                TR.appendChild(createCheckbox(data[neddle].auto));
-                TR.appendChild(createCheckbox(data[neddle].mod_only));
-                TR.appendChild(createCheckbox(data[neddle].sub_only));
-                TR.appendChild(createButtonGroup(() => edit_entry(data[neddle]), () => del_entry(data[neddle])));
+                TR.appendChild(createTableData(element.command, 'col-xs-2'));
+                TR.appendChild(createTableData(element.value, 'col-xs-5'));
+                TR.appendChild(createCheckbox(element.auto));
+                TR.appendChild(createCheckbox(element.mod_only));
+                TR.appendChild(createCheckbox(element.sub_only));
+                TR.appendChild(createButtonGroup(() => edit_entry(element), () => del_entry(element)));
                 LIST.appendChild(TR);
-            }
+            })
 
             if (reload)
                 reload_success();

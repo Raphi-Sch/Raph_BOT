@@ -7,59 +7,14 @@ function list(reload = false) {
             const LIST = document.getElementById('tbody-list');
             LIST.innerHTML = "";
 
-            for (const neddle in data) {
-                // Base TR
+            data.forEach(element => {
                 const TR = document.createElement('tr');
-
-                // TD 1 (Trigger)
-                const TD_1 = document.createElement('td');
-                TD_1.classList.add('col-xs-2');
-                TD_1.innerText = data[neddle]['trigger_word'];
-                TR.appendChild(TD_1);
-
-                // TD 2 (Mod action)
-                const TD_2 = document.createElement('td');
-                TD_2.classList.add('col-xs-3');
-                TD_2.innerText = data[neddle]['mod_action'];
-                TR.appendChild(TD_2);
-
-                // TD 3 (Explanation)
-                const TD_3 = document.createElement('td');
-                TD_3.classList.add('col-xs-4');
-                TD_3.innerText = data[neddle]['explanation'];
-                TR.appendChild(TD_3);
-
-                // TD BTN (Btn)
-                const TD_BTN = document.createElement('td');
-                const SPAN = document.createElement('span');
-                const BTN_1 = document.createElement('button');
-                const BTN_2 = document.createElement('button');
-                const ICO_1 = document.createElement('i');
-                const ICO_2 = document.createElement('i');
-
-                SPAN.className = "pull-right";
-
-                BTN_1.className = "btn btn-warning";
-                BTN_1.type = "button";
-                BTN_1.onclick = function () { edit_entry(data[neddle]['id'], data[neddle]['trigger_word'], data[neddle]['mod_action'], data[neddle]['explanation']) };
-                ICO_1.className = "glyphicon glyphicon-pencil";
-                BTN_1.appendChild(ICO_1);
-                SPAN.appendChild(BTN_1);
-                SPAN.appendChild(document.createTextNode(" "));
-
-                BTN_2.className = "btn btn-danger";
-                BTN_2.type = "button";
-                BTN_2.onclick = function () { del_entry(data[neddle]['id'], data[neddle]['trigger_word']) }
-                ICO_2.className = "glyphicon glyphicon-remove";
-                BTN_2.appendChild(ICO_2);
-                SPAN.appendChild(BTN_2);
-
-                TD_BTN.appendChild(SPAN);
-                TR.appendChild(TD_BTN);
-
+                TR.appendChild(createTableData(element.trigger_word, 'col-xs-2'));
+                TR.appendChild(createTableData(element.mod_action, 'col-xs-3'));
+                TR.appendChild(createTableData(element.explanation, 'col-xs-4'));
+                TR.appendChild(createButtonGroup(() => edit_entry(element), () => del_entry(element)))
                 LIST.appendChild(TR);
-
-            }
+            })
 
             if (reload)
                 reload_success();
@@ -100,16 +55,16 @@ function add_entry() {
     });
 }
 
-function edit_entry(id, trigger, mod, exp) {
+function edit_entry(data) {
     Swal.fire({
-        title: `Editing : '${trigger}'`,
+        title: `Editing : '${data.trigger_word}'`,
         icon: 'info',
         html: "<form id='swal-form' method='post'><br/>" +
             "<input type='hidden' name='action' value='edit'>" +
-            `<input type='hidden' name='id' value='${id}'>` +
-            `<label>Trigger</label><input class='form-control' type='text' name='trigger' value="${trigger}"><br/>` +
-            `<label>Mod action</label><input class='form-control' type='text' name='mod_action' value="${mod}"><br/>` +
-            `<label>Explanation</label><textarea class='form-control' type='text' name='explanation'>${exp}</textarea><br/>` +
+            `<input type='hidden' name='id' value='${data.id}'>` +
+            `<label>Trigger</label><input class='form-control' type='text' name='trigger' value="${data.trigger_word}"><br/>` +
+            `<label>Mod action</label><input class='form-control' type='text' name='mod_action' value="${data.mod_action}"><br/>` +
+            `<label>Explanation</label><textarea class='form-control' type='text' name='explanation'>${data.explanation}</textarea><br/>` +
             "</form>",
         showCancelButton: true,
         focusConfirm: false,
@@ -127,9 +82,9 @@ function edit_entry(id, trigger, mod, exp) {
     })
 }
 
-function del_entry(id, trigger) {
+function del_entry(data) {
     Swal.fire({
-        title: `Delete "${trigger}" ?`,
+        title: `Delete "${data.trigger_word}" ?`,
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -140,7 +95,7 @@ function del_entry(id, trigger) {
         if (result.value) {
             $.post("src/php/POST_moderator.php", {
                 action: "del",
-                id: id
+                id: data.id
             }, function () {
                 list(true);
             });

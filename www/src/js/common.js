@@ -42,7 +42,7 @@ function reload_success() {
     })
 }
 
-function timeout_to_string(seconds) {
+function timeoutToString(seconds) {
     if (seconds >= 3600)
         return parseInt(seconds / 3600) + " hour";
 
@@ -55,9 +55,9 @@ function timeout_to_string(seconds) {
     return seconds + " s";
 }
 
-function createTableData(data, class_name) {
+function createTableData(data, className) {
     const TD = document.createElement('td');
-    TD.classList.add(class_name);
+    TD.className = className;
     TD.innerText = data;
     return TD;
 }
@@ -76,14 +76,14 @@ function createCheckbox(checked) {
     return TD;
 }
 
-function createButton(btn_class, ico_class, onclick) {
+function createButton(btnClass, icoClass, onclick) {
     const BTN = document.createElement('button');
-    BTN.className = btn_class;
+    BTN.className = btnClass;
     BTN.type = "button";
     BTN.onclick = onclick;
 
     const ICO = document.createElement('i');
-    ICO.className = ico_class;
+    ICO.className = icoClass;
 
     BTN.appendChild(ICO);
     return BTN;
