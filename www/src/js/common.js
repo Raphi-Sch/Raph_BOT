@@ -77,6 +77,15 @@ function createButtonGroup(editFunction, deleteFunction) {
     return TD;
 }
 
+function createDeleteButton(deleteFunction) {
+    const TD = document.createElement('td');
+    const SPAN = document.createElement('span');
+    SPAN.className = "pull-right";
+    SPAN.appendChild(createButton("btn btn-danger", "glyphicon glyphicon-remove", deleteFunction));
+    TD.appendChild(SPAN);
+    return TD;
+}
+
 $(document).ready(function () {
     $.ajax({
         url: "api/config.php?name",
