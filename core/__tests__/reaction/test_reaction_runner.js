@@ -9,7 +9,7 @@ describe('run reaction', () => {
     const socket = require('../../socket');
     const tools = require('../../tools');
     let audio = null;
-    jest.spyOn(tools, 'get_random_int').mockReturnValueOnce(5)
+    jest.spyOn(tools, 'randomInt').mockReturnValueOnce(5)
     jest.spyOn(db, 'query').mockReturnValueOnce([{frequency: 100, reaction: "xxx", trigger_word: "toto", timeout: 1}])
     jest.spyOn(socket, 'play_audio').mockImplementation(msg => audio = msg.trigger_word)
     // when
@@ -26,7 +26,7 @@ describe('run reaction', () => {
     const socket = require('../../socket');
     const tools = require('../../tools');
     let msg_in = null;
-    jest.spyOn(tools, 'get_random_int').mockReturnValueOnce(5)
+    jest.spyOn(tools, 'randomInt').mockReturnValueOnce(5)
     jest.spyOn(db, 'query').mockReturnValueOnce([{frequency: 100, reaction: "xxx", trigger_word: "toto", timeout: 1}])
     jest.spyOn(socket, 'log').mockImplementationOnce(msg => msg_in = msg)
     // when
@@ -41,7 +41,7 @@ describe('run reaction', () => {
     const runner = require('../../reaction/reaction_runner');
     const tools = require('../../tools');
     jest.spyOn(db, 'query').mockReturnValueOnce([{frequency: 100, reaction: "xxx", trigger_word: "toto", timeout: 1}])
-    jest.spyOn(tools, 'get_random_int').mockImplementation(msg => null.dd)
+    jest.spyOn(tools, 'randomInt').mockImplementation(msg => null.dd)
     // when
     const result = await runner.run_reaction({}, 'prenium')
     // then

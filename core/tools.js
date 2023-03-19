@@ -1,4 +1,4 @@
-function get_random_int(max) {
+function randomInt(max) {
     ///Return a random number between 0 and max
     return Math.floor(Math.random() * Math.floor(max + 1));
 }
@@ -33,4 +33,4 @@ function timeoutToString(seconds) {
     return seconds + "s";
 }
 
-module.exports = { parseCommand, get_random_int, normalizeString, timeoutToString }
+module.exports = { parseCommand, randomInt, normalizeString, timeoutToString }

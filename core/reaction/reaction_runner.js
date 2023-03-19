@@ -10,7 +10,7 @@ async function run_reaction(user, message) {
 
     try {
         if (result.reaction !== null) {
-            if (tools.get_random_int(100) <= result.frequency) {
+            if (tools.randomInt(100) <= result.frequency) {
                 log_and_timeout(result, user);
                 return result.reaction.replace("@username", user['display-name']);
             }
