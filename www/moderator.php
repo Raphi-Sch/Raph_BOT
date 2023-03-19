@@ -33,7 +33,7 @@ require_once('src/php/header.php');
                     <th class="col-xs-1">Action</th>
                     <th class="col-xs-2">Reason</th>
                     <th class="col-xs-1">Duration</th>
-                    <th class="col-xs-2">Shaming</th>
+                    <th class="col-xs-4">Shaming</th>
                     <th class="table-scroll-th-fix"></th>
                     <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
