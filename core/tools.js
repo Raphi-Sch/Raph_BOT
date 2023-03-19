@@ -14,18 +14,6 @@ function normalize_string(str) {
     return str.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
 }
 
-function first_of_array(array) {
-    try {
-        if (array[0]) {
-            return array[0];
-        }
-    }
-    catch (err) {
-        console.error(err);
-        return null;
-    }
-}
-
 function timeoutToString(seconds) {
     if(seconds >= 604800)
         return parseInt(seconds / 604800) + " week";
@@ -45,4 +33,4 @@ function timeoutToString(seconds) {
     return seconds + "s";
 }
 
-module.exports = { command_parser, get_random_int, normalize_string, first_of_array, timeoutToString }
+module.exports = { command_parser, get_random_int, normalize_string, timeoutToString }
