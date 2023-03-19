@@ -14,6 +14,13 @@ async function init(broadcasterName, botName, clientID, authorizationToken){
     configAPI.moderatorID = await getUserId(botName);
 }
 
+function errorLog(functionName, response) {
+    let date = new Date;
+    let time = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2) + ":" + ('0' + date.getSeconds()).slice(-2) + "." + ('00' + date.getMilliseconds()).slice(-3);
+    msg = `[${time}] [TWITCH API] Error while executing function ${functionName} -> HTTP ERROR : ${response.status} (${response.statusText})\n`;
+    console.error(msg);
+}
+
 async function getUserId(userName) {
     const response = await fetch(`https://api.twitch.tv/helix/users?login=${userName}`, {
         method: "get",
@@ -27,7 +34,7 @@ async function getUserId(userName) {
         const json = await response.json();
         return json.data[0].id;
     } else {
-        console.error("[TWITCH API] Error while executing function getBroadcasterId() -> HTTP ERROR : " + response.status + " (" + response.statusText + ")");
+        errorLog('getUserID()', response);
         process.exit(1);
     }
 }
@@ -53,7 +60,7 @@ async function banUser(userID, reason) {
     if (response.ok) {
         return true;
     } else {
-        console.error("[TWITCH API] Error while executing function banUser() -> HTTP ERROR : " + response.status + " (" + response.statusText + ")");
+        errorLog('banUser()', response);
         return null;
     }
 }
@@ -80,7 +87,7 @@ async function timeoutUser(userID, reason, duration) {
     if (response.ok) {
         return true;
     } else {
-        console.error("[TWITCH API] Error while executing function timeoutUser() -> HTTP ERROR : " + response.status + " (" + response.statusText + ")");
+        errorLog('timeoutUser()', response);
         return null;
     }
 }
