@@ -6,8 +6,8 @@ const TIER_MAX = 10;
 function get_name($db, $request)
 {
     $query = "SELECT DISTINCT `name`, mark, max_dmg, note 
-        FROM tanks LEFT JOIN alias_tanks ON alias_tanks.tank = tanks.trigger_word
-        WHERE alias_tanks.alias = ? OR tanks.trigger_word = ?";
+        FROM tanks LEFT JOIN tanks_alias ON tanks_alias.tank = tanks.trigger_word
+        WHERE tanks_alias.alias = ? OR tanks.trigger_word = ?";
 
     $result = db_query($db, $query, "ss", [$request, $request]);
 
@@ -50,8 +50,8 @@ function get_tier($db, $request)
 function get_nation($db, $request)
 {
     $query = "SELECT tanks.nation as nation, GROUP_CONCAT(name SEPARATOR ', ') as value
-        FROM tanks LEFT JOIN alias_nation ON alias_nation.nation = tanks.nation
-        WHERE alias_nation.alias = ? OR tanks.nation = ?
+        FROM tanks LEFT JOIN tanks_nation ON tanks_nation.nation = tanks.nation
+        WHERE tanks_nation.alias = ? OR tanks.nation = ?
         ORDER BY name ASC";
 
     $result = db_query($db, $query, "ss", [$request, $request]);
