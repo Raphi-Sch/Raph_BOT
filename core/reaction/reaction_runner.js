@@ -60,12 +60,8 @@ function log_and_timeout(reaction, user){
             exclusion.splice(exclusion.indexOf(reaction.trigger_word), 1);
             socket.log(`[REACTION] '${reaction.trigger_word}' has been removed from the exclusion list`);
         }, reaction.timeout * 1000);
-
-        socket.log(`[REACTION] '${reaction.trigger_word}' triggered by '${user['display-name']}' (timeout : ${tools.timeoutToString(reaction.timeout)})`);
     }
-    else{
-        socket.log(`[REACTION] '${reaction.trigger_word}' triggered by '${user['display-name']}' (no timeout) `);
-    }
+    socket.log(`[REACTION] '${reaction.trigger_word}' triggered by '${user['display-name']}' (timeout : ${tools.timeoutToString(reaction.timeout)})`);
 }
 
 module.exports = { runReaction }

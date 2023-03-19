@@ -115,16 +115,13 @@ function runAudio(command, user) {
 function logAndTimeoutAudio(command, user) {
     if (command.timeout > 0) {
         excluded_audio.push(command.trigger_word);
-        socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
 
         setTimeout(function () {
             excluded_audio.splice(excluded_audio.indexOf(command.trigger_word), 1);
             socket.log(`[AUDIO] '${command.name}' has been removed from the exclusion list`);
         }, command.timeout * 1000);
     }
-    else {
-        socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (no timeout)`);
-    }
+    socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
 }
 
 module.exports = { runCommand }
