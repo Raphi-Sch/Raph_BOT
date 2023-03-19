@@ -14,7 +14,7 @@ let tmiClient = null;
 
 function init() {
     // Initial Twitch config
-    init_tmi();
+    initTmi();
     tmiClient.connect();
     twitchAPI.init(config.twitch_channel, config.twitch_display_name, config.twitch_client_id, config.twitch_token);
 
@@ -78,7 +78,7 @@ function init() {
     });
 }
 
-function init_tmi() {
+function initTmi() {
     const tmiConfig = {
         option: {
             debug: true
