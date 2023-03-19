@@ -7,7 +7,7 @@ let excluded_tanks = [];
 let excluded_audio = [];
 
 async function run_command(user, message) {
-    const fullCommand = tools.command_parser(message, config.cmd_prefix);
+    const fullCommand = tools.parseCommand(message, config.cmd_prefix);
 
     if (fullCommand) {
         let command = await api_command(fullCommand[1], fullCommand[2]);

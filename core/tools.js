@@ -3,7 +3,7 @@ function get_random_int(max) {
     return Math.floor(Math.random() * Math.floor(max + 1));
 }
 
-function command_parser(message, prefix) {
+function parseCommand(message, prefix) {
     ///Commande Parser, sépare commande et paramètre de commande
     let prefixEscaped = prefix.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
     let regex = new RegExp("^" + prefixEscaped + "([a-zA-Z1-9]+)\s?(.*)");
@@ -33,4 +33,4 @@ function timeoutToString(seconds) {
     return seconds + "s";
 }
 
-module.exports = { command_parser, get_random_int, normalizeString, timeoutToString }
+module.exports = { parseCommand, get_random_int, normalizeString, timeoutToString }
