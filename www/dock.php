@@ -44,8 +44,8 @@ require_once('src/php/header.php');
 
     <script>
         $(document).ready(function() {
-            connect_socket();
-            log();
+            connectSocket();
+            getLog();
         });
         const is_dashboard = false;
         const is_dock = true;

@@ -21,7 +21,7 @@ require_once('src/php/header.php');
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <div class="col-md-12 row">
             <h1 class="page-header">Dashboard
-                <button onclick="start_stop()" type="button" class="btn btn-success" id="btn-start-stop"><i id="ico-start-stop" class="glyphicon glyphicon-play"></i></button>
+                <button onclick="startStop()" type="button" class="btn btn-success" id="btn-start-stop"><i id="ico-start-stop" class="glyphicon glyphicon-play"></i></button>
             </h1>
             <div class="col-sm-3">
                 <!-- Core Connection -->
@@ -94,13 +94,13 @@ require_once('src/php/header.php');
         <div class="row col-md-12">
             <h2 class="sub-header">Log
                 <div class='pull-right'>
-                    <button type="button" class="btn btn-info" onclick='log()'><i class="glyphicon glyphicon-refresh"></i></button>
+                    <button type="button" class="btn btn-info" onclick='getLog()'><i class="glyphicon glyphicon-refresh"></i></button>
                 </div>
             </h2>
 
             <ul class="nav nav-tabs">
-                <li id="tab-log"><a href="#" onclick='log()'>Log</a></li>
-                <li id="tab-debug"><a href="#" onclick='debug()'>Debug</a></li>
+                <li id="tab-log"><a href="#" onclick='getLog()'>Log</a></li>
+                <li id="tab-debug"><a href="#" onclick='getDebug()'>Debug</a></li>
             </ul>
 
             <div class="dash-log">
@@ -117,8 +117,8 @@ require_once('src/php/header.php');
         $(document).ready(function() {
             // Active the corresponding button in the navbar
             document.getElementById("index").className = "active";
-            connect_socket();
-            log();
+            connectSocket();
+            getLog();
         });
         const is_dashboard = true;
         const is_dock = false;

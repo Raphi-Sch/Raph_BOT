@@ -2,7 +2,7 @@ let socket = null;
 let core_state = false;
 let is_tab_log = false;
 
-function twitch_state(state) {
+function updateTwitchState(state) {
     // Dashboard
     if (is_dashboard) {
         if (state) {
@@ -26,7 +26,7 @@ function twitch_state(state) {
     }
 }
 
-function shout(data) {
+function updateShoutCounter(data) {
     // Dashboard
     if (is_dashboard) {
         document.getElementById('shout-bar').style.width = (data.current / data.max) * 100 + "%";
@@ -39,7 +39,7 @@ function shout(data) {
     }
 }
 
-function trigger_time(data) {
+function updateTriggerTime(data) {
     // Dashboard
     if (is_dashboard) {
         document.getElementById('auto-cmd-time-bar').style.width = (data.current / data.max) * 100 + "%";
@@ -53,7 +53,7 @@ function trigger_time(data) {
     }
 }
 
-function trigger_msg(data) {
+function updateTriggerMessage(data) {
     // Dashboard
     if (is_dashboard) {
         document.getElementById('auto-cmd-msg-bar').style.width = (data.current / data.max) * 100 + "%";
@@ -67,7 +67,7 @@ function trigger_msg(data) {
     }
 }
 
-function start_stop() {
+function startStop() {
     if (core_state) {
         swal.fire({
             title: 'Stop',
@@ -91,7 +91,7 @@ function start_stop() {
     }
 }
 
-function play_audio(file, volume) {
+function playAudio(file, volume) {
     if (is_dashboard) {
         const PLAYER = document.createElement('audio');
         document.getElementById('players').appendChild(PLAYER);
@@ -102,7 +102,7 @@ function play_audio(file, volume) {
     }
 }
 
-function connect_socket() {
+function connectSocket() {
     $.ajax({
         url: "api/config.php?socket-port",
         type: "GET",
@@ -155,10 +155,10 @@ function connect_socket() {
             socket.on('update', function (json) {
                 data = JSON.parse(json);
 
-                twitch_state(data.twitch);
-                shout(data.shout);
-                trigger_time(data.triggerTime);
-                trigger_msg(data.triggerMessage);
+                updateTwitchState(data.twitch);
+                updateShoutCounter(data.shout);
+                updateTriggerTime(data.triggerTime);
+                updateTriggerMessage(data.triggerMessage);
             })
 
             // Log
@@ -173,7 +173,7 @@ function connect_socket() {
             // Audio
             socket.on('play-audio', function (json) {
                 data = JSON.parse(json);
-                play_audio(data.file, data.volume);
+                playAudio(data.file, data.volume);
             })
         },
         error: function (result, status, error) {
@@ -186,7 +186,7 @@ function connect_socket() {
     })
 }
 
-function log() {
+function getLog() {
     if(is_dashboard){
         document.getElementById('tab-log').classList.add('active');
         document.getElementById('tab-debug').classList.remove('active');
@@ -210,7 +210,7 @@ function log() {
     })
 }
 
-function debug() {
+function getDebug() {
     if(is_dashboard){
         document.getElementById('tab-debug').classList.add('active');
         document.getElementById('tab-log').classList.remove('active');
