@@ -10,16 +10,16 @@ const config = require('./config').config;
 const socket = require('./socket');
 
 // Variable
-let TmiClient = null;
+let tmiClient = null;
 
 function init() {
     // Initial Twitch config
     init_tmi();
-    TmiClient.connect();
+    tmiClient.connect();
     twitchAPI.init(config.twitch_channel, config.twitch_display_name, config.twitch_client_id, config.twitch_token);
 
     // Events
-    TmiClient.on('connected', async (adress, port) => {
+    tmiClient.on('connected', async (adress, port) => {
         socket.twitch_state(true);
         send(config["twitch_connection_message"]);
         socket.log("[TWITCH] Connected on : " + adress)
@@ -33,12 +33,12 @@ function init() {
         }, 60000);
     });
 
-    TmiClient.on('disconnected', function () {
+    tmiClient.on('disconnected', function () {
         socket.twitch_state(false);
         socket.log("[TWITCH] Disconnected from IRC");
     });
 
-    TmiClient.on('chat', async (channel, user, message, isSelf) => {
+    tmiClient.on('chat', async (channel, user, message, isSelf) => {
         // Do not react to himself
         if (isSelf || user["display-name"] == config.twitch_display_name) return;
 
@@ -94,11 +94,11 @@ function init_tmi() {
     };
 
     socket.log("[TWITCH] Connecting ...");
-    TmiClient = new tmi.client(tmiConfig);
+    tmiClient = new tmi.client(tmiConfig);
 }
 
 function send(msg) {
-    TmiClient.say(config.twitch_channel, msg);
+    tmiClient.say(config.twitch_channel, msg);
 }
 
 module.exports = { init }
