@@ -40,13 +40,13 @@ async function runCommand(user, message) {
 
 async function queryAPI(command, param) {
     const body = {
-        data: [{
+        data: {
             method: "get_command",
             command: command,
             param: param,
             excluded_tanks: excluded_tanks,
             excluded_audio: excluded_audio
-        }]
+        }
     }
 
     const response = await fetch(config.api_url + "commands.php", {
