@@ -53,7 +53,6 @@ function init() {
         }
         const moderator_result = await moderator.run(user, message);
         if (moderator_result) {
-            send(moderator_result.explanation);
             switch (parseInt(moderator_result.mod_action)) {
                 case 0:
                     twitchAPI.banUser(user['user-id'], moderator_result.reason);
@@ -62,6 +61,7 @@ function init() {
                     twitchAPI.timeoutUser(user['user-id'], moderator_result.reason, moderator_result.duration);
                     break;
             }
+            send(moderator_result.explanation);
             return;
         }
         const reaction_result = await reaction.run(user, message);
