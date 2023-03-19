@@ -63,7 +63,7 @@ function edit_number(key, value) {
 }
 
 function twitch_token(hash) {
-    let token = "oauth:" + hash.substring(hash.search("access_token=") + 13, hash.search("&"));
+    let token = hash.substring(hash.search("access_token=") + 13, hash.search("&"));
 
     $.post("src/php/POST_config.php", { action: "edit", id: "twitch_token", value: token }, function () {
         Swal.fire({
