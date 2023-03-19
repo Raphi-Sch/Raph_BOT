@@ -18,7 +18,7 @@ describe('init moderator', () => {
   test('init moderator with plugin activate, prepare run function to return moderator', () => {
     // given
     config.plugin_moderator = 1
-    jest.spyOn(moderator_runner, 'run_moderator').mockReturnValue('foo')
+    jest.spyOn(moderator_runner, 'runModerator').mockReturnValue('foo')
     // when
     moderator.init()
     // then

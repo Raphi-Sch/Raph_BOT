@@ -1,4 +1,4 @@
-const { run_shout } = require("./shout_runner");
+const { runShout } = require("./shout_runner");
 const { config } = require('../config');
 const socket = require('../socket.js');
 
@@ -9,7 +9,7 @@ const runnable = {
 function init() {
     if (config.plugin_shout == 1) {
         socket.log("[PLUGIN] Shout enabled");
-        runnable.run = (user, message) => run_shout(user, message)
+        runnable.run = (user, message) => runShout(user, message)
     }
     else {
         socket.log("[PLUGIN] Shout disabled");

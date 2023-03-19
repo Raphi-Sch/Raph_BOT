@@ -4,7 +4,7 @@ const socket = require("../socket");
 const { config } = require("../config");
 let exclusion = [];
 
-async function run_reaction(user, message) {
+async function runReaction(user, message) {
     let words = tools.normalizeString(message).replace(/['"]+/g, ' ').split(" ");
     let result = await queryAPI(words);
 
@@ -68,4 +68,4 @@ function log_and_timeout(reaction, user){
     }
 }
 
-module.exports = { run_reaction }
+module.exports = { runReaction }

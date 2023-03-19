@@ -18,7 +18,7 @@ describe('init shout', () => {
   test('init shout with plugin activate, prepare run function to return shout', () => {
     // given
     config.plugin_shout = 1
-    jest.spyOn(shout_runner, 'run_shout').mockReturnValue('foo')
+    jest.spyOn(shout_runner, 'runShout').mockReturnValue('foo')
     // when
     shout.init()
     // then

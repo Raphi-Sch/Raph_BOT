@@ -15,7 +15,7 @@ describe('run shout', () => {
       {original : 's', replacement: 'ss'}
     ])
     // when
-    const result = await shout_runner.run_shout(user, "it's a very long sentence")
+    const result = await shout_runner.runShout(user, "it's a very long sentence")
     // then
     expect(result).toBe("AH OUAIS @anakin, ITT'SS A SO VERY LONG SENTENCE !")
   });
@@ -26,7 +26,7 @@ describe('run shout', () => {
 
     jest.spyOn(db, "query").mockReturnValueOnce([{original : 'very', replacement: 'so very'}])
     // when
-    const result = await shout_runner.run_shout(user, "this is a very very very very very very very very very very very very very very very very very very very very long sentence")
+    const result = await shout_runner.runShout(user, "this is a very very very very very very very very very very very very very very very very very very very very long sentence")
     // then
     expect(result).toBeFalsy()
   });

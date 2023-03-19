@@ -4,7 +4,7 @@ const { config } = require("../config");
 
 let shout_counter = 0;
 
-async function run_shout(user, message) {
+async function runShout(user, message) {
     shout_counter++;
     socket.shout_update(shout_counter, config.shout_interval);
 
@@ -54,4 +54,4 @@ async function queryAPI(message, language) {
     }
 }
 
-module.exports = { run_shout }
+module.exports = { runShout }

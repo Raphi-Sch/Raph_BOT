@@ -18,7 +18,7 @@ describe('run moderator', () => {
         const user = {}
         user["display-name"] = "anakin"
         // when
-        const result = await runner.run_moderator(user, 'prenium')
+        const result = await runner.runModerator(user, 'prenium')
         // then
         expect(result.mod_action).toBe("ban anakin")
         expect(result.explanation).toBe("you can not use this word")
@@ -37,7 +37,7 @@ describe('run moderator', () => {
         const user = {}
         user["display-name"] = "anakin"
         // when
-        const result = await runner.run_moderator(user, 'prenium')
+        const result = await runner.runModerator(user, 'prenium')
         // then
         expect(result).toBe(undefined)
         expect(log).toBe(null)
@@ -54,7 +54,7 @@ describe('run moderator', () => {
         const user = {}
         user["display-name"] = "anakin"
         // when
-        const result = await runner.run_moderator(user, 'prenium')
+        const result = await runner.runModerator(user, 'prenium')
         // then
         expect(result).toBe(null)
     });

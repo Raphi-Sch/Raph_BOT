@@ -1,4 +1,4 @@
-const { run_reaction } = require('./reaction_runner');
+const { runReaction } = require('./reaction_runner');
 const { config } = require('../config.js');
 const socket = require('../socket.js');
 
@@ -9,7 +9,7 @@ const runnable = {
 function init() {
     if (config.plugin_reaction == 1) {
         socket.log("[PLUGIN] Reaction enabled");
-        runnable.run = (user, message) => run_reaction(user, message)
+        runnable.run = (user, message) => runReaction(user, message)
     }
     else {
         socket.log("[PLUGIN] Reaction disabled");

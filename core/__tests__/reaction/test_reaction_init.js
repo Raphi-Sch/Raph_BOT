@@ -18,7 +18,7 @@ describe('init reaction', () => {
   test('init reaction with plugin activate, prepare run function to return reaction', () => {
     // given
     config.plugin_reaction = 1
-    jest.spyOn(reaction_runner, 'run_reaction').mockReturnValue('foo')
+    jest.spyOn(reaction_runner, 'runReaction').mockReturnValue('foo')
     // when
     reaction.init()
     // then

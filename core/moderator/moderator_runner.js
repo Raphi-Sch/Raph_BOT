@@ -6,7 +6,7 @@ const actionText = ["Ban", "Timeout"];
 
 const { re } = require("@babel/core/lib/vendor/import-meta-resolve");
 
-async function run_moderator(user, message) {
+async function runModerator(user, message) {
     const words = message.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/['"]+/g, ' ').split(" ");
     const result = await queryAPI(words);
 
@@ -48,4 +48,4 @@ async function queryAPI(words){
     }
 }
 
-module.exports = { run_moderator }
+module.exports = { runModerator }

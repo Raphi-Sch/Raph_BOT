@@ -13,8 +13,8 @@ describe('run reaction', () => {
     jest.spyOn(db, 'query').mockReturnValueOnce([{frequency: 100, reaction: "xxx", trigger_word: "toto", timeout: 1}])
     jest.spyOn(socket, 'play_audio').mockImplementation(msg => audio = msg.trigger_word)
     // when
-    await runner.run_reaction({}, 'prenium')
-    const result = await runner.run_reaction({}, 'prenium')
+    await runner.runReaction({}, 'prenium')
+    const result = await runner.runReaction({}, 'prenium')
     // then
     expect(result).toBe(undefined)
   });
@@ -30,7 +30,7 @@ describe('run reaction', () => {
     jest.spyOn(db, 'query').mockReturnValueOnce([{frequency: 100, reaction: "xxx", trigger_word: "toto", timeout: 1}])
     jest.spyOn(socket, 'log').mockImplementationOnce(msg => msg_in = msg)
     // when
-    const result = await runner.run_reaction({}, 'prenium')
+    const result = await runner.runReaction({}, 'prenium')
     // then
     expect(msg_in).toBe("[REACTION] toto has been excluded for 1s")
     expect(result).toBe("xxx")
@@ -43,7 +43,7 @@ describe('run reaction', () => {
     jest.spyOn(db, 'query').mockReturnValueOnce([{frequency: 100, reaction: "xxx", trigger_word: "toto", timeout: 1}])
     jest.spyOn(tools, 'randomInt').mockImplementation(msg => null.dd)
     // when
-    const result = await runner.run_reaction({}, 'prenium')
+    const result = await runner.runReaction({}, 'prenium')
     // then
     expect(result).toBe(null)
   });

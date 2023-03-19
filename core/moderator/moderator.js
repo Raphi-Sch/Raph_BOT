@@ -1,4 +1,4 @@
-const { run_moderator } = require('./moderator_runner');
+const { runModerator } = require('./moderator_runner');
 const { config } = require('../config');
 const socket = require('../socket.js');
 
@@ -9,7 +9,7 @@ const runnable = {
 function init() {
     if (config.plugin_moderator == 1) {
         socket.log("[PLUGIN] Moderator enabled");
-        runnable.run = (user, message) => run_moderator(user, message)
+        runnable.run = (user, message) => runModerator(user, message)
     }
     else {
         socket.log("[PLUGIN] Moderator disabled");
