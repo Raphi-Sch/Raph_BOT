@@ -10,19 +10,16 @@ const config = require('./config').config;
 const socket = require('./socket');
 
 // Variable
-let client = null;
-let broadcasterID = null;
-let botID = null;
+let TmiClient = null;
 
 function init() {
-    // Twitch initial config
+    // Initial Twitch config
     init_tmi();
-    client.connect();
-    broadcasterID = twitchAPI.getUserId(config.twitch_channel, config.twitch_client_id, config.twitch_token);
-    botID = twitchAPI.getUserId(config.twitch_display_name, config.twitch_client_id, config.twitch_token);
+    TmiClient.connect();
+    twitchAPI.init(config.twitch_channel, config.twitch_display_name, config.twitch_client_id, config.twitch_token);
 
     // Events
-    client.on('connected', async (adress, port) => {
+    TmiClient.on('connected', async (adress, port) => {
         socket.twitch_state(true);
         send(config["twitch_connection_message"]);
         socket.log("[TWITCH] Connected on : " + adress)
@@ -36,12 +33,12 @@ function init() {
         }, 60000);
     });
 
-    client.on('disconnected', function () {
+    TmiClient.on('disconnected', function () {
         socket.twitch_state(false);
         socket.log("[TWITCH] Disconnected from IRC");
     });
 
-    client.on('chat', async (channel, user, message, isSelf) => {
+    TmiClient.on('chat', async (channel, user, message, isSelf) => {
         // Do not react to himself
         if (isSelf || user["display-name"] == config.twitch_display_name) return;
 
@@ -57,7 +54,14 @@ function init() {
         const moderator_result = await moderator.run(user, message);
         if (moderator_result) {
             send(moderator_result.explanation);
-            twitchAPI.banUser(broadcasterID, botID, config.twitch_client_id, config.twitch_token, user['user-id'], moderator_result.reason);
+            switch (parseInt(moderator_result.mod_action)) {
+                case 0:
+                    twitchAPI.banUser(user['user-id'], moderator_result.reason);
+                    break;
+                case 1:
+                    twitchAPI.timeoutUser(user['user-id'], moderator_result.reason, moderator_result.duration);
+                    break;
+            }
             return;
         }
         const reaction_result = await reaction.run(user, message);
@@ -90,11 +94,11 @@ function init_tmi() {
     };
 
     socket.log("[TWITCH] Connecting ...");
-    client = new tmi.client(tmiConfig);
+    TmiClient = new tmi.client(tmiConfig);
 }
 
 function send(msg) {
-    client.say(config.twitch_channel, msg);
+    TmiClient.say(config.twitch_channel, msg);
 }
 
 module.exports = { init }
