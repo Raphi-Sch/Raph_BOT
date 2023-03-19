@@ -19,10 +19,10 @@ function init() {
     twitchAPI.init(config.twitch_channel, config.twitch_display_name, config.twitch_client_id, config.twitch_token);
 
     // Events
-    tmiClient.on('connected', async (adress, port) => {
+    tmiClient.on('connected', async (address, port) => {
         socket.twitch_state(true);
         send(config["twitch_connection_message"]);
-        socket.log("[TWITCH] Connected on : " + adress)
+        socket.log("[TWITCH] Connected on : " + address)
 
         setInterval(async function () {
             commands.time_trigger().then(result => {
