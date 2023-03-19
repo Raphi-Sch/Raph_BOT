@@ -157,8 +157,8 @@ function connect_socket() {
 
                 twitch_state(data.twitch);
                 shout(data.shout);
-                trigger_time(data.trigger_time);
-                trigger_msg(data.trigger_msg);
+                trigger_time(data.triggerTime);
+                trigger_msg(data.triggerMessage);
             })
 
             // Log

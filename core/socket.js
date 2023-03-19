@@ -8,8 +8,8 @@ const server = http.createServer();
 const io = require('socket.io').listen(server);
 
 // Variables
-let web_client = null;
-let web_client_connected = false;
+let webClient = null;
+let webClientConnected = false;
 
 // GUI info
 const GUI = {
@@ -18,12 +18,12 @@ const GUI = {
         current: 0,
         max: 0
     },
-    trigger_time: {
+    triggerTime: {
         current: 0,
         max: 0,
         nb: 0
     },
-    trigger_msg: {
+    triggerMessage: {
         current: 0,
         max: 0,
         nb: 0
@@ -36,14 +36,14 @@ function init(version) {
 
     // GUI Value
     GUI.shout.max = config.shout_interval;
-    GUI.trigger_time.max = config.cmd_time_interval;
-    GUI.trigger_msg.max = config.cmd_msg_interval;
+    GUI.triggerTime.max = config.cmd_time_interval;
+    GUI.triggerMessage.max = config.cmd_msg_interval;
 }
 
-// When web_client is connected, update all info
+// When webClient is connected, update all info
 io.sockets.on('connection', function (socket) {
-    web_client = socket;
-    web_client_connected = true;
+    webClient = socket;
+    webClientConnected = true;
 
     updateWebUI();
 
@@ -53,14 +53,14 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('disconnect', function () {
-        web_client_connected = false;
+        webClientConnected = false;
     });
 
 });
 
 function updateWebUI() {
-    if (web_client_connected)
-        web_client.emit('update', JSON.stringify(GUI));
+    if (webClientConnected)
+        webClient.emit('update', JSON.stringify(GUI));
 }
 
 function setTwitchState(state) {
@@ -74,12 +74,12 @@ function setShout(current, max) {
 }
 
 function setTimeCounter(current, max, nb) {
-    GUI.trigger_time = { current, max, nb };
+    GUI.triggerTime = { current, max, nb };
     updateWebUI();
 }
 
 function setMessageCounter(current, max, nb) {
-    GUI.trigger_msg = { current, max, nb };
+    GUI.triggerMessage = { current, max, nb };
     updateWebUI();
 }
 
@@ -93,13 +93,13 @@ function log(msg) {
     stream_log.write(msg);
 
     // Update UI
-    if (web_client_connected)
-        web_client.emit('log', msg);
+    if (webClientConnected)
+        webClient.emit('log', msg);
 }
 
 function playAudio(data) {
-    if (web_client_connected) {
-        web_client.emit('play-audio', JSON.stringify(data));
+    if (webClientConnected) {
+        webClient.emit('play-audio', JSON.stringify(data));
     }
 }
 
