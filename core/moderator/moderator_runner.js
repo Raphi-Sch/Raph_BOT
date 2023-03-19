@@ -12,7 +12,7 @@ async function run_moderator(user, message) {
 
     try {
         if (result && result.mod_action) {
-            socket.log(`[MODERATOR] Taking action against '${user['display-name']}' for saying '${message}' (Action : ${actionText[result.mod_action]}, Duration : ${tools.timeout_to_string(result.duration)})`);
+            socket.log(`[MODERATOR] Taking action against '${user['display-name']}' for saying '${message}' (Action : ${actionText[result.mod_action]}, Duration : ${tools.timeoutToString(result.duration)})`);
             result.explanation = result.explanation.replace("@username", user['display-name']);
             return result;
         }

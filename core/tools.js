@@ -26,7 +26,13 @@ function first_of_array(array) {
     }
 }
 
-function timeout_to_string(seconds) {
+function timeoutToString(seconds) {
+    if(seconds >= 604800)
+        return parseInt(seconds / 604800) + " week";
+
+    if(seconds >= 86400)
+        return parseInt(seconds / 86400) + " day";
+
     if(seconds >= 3600)
         return parseInt(seconds / 3600) + " hour";
 
@@ -39,4 +45,4 @@ function timeout_to_string(seconds) {
     return seconds + "s";
 }
 
-module.exports = { command_parser, get_random_int, normalize_string, first_of_array, timeout_to_string }
+module.exports = { command_parser, get_random_int, normalize_string, first_of_array, timeoutToString }
