@@ -30,8 +30,10 @@ require_once('src/php/header.php');
             <thead>
                 <tr>
                     <th class="col-xs-2">Trigger</th>
-                    <th class="col-xs-3">Moderator action</th>
-                    <th class="col-xs-4">Explanation</th>
+                    <th class="col-xs-2">Action</th>
+                    <th class="col-xs-2">Reason</th>
+                    <th class="col-xs-2">Duration</th>
+                    <th class="col-xs-2">Shaming</th>
                     <th class="table-scroll-th-fix"></th>
                     <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
