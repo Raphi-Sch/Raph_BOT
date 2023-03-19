@@ -20,7 +20,8 @@ const config = {
     twitch_channel: null,
     twitch_connection_message: null,
     twitch_token: null,
-    twitch_display_name: null
+    twitch_display_name: null,
+    twitch_client_id: null,
 };
 
 async function load() {

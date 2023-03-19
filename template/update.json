@@ -80,17 +80,17 @@
             "hidden" : 0,
             "type" : 0
         },
-        "token_client_id" : {
+        "twitch_client_id" : {
             "value" : "Dev Client ID",
             "hidden" : 1,
             "type" : 0
         },
-        "token_scope" : {
+        "twitch_scope" : {
             "value" : "chat:edit+chat:read+channel:moderate",
             "hidden" : 0,
             "type" : 0
         },
-        "token_redirect_uri" : {
+        "twitch_redirect_uri" : {
             "value" : "http://localhost",
             "hidden" : 0,
             "type" : 0

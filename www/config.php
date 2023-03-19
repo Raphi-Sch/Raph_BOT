@@ -40,9 +40,9 @@ while ($row = mysqli_fetch_assoc($data)) {
     </tr>";
 }
 
-$token_id = db_query($db, "SELECT `value` FROM config WHERE id = 'token_client_id'")['value'];
-$token_scope = db_query($db, "SELECT `value` FROM config WHERE id = 'token_scope'")['value'];
-$token_return = db_query($db, "SELECT `value` FROM config WHERE id = 'token_redirect_uri'")['value'];
+$token_id = db_query($db, "SELECT `value` FROM config WHERE id = 'twitch_client_id'")['value'];
+$token_scope = db_query($db, "SELECT `value` FROM config WHERE id = 'twitch_scope'")['value'];
+$token_return = db_query($db, "SELECT `value` FROM config WHERE id = 'twitch_redirect_uri'")['value'];
 
 $token_URL = "https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=$token_id&redirect_uri=$token_return&scope=$token_scope";
 
