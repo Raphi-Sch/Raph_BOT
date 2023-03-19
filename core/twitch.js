@@ -42,36 +42,36 @@ function init() {
         // Do not react to himself
         if (isSelf || user["display-name"] == config.twitch_display_name) return;
 
-        const message_trigger_result = await commands.messageTrigger();
-        if (message_trigger_result) {
-            send(message_trigger_result);
+        const messageTriggerResult = await commands.messageTrigger();
+        if (messageTriggerResult) {
+            send(messageTriggerResult);
         }
-        const commands_result = await commands.run(user, message)
-        if (commands_result) {
-            send(commands_result);
+        const commandResult = await commands.run(user, message)
+        if (commandResult) {
+            send(commandResult);
             return;
         }
-        const moderator_result = await moderator.run(user, message);
-        if (moderator_result) {
-            switch (parseInt(moderator_result.mod_action)) {
+        const moderatorResult = await moderator.run(user, message);
+        if (moderatorResult) {
+            switch (parseInt(moderatorResult.mod_action)) {
                 case 0:
-                    twitchAPI.banUser(user['user-id'], moderator_result.reason);
+                    twitchAPI.banUser(user['user-id'], moderatorResult.reason);
                     break;
                 case 1:
-                    twitchAPI.timeoutUser(user['user-id'], moderator_result.reason, moderator_result.duration);
+                    twitchAPI.timeoutUser(user['user-id'], moderatorResult.reason, moderatorResult.duration);
                     break;
             }
-            send(moderator_result.explanation);
+            send(moderatorResult.explanation);
             return;
         }
-        const reaction_result = await reaction.run(user, message);
-        if (reaction_result) {
-            send(reaction_result);
+        const reactionResult = await reaction.run(user, message);
+        if (reactionResult) {
+            send(reactionResult);
             return;
         }
-        const shout_result = await shout.run(user, message);
-        if (shout_result) {
-            send(shout_result);
+        const shoutResult = await shout.run(user, message);
+        if (shoutResult) {
+            send(shoutResult);
             return;
         }
 
