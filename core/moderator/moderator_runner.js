@@ -12,7 +12,6 @@ async function run_moderator(user, message) {
         if (result && result.mod_action) {
             socket.log(`[MODERATOR] Taking action against '${user['display-name']}' for saying '${message}' (Action : ${result.mod_action} )`);
 
-            result.mod_action = result.mod_action.replace("@username", user['display-name']);
             result.explanation = result.explanation.replace("@username", user['display-name']);
 
             return result;

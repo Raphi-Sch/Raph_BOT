@@ -72,13 +72,19 @@
                 "id",
                 "trigger_word",
                 "mod_action",
-                "explanation"
+                "explanation",
+                "action",
+                "duration",
+                "reason"
             ],
             "types": {
                 "id" : "int(11) NOT NULL",
                 "trigger_word" : "text NOT NULL",
                 "mod_action" : "text NOT NULL",
-                "explanation" : "text NOT NULL"
+                "explanation" : "text NOT NULL",
+                "action" : "tinyint(4) NOT NULL",
+                "duration" : "int(11) NOT NULL",
+                "reason" : "text NOT NULL"
             }
         },
         "reactions": {

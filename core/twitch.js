@@ -1,5 +1,6 @@
 // Module Import
-const tmi = require("tmi.js");
+const tmi = require('tmi.js');
+const twitchAPI = require('./twitchAPI.js');
 const commands = require('./command/commands.js');
 const reaction = require('./reaction/reaction.js');
 const shout = require('./shout/shout.js');
@@ -9,12 +10,14 @@ const config = require('./config').config;
 const socket = require('./socket');
 
 // Variable
-let client;
+let client = null;
+let broadcasterID = null;
 
 function init() {
-    // TMI config
+    // Twitch initial config
     init_tmi();
     client.connect();
+    broadcasterID = twitchAPI.getBroadcasterId(config.twitch_channel, config.twitch_client_id, config.twitch_token);
 
     // Events
     client.on('connected', async (adress, port) => {
@@ -51,8 +54,8 @@ function init() {
         }
         const moderator_result = await moderator.run(user, message);
         if (moderator_result) {
-            send(moderator_result.mod_action);
             send(moderator_result.explanation);
+            twitchAPI.banUser(broadcasterID, config.twitch_client_id, config.twitch_token, user['user-id'], moderator_result.reason);
             return;
         }
         const reaction_result = await reaction.run(user, message);
@@ -79,7 +82,7 @@ function init_tmi() {
         },
         identity: {
             username: config.bot_name,
-            password: config.twitch_token
+            password: "oauth:" + config.twitch_token
         },
         channels: [config.twitch_channel]
     };
