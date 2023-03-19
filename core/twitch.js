@@ -12,12 +12,14 @@ const socket = require('./socket');
 // Variable
 let client = null;
 let broadcasterID = null;
+let botID = null;
 
 function init() {
     // Twitch initial config
     init_tmi();
     client.connect();
-    broadcasterID = twitchAPI.getBroadcasterId(config.twitch_channel, config.twitch_client_id, config.twitch_token);
+    broadcasterID = twitchAPI.getUserId(config.twitch_channel, config.twitch_client_id, config.twitch_token);
+    botID = twitchAPI.getUserId(config.twitch_display_name, config.twitch_client_id, config.twitch_token);
 
     // Events
     client.on('connected', async (adress, port) => {
@@ -55,7 +57,7 @@ function init() {
         const moderator_result = await moderator.run(user, message);
         if (moderator_result) {
             send(moderator_result.explanation);
-            twitchAPI.banUser(broadcasterID, config.twitch_client_id, config.twitch_token, user['user-id'], moderator_result.reason);
+            twitchAPI.banUser(broadcasterID, botID, config.twitch_client_id, config.twitch_token, user['user-id'], moderator_result.reason);
             return;
         }
         const reaction_result = await reaction.run(user, message);

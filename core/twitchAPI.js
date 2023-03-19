@@ -1,7 +1,7 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
-async function getBroadcasterId(broadcasterName, clientID, authorizationToken) {
-    const response = await fetch(`https://api.twitch.tv/helix/users?login=${broadcasterName}`, {
+async function getUserId(userName, clientID, authorizationToken) {
+    const response = await fetch(`https://api.twitch.tv/helix/users?login=${userName}`, {
         method: "get",
         headers: {
             "Authorization": `Bearer ${authorizationToken}`,
@@ -13,12 +13,12 @@ async function getBroadcasterId(broadcasterName, clientID, authorizationToken) {
         const json = await response.json();
         return json.data[0].id;
     } else {
-        console.error("[TWITCH API] Error while executing function getBroadcasterId() - HTTP ERROR : " + response.status + " (" + response.statusText + ")");
+        console.error("[TWITCH API] Error while executing function getBroadcasterId() -> HTTP ERROR : " + response.status + " (" + response.statusText + ")");
         process.exit(1);
     }
 }
 
-async function banUser(broadcasterID, clientID, authorizationToken, userID, reason) {
+async function banUser(broadcasterID, botID, clientID, authorizationToken, userID, reason) {
     const body = {
         data: [
             {
@@ -28,7 +28,7 @@ async function banUser(broadcasterID, clientID, authorizationToken, userID, reas
         ]
     }
 
-    const response = await fetch(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=${broadcasterID}&moderator_id=${clientID}`, {
+    const response = await fetch(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=${broadcasterID}&moderator_id=${botID}`, {
         method: "post",
         body: JSON.stringify(body),
         headers: {
@@ -41,9 +41,9 @@ async function banUser(broadcasterID, clientID, authorizationToken, userID, reas
     if (response.ok) {
         return true;
     } else {
-        console.error("[TWITCH API] Error while executing function banUser() - HTTP ERROR : " + response.status + " (" + response.statusText + ")");
+        console.error("[TWITCH API] Error while executing function banUser() -> HTTP ERROR : " + response.status + " (" + response.statusText + ")");
         return null;
     }
 }
 
-module.exports = { getBroadcasterId, banUser }
+module.exports = { getUserId, banUser }
