@@ -20,7 +20,7 @@ function init() {
 
     // Events
     tmiClient.on('connected', async (address, port) => {
-        socket.twitch_state(true);
+        socket.setTwitchState(true);
         send(config["twitch_connection_message"]);
         socket.log("[TWITCH] Connected on : " + address)
 
@@ -34,7 +34,7 @@ function init() {
     });
 
     tmiClient.on('disconnected', function () {
-        socket.twitch_state(false);
+        socket.setTwitchState(false);
         socket.log("[TWITCH] Disconnected from IRC");
     });
 

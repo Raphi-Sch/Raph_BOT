@@ -95,19 +95,19 @@ function runText(command, user) {
 function runAudio(command, user) {
     if (canUseCommandModerator(command, user)) {
         logAndTimeoutAudio(command, user);
-        socket.play_audio(command);
+        socket.playAudio(command);
         return null;
     }
 
     if (canUseCommandSubscriber(command, user)) {
         logAndTimeoutAudio(command, user);
-        socket.play_audio(command);
+        socket.playAudio(command);
         return null;
     }
 
     if (canUseCommandEveryone(command)) {
         logAndTimeoutAudio(command, user);
-        socket.play_audio(command);
+        socket.playAudio(command);
         return null;
     }
 }

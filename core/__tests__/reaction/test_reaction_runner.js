@@ -11,7 +11,7 @@ describe('run reaction', () => {
     let audio = null;
     jest.spyOn(tools, 'randomInt').mockReturnValueOnce(5)
     jest.spyOn(db, 'query').mockReturnValueOnce([{frequency: 100, reaction: "xxx", trigger_word: "toto", timeout: 1}])
-    jest.spyOn(socket, 'play_audio').mockImplementation(msg => audio = msg.trigger_word)
+    jest.spyOn(socket, 'playAudio').mockImplementation(msg => audio = msg.trigger_word)
     // when
     await runner.runReaction({}, 'prenium')
     const result = await runner.runReaction({}, 'prenium')

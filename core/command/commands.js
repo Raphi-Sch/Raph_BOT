@@ -29,7 +29,7 @@ function init() {
 async function timeTrigger() {
     const time_interval = config.cmd_time_interval;
     timer++;
-    socket.time_trigger_update(timer, time_interval, total_auto_cmd_time);
+    socket.setTimeCounter(timer, time_interval, total_auto_cmd_time);
     if (timer >= time_interval) {
         resetTimer()
         total_auto_cmd_time++;
@@ -49,7 +49,7 @@ function resetTimer() {
 async function messageTrigger() {
     const message_interval = config.cmd_msg_interval
     message_counter++
-    socket.msg_trigger_update(message_counter, message_interval, total_auto_cmd_msg)
+    socket.setMessageCounter(message_counter, message_interval, total_auto_cmd_msg)
     if (message_counter >= message_interval) {
         resetMessageCounter()
         total_auto_cmd_msg++

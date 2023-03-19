@@ -6,7 +6,7 @@ let shout_counter = 0;
 
 async function runShout(user, message) {
     shout_counter++;
-    socket.shout_update(shout_counter, config.shout_interval);
+    socket.setShout(shout_counter, config.shout_interval);
 
     if (shout_counter >= config.shout_interval) {
         let result = await queryAPI(message, config.shout_language);

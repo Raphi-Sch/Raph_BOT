@@ -10,7 +10,7 @@ describe('run audio', () => {
     let audio = null;
     jest.spyOn(tools, 'randomInt').mockReturnValueOnce(5)
     jest.spyOn(db, 'query').mockReturnValueOnce([{frequency: 100, trigger_word: "toto", timeout: 0}])
-    jest.spyOn(socket, 'play_audio').mockImplementation(msg => audio = msg.trigger_word)
+    jest.spyOn(socket, 'playAudio').mockImplementation(msg => audio = msg.trigger_word)
     // when
     await runner.run_audio({}, 'prenium')
     const result = await runner.run_audio({}, 'prenium')
@@ -29,7 +29,7 @@ describe('run audio', () => {
     let msg_out = null;
     jest.spyOn(tools, 'randomInt').mockReturnValueOnce(5)
     jest.spyOn(db, 'query').mockReturnValueOnce([{frequency: 100, trigger_word: "toto", timeout: 1, name: 'toto'}])
-    jest.spyOn(socket, 'play_audio').mockImplementation(msg => audio = msg.trigger_word)
+    jest.spyOn(socket, 'playAudio').mockImplementation(msg => audio = msg.trigger_word)
     jest.spyOn(socket, 'log').mockImplementationOnce(msg => msg_in = msg)
         .mockImplementationOnce(msg => msg_out = msg)
     // when

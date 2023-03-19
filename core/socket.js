@@ -63,22 +63,22 @@ function GUI_update() {
         web_client.emit('update', JSON.stringify(GUI));
 }
 
-function twitch_state(state) {
+function setTwitchState(state) {
     GUI.twitch = state;
     GUI_update();
 }
 
-function shout_update(current, max) {
+function setShout(current, max) {
     GUI.shout = { current, max };
     GUI_update();
 }
 
-function time_trigger_update(current, max, nb) {
+function setTimeCounter(current, max, nb) {
     GUI.trigger_time = { current, max, nb };
     GUI_update();
 }
 
-function msg_trigger_update(current, max, nb) {
+function setMessageCounter(current, max, nb) {
     GUI.trigger_msg = { current, max, nb };
     GUI_update();
 }
@@ -97,11 +97,11 @@ function log(msg) {
         web_client.emit('log', msg);
 }
 
-function play_audio(data) {
+function playAudio(data) {
     if (web_client_connected) {
         web_client.emit('play-audio', JSON.stringify(data));
     }
 }
 
 
-module.exports = { init, twitch_state, shout_update, time_trigger_update, msg_trigger_update, log, play_audio }
+module.exports = { init, setTwitchState, setShout, setTimeCounter, setMessageCounter, log, playAudio }
