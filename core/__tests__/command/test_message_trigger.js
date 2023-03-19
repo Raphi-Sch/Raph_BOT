@@ -17,7 +17,7 @@ describe('message trigger', () => {
     config.cmd_msg_interval = 2
     command.init()
     jest.spyOn(db, "query").mockReturnValue([{command: "toto"}])
-    jest.spyOn(commands_runner, 'run_command').mockImplementation((user, msg) => msg)
+    jest.spyOn(commands_runner, 'runCommand').mockImplementation((user, msg) => msg)
     // when
     const result = await command.message_trigger()
     // then
@@ -32,7 +32,7 @@ describe('message trigger', () => {
     config.cmd_msg_interval = 1
     command.init()
     jest.spyOn(db, "query").mockReturnValue([{command: "toto"}])
-    jest.spyOn(commands_runner, 'run_command').mockImplementation((user, msg) => msg)
+    jest.spyOn(commands_runner, 'runCommand').mockImplementation((user, msg) => msg)
     // when
     const result = await command.message_trigger()
     // then

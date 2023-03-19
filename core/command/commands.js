@@ -1,4 +1,4 @@
-const { run_command } = require('./commands_runner')
+const { runCommand } = require('./commands_runner')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 // Const declaration
@@ -19,7 +19,7 @@ const runnable = {
 function init() {
     if (config.plugin_commands == 1) {
         socket.log("[PLUGIN] Commands enabled");
-        runnable.run = (user, message) => run_command(user, message)
+        runnable.run = (user, message) => runCommand(user, message)
     }
     else {
         socket.log("[PLUGIN] Commands disabled");

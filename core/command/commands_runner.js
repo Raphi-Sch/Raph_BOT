@@ -6,11 +6,11 @@ const { config } = require("../config");
 let excluded_tanks = [];
 let excluded_audio = [];
 
-async function run_command(user, message) {
+async function runCommand(user, message) {
     const fullCommand = tools.parseCommand(message, config.cmd_prefix);
 
     if (fullCommand) {
-        let command = await api_command(fullCommand[1], fullCommand[2]);
+        let command = await apiCommand(fullCommand[1], fullCommand[2]);
 
         if (command.response_type) {
             // Replace @username with current username
@@ -20,10 +20,10 @@ async function run_command(user, message) {
 
             switch(command.response_type){
                 case "text":
-                    return run_text(command, user);
+                    return runText(command, user);
                 
                 case "audio":
-                    return run_audio(command, user);
+                    return runAudio(command, user);
 
                 case "tank-random":
                     if (command.exclude !== null) excluded_tanks.push(command.exclude);
@@ -38,7 +38,7 @@ async function run_command(user, message) {
     return null;
 }
 
-async function api_command(command, param) {
+async function apiCommand(command, param) {
     const body = {
         data: [{
             method: "get_command",
@@ -69,50 +69,50 @@ async function api_command(command, param) {
     }
 }
 
-function is_command_for_moderator(command, user){
+function canUseCommandModerator(command, user){
     return (command.mod_only && user && (user.mod || user.username === config.twitch_channel.toLowerCase()))
 }
 
-function is_command_for_subscriber(command, user){
+function canUseCommandSubscriber(command, user){
     return (command.sub_only && user && user.subscriber);
 }
 
-function is_command_for_everyone(command){
+function canUseCommandEveryone(command){
     return (!command.mod_only && !command.sub_only)
 }
 
-function run_text(command, user) {
-    if (is_command_for_moderator(command, user))
+function runText(command, user) {
+    if (canUseCommandModerator(command, user))
         return command.value;
 
-    if (is_command_for_subscriber(command, user))
+    if (canUseCommandSubscriber(command, user))
         return command.value;
 
-    if (is_command_for_everyone(command))
+    if (canUseCommandEveryone(command))
         return command.value;
 }
 
-function run_audio(command, user) {
-    if (is_command_for_moderator(command, user)) {
-        log_and_timeout_audio(command, user);
+function runAudio(command, user) {
+    if (canUseCommandModerator(command, user)) {
+        logAndTimeoutAudio(command, user);
         socket.play_audio(command);
         return null;
     }
 
-    if (is_command_for_subscriber(command, user)) {
-        log_and_timeout_audio(command, user);
+    if (canUseCommandSubscriber(command, user)) {
+        logAndTimeoutAudio(command, user);
         socket.play_audio(command);
         return null;
     }
 
-    if (is_command_for_everyone(command)) {
-        log_and_timeout_audio(command, user);
+    if (canUseCommandEveryone(command)) {
+        logAndTimeoutAudio(command, user);
         socket.play_audio(command);
         return null;
     }
 }
 
-function log_and_timeout_audio(command, user) {
+function logAndTimeoutAudio(command, user) {
     if (command.timeout > 0) {
         excluded_audio.push(command.trigger_word);
         socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
@@ -127,4 +127,4 @@ function log_and_timeout_audio(command, user) {
     }
 }
 
-module.exports = { run_command }
+module.exports = { runCommand }

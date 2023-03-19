@@ -13,7 +13,7 @@ describe('run command', () => {
         jest.spyOn(db, 'query').mockReturnValueOnce([{command: "char"}])
         jest.spyOn(tanks, 'run').mockReturnValueOnce("one tanks")
         // when
-        const result = await runner.run_command(null, '!chan 4h')
+        const result = await runner.runCommand(null, '!chan 4h')
         // then
         expect(result).toBe("one tanks")
     });
@@ -27,7 +27,7 @@ describe('run command', () => {
         jest.spyOn(db, 'query').mockReturnValueOnce([])
             .mockReturnValueOnce([{value: "toto is you @username"}])
         // when
-        const result = await runner.run_command(null, '!toto')
+        const result = await runner.runCommand(null, '!toto')
         // then
         expect(result).toBe("toto is you @username")
     });
@@ -43,7 +43,7 @@ describe('run command', () => {
         const user = {}
         user["display-name"] = "anakin"
         // when
-        const result = await runner.run_command(user, '!toto')
+        const result = await runner.runCommand(user, '!toto')
         // then
         expect(result).toBe("toto is you anakin")
     });
@@ -59,7 +59,7 @@ describe('run command', () => {
         const user = {}
         user["display-name"] = "anakin"
         // when
-        const result = await runner.run_command(user, '!toto')
+        const result = await runner.runCommand(user, '!toto')
         // then
         expect(result).toBe(null)
     });

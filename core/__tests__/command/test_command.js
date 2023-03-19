@@ -18,7 +18,7 @@ describe('init command', () => {
     test('init command with plugin activate, prepare run function to return command', () => {
         // given
         config.plugin_commands = 1
-        jest.spyOn(commands_runner, 'run_command').mockReturnValue('foo')
+        jest.spyOn(commands_runner, 'runCommand').mockReturnValue('foo')
         // when
         commands.init()
         // then

@@ -16,7 +16,7 @@ describe('time trigger', () => {
     config.cmd_time_interval = 2
     command.init()
     jest.spyOn(db, "query").mockReturnValue([{command: "toto"}])
-    jest.spyOn(commands_runner, 'run_command').mockImplementation((user, msg) => msg)
+    jest.spyOn(commands_runner, 'runCommand').mockImplementation((user, msg) => msg)
     // when
     const result = await command.time_trigger()
     // then
@@ -31,7 +31,7 @@ describe('time trigger', () => {
     config.cmd_time_interval = 1
     command.init()
     jest.spyOn(db, "query").mockReturnValue([{command: "toto"}])
-    jest.spyOn(commands_runner, 'run_command').mockImplementation((user, msg) => msg)
+    jest.spyOn(commands_runner, 'runCommand').mockImplementation((user, msg) => msg)
     // when
     const result = await command.time_trigger()
     // then
