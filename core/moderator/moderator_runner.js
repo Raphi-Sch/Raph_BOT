@@ -8,7 +8,7 @@ const { re } = require("@babel/core/lib/vendor/import-meta-resolve");
 
 async function run_moderator(user, message) {
     const words = message.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/['"]+/g, ' ').split(" ");
-    const result = await api_moderator(words);
+    const result = await queryAPI(words);
 
     try {
         if (result && result.mod_action) {
@@ -23,7 +23,7 @@ async function run_moderator(user, message) {
     }
 }
 
-async function api_moderator(words){
+async function queryAPI(words){
     const body = {
         data: [{
             method: "get_moderator",

@@ -9,7 +9,7 @@ async function run_shout(user, message) {
     socket.shout_update(shout_counter, config.shout_interval);
 
     if (shout_counter >= config.shout_interval) {
-        let result = await api_shout(message, config.shout_language);
+        let result = await queryAPI(message, config.shout_language);
 
         if (result) {
             socket.log(`[SHOUT] '${user['display-name']}' got shouted`);
@@ -26,7 +26,7 @@ async function run_shout(user, message) {
     return null;
 }
 
-async function api_shout(message, language) {
+async function queryAPI(message, language) {
     const body = {
         data: [{
             method: "get_shout",

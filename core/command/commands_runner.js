@@ -10,7 +10,7 @@ async function runCommand(user, message) {
     const fullCommand = tools.parseCommand(message, config.cmd_prefix);
 
     if (fullCommand) {
-        let command = await apiCommand(fullCommand[1], fullCommand[2]);
+        let command = await queryAPI(fullCommand[1], fullCommand[2]);
 
         if (command.response_type) {
             // Replace @username with current username
@@ -38,7 +38,7 @@ async function runCommand(user, message) {
     return null;
 }
 
-async function apiCommand(command, param) {
+async function queryAPI(command, param) {
     const body = {
         data: [{
             method: "get_command",

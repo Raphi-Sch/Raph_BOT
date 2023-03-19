@@ -6,7 +6,7 @@ let exclusion = [];
 
 async function run_reaction(user, message) {
     let words = tools.normalizeString(message).replace(/['"]+/g, ' ').split(" ");
-    let result = await api_reaction(words);
+    let result = await queryAPI(words);
 
     try {
         if (result.reaction !== null) {
@@ -25,7 +25,7 @@ async function run_reaction(user, message) {
     }
 }
 
-async function api_reaction(words_in){
+async function queryAPI(words_in){
     const body = {
         data: [{
             method: "get_reaction",
