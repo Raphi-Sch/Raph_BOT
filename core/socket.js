@@ -45,7 +45,7 @@ io.sockets.on('connection', function (socket) {
     web_client = socket;
     web_client_connected = true;
 
-    GUI_update();
+    updateWebUI();
 
     socket.on('stop-core', function () {
         log("[CORE] Halted");
@@ -58,29 +58,29 @@ io.sockets.on('connection', function (socket) {
 
 });
 
-function GUI_update() {
+function updateWebUI() {
     if (web_client_connected)
         web_client.emit('update', JSON.stringify(GUI));
 }
 
 function setTwitchState(state) {
     GUI.twitch = state;
-    GUI_update();
+    updateWebUI();
 }
 
 function setShout(current, max) {
     GUI.shout = { current, max };
-    GUI_update();
+    updateWebUI();
 }
 
 function setTimeCounter(current, max, nb) {
     GUI.trigger_time = { current, max, nb };
-    GUI_update();
+    updateWebUI();
 }
 
 function setMessageCounter(current, max, nb) {
     GUI.trigger_msg = { current, max, nb };
-    GUI_update();
+    updateWebUI();
 }
 
 function log(msg) {
