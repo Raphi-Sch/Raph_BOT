@@ -85,4 +85,4 @@ async function timeoutUser(userID, reason, duration) {
     }
 }
 
-module.exports = { init, getUserId, banUser, timeoutUser }
+module.exports = { init, banUser, timeoutUser }
