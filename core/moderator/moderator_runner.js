@@ -25,10 +25,10 @@ async function runModerator(user, message) {
 
 async function queryAPI(words){
     const body = {
-        data: [{
+        data: {
             method: "get_moderator",
             words: words,
-        }]
+        }
     }
 
     const response = await fetch(config.api_url + "moderator.php", {

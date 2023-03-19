@@ -27,11 +27,11 @@ async function runReaction(user, message) {
 
 async function queryAPI(words_in){
     const body = {
-        data: [{
+        data: {
             method: "get_reaction",
             words_in: words_in,
             words_not_in: exclusion
-        }]
+        }
     }
 
     const response = await fetch(config.api_url + "reactions.php", {

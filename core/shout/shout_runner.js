@@ -28,11 +28,11 @@ async function runShout(user, message) {
 
 async function queryAPI(message, language) {
     const body = {
-        data: [{
+        data: {
             method: "get_shout",
             language: language,
             message: message
-        }]
+        }
     }
 
     const response = await fetch(config.api_url + "shout.php", {
