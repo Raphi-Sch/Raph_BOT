@@ -45,14 +45,14 @@ function get_moderator(mysqli $db, array $word_in)
     // Build list of all word (in and not in)
     $SQL_values = $word_in;
 
-    $SQL_query = "SELECT mod_action, explanation
+    $SQL_query = "SELECT mod_action, explanation, duration, reason
         FROM moderator
         WHERE moderator.trigger_word IN (" . $trigger_word_in . ") ORDER BY trigger_word ASC LIMIT 1";
 
     $result = db_query($db, $SQL_query, $SQL_params_type, $SQL_values);
 
     if ($result == null)
-        return ['mod_action' => null, 'explanation' => null];
+        return ['mod_action' => null, 'explanation' => null, 'duration' => null, 'reason' => null];
     else
         return $result;
 }
@@ -66,7 +66,7 @@ function get_list(mysqli $db)
     $count = 0;
 
     while ($row = $data->fetch_assoc()) {
-        $result += array($count => ["id" => $row['id'], "trigger_word" => $row['trigger_word'], "mod_action" => $row['mod_action'], "explanation" => $row['explanation']]);
+        $result += array($count => ["id" => $row['id'], "trigger_word" => $row['trigger_word'], "mod_action" => $row['mod_action'], "explanation" => $row['explanation'], 'duration' => $row['duration'], 'reason' => $row['reason']]);
         $count++;
     }
 
