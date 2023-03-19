@@ -1,6 +1,8 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const socket = require("../socket");
 const { config } = require("../config");
+const tools = require("../tools");
+const actionText = ["Ban", "Timeout"];
 
 const { re } = require("@babel/core/lib/vendor/import-meta-resolve");
 
@@ -10,10 +12,8 @@ async function run_moderator(user, message) {
 
     try {
         if (result && result.mod_action) {
-            socket.log(`[MODERATOR] Taking action against '${user['display-name']}' for saying '${message}' (Action : ${result.mod_action} )`);
-
+            socket.log(`[MODERATOR] Taking action against '${user['display-name']}' for saying '${message}' (Action : ${actionText[result.mod_action]}, Duration : ${tools.timeout_to_string(result.duration)})`);
             result.explanation = result.explanation.replace("@username", user['display-name']);
-
             return result;
         }
     }
