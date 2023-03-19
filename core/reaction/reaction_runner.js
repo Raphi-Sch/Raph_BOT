@@ -5,7 +5,7 @@ const { config } = require("../config");
 let exclusion = [];
 
 async function run_reaction(user, message) {
-    let words = tools.normalize_string(message).replace(/['"]+/g, ' ').split(" ");
+    let words = tools.normalizeString(message).replace(/['"]+/g, ' ').split(" ");
     let result = await api_reaction(words);
 
     try {

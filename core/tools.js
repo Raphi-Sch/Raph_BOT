@@ -10,7 +10,7 @@ function command_parser(message, prefix) {
     return regex.exec(message);
 }
 
-function normalize_string(str) {
+function normalizeString(str) {
     return str.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
 }
 
@@ -33,4 +33,4 @@ function timeoutToString(seconds) {
     return seconds + "s";
 }
 
-module.exports = { command_parser, get_random_int, normalize_string, timeoutToString }
+module.exports = { command_parser, get_random_int, normalizeString, timeoutToString }
