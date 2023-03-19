@@ -26,19 +26,19 @@ function init() {
     }
 }
 
-async function time_trigger() {
+async function timeTrigger() {
     const time_interval = config.cmd_time_interval;
     timer++;
     socket.time_trigger_update(timer, time_interval, total_auto_cmd_time);
     if (timer >= time_interval) {
-        reset_timer()
+        resetTimer()
         total_auto_cmd_time++;
-        return auto_command();
+        return autoCommand();
     }
     return null;
 }
 
-function reset_timer() {
+function resetTimer() {
     timer = 0
 }
 
@@ -46,23 +46,23 @@ function reset_timer() {
  *
  * @returns {Promise<string|*|null>}
  */
-async function message_trigger() {
+async function messageTrigger() {
     const message_interval = config.cmd_msg_interval
     message_counter++
     socket.msg_trigger_update(message_counter, message_interval, total_auto_cmd_msg)
     if (message_counter >= message_interval) {
-        reset_message_counter()
+        resetMessageCounter()
         total_auto_cmd_msg++
-        return auto_command()
+        return autoCommand()
     }
     return null
 }
 
-function reset_message_counter() {
+function resetMessageCounter() {
     message_counter = 0
 }
 
-async function load_auto_command() {
+async function loadAutoCommand() {
     const response = await fetch(config.api_url + "commands.php?auto", {
         method: "get",
         headers: { "Content-Type": "application/json" }
@@ -82,8 +82,8 @@ async function load_auto_command() {
  * Boucle des commandes automatiques
  * @returns {Promise<string|string|*|null>}
  */
-async function auto_command() {
-    const list = await load_auto_command();
+async function autoCommand() {
+    const list = await loadAutoCommand();
     let index;
     do {
         index = Math.floor(Math.random() * Math.floor(list.length));
@@ -98,4 +98,4 @@ function run(user, message) {
     return runnable.run(user, message)
 }
 
-module.exports = { init, run, time_trigger, message_trigger, reset_message_counter, reset_timer }
+module.exports = { init, run, timeTrigger, messageTrigger }

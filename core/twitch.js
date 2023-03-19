@@ -25,7 +25,7 @@ function init() {
         socket.log("[TWITCH] Connected on : " + address)
 
         setInterval(async function () {
-            commands.time_trigger().then(result => {
+            commands.timeTrigger().then(result => {
                 if (result) {
                     send(result)
                 }
@@ -42,7 +42,7 @@ function init() {
         // Do not react to himself
         if (isSelf || user["display-name"] == config.twitch_display_name) return;
 
-        const message_trigger_result = await commands.message_trigger();
+        const message_trigger_result = await commands.messageTrigger();
         if (message_trigger_result) {
             send(message_trigger_result);
         }
