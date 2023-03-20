@@ -26,12 +26,11 @@ async function runReaction(user, message) {
 
 async function queryAPI(message) {
     const body = {
-        method: "get_reaction",
         message: message,
         exclusion: exclusion
     }
 
-    const response = await fetch(config.api_url + "reactions.php", {
+    const response = await fetch(config.api_url + "reactions.php?request", {
         method: "post",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
@@ -42,7 +41,7 @@ async function queryAPI(message) {
     } else {
         console.error("[REACTION] API ERROR : " + response.status);
         console.error("Context : ");
-        console.error(words_in);
+        console.error(message);
         console.error(exclusion);
         console.error("-------------------");
         return null;

@@ -11,10 +11,10 @@ async function runShout(user, message) {
     if (shout_counter >= config.shout_interval) {
         let result = await queryAPI(message, config.shout_language);
 
-        if (result) {
+        if (result.value !== null) {
             socket.log(`[SHOUT] '${user['display-name']}' got shouted`);
 
-            result = result.replace("@username", user['display-name']);
+            result = result.value.replace("@username", user['display-name']);
             shout_counter = 0;
 
             return result;
@@ -28,14 +28,11 @@ async function runShout(user, message) {
 
 async function queryAPI(message, language) {
     const body = {
-        data: {
-            method: "get_shout",
-            language: language,
-            message: message
-        }
+        language: language,
+        message: message
     }
 
-    const response = await fetch(config.api_url + "shout.php", {
+    const response = await fetch(config.api_url + "shout.php?request", {
         method: "post",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
@@ -43,7 +40,7 @@ async function queryAPI(message, language) {
 
     if (response.ok) {
         let res = await response.json();
-        return res.value;
+        return res;
     } else {
         console.error("[SHOUT] API ERROR : " + response.status);
         console.error("Context : ");

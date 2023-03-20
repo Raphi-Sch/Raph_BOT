@@ -28,16 +28,16 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'POST':
-        $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'];
+        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
-        if ($data["method"] == "get_shout") {
-            switch($data["language"]){
+        if (isset($_GET['request'])) {
+            switch($body["language"]){
                 case "fr" :
-                    echo json_encode(get_shout_fr($db, $data["message"]));
+                    echo json_encode(shout_fr($db, $body["message"]));
                     break;
                 
                 case "fr-uwu" :
-                    echo json_encode(get_shout_fr_uwu($db, $data["message"]));
+                    echo json_encode(shout_fr_uwu($db, $body["message"]));
                     break;
                     
                 default:
@@ -58,7 +58,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 exit();
 
 // GET Functions
-function get_shout_fr(mysqli $db, string $message)
+function shout_fr(mysqli $db, string $message)
 {
     // Basic clean
     $message = trim(strtolower($message));
@@ -69,7 +69,7 @@ function get_shout_fr(mysqli $db, string $message)
     //Do not take sentences too long
     $phrase_lenght = sizeof($word_array);
     if ($phrase_lenght < MIN_WORDS || $phrase_lenght > MAX_WORDS) {
-        return null;
+        return ['value' => null];
     }
 
     // Load shout remplacement
@@ -108,9 +108,9 @@ function get_shout_fr(mysqli $db, string $message)
     return ['value' => $message];
 }
 
-function get_shout_fr_uwu(mysqli $db, string $message)
+function shout_fr_uwu(mysqli $db, string $message)
 {
-    $message = get_shout_fr($db, $message)['value'];
+    $message = shout_fr($db, $message)['value'];
 
     // Remplacement data
     $consonant = load_shout_words($db, "fr-uwu", TYPE_CONSONANT);
