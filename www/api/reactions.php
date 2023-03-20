@@ -43,13 +43,13 @@ function get_reaction(mysqli $db, $words_in, $words_not_in)
         $words_in = clean_string_in_array($words_in);
 
     if (is_string($words_in))
-        $words_in = explode(" ", remove_emoji($words_in));
+        $words_in = explode(" ", clean_string($words_in));
 
     if (is_array($words_not_in))
         $words_not_in = clean_string_in_array($words_not_in);
 
     if (is_string($words_not_in))
-        $words_not_in = explode(" ", remove_emoji($words_not_in));
+        $words_not_in = explode(" ", clean_string($words_not_in));
 
     // No words in left
     if(empty($words_in)){

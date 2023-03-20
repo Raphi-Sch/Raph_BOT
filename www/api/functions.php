@@ -1,10 +1,15 @@
 <?php
 
+/**
+ * Apply clean_string() on string in an array
+ * @param array $input_array Array to clean
+ * @return array Clean array
+ */
 function clean_string_in_array(array $input_array){
     $output_array = array();
 
     foreach($input_array as $value){
-        $clean_string = remove_emoji($value);
+        $clean_string = clean_string($value);
         if(!empty($clean_string))
             array_push($output_array, $clean_string);
     }
@@ -12,6 +17,23 @@ function clean_string_in_array(array $input_array){
     return $output_array;
 }
 
+/**
+ * Remove all special caracter in string
+ * This function execute remove_emoji()
+ * @param string $string Input string
+ * @return string Clean string
+ */
+function clean_string($string){
+    $string = preg_replace("[']", ' ', $string);
+    $string = remove_emoji($string);
+    return $string;
+}
+
+/**
+ * Remove common emoji in string
+ * @param string $string Input string
+ * @return string String without common emoji
+ */
 function remove_emoji($string)
 {
     // Match Enclosed Alphanumeric Supplement
