@@ -41,7 +41,7 @@ async function queryAPI(message){
     } else {
         console.error("[MODERATOR] API ERROR : " + response.status);
         console.error("Context : ");
-        console.error(words);
+        console.error(message);
         console.error("-------------------");
         return null;
     }
