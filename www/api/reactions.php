@@ -20,10 +20,8 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'];
 
         if ($data["method"] == "get_reaction" && isset($data['words_in'])) {
-            $words_in = clean_string_in_array($data['words_in']);
-            $words_not_in = isset($data['words_not_in']) ? clean_string_in_array($data['words_not_in']) : array();
-
-            echo json_encode(get_reaction($db, $words_in, $words_not_in));
+            $words_not_in = isset($words_not_in) ? $data['words_not_in'] : "";
+            echo json_encode(get_reaction($db, $data['words_in'], $words_not_in));
             break;
         }
 
@@ -38,25 +36,43 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 exit();
 
 // GET Functions
-function get_reaction(mysqli $db, array $word_in, array $word_not_in)
+function get_reaction(mysqli $db, $words_in, $words_not_in)
 {
+    // Initial clean up
+    if (is_array($words_in))
+        $words_in = clean_string_in_array($words_in);
+
+    if (is_string($words_in))
+        $words_in = explode(" ", remove_emoji($words_in));
+
+    if (is_array($words_not_in))
+        $words_not_in = clean_string_in_array($words_not_in);
+
+    if (is_string($words_not_in))
+        $words_not_in = explode(" ", remove_emoji($words_not_in));
+
+    // No words in left
+    if(empty($words_in)){
+        return ['trigger_word' => null, 'reaction' => null, 'frequency' => 0, 'timeout' => 0];
+    }
+
     $SQL_params_type = "";
 
     // Build word in
-    $word_in_count = count($word_in);
+    $word_in_count = count($words_in);
     $trigger_word_in = join(',', array_fill(0, $word_in_count, '?'));
     $SQL_params_type .= str_repeat('s', $word_in_count);
 
     // Build word not in
     $trigger_word_not_in = "";
-    if (count($word_not_in) > 0) {
-        $word_not_in_count = count($word_not_in);
+    if (count($words_not_in) > 0) {
+        $word_not_in_count = count($words_not_in);
         $trigger_word_not_in = " AND reactions.trigger_word NOT IN (" . join(',', array_fill(0, $word_not_in_count, '?')) . ")";
         $SQL_params_type .= str_repeat('s', $word_not_in_count);
     }
 
     // Build list of all word (in and not in)
-    $SQL_values = array_merge($word_in, $word_not_in);
+    $SQL_values = array_merge($words_in, $words_not_in);
 
     $SQL_query = "SELECT trigger_word, reaction, frequency, `timeout`
         FROM reactions
