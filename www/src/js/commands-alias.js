@@ -25,7 +25,7 @@ function list_alias(reload = false) {
 function list_option_alias() {
     // List text
     $.ajax({
-        url: "api/commands.php?list",
+        url: "api/commands.php?list-text",
         type: "GET",
         dataType: "json",
         success: function (data) {

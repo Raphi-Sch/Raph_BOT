@@ -49,7 +49,7 @@ function view(param) {
 
 function list_commands(reload = false) {
     $.ajax({
-        url: "api/commands.php?list",
+        url: "api/commands.php?list-text",
         type: "GET",
         dataType: "json",
         success: function (data) {

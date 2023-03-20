@@ -63,7 +63,7 @@ function resetMessageCounter() {
 }
 
 async function loadAutoCommand() {
-    const response = await fetch(config.api_url + "commands.php?auto", {
+    const response = await fetch(config.api_url + "commands.php?list-auto", {
         method: "get",
         headers: { "Content-Type": "application/json" }
     })

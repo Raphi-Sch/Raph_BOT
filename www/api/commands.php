@@ -8,23 +8,23 @@ $db = db_connect("../../config.json");
 
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
-        if (isset($_GET['auto'])) {
-            echo json_encode(get_auto($db));
+        if (isset($_GET['list-auto'])) {
+            echo json_encode(list_auto($db));
             break;
         }
 
-        if (isset($_GET['list'])) {
-            echo json_encode(get_list($db));
+        if (isset($_GET['list-text'])) {
+            echo json_encode(list_text($db));
             break;
         }
 
         if (isset($_GET['list-alias'])) {
-            echo json_encode(get_list_alias($db));
+            echo json_encode(list_alias($db));
             break;
         }
 
         if (isset($_GET['list-audio'])) {
-            echo json_encode(get_list_audio($db));
+            echo json_encode(list_audio($db));
             break;
         }
 
@@ -32,14 +32,14 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'POST':
-        $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
-        if (isset($_GET['request']) && isset($data['command'])) {
-            $param = isset($data['param']) ? trim($data['param']) : "";
-            $excluded_tanks = isset($data['excluded_tanks']) ? $data['excluded_tanks'] : array();
-            $excluded_audio = isset($data['excluded_audio']) ? $data['excluded_audio'] : array();
+        if (isset($_GET['request']) && isset($body['command'])) {
+            $param = isset($body['param']) ? trim($body['param']) : "";
+            $excluded_tanks = isset($body['excluded_tanks']) ? $body['excluded_tanks'] : array();
+            $excluded_audio = isset($body['excluded_audio']) ? $body['excluded_audio'] : array();
 
-            echo json_encode(get_command($db, trim($data['command']), $param, $excluded_tanks, $excluded_audio));
+            echo json_encode(request($db, trim($body['command']), $param, $excluded_tanks, $excluded_audio));
             break;
         }
 
@@ -53,8 +53,8 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 exit();
 
-// GET Functions
-function get_command(mysqli $db, string $command, string $param, array $excluded_tanks, array $excluded_audio)
+
+function request(mysqli $db, string $command, string $param, array $excluded_tanks, array $excluded_audio)
 {
     // Check for alias
     $result = db_query($db, "SELECT `command` FROM commands_alias WHERE alias = ?", "s", $command);
@@ -81,7 +81,7 @@ function get_command(mysqli $db, string $command, string $param, array $excluded
     }
 
     // Query Audio
-    $result = run_audio($db, $command, $excluded_audio);
+    $result = request_audio($db, $command, $excluded_audio);
     if (!empty($result)) {
         return $result;
     }
@@ -90,7 +90,7 @@ function get_command(mysqli $db, string $command, string $param, array $excluded
     return ['response_type' => null];
 }
 
-function get_auto(mysqli $db)
+function list_auto(mysqli $db)
 {
     $SQL_query = "SELECT command FROM commands WHERE commands.auto = 1";
     $data = db_query_raw($db, $SQL_query);
@@ -104,7 +104,7 @@ function get_auto(mysqli $db)
     return $result;
 }
 
-function get_list(mysqli $db)
+function list_text(mysqli $db)
 {
     $SQL_query = "SELECT * FROM commands ORDER BY command ASC";
     $data = db_query_raw($db, $SQL_query);
@@ -120,7 +120,7 @@ function get_list(mysqli $db)
     return $result;
 }
 
-function get_list_alias(mysqli $db)
+function list_alias(mysqli $db)
 {
     $SQL_query = "SELECT * FROM commands_alias ORDER BY command ASC";
     $data = db_query_raw($db, $SQL_query);
@@ -136,7 +136,7 @@ function get_list_alias(mysqli $db)
     return $result;
 }
 
-function get_list_audio(mysqli $db)
+function list_audio(mysqli $db)
 {
     $SQL_query = "SELECT * FROM commands_audio ORDER BY `name` ASC";
     $data = db_query_raw($db, $SQL_query);
@@ -169,7 +169,7 @@ function list_audio_text(mysqli $db){
     return ['response_type' => 'text', 'value' => $result];
 }
 
-function run_audio(mysqli $db, string $command, array $excluded_audio)
+function request_audio(mysqli $db, string $command, array $excluded_audio)
 {
     $SQL_params_type = "";
     $SQL_params = array();
