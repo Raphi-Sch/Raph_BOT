@@ -3,3 +3,4 @@
 ### - [Commands](commands.md)
 ### - [Moderator](moderator.md)
 ### - [Reactions](reactions.md)
+### - [Shout](shout.md)
