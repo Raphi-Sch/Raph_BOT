@@ -53,10 +53,17 @@ duration | Integer | Duration of the timeout in seconds (always 0 for ban)
 explanation | String | Explanation send to chat
 reason | String | Reason send to user only
 
-### Exemple Request
+### Exemple request (string)
 ```json
 {
     "message": "This is a test message"
+}
+```
+
+### Exemple request (array)
+```json
+{
+    "message": ["This", "is", "a", "test", "message"]
 }
 ```
 
