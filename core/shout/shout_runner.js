@@ -13,10 +13,8 @@ async function runShout(user, message) {
 
         if (result.value !== null) {
             socket.log(`[SHOUT] '${user['display-name']}' got shouted`);
-
             result = result.value.replace("@username", user['display-name']);
             shout_counter = 0;
-
             return result;
         } else {
             shout_counter = config.shout_interval - 1;
@@ -39,8 +37,7 @@ async function queryAPI(message, language) {
     })
 
     if (response.ok) {
-        let res = await response.json();
-        return res;
+        return await response.json();
     } else {
         console.error("[SHOUT] API ERROR : " + response.status);
         console.error("Context : ");
