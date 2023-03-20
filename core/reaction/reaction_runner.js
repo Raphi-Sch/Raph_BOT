@@ -5,8 +5,7 @@ const { config } = require("../config");
 let exclusion = [];
 
 async function runReaction(user, message) {
-    let words = tools.normalizeString(message).replace(/['"]+/g, ' ').split(" ");
-    let result = await queryAPI(words);
+    let result = await queryAPI(message);
 
     try {
         if (result.reaction !== null) {
