@@ -17,10 +17,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'POST':
-        $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'];
+        $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
-        if ($data["method"] == "get_moderator") {
-            echo json_encode(get_moderator($db, $data["message"]));
+        if (isset($_GET['request'])) {
+            echo json_encode(request($db, $data["message"]));
             break;
         }
 
@@ -33,8 +33,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 }
 
 
-// GET Functions
-function get_moderator(mysqli $db, $message)
+function request(mysqli $db, $message)
 {
     // Initial clean up
     if (is_array($message))

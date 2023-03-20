@@ -24,13 +24,10 @@ async function runModerator(user, message) {
 
 async function queryAPI(message){
     const body = {
-        data: {
-            method: "get_moderator",
-            message: message,
-        }
+        message: message,
     }
 
-    const response = await fetch(config.api_url + "moderator.php", {
+    const response = await fetch(config.api_url + "moderator.php?request", {
         method: "post",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
