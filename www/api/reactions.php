@@ -1,6 +1,7 @@
 <?php
 
 require_once('../src/php/db.php');
+require_once('functions.php');
 header('Content-Type: application/json');
 
 $db = db_connect("../../config.json");
@@ -18,8 +19,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     case 'POST':
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'];
 
-        if ($data["method"] == "get_reaction") {
-            echo json_encode(get_reaction($db, $data["words_in"], $data["words_not_in"]));
+        if ($data["method"] == "get_reaction" && isset($data['words_in'])) {
+            $words_in = clean_string_in_array($data['words_in']);
+            $words_not_in = isset($data['words_not_in']) ? clean_string_in_array($data['words_not_in']) : array();
+
+            echo json_encode(get_reaction($db, $words_in, $words_not_in));
             break;
         }
 

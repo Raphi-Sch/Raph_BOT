@@ -1,0 +1,46 @@
+<?php
+
+function clean_string_in_array(array $input_array){
+    $output_array = array();
+
+    foreach($input_array as $value){
+        $clean_string = remove_emoji($value);
+        if(!empty($clean_string))
+            array_push($output_array, $clean_string);
+    }
+
+    return $output_array;
+}
+
+function remove_emoji($string)
+{
+    // Match Enclosed Alphanumeric Supplement
+    $regex_alphanumeric = '/[\x{1F100}-\x{1F1FF}]/u';
+    $clean_string = preg_replace($regex_alphanumeric, '', $string);
+
+    // Match Miscellaneous Symbols and Pictographs
+    $regex_symbols = '/[\x{1F300}-\x{1F5FF}]/u';
+    $clean_string = preg_replace($regex_symbols, '', $clean_string);
+
+    // Match Emoticons
+    $regex_emoticons = '/[\x{1F600}-\x{1F64F}]/u';
+    $clean_string = preg_replace($regex_emoticons, '', $clean_string);
+
+    // Match Transport And Map Symbols
+    $regex_transport = '/[\x{1F680}-\x{1F6FF}]/u';
+    $clean_string = preg_replace($regex_transport, '', $clean_string);
+    
+    // Match Supplemental Symbols and Pictographs
+    $regex_supplemental = '/[\x{1F900}-\x{1F9FF}]/u';
+    $clean_string = preg_replace($regex_supplemental, '', $clean_string);
+
+    // Match Miscellaneous Symbols
+    $regex_misc = '/[\x{2600}-\x{26FF}]/u';
+    $clean_string = preg_replace($regex_misc, '', $clean_string);
+
+    // Match Dingbats
+    $regex_dingbats = '/[\x{2700}-\x{27BF}]/u';
+    $clean_string = preg_replace($regex_dingbats, '', $clean_string);
+
+    return $clean_string;
+}
