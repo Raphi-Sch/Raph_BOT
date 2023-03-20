@@ -40,16 +40,13 @@ async function runCommand(user, message) {
 
 async function queryAPI(fullCommand) {
     const body = {
-        data: {
-            method: "get_command",
-            command: fullCommand[1],
-            param: fullCommand[2],
-            excluded_tanks: excluded_tanks,
-            excluded_audio: excluded_audio
-        }
+        command: fullCommand[1],
+        param: fullCommand[2],
+        excluded_tanks: excluded_tanks,
+        excluded_audio: excluded_audio
     }
 
-    const response = await fetch(config.api_url + "commands.php", {
+    const response = await fetch(config.api_url + "commands.php?request", {
         method: "post",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }

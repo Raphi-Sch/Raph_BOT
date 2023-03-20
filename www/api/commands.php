@@ -32,9 +32,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'POST':
-        $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'];
+        $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
-        if ($data['method'] == "get_command" && isset($data['command'])) {
+        if (isset($_GET['request']) && isset($data['command'])) {
             $param = isset($data['param']) ? trim($data['param']) : "";
             $excluded_tanks = isset($data['excluded_tanks']) ? $data['excluded_tanks'] : array();
             $excluded_audio = isset($data['excluded_audio']) ? $data['excluded_audio'] : array();

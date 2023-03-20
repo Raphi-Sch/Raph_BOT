@@ -153,14 +153,13 @@ sub_only | Boolean | Is the command only available to subscriber and moderator
 ### Query
 ```
 Method : POST
-URL : http://<web_server>/www/api/commands.php
+URL : http://<web_server>/www/api/commands.php?request
 ```
 
 ### Request query parameters
 Field | Type | Required | Description
 ---|---|---|---
 data | Object [ ] | Yes | Object that contain all data
-method | String | Yes | Method request ("get_command" here)
 command | String | Yes | Command requested
 param | String | No | Addition parameters of the command
 excluded_tanks | Array | No | List of all excluded tanks ID (for "tank random"), can be empty or not set
@@ -184,11 +183,7 @@ total | Integer | response_type is 'tank-random' | Number of tank available for 
 ### Exemple Request 1
 ```json
 {
-    "data":
-    {
-        "method": "get_command",
-        "command": "debug"
-    }
+    "command": "debug"
 }
 ```
 
@@ -205,12 +200,8 @@ total | Integer | response_type is 'tank-random' | Number of tank available for 
 ### Exemple Request 2
 ```json
 {
-    "data":
-    {
-        "method":"get_command",
-        "command":"sax",
-        "excluded_audio":[]
-    }
+    "command":"sax",
+    "excluded_audio":[]
 }
 ```
 
@@ -232,13 +223,9 @@ total | Integer | response_type is 'tank-random' | Number of tank available for 
 ### Exemple Request 3
 ```json
 {
-    "data":
-    {
-        "method":"get_command",
-        "command":"tank",
-        "param":"random",
-        "excluded_tanks":[]
-    }
+    "command":"tank",
+    "param":"random",
+    "excluded_tanks":[]
 }
 ```
 
