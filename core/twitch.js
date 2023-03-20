@@ -87,7 +87,7 @@ function initTmi() {
             reconnect: true
         },
         identity: {
-            username: config.bot_name,
+            username: config.twitch_display_name,
             password: "oauth:" + config.twitch_token
         },
         channels: [config.twitch_channel]
