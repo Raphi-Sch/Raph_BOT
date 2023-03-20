@@ -1,6 +1,7 @@
 <?php
 
 require_once('../src/php/db.php');
+require_once('functions.php');
 header('Content-Type: application/json');
 
 $db = db_connect("../../config.json");
@@ -33,17 +34,24 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 
 // GET Functions
-function get_moderator(mysqli $db, array $word_in)
+function get_moderator(mysqli $db, $words_in)
 {
+    // Initial clean up
+    if (is_array($words_in))
+        $words_in = clean_string_in_array($words_in);
+
+    if (is_string($words_in))
+        $words_in = explode(" ", clean_string($words_in));
+
     $SQL_params_type = "";
 
     // Build word in
-    $word_in_count = count($word_in);
+    $word_in_count = count($words_in);
     $trigger_word_in = join(',', array_fill(0, $word_in_count, '?'));
     $SQL_params_type .= str_repeat('s', $word_in_count);
 
     // Build list of all word (in and not in)
-    $SQL_values = $word_in;
+    $SQL_values = $words_in;
 
     $SQL_query = "SELECT mod_action, explanation, duration, reason
         FROM moderator
