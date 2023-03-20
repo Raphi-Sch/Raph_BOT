@@ -32,6 +32,12 @@ timeout | Integer | Timeout in seconds
 
 ## Request
 
+This module can react to specific word said in the chat.
+
+If multiple word can triggered, the API choose one randomly.
+
+With 'trigger_word' and 'timeout' you can make an exclusion list on your end, and send it back to the API for the next message.
+
 ### Query 
 ```
 Method : POST
