@@ -11,7 +11,7 @@ async function runReaction(user, message) {
     try {
         if (result.reaction !== null) {
             if (tools.randomInt(100) <= result.frequency) {
-                log_and_timeout(result, user);
+                logAndTimeout(result, user);
                 return result.reaction.replace("@username", user['display-name']);
             }
         }
@@ -52,7 +52,7 @@ async function queryAPI(words_in){
     }
 }
 
-function log_and_timeout(reaction, user){
+function logAndTimeout(reaction, user){
     if (reaction.timeout > 0) {
         exclusion.push(reaction.trigger_word);
 
