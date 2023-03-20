@@ -5,7 +5,7 @@
 ### Query 
 ```
 Method : GET
-URL : http://<web_server>/www/api/shout.php?list
+URL : http://<web_server>/api/shout.php?list
 ```
 
 ### Response body
@@ -36,7 +36,7 @@ type | Integer | Type of word (0 : Word, 1 : Consonant, 2 : Vowel)
 ### Query 
 ```
 Method : POST
-URL : http://<web_server>/www/api/shout.php?request
+URL : http://<web_server>/api/shout.php?request
 ```
 ### Request query parameters
 Field | Type | Required | Description

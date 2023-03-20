@@ -5,7 +5,7 @@
 ### Query 
 ```
 Method : GET
-URL : http://<web_server>/www/api/commands.php?list
+URL : http://<web_server>/api/commands.php?list
 ```
 
 ### Response body
@@ -45,7 +45,7 @@ sub_only | Boolean | Is the command only available to subscriber and moderator
 ### Query 
 ```
 Method : GET
-URL : http://<web_server>/www/api/commands.php?auto
+URL : http://<web_server>/api/commands.php?auto
 ```
 
 ### Exemple response 1
@@ -66,7 +66,7 @@ URL : http://<web_server>/www/api/commands.php?auto
 ### Query
 ```
 Method : GET
-URL : http://<web_server>/www/api/commands.php?list-alias
+URL : http://<web_server>/api/commands.php?list-alias
 ```
 
 ### Response body
@@ -99,7 +99,7 @@ command | String | The command link to that alias
 ### Query 
 ```
 Method : GET
-URL : http://<web_server>/www/api/commands.php?list-audio
+URL : http://<web_server>/api/commands.php?list-audio
 ```
 
 ### Response body
@@ -153,7 +153,7 @@ sub_only | Boolean | Is the command only available to subscriber and moderator
 ### Query
 ```
 Method : POST
-URL : http://<web_server>/www/api/commands.php?request
+URL : http://<web_server>/api/commands.php?request
 ```
 
 ### Request query parameters

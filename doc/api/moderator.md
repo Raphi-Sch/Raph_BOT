@@ -5,7 +5,7 @@
 ### Query 
 ```
 Method : GET
-URL : http://<web_server>/www/api/moderator.php?list
+URL : http://<web_server>/api/moderator.php?list
 ```
 
 ### Response body
@@ -37,7 +37,7 @@ reason | String | Reason send to user only
 ### Query 
 ```
 Method : POST
-URL : http://<web_server>/www/api/moderator.php?request
+URL : http://<web_server>/api/moderator.php?request
 ```
 ### Request query parameters
 Field | Type | Required | Description

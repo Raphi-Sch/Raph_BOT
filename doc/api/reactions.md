@@ -5,7 +5,7 @@
 ### Query 
 ```
 Method : GET
-URL : http://<web_server>/www/api/reations.php?list
+URL : http://<web_server>/api/reations.php?list
 ```
 
 ### Response body
@@ -41,7 +41,7 @@ With 'trigger_word' and 'timeout' you can make an exclusion list on your end, an
 ### Query 
 ```
 Method : POST
-URL : http://<web_server>/www/api/reations.php?request
+URL : http://<web_server>/api/reations.php?request
 ```
 ### Request query parameters
 Field | Type | Required | Description
