@@ -17,10 +17,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'POST':
-        $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
         if (isset($_GET['request'])) {
-            echo json_encode(request($db, $data["message"]));
+            echo json_encode(request($db, $body["message"]));
             break;
         }
 

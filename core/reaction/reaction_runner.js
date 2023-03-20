@@ -24,13 +24,11 @@ async function runReaction(user, message) {
     }
 }
 
-async function queryAPI(words_in){
+async function queryAPI(message) {
     const body = {
-        data: {
-            method: "get_reaction",
-            words_in: words_in,
-            words_not_in: exclusion
-        }
+        method: "get_reaction",
+        message: message,
+        exclusion: exclusion
     }
 
     const response = await fetch(config.api_url + "reactions.php", {
@@ -38,7 +36,7 @@ async function queryAPI(words_in){
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
     })
-    
+
     if (response.ok) {
         return await response.json();
     } else {
@@ -51,7 +49,7 @@ async function queryAPI(words_in){
     }
 }
 
-function logAndTimeout(reaction, user){
+function logAndTimeout(reaction, user) {
     if (reaction.timeout > 0) {
         exclusion.push(reaction.trigger_word);
 

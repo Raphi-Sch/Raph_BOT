@@ -17,11 +17,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'POST':
-        $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'];
+        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
-        if ($data["method"] == "get_reaction" && isset($data['words_in'])) {
-            $words_not_in = isset($words_not_in) ? $data['words_not_in'] : "";
-            echo json_encode(get_reaction($db, $data['words_in'], $words_not_in));
+        if (isset($_GET['request']) && isset($body['message'])) {
+            $exclusion = isset($body['exclusion']) ? $body['exclusion'] : "";
+            echo json_encode(request($db, $body['message'], $exclusion));
             break;
         }
 
@@ -35,21 +35,21 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 exit();
 
-// GET Functions
-function get_reaction(mysqli $db, $words_in, $words_not_in)
+
+function request(mysqli $db, $message, $exclusion)
 {
     // Initial clean up
-    if (is_array($words_in))
-        $words_in = clean_string_in_array($words_in);
+    if (is_array($message))
+        $words_in = clean_string_in_array($message);
 
-    if (is_string($words_in))
-        $words_in = explode(" ", clean_string($words_in));
+    if (is_string($message))
+        $words_in = explode(" ", clean_string($message));
 
-    if (is_array($words_not_in))
-        $words_not_in = clean_string_in_array($words_not_in);
+    if (is_array($exclusion))
+        $words_not_in = clean_string_in_array($exclusion);
 
-    if (is_string($words_not_in))
-        $words_not_in = explode(" ", clean_string($words_not_in));
+    if (is_string($exclusion))
+        $words_not_in = explode(" ", clean_string($exclusion));
 
     // No words in left
     if(empty($words_in)){
