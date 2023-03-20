@@ -159,7 +159,6 @@ URL : http://<web_server>/www/api/commands.php?request
 ### Request query parameters
 Field | Type | Required | Description
 ---|---|---|---
-data | Object [ ] | Yes | Object that contain all data
 command | String | Yes | Command requested
 param | String | No | Addition parameters of the command
 excluded_tanks | Array | No | List of all excluded tanks ID (for "tank random"), can be empty or not set
