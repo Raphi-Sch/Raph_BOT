@@ -20,7 +20,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $data = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY)['data'];
 
         if ($data["method"] == "get_moderator") {
-            echo json_encode(get_moderator($db, $data["words"]));
+            echo json_encode(get_moderator($db, $data["message"]));
             break;
         }
 
@@ -34,14 +34,14 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 
 // GET Functions
-function get_moderator(mysqli $db, $words_in)
+function get_moderator(mysqli $db, $message)
 {
     // Initial clean up
-    if (is_array($words_in))
-        $words_in = clean_string_in_array($words_in);
+    if (is_array($message))
+        $words_in = clean_string_in_array($message);
 
-    if (is_string($words_in))
-        $words_in = explode(" ", clean_string($words_in));
+    if (is_string($message))
+        $words_in = explode(" ", clean_string($message));
 
     $SQL_params_type = "";
 
