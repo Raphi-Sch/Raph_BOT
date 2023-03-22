@@ -1,4 +1,3 @@
 RewriteEngine On
 RewriteCond %{REQUEST_URI} !\.php$
-RewriteCond %{REQUEST_FILENAME}.php -f
-RewriteRule ^(.*)$ $1.php [L,NE]
+RewriteRule commands/([A-Za-z-]+)$ commands.php?$1
