@@ -35,9 +35,21 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
-        if(isset($_GET['config'])){
+        if(isset($_GET['list'])){
             header('Content-Type: application/json');
             echo json_encode(get_config($db));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
+    case 'PUT':
+        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+
+        if(isset($_GET['edit']) && isset($body['id']) && isset($body['value'])){
+            header('Content-Type: application/json');
+            echo json_encode(put_config($db, $body));
             break;
         }
 
@@ -51,7 +63,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 exit();
 
-// GET Functions
 function get_plugin(mysqli $db)
 {
     $SQL_query = "SELECT * FROM `config` WHERE id LIKE 'plugin_%'";
@@ -93,4 +104,13 @@ function get_config(mysqli $db){
     }
 
     return $result;
+}
+
+function put_config(mysqli $db, $body){
+    $id = $body['id'];
+    $value = $body['value'];
+
+    db_query_no_result($db, "UPDATE config SET `value` = ? WHERE id = ?", "ss", [$value, $id]);
+
+    return ['id' => $id, 'value' => $value];
 }

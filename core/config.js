@@ -25,7 +25,7 @@ const config = {
 };
 
 async function load() {
-    const response = await fetch(config.api_url + "config.php?config", {
+    const response = await fetch(config.api_url + "config.php?list", {
         method: "get",
         headers: { "Content-Type": "application/json" }
     })
