@@ -5,7 +5,7 @@
 ### Query 
 ```
 Method : GET
-URL : http://<web_server>/api/commands.php?list
+URL : http://<web_server>/api/commands.php?list-text
 ```
 
 ### Response body
@@ -45,7 +45,7 @@ sub_only | Boolean | Is the command only available to subscriber and moderator
 ### Query 
 ```
 Method : GET
-URL : http://<web_server>/api/commands.php?auto
+URL : http://<web_server>/api/commands.php?list-auto
 ```
 
 ### Exemple response 1
