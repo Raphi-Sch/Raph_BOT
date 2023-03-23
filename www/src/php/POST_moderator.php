@@ -3,15 +3,18 @@
 require_once("./header-post.php");
 
 // Add
-if ($_POST['action'] == "add" && !empty($_POST['trigger_word']) && !empty($_POST['mod_action']) && !empty($_POST['explanation'])) {
+if ($_POST['action'] == "add" && !empty($_POST['trigger_word'])) {
     $trigger = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($_POST['trigger_word'])));
-    $mod_action = trim($_POST['mod_action']);
+    $mod_action = intval($_POST['mod_action']);
     $explanation = trim($_POST['explanation']);
-    $duration = trim($_POST['duration']);
+    $duration = intval($_POST['duration']);
     $reason = trim($_POST['reason']);
 
     if($mod_action == 0)
         $duration = 0;
+
+    if($duration > 1209600)
+        $duration = 1209600;
 
     db_query_no_result($db, "INSERT INTO `moderator` (id, trigger_word, mod_action, explanation, duration, reason) VALUES (NULL, ?, ?, ?, ?, ?)", "sssis", [$trigger, $mod_action, $explanation, $duration, $reason]);
 
@@ -35,10 +38,6 @@ if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
     header('Location: ../../moderator.php');
     exit();
 }
-
-// SYNC
-// ----
-// ASYNC
 
 // Delete
 if ($_POST['action'] == "del" && !empty($_POST['id'])) {
