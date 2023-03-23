@@ -30,7 +30,7 @@ function list(reload = false) {
 function add_entry() {
     Swal.fire({
         title: "Add entry",
-        html: `<form id='swal-form' method='post'>
+        html: `<form id='swal-form'>
             <input type='hidden' name='action' value='add'>
             <label>Trigger word</label><input type='text' class='form-control' name='trigger_word' placeholder='Trigger' required><br/>
             <label>Action</label>
