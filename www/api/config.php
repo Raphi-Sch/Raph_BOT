@@ -86,11 +86,11 @@ function get_socket_port(){
 }
 
 function get_log(){
-    return shell_exec('cat ' . dirname(__FILE__) . "/../../core/" . 'lastest.log');
+    return shell_exec('cat ' . dirname(__FILE__) . "/../../core/lastest.log");
 }
 
 function get_debug(){
-    return shell_exec('cat ' . dirname(__FILE__) . "/../../core/" . 'debug.log');
+    return shell_exec('cat ' . dirname(__FILE__) . "/../../core/debug.log");
 }
 
 function get_config(mysqli $db){
