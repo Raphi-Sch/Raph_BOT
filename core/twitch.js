@@ -8,6 +8,7 @@ const moderator = require('./moderator/moderator.js');
 
 const config = require('./config').config;
 const socket = require('./socket');
+const tools = require('./tools');
 
 // Variable
 let tmiClient = null;
