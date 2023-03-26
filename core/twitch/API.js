@@ -109,4 +109,23 @@ async function deleteChatMessage(messageID){
     }
 }
 
-module.exports = { init, banUser, timeoutUser, deleteChatMessage }
+async function shoutout(userName){
+    const userID = await getUserId(userName);
+
+    const response = await fetch(`https://api.twitch.tv/helix/chat/shoutouts?from_broadcaster_id=${configAPI.broadcasterID}&to_broadcaster_id=${userID}&moderator_id=${configAPI.moderatorID}`, {
+        method: "post",
+        headers: {
+            "Authorization": `Bearer ${configAPI.authorizationToken}`,
+            "Client-Id": configAPI.clientID,
+        }
+    })
+
+    if (response.ok) {
+        return true;
+    } else {
+        errorLog('shoutout()', response);
+        return null;
+    }
+}
+
+module.exports = { init, banUser, timeoutUser, deleteChatMessage, shoutout }
