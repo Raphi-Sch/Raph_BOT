@@ -31,6 +31,10 @@ In the folder "template" :
 - Log into the dashboard, default user is 'admin' with password '0'
 - Got to the "Configuration" tab and setup your twitch key, etc.
 
+# Documentation
+
+- [API Documentation](doc/api/readme.md)
+
 # DISCLAIMER
 
 This software is provided "as is", which mean :
