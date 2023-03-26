@@ -1,6 +1,6 @@
 // Module Import
 const tmi = require('tmi.js');
-const twitchAPI = require('./twitchAPI.js');
+const twitchAPI = require('./twitch/API.js');
 const commands = require('./command/commands.js');
 const reaction = require('./reaction/reaction.js');
 const shout = require('./shout/shout.js');
