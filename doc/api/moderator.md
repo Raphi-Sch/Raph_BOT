@@ -13,7 +13,7 @@ Field | Type | Description
 ---|---|---
 id | Integer | ID in database
 trigger_word | String | Word that triggeres the ban / timeout
-mod_action | Boolean | 0 : Ban, 1 : Timeout
+mod_action | Integer | 0 : Ban, 1 : Timeout, 2 : Delete message
 duration | Integer | Duration of the timeout in seconds (always 0 for ban)
 explanation | String | Explanation send to chat
 reason | String | Reason send to user only
