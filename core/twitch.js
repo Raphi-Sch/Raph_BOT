@@ -56,21 +56,9 @@ function init() {
             send(commandResult);
             return;
         }
-        const moderatorResult = await moderator.run(user, message);
+        const moderatorResult = await moderator.run(user, message, twitchAPI);
         if (moderatorResult) {
-            switch (parseInt(moderatorResult.mod_action)) {
-                case 0:
-                    twitchAPI.banUser(user['user-id'], moderatorResult.reason);
-                    break;
-                case 1:
-                    twitchAPI.timeoutUser(user['user-id'], moderatorResult.reason, moderatorResult.duration);
-                    break;
-                case 2:
-                    //twitchAPI.deleteChatMessage(messageID);
-                    log('[MODERATOR] Delete message is not implemented yet (not possible with current client)');
-                    break;
-            }
-            send(moderatorResult.explanation);
+            send(moderatorResult);
             return;
         }
         const reactionResult = await reaction.run(user, message);
