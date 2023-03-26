@@ -92,4 +92,21 @@ async function timeoutUser(userID, reason, duration) {
     }
 }
 
-module.exports = { init, banUser, timeoutUser }
+async function deleteChatMessage(messageID){
+    const response = await fetch(`https://api.twitch.tv/helix/moderation/chat?broadcaster_id=${configAPI.broadcasterID}&moderator_id=${configAPI.moderatorID}&message_id=${messageID}`, {
+        method: "delete",
+        headers: {
+            "Authorization": `Bearer ${configAPI.authorizationToken}`,
+            "Client-Id": configAPI.clientID,
+        }
+    })
+
+    if (response.ok) {
+        return true;
+    } else {
+        errorLog('deleteChatMessage()', response);
+        return null;
+    }
+}
+
+module.exports = { init, banUser, timeoutUser, deleteChatMessage }
