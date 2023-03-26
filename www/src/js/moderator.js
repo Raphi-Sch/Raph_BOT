@@ -1,4 +1,4 @@
-const actionText = ["Ban", "Timeout"];
+const actionText = ["Ban", "Timeout", "Delete message"];
 
 function list(reload = false) {
     $.ajax({
@@ -38,6 +38,7 @@ function add_entry() {
             <select class='form-control' name='mod_action'>
                 <option value=0>Ban</option>
                 <option value=1>Timeout</option>
+                <option value=2>Delete message</option>
             </select><br/>
             <label>Reason</label><textarea type='text' class='form-control' name='reason' placeholder='Reason given to user' required></textarea><br/>
             <label>Duration (timeout only)</label><input type='number' class='form-control' name='duration' placeholder='Duration in seconds' step=1 min=0 max=1209600><br/>
@@ -72,6 +73,7 @@ function edit_entry(data) {
             <select class='form-control' name='mod_action' id='swal-select-action'>
                 <option value=0>Ban</option>
                 <option value=1>Timeout</option>
+                <option value=2>Delete message</option>
             </select><br/>
             <label>Reason</label><textarea class='form-control' type='text' name='reason'>${data.reason}</textarea><br/>
             <label>Duration (timeout only)</label><input type='number' class='form-control' name='duration' placeholder='Duration in seconds' value='${data.duration}' step=1 min=0 max=1209600><br/>

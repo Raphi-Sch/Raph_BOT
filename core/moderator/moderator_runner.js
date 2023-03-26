@@ -2,7 +2,7 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 const socket = require("../socket");
 const { config } = require("../config");
 const tools = require("../tools");
-const actionText = ["Ban", "Timeout"];
+const actionText = ["Ban", "Timeout", "Delete message"];
 
 const { re } = require("@babel/core/lib/vendor/import-meta-resolve");
 

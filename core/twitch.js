@@ -65,6 +65,10 @@ function init() {
                 case 1:
                     twitchAPI.timeoutUser(user['user-id'], moderatorResult.reason, moderatorResult.duration);
                     break;
+                case 2:
+                    //twitchAPI.deleteChatMessage(messageID);
+                    log('[MODERATOR] Delete message is not implemented yet (not possible with current client)');
+                    break;
             }
             send(moderatorResult.explanation);
             return;
