@@ -32,6 +32,10 @@ const GUI = {
 
 function init(version) {
     log("[CORE] Started (" + version + ")");
+
+    if(config.debug == 1)
+        log("[CORE] DEBUG IS ENABLE");
+
     server.listen(config.socket_port);
 
     // GUI Value

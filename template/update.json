@@ -20,6 +20,11 @@
             "hidden" : 0,
             "type" : 2
         },
+        "debug" : {
+            "value" : 0,
+            "hidden" : 0,
+            "type" : 1
+        },
         "plugin_audio" : {
             "value" : 0,
             "hidden" : 0,

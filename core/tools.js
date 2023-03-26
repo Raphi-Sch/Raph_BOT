@@ -33,4 +33,15 @@ function timeoutToString(seconds) {
     return seconds + "s";
 }
 
-module.exports = { parseCommand, randomInt, normalizeString, timeoutToString }
+function debugTwitchChat(channel, user, message, isSelf){
+    console.error("------------------");
+    console.error("Channel : ");
+    console.error(channel);
+    console.error("User : ");
+    console.error(user);
+    console.error("Message : ");
+    console.error(message);
+    console.error(`isSelf : ${isSelf}`);
+}
+
+module.exports = { parseCommand, randomInt, normalizeString, timeoutToString, debugTwitchChat }

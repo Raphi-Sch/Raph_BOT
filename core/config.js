@@ -11,6 +11,7 @@ const config = {
     cmd_msg_interval: null,
     cmd_prefix: null,
     cmd_time_interval: null,
+    debug: 0,
     plugin_commands: null,
     plugin_moderator: null,
     plugin_reaction: null,
@@ -18,10 +19,10 @@ const config = {
     shout_interval: null,
     shout_language: null,
     twitch_channel: null,
+    twitch_client_id: null,
     twitch_connection_message: null,
     twitch_token: null,
     twitch_display_name: null,
-    twitch_client_id: null,
 };
 
 async function load() {

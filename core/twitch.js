@@ -39,6 +39,10 @@ function init() {
     });
 
     tmiClient.on('chat', async (channel, user, message, isSelf) => {
+        if(config.debug == 1){
+            tools.debugTwitchChat(channel, user, message, isSelf);
+        }
+
         // Do not react to himself
         if (isSelf || user["display-name"] == config.twitch_display_name) return;
 
