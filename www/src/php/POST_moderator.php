@@ -16,7 +16,7 @@ if ($_POST['action'] == "add" && !empty($_POST['trigger_word'])) {
     if($duration > 1209600)
         $duration = 1209600;
 
-    db_query_no_result($db, "INSERT INTO `moderator` (id, trigger_word, mod_action, explanation, duration, reason) VALUES (NULL, ?, ?, ?, ?, ?)", "sssis", [$trigger, $mod_action, $explanation, $duration, $reason]);
+    db_query_no_result($db, "INSERT INTO `moderator` (id, trigger_word, mod_action, explanation, duration, reason) VALUES (NULL, ?, ?, ?, ?, ?)", "sisis", [$trigger, $mod_action, $explanation, $duration, $reason]);
 
     header('Location: ../../moderator.php');
     exit();
@@ -33,7 +33,7 @@ if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
     if($mod_action == 0)
         $duration = 0;
 
-    db_query_no_result($db, "UPDATE `moderator` SET `trigger_word` = ?, `mod_action` = ?, `explanation` = ?, `duration` = ?, `reason` = ? WHERE `id` = ?", "sssisi", [$trigger, $mod_action, $explanation, $duration, $reason, $_POST['id']]);
+    db_query_no_result($db, "UPDATE `moderator` SET `trigger_word` = ?, `mod_action` = ?, `explanation` = ?, `duration` = ?, `reason` = ? WHERE `id` = ?", "sisisi", [$trigger, $mod_action, $explanation, $duration, $reason, $_POST['id']]);
     
     header('Location: ../../moderator.php');
     exit();
