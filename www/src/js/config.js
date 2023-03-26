@@ -18,6 +18,27 @@ function edit_text(key, value) {
     })
 }
 
+function edit_textarea(key, value) {
+    Swal.fire({
+        title: `Editing : ${key}`,
+        icon: 'info',
+        html: "<form id='swal-form' method='post' action='src/php/POST_config.php'>" +
+            "<input type='hidden' name='action' value='edit'>" +
+            `<input type='hidden' name='id' value='${key}'>` +
+            `<textarea class='form-control' type='text' name='value'>${value}</textarea>
+            </form>`,
+        showCancelButton: true,
+        focusConfirm: false,
+        allowOutsideClick: false,
+        width: "30%",
+        confirmButtonText: 'Edit',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.value)
+            document.getElementById('swal-form').submit();
+    })
+}
+
 function edit_bool(key, value) {
     Swal.fire({
         title: `Editing : ${key}`,

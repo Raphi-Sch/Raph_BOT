@@ -11,12 +11,15 @@ while ($row = mysqli_fetch_assoc($data)) {
     switch ($row['type']) {
         default:
         case 0:
-            $js_function = "edit_text";
+            if(strlen($row['value']) >= 50)
+                $js_function = "edit_textarea";
+            else
+                $js_function = "edit_text";
             $HTML_value = $row["value"];
             break;
         case 1:
             $js_function = "edit_bool";
-            $HTML_value = $row["value"] ? "Enable" : "Disable"; 
+            $HTML_value = $row["value"] ? "Enable" : "Disable";
             break;
         case 2:
             $js_function = "edit_number";
@@ -80,7 +83,7 @@ $token_URL = "https://id.twitch.tv/oauth2/authorize?response_type=token&client_i
             </tbody>
         </table>
 
-        <a class='btn btn-info' href="<?php echo $token_URL;?>">Renew Twitch API key</a>
+        <a class='btn btn-info' href="<?php echo $token_URL; ?>">Renew Twitch API key</a>
 
     </div>
 
@@ -94,12 +97,11 @@ $token_URL = "https://id.twitch.tv/oauth2/authorize?response_type=token&client_i
             document.getElementById("core").className = "active";
         });
 
-        if(window.location.hash !== ""){
+        if (window.location.hash !== "") {
             twitch_token(window.location.hash);
         }
-
     </script>
-    
+
 </body>
 
 </html>
