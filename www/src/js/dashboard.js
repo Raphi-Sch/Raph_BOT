@@ -175,6 +175,12 @@ function connectSocket() {
                 data = JSON.parse(json);
                 playAudio(data.file, data.volume);
             })
+
+            // Reload log
+            socket.on('reload-log', function (){
+                getLog();
+            });
+
         },
         error: function (result, status, error) {
             Swal.fire({
