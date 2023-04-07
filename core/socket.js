@@ -1,15 +1,13 @@
-const http = require('http')
-const fs = require('fs')
+const http = require('http');
+const fs = require('fs');
+const crypto = require('crypto');
 const { config } = require('./config');
 const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'a' });
 
 // Basic HTTP server
 const server = http.createServer();
 const io = require('socket.io').listen(server);
-
-// Variables
-let webClient = null;
-let webClientConnected = false;
+const room = crypto.randomBytes(16).toString("hex");
 
 // GUI info
 const GUI = {
@@ -33,58 +31,54 @@ const GUI = {
 function init(version) {
     log("[CORE] Started (" + version + ")");
 
-    if(config.debug == 1)
+    if(config.debug == 1){
         log("[CORE] DEBUG IS ENABLE");
+        log(`[SOCKET] Listening on ${config.socket_port}`);
+        log(`[SOCKET] Room ID : ${room}`);
+    }
 
     server.listen(config.socket_port);
 
-    // GUI Value
+    // GUI set max values
     GUI.shout.max = config.shout_interval;
     GUI.triggerTime.max = config.cmd_time_interval;
     GUI.triggerMessage.max = config.cmd_msg_interval;
 }
 
-// When webClient is connected, update all info
-io.sockets.on('connection', function (socket) {
-    webClient = socket;
-    webClientConnected = true;
-
-    updateWebUI();
+// Events are broadcast in a room to allow multiple clients at once
+io.on('connection', socket => {
+    socket.join(room);
+    socket.emit('reload-log');
 
     socket.on('stop-core', function () {
         log("[CORE] Halted");
         process.exit(0);
     });
-
-    socket.on('disconnect', function () {
-        webClientConnected = false;
-    });
-
+    
 });
 
-function updateWebUI() {
-    if (webClientConnected)
-        webClient.emit('update', JSON.stringify(GUI));
+function broadcast(){
+    io.to(room).emit('update', JSON.stringify(GUI));
 }
 
 function setTwitchState(state) {
     GUI.twitch = state;
-    updateWebUI();
+    broadcast();
 }
 
 function setShout(current, max) {
     GUI.shout = { current, max };
-    updateWebUI();
+    broadcast();
 }
 
 function setTimeCounter(current, max, nb) {
     GUI.triggerTime = { current, max, nb };
-    updateWebUI();
+    broadcast();
 }
 
 function setMessageCounter(current, max, nb) {
     GUI.triggerMessage = { current, max, nb };
-    updateWebUI();
+    broadcast();
 }
 
 function log(msg) {
@@ -96,16 +90,11 @@ function log(msg) {
     // Write to file
     stream_log.write(msg);
 
-    // Update UI
-    if (webClientConnected)
-        webClient.emit('log', msg);
+    broadcast();
 }
 
 function playAudio(data) {
-    if (webClientConnected) {
-        webClient.emit('play-audio', JSON.stringify(data));
-    }
+    io.to(room).emit('play-audio', JSON.stringify(data));
 }
-
 
 module.exports = { init, setTwitchState, setShout, setTimeCounter, setMessageCounter, log, playAudio }
