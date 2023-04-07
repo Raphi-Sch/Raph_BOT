@@ -1,13 +1,12 @@
 const http = require('http');
 const fs = require('fs');
-const crypto = require('crypto');
 const { config } = require('./config');
 const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'a' });
 
 // Basic HTTP server
 const server = http.createServer();
 const io = require('socket.io').listen(server);
-const room = crypto.randomBytes(16).toString("hex");
+const room = "dashboard";
 
 // GUI info
 const GUI = {
