@@ -89,7 +89,8 @@ function log(msg) {
     // Write to file
     stream_log.write(msg);
 
-    broadcast();
+    // Send log to UI
+    io.to(room).emit('log', msg);
 }
 
 function playAudio(data) {
