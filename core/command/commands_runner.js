@@ -47,7 +47,7 @@ async function runCommand(user, message) {
             }
         }
 
-        if(user) // Auto command run without user
+        if(user && result.text !== null) // Auto command run without user
             socket.log(`[COMMANDS] '${fullCommand[1]}' has been used by '${user['display-name']}'`);
 
     }
