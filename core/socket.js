@@ -81,8 +81,9 @@ function setMessageCounter(current, max, nb) {
 
 function log(msg) {
     // Format
-    let date = new Date;
-    let time = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2) + ":" + ('0' + date.getSeconds()).slice(-2) + "." + ('00' + date.getMilliseconds()).slice(-3);
+    const date = new Date;
+    let time = `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}.${('00' + date.getMilliseconds()).slice(-3)}`;
+
     msg = "[" + time + "] " + msg + "\n";
 
     // Write to file
