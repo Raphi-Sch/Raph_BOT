@@ -33,7 +33,6 @@ function init(version) {
     if(config.debug == 1){
         log("[CORE] DEBUG IS ENABLE");
         log(`[SOCKET] Listening port ${config.socket_port}`);
-        log(`[SOCKET] Room ID : ${room}`);
     }
 
     server.listen(config.socket_port);
