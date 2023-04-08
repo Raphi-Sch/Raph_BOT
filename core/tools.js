@@ -30,7 +30,7 @@ function timeoutToString(seconds) {
     if(seconds == 0)
         return "No timeout";
 
-    return seconds + "s";
+    return seconds + " sec";
 }
 
 function debugTwitchChat(channel, user, message, isSelf){
