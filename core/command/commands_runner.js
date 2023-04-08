@@ -6,12 +6,19 @@ const { config } = require("../config");
 let excluded_tanks = [];
 let excluded_audio = [];
 
+const result = {
+    isCommand : false,
+    text : null
+}
+
 async function runCommand(user, message) {
     const fullCommand = tools.parseCommand(message, config.cmd_prefix);
 
     if (fullCommand) {
-        let command = await queryAPI(fullCommand);
+        result.isCommand = true;
 
+        let command = await queryAPI(fullCommand);
+    
         if (command.response_type) {
             // Replace @username with current username
             if (user && command.value) {
@@ -20,22 +27,25 @@ async function runCommand(user, message) {
 
             switch(command.response_type){
                 case "text":
-                    return runText(command, user);
+                    result.text = runText(command, user);
+                    return result;
                 
                 case "audio":
-                    return runAudio(command, user);
+                    runAudio(command, user);
+                    return result;
 
                 case "tank-random":
                     if (command.exclude !== null) excluded_tanks.push(command.exclude);
                     if (excluded_tanks.length == command.total) excluded_tanks = [];
-                    return command.value;
+                    result.text = command.value
+                    return result;
 
                 default:
-                    return null;
+                    return result;
             }
         }
     }
-    return null;
+    return result;
 }
 
 async function queryAPI(fullCommand) {

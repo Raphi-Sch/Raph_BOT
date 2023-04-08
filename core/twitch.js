@@ -51,21 +51,26 @@ function init() {
         if (messageTriggerResult) {
             send(messageTriggerResult);
         }
+
         const commandResult = await commands.run(user, message)
-        if (commandResult) {
-            send(commandResult);
+        if (commandResult.isCommand) {
+            if(commandResult.text !== null)
+                send(commandResult.text);
             return;
         }
+
         const moderatorResult = await moderator.run(user, message, twitchAPI);
         if (moderatorResult) {
             send(moderatorResult);
             return;
         }
+
         const reactionResult = await reaction.run(user, message);
         if (reactionResult) {
             send(reactionResult);
             return;
         }
+
         const shoutResult = await shout.run(user, message);
         if (shoutResult) {
             send(shoutResult);
