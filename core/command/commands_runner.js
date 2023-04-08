@@ -2,6 +2,7 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 const tools = require("../tools");
 const socket = require("../socket");
 const { config } = require("../config");
+const { re } = require('@babel/core/lib/vendor/import-meta-resolve');
 
 let excluded_tanks = [];
 let excluded_audio = [];
@@ -12,11 +13,15 @@ const result = {
 }
 
 async function runCommand(user, message) {
+    // Reset result
+    result.isCommand = false;
+    result.text = null;
+
+    // Parse command
     const fullCommand = tools.parseCommand(message, config.cmd_prefix);
 
     if (fullCommand) {
         result.isCommand = true;
-
         let command = await queryAPI(fullCommand);
     
         if (command.response_type) {
@@ -28,23 +33,25 @@ async function runCommand(user, message) {
             switch(command.response_type){
                 case "text":
                     result.text = runText(command, user);
-                    return result;
+                    break;
                 
                 case "audio":
                     runAudio(command, user);
-                    return result;
+                    break;
 
                 case "tank-random":
                     if (command.exclude !== null) excluded_tanks.push(command.exclude);
                     if (excluded_tanks.length == command.total) excluded_tanks = [];
                     result.text = command.value
-                    return result;
-
-                default:
-                    return result;
+                    break;
             }
         }
+
+        if(user) // Auto command run without user
+            socket.log(`[COMMANDS] '${fullCommand[1]}' has been used by '${user['display-name']}'`);
+
     }
+    
     return result;
 }
 
