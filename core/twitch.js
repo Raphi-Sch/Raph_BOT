@@ -22,7 +22,7 @@ function init() {
     // Events
     tmiClient.on('connected', async (address, port) => {
         socket.setTwitchState(true);
-        send(config["twitch_connection_message"]);
+        send(config.twitch_connection_message);
         socket.log("[TWITCH] Connected on : " + address)
 
         setInterval(async function () {
