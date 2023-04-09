@@ -35,7 +35,7 @@ function list_audio_text(mysqli $db){
     $data = db_query_raw($db, "SELECT * FROM commands_audio WHERE active = 1 AND sub_only = 1 ORDER BY `trigger_word` ASC");
     while ($row = mysqli_fetch_assoc($data)) {
         if ($first){
-            $result .= ", Sub only : !" . $row['trigger_word'];
+            $result .= " - Sub only : !" . $row['trigger_word'];
             $first = false;
         }
         else
