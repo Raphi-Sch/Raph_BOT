@@ -33,7 +33,7 @@ function init(version) {
 
     if (config.debug_level >= 1) {
         log(`[DEBUG] DEBUG IS ENABLE (LEVEL ${config.debug_level})`);
-        console.error(`[SOCKET] Listening port ${config.socket_port}`);
+        console.error(`${tools.logTime()} [SOCKET] Listening port ${config.socket_port}`);
     }
 
     server.listen(config.socket_port);
