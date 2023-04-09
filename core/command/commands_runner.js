@@ -7,51 +7,44 @@ const { re } = require('@babel/core/lib/vendor/import-meta-resolve');
 let excluded_tanks = [];
 let excluded_audio = [];
 
-const result = {
-    isCommand : false,
-    text : null
-}
-
 async function runCommand(user, message) {
-    // Reset result
-    result.isCommand = false;
-    result.text = null;
+    let result = null;
 
     // Parse command
     const fullCommand = tools.parseCommand(message, config.cmd_prefix);
 
     if (fullCommand) {
-        result.isCommand = true;
         let command = await queryAPI(fullCommand);
-    
+
         if (command.response_type) {
             // Replace @username with current username
             if (user && command.value) {
                 command.value = command.value.replace("@username", user['display-name']);
             }
 
-            switch(command.response_type){
+            switch (command.response_type) {
                 case "text":
-                    result.text = runText(command, user);
+                    result = runText(command, user);
                     break;
-                
+
                 case "audio":
                     runAudio(command, user);
+                    result = true;
                     break;
 
                 case "tank-random":
                     if (command.exclude !== null) excluded_tanks.push(command.exclude);
                     if (excluded_tanks.length == command.total) excluded_tanks = [];
-                    result.text = command.value
+                    result = command.value
                     break;
             }
         }
 
-        if(user && result.text !== null) // Auto command run without user
+        if (user && result !== null) // Auto command run without user
             socket.log(`[COMMANDS] '${fullCommand[1]}' has been used by '${user['display-name']}'`);
 
     }
-    
+
     return result;
 }
 
@@ -83,15 +76,15 @@ async function queryAPI(fullCommand) {
     }
 }
 
-function canUseCommandModerator(command, user){
+function canUseCommandModerator(command, user) {
     return (command.mod_only && user && (user.mod || user.username === config.twitch_channel.toLowerCase()))
 }
 
-function canUseCommandSubscriber(command, user){
+function canUseCommandSubscriber(command, user) {
     return (command.sub_only && user && user.subscriber);
 }
 
-function canUseCommandEveryone(command){
+function canUseCommandEveryone(command) {
     return (!command.mod_only && !command.sub_only)
 }
 

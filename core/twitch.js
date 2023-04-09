@@ -40,7 +40,7 @@ function init() {
     });
 
     tmiClient.on('chat', async (channel, user, message, isSelf) => {
-        if(config.debug == 1){
+        if (config.debug == 1) {
             tools.debugTwitchChat(channel, user, message, isSelf);
         }
 
@@ -53,9 +53,11 @@ function init() {
         }
 
         const commandResult = await commands.run(user, message)
-        if (commandResult.isCommand) {
-            if(commandResult.text !== null)
-                send(commandResult.text);
+        if (commandResult !== null) {
+            if (commandResult === true) {
+                return;
+            }
+            send(commandResult);
             return;
         }
 

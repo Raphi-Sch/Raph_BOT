@@ -91,7 +91,7 @@ async function autoCommand() {
 
     last_auto_cmd = index;
 
-    return run(null, config.cmd_prefix + list[index]).text;
+    return run(null, config.cmd_prefix + list[index]);
 }
 
 function run(user, message) {
