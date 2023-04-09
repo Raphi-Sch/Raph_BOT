@@ -74,21 +74,37 @@ function broadcast() {
 function setTwitchState(state) {
     GUI.twitch = state;
     broadcast();
+
+    if(config.debug_level >= 1){
+        console.error(`${tools.logTime()} [TWITCH] Update state : ${GUI.twitch}`);
+    }
 }
 
 function setShout(current, max) {
     GUI.shout = { current, max };
     broadcast();
+
+    if(config.debug_level >= 1){
+        console.error(`${tools.logTime()} [SHOUT] Update state : Current ${GUI.shout.current}, Max ${GUI.shout.max}`);
+    }
 }
 
 function setTimeCounter(current, max, nb) {
     GUI.triggerTime = { current, max, nb };
     broadcast();
+
+    if(config.debug_level >= 1){
+        console.error(`${tools.logTime()} [TRIGGER-TIME] Update state : Current ${GUI.triggerTime.current}, Max ${GUI.triggerTime.max}, Total ${GUI.triggerTime.nb}`);
+    }
 }
 
 function setMessageCounter(current, max, nb) {
     GUI.triggerMessage = { current, max, nb };
     broadcast();
+
+    if(config.debug_level >= 1){
+        console.error(`${tools.logTime()} [TRIGGER-MSG] Update state : Current ${GUI.triggerMessage.current}, Max ${GUI.triggerMessage.max}, Total ${GUI.triggerMessage.nb}`);
+    }
 }
 
 function log(msg) {
