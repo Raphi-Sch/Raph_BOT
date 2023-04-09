@@ -34,14 +34,13 @@ function timeoutToString(seconds) {
 }
 
 function debugTwitchChat(channel, user, message, isSelf){
-    console.error("------------------");
-    console.error("Channel : ");
-    console.error(channel);
-    console.error("User : ");
+    console.error("[DEBUG-TWITCH] BEGIN");
+    console.error(`Channel : ${channel}`);
+    console.error(`User info :`);
     console.error(user);
-    console.error("Message : ");
-    console.error(message);
+    console.error(`Message : ${message}`);
     console.error(`isSelf : ${isSelf}`);
+    console.error("[DEBUG-TWITCH] END\n");
 }
 
 function logTime(){
