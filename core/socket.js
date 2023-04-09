@@ -82,9 +82,9 @@ function setMessageCounter(current, max, nb) {
 function log(msg) {
     // Format
     const date = new Date;
-    let time = `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}.${('00' + date.getMilliseconds()).slice(-3)}`;
+    const time = `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}.${('00' + date.getMilliseconds()).slice(-3)}`;
 
-    msg = "[" + time + "] " + msg + "\n";
+    msg = `[${time}] ${msg} \n`;
 
     // Write to file
     stream_log.write(msg);

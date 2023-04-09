@@ -15,8 +15,8 @@ async function init(broadcasterName, botName, clientID, authorizationToken){
 }
 
 function errorLog(functionName, response) {
-    let date = new Date;
-    let time = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2) + ":" + ('0' + date.getSeconds()).slice(-2) + "." + ('00' + date.getMilliseconds()).slice(-3);
+    const date = new Date;
+    const time = `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}.${('00' + date.getMilliseconds()).slice(-3)}`;
     msg = `[${time}] [TWITCH API] Error while executing function ${functionName} -> HTTP ERROR : ${response.status} (${response.statusText})\n`;
     console.error(msg);
 }
