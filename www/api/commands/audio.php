@@ -18,7 +18,7 @@ function list_audio(mysqli $db)
 }
 
 function list_audio_text(mysqli $db){
-    $result = "Commandes sonore : ";
+    $result = "Audio commands : ";
     $first = true;
 
     $data = db_query_raw($db, "SELECT * FROM commands_audio WHERE active = 1 AND sub_only = 0 AND mod_only = 0 ORDER BY `trigger_word` ASC");
@@ -50,6 +50,10 @@ function request_audio(mysqli $db, string $command, array $excluded_audio)
     $SQL_params_type = "";
     $SQL_params = array();
     $trigger_word_not_in = "";
+
+    if(in_array($command, $excluded_audio)){
+        return ['response_type' => 'text', 'value' => "Command '!$command' is not available yet."];
+    }
 
     // Command
     $SQL_params_type .= "s";
