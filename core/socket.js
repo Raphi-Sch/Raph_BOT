@@ -45,7 +45,9 @@ function init(version) {
 
     // Force GUI update
     if(config.force_gui_update > 0){
+        log(`[GUI] Forced refresh enable (every ${config.force_gui_update} sec)`);
         setInterval(async function () {
+            console.error(`${tools.logTime()} [GUI] Refreshed`);
             broadcast();
         }, config.force_gui_update * 1000);
     }
