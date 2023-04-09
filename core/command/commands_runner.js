@@ -16,6 +16,9 @@ async function runCommand(user, message) {
     if (fullCommand) {
         let command = await queryAPI(fullCommand);
 
+        // Default result is true, to stop processing even if command is unknown. Maybe it's for another bot
+        result = true; 
+
         if (command.response_type) {
             // Replace @username with current username
             if (user && command.value) {
@@ -37,10 +40,14 @@ async function runCommand(user, message) {
                     if (excluded_tanks.length == command.total) excluded_tanks = [];
                     result = command.value
                     break;
+                
+                default:
+                    break;
             }
         }
 
-        if (user && result !== null) // Auto command run without user
+        // Log if user issued command
+        if (user && result !== null && result !== true)
             socket.log(`[COMMANDS] '${fullCommand[1]}' has been used by '${user['display-name']}'`);
 
     }
