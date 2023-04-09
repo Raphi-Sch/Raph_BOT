@@ -9,7 +9,8 @@ function list_audio(mysqli $db)
     $count = 0;
 
     while ($row = mysqli_fetch_assoc($data)) {
-        $result += array($count => ["id" => $row['id'], "name" => $row["name"], "trigger_word" => $row["trigger_word"], "volume" => $row["volume"], "timeout" => $row["timeout"], "file" => $row['file'], "active" => $row['active'], 'mod_only' => $row['mod_only'], 'sub_only' => $row['sub_only']]);
+        $result += array($count => ["id" => $row['id'], "name" => $row["name"], "trigger_word" => $row["trigger_word"], "volume" => $row["volume"], 
+            "timeout" => $row["timeout"], "file" => $row['file'], "active" => $row['active'], 'mod_only' => $row['mod_only'], 'sub_only' => $row['sub_only']]);
         $count++;
     }
 
@@ -24,6 +25,17 @@ function list_audio_text(mysqli $db){
     while ($row = mysqli_fetch_assoc($data)) {
         if ($first){
             $result .= "!" . $row['trigger_word'];
+            $first = false;
+        }
+        else
+            $result .= ", !" . $row['trigger_word'];
+    }
+
+    $first = true;
+    $data = db_query_raw($db, "SELECT * FROM commands_audio WHERE active = 1 AND sub_only = 1 ORDER BY `trigger_word` ASC");
+    while ($row = mysqli_fetch_assoc($data)) {
+        if ($first){
+            $result .= ", Sub only : !" . $row['trigger_word'];
             $first = false;
         }
         else
@@ -57,5 +69,6 @@ function request_audio(mysqli $db, string $command, array $excluded_audio)
     if ($result == null)
         return null;
     else
-        return ['response_type' => 'audio', "id" => $result['id'], 'trigger_word' => $result['trigger_word'], 'timeout' => $result['timeout'], 'file' => $result['file'], 'name' => $result['name'], 'volume' => $result['volume'], 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
+        return ['response_type' => 'audio', "id" => $result['id'], 'trigger_word' => $result['trigger_word'], 'timeout' => $result['timeout'], 'file' => $result['file'], 
+            'name' => $result['name'], 'volume' => $result['volume'], 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
 }
