@@ -65,6 +65,9 @@ io.on('connection', socket => {
         process.exit(0);
     });
 
+    if(config.debug_level >= 1){
+        console.error(`${tools.logTime()} [SOCKET] New connection`);
+    }
 });
 
 function broadcast() {
