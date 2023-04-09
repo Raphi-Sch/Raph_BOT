@@ -2,6 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const { config } = require('./config');
 const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'a' });
+const tools = require("./tools");
 
 // Basic HTTP server
 const server = http.createServer();
@@ -30,7 +31,7 @@ const GUI = {
 function init(version) {
     log("[CORE] Started (" + version + ")");
 
-    if(config.debug == 1){
+    if (config.debug == 1) {
         log("[CORE] DEBUG IS ENABLE");
         log(`[SOCKET] Listening port ${config.socket_port}`);
     }
@@ -41,6 +42,13 @@ function init(version) {
     GUI.shout.max = config.shout_interval;
     GUI.triggerTime.max = config.cmd_time_interval;
     GUI.triggerMessage.max = config.cmd_msg_interval;
+
+    // Force GUI update
+    if(config.force_gui_update > 0){
+        setInterval(async function () {
+            broadcast();
+        }, config.force_gui_update * 1000);
+    }
 }
 
 // Events are broadcast in a room to allow multiple clients at once
@@ -52,10 +60,10 @@ io.on('connection', socket => {
         log("[CORE] Halted");
         process.exit(0);
     });
-    
+
 });
 
-function broadcast(){
+function broadcast() {
     io.to(room).emit('update', JSON.stringify(GUI));
 }
 
@@ -80,11 +88,7 @@ function setMessageCounter(current, max, nb) {
 }
 
 function log(msg) {
-    // Format
-    const date = new Date;
-    const time = `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}.${('00' + date.getMilliseconds()).slice(-3)}`;
-
-    msg = `[${time}] ${msg} \n`;
+    msg = `${tools.logTime()} ${msg} \n`;
 
     // Write to file
     stream_log.write(msg);

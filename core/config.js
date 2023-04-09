@@ -12,6 +12,8 @@ const config = {
     cmd_prefix: null,
     cmd_time_interval: null,
     debug: 0,
+    debug_level: 0,
+    force_gui_update: 0,
     plugin_commands: null,
     plugin_moderator: null,
     plugin_reaction: null,

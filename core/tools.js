@@ -44,4 +44,9 @@ function debugTwitchChat(channel, user, message, isSelf){
     console.error(`isSelf : ${isSelf}`);
 }
 
-module.exports = { parseCommand, randomInt, normalizeString, timeoutToString, debugTwitchChat }
+function logTime(){
+    const date = new Date;
+    return `[${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}.${('00' + date.getMilliseconds()).slice(-3)}]`;
+}
+
+module.exports = { parseCommand, randomInt, normalizeString, timeoutToString, debugTwitchChat, logTime }

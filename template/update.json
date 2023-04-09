@@ -20,10 +20,15 @@
             "hidden" : 0,
             "type" : 2
         },
-        "debug" : {
+        "debug_level" : {
             "value" : 0,
             "hidden" : 0,
-            "type" : 1
+            "type" : 2
+        },
+        "force_gui_update" : {
+            "value" : 0,
+            "hidden" : 0,
+            "type" : 2
         },
         "plugin_audio" : {
             "value" : 0,
