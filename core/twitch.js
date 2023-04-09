@@ -54,10 +54,9 @@ function init() {
 
         const commandResult = await commands.run(user, message)
         if (commandResult !== null) {
-            if (commandResult === true) {
-                return;
+            if (commandResult !== true) {
+                send(commandResult);
             }
-            send(commandResult);
             return;
         }
 
