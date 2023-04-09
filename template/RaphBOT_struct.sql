@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : lun. 06 fév. 2023 à 13:09
+-- Généré le : Dim 09 avr. 2023 à 11:09
 -- Version du serveur :  10.5.15-MariaDB-0+deb11u1
 -- Version de PHP : 7.4.33
 
@@ -87,8 +87,10 @@ CREATE TABLE `config` (
 CREATE TABLE `moderator` (
   `id` int(11) NOT NULL,
   `trigger_word` text NOT NULL,
-  `mod_action` text NOT NULL,
-  `explanation` text NOT NULL
+  `mod_action` tinyint(1) NOT NULL,
+  `explanation` text NOT NULL,
+  `duration` int(11) NOT NULL,
+  `reason` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -101,7 +103,7 @@ CREATE TABLE `reactions` (
   `id` int(11) NOT NULL,
   `trigger_word` varchar(30) NOT NULL,
   `reaction` text NOT NULL,
-  `frequency` tinyint(4) NOT NULL,
+  `frequency` int(11) NOT NULL,
   `timeout` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -115,7 +117,7 @@ CREATE TABLE `shout` (
   `id` int(11) NOT NULL,
   `original` text NOT NULL,
   `replacement` text NOT NULL,
-  `language` text NOT NULL,
+  `language` text DEFAULT NULL,
   `type` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -129,11 +131,11 @@ CREATE TABLE `tanks` (
   `id` int(11) NOT NULL,
   `trigger_word` varchar(30) NOT NULL,
   `nation` text NOT NULL,
-  `tier` tinyint(2) NOT NULL,
+  `tier` int(2) NOT NULL,
   `name` text NOT NULL,
-  `mark` tinyint(1) NOT NULL,
+  `mark` int(1) NOT NULL,
   `max_dmg` int(5) NOT NULL,
-  `note` text NULL,
+  `note` text NOT NULL,
   `type` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -167,7 +169,7 @@ CREATE TABLE `tanks_nation` (
 
 CREATE TABLE `users` (
   `username` varchar(20) NOT NULL,
-  `password` text DEFAULT 0
+  `password` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --

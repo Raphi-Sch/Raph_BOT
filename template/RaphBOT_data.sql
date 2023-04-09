@@ -30,6 +30,8 @@ INSERT INTO `config` (`id`, `value`, `hidden`, `type`) VALUES
 ('cmd_msg_interval', '10', 0, 2),
 ('cmd_prefix', '!', 0, 0),
 ('cmd_time_interval', '5', 0, 2),
+('debug_level', '1', 0, 2),
+('force_gui_update', '30', 0, 2),
 ('plugin_audio', '1', 0, 1),
 ('plugin_commands', '1', 0, 1),
 ('plugin_moderator', '1', 0, 1),
@@ -39,8 +41,11 @@ INSERT INTO `config` (`id`, `value`, `hidden`, `type`) VALUES
 ('shout_interval', '10', 0, 2),
 ('shout_language', 'fr', 0, 0),
 ('twitch_channel', 'YOUR CHANNEL HERE', 0, 0),
+('twitch_client_id', 'AUTH ID', 1, 0),
 ('twitch_connection_message', 'Raph_BOT Greatings', 0, 0),
 ('twitch_display_name', 'Raph_BOT', 0, 0),
+('twitch_redirect_uri', 'http://<web_server>/www/config.php', 0, 0),
+('twitch_scope', 'chat:edit+chat:read+moderator:manage:banned_users+moderator:manage:chat_messages+user:read:follows+moderator:manage:shoutouts', 0, 0),
 ('twitch_token', '', 1, 0);
 
 INSERT INTO `users` (`username`, `password`) VALUES
