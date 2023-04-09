@@ -44,10 +44,12 @@ function init(version) {
     GUI.triggerMessage.max = config.cmd_msg_interval;
 
     // Force GUI update
-    if(config.force_gui_update > 0){
+    if (config.force_gui_update > 0) {
         log(`[GUI] Forced refresh enable (every ${config.force_gui_update} sec)`);
         setInterval(async function () {
-            console.error(`${tools.logTime()} [GUI] Refreshed`);
+            if (config.debug_level >= 1) {
+                console.error(`${tools.logTime()} [GUI] Refreshed`);
+            }
             broadcast();
         }, config.force_gui_update * 1000);
     }
