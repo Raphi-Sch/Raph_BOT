@@ -40,7 +40,7 @@ function init() {
     });
 
     tmiClient.on('chat', async (channel, user, message, isSelf) => {
-        if (config.debug == 1) {
+        if (config.debug_level >= 2) {
             tools.debugTwitchChat(channel, user, message, isSelf);
         }
 

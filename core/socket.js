@@ -31,9 +31,9 @@ const GUI = {
 function init(version) {
     log("[CORE] Started (" + version + ")");
 
-    if (config.debug == 1) {
-        log("[CORE] DEBUG IS ENABLE");
-        log(`[SOCKET] Listening port ${config.socket_port}`);
+    if (config.debug_level >= 1) {
+        log(`[DEBUG-CORE] DEBUG IS ENABLE AT LEVEL ${config.debug_level}`);
+        log(`[DEBUG-SOCKET] Listening port ${config.socket_port}`);
     }
 
     server.listen(config.socket_port);
