@@ -19,12 +19,12 @@ const GUI = {
     triggerTime: {
         current: 0,
         max: 0,
-        nb: 0
+        total: 0
     },
     triggerMessage: {
         current: 0,
         max: 0,
-        nb: 0
+        total: 0
     },
 };
 
@@ -92,21 +92,21 @@ function setShout(current, max) {
     }
 }
 
-function setTimeCounter(current, max, nb) {
-    GUI.triggerTime = { current, max, nb };
+function setTimeCounter(current, max, total) {
+    GUI.triggerTime = { current, max, total };
     broadcast();
 
     if(config.debug_level >= 1){
-        console.error(`${tools.logTime()} [TRIGGER-TIME] Update state : Current ${GUI.triggerTime.current}, Max ${GUI.triggerTime.max}, Total ${GUI.triggerTime.nb}`);
+        console.error(`${tools.logTime()} [TRIGGER-TIME] Update state : Current ${GUI.triggerTime.current}, Max ${GUI.triggerTime.max}, Total ${GUI.triggerTime.total}`);
     }
 }
 
-function setMessageCounter(current, max, nb) {
-    GUI.triggerMessage = { current, max, nb };
+function setMessageCounter(current, max, total) {
+    GUI.triggerMessage = { current, max, total };
     broadcast();
 
     if(config.debug_level >= 1){
-        console.error(`${tools.logTime()} [TRIGGER-MSG] Update state : Current ${GUI.triggerMessage.current}, Max ${GUI.triggerMessage.max}, Total ${GUI.triggerMessage.nb}`);
+        console.error(`${tools.logTime()} [TRIGGER-MSG] Update state : Current ${GUI.triggerMessage.current}, Max ${GUI.triggerMessage.max}, Total ${GUI.triggerMessage.total}`);
     }
 }
 

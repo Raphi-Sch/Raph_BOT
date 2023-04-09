@@ -44,7 +44,7 @@ function updateTriggerTime(data) {
     if (is_dashboard) {
         document.getElementById('auto-cmd-time-bar').style.width = (data.current / data.max) * 100 + "%";
         document.getElementById('auto-cmd-time-text').innerHTML = data.current + " / " + data.max;
-        document.getElementById('auto-cmd-time-counter').innerHTML = data.nb;
+        document.getElementById('auto-cmd-time-counter').innerHTML = data.total;
     }
 
     // Dock
@@ -58,7 +58,7 @@ function updateTriggerMessage(data) {
     if (is_dashboard) {
         document.getElementById('auto-cmd-msg-bar').style.width = (data.current / data.max) * 100 + "%";
         document.getElementById('auto-cmd-msg-text').innerHTML = data.current + " / " + data.max;
-        document.getElementById('auto-cmd-msg-counter').innerHTML = data.nb;
+        document.getElementById('auto-cmd-msg-counter').innerHTML = data.total;
     }
 
     // Dock
