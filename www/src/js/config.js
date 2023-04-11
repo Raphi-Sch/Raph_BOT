@@ -100,3 +100,16 @@ function twitch_token(hash) {
         })
     });
 }
+
+function show_help(id, text) {
+    Swal.fire({
+        title: `Information about '${id}'`,
+        html: `<h4>${text}</h4>`,
+        icon: 'info',
+        width: "500px",
+        showCancelButton: false,
+        focusConfirm: false,
+        allowOutsideClick: false,
+        confirmButtonText: 'Ok',
+    })
+}

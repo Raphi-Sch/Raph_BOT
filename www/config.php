@@ -35,11 +35,22 @@ while ($row = mysqli_fetch_assoc($data)) {
         }
     }
 
+    // Help
+    $HTML_help = "";
+    if(!empty($row['help'])){
+        $HTML_help = "<button onClick='show_help(\"" . $row["id"] . "\", \"" . $row["help"] . "\")' class='btn btn-info' type='button'><i class='glyphicon glyphicon-info-sign'></i></button>";
+    }
+
     $list .= "
     <tr>
         <td>" . $row["id"] . "</td>
         <td id='value_" . $row["id"] . "'>$HTML_value</td>
-        <td><button onClick='$js_function(\"" . $row["id"] . "\", \"" . $row["value"] . "\")' class='btn btn-warning pull-right' type='button'><i class='glyphicon glyphicon-pencil'></i></button></td>
+        <td>
+            <span class='pull-right'>
+                $HTML_help
+                <button onClick='$js_function(\"" . $row["id"] . "\", \"" . $row["value"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
+            </span>
+        </td>
     </tr>";
 }
 
