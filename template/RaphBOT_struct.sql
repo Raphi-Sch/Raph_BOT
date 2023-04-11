@@ -76,7 +76,8 @@ CREATE TABLE `config` (
   `id` varchar(30) NOT NULL,
   `value` text NOT NULL,
   `hidden` tinyint(1) DEFAULT 0,
-  `type` tinyint(4) NOT NULL DEFAULT 0
+  `type` tinyint(4) NOT NULL DEFAULT 0,
+  `help` text NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
