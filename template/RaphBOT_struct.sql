@@ -43,7 +43,8 @@ CREATE TABLE `commands` (
 --
 
 CREATE TABLE `commands_alias` (
-  `alias` varchar(30) NOT NULL,
+  `id` int(11) NOT NULL,
+  `alias` text NOT NULL,
   `command` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -186,7 +187,7 @@ ALTER TABLE `commands`
 -- Index pour la table `commands_alias`
 --
 ALTER TABLE `commands_alias`
-  ADD PRIMARY KEY (`alias`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `commands_audio`
@@ -250,6 +251,12 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `commands`
 --
 ALTER TABLE `commands`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `commands_alias`
+--
+ALTER TABLE `commands_alias`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --

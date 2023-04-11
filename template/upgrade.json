@@ -1,5 +1,5 @@
 {
-    "version":"5.9.x",
+    "version":"5.11.x",
     "table": {
         "commands": {
             "fields": [
@@ -11,7 +11,7 @@
                 "sub_only"
             ],
             "types": { 
-                "id" : "INT(11) NULL DEFAULT NULL",
+                "id" : "INT(11) NULL DEFAULT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
                 "command" : "TEXT NULL",
                 "value" : "TEXT NULL",
                 "auto" : "BOOLEAN NOT NULL DEFAULT FALSE",
@@ -21,11 +21,13 @@
         },
         "commands_alias": {
             "fields": [
+                "id",
                 "alias",
                 "command"
             ],
             "types":{
-                "alias" : "varchar(30) NOT NULL",
+                "id" : "INT(11) NULL DEFAULT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
+                "alias" : "text NOT NULL",
                 "command" : "text NOT NULL"
             }
         },
@@ -42,7 +44,7 @@
                 "sub_only"
             ],
             "types": {
-                "id" : "int(11) NOT NULL",
+                "id" : "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
                 "name" : "text NOT NULL",
                 "trigger_word" : "varchar(20) NOT NULL",
                 "file" : "text NOT NULL",
@@ -77,7 +79,7 @@
                 "reason"
             ],
             "types": {
-                "id" : "int(11) NOT NULL",
+                "id" : "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
                 "trigger_word" : "text NOT NULL",
                 "mod_action" : "tinyint(1) NOT NULL",
                 "explanation" : "text NOT NULL",
@@ -94,7 +96,7 @@
                 "timeout"
             ],
             "types": {
-                "id" : "int(11) NOT NULL",
+                "id" : "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
                 "trigger_word" : "varchar(30) NOT NULL",
                 "reaction" : "text NOT NULL",
                 "frequency" : "tinyint(4) NOT NULL",
@@ -110,7 +112,7 @@
                 "type"
             ],
             "types": {
-                "id" : "int(11) NOT NULL",
+                "id" : "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
                 "original" : "text NOT NULL",
                 "replacement" : "text NOT NULL",
                 "language" : "text NOT NULL",
@@ -130,7 +132,7 @@
                 "type"
             ],
             "types": {
-                "id" : "int(11) NOT NULL",
+                "id" : "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
                 "trigger_word" : "varchar(30) NOT NULL",
                 "nation" : "text NOT NULL",
                 "tier" : "tinyint(2) NOT NULL",
