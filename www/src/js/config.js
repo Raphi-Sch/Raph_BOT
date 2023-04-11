@@ -108,8 +108,7 @@ function show_help(id, text) {
         icon: 'info',
         width: "500px",
         showCancelButton: false,
-        focusConfirm: false,
-        allowOutsideClick: false,
+        focusConfirm: true,
         confirmButtonText: 'Ok',
     })
 }
