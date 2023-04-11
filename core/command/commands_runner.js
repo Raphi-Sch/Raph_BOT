@@ -16,7 +16,7 @@ async function runCommand(user, message) {
     if (fullCommand) {
         let command = await queryAPI(fullCommand);
 
-        // Default result is true, to stop processing even if command is unknown. Maybe it's for another bot
+        // Default result is true, to stop processing even if command is unknown. Maybe the command is for another bot
         result = true; 
 
         if (command.response_type) {
