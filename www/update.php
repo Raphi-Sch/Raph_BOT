@@ -15,10 +15,17 @@ function fix_config($db, $key, $data)
         db_query_no_result($db, "INSERT INTO config (id, `value`, `hidden`, `type`) VALUES (?, ?, ?, ?)", "ssii", [$key, $data['value'], $data['hidden'], $data['type']]);
 
         $repaired = mysqli_num_rows(db_query_raw($db, "SELECT * FROM config WHERE id = ?", "s", $key));
-        if ($repaired)
+        if ($repaired){
             $result .= " (Repair successful)";
+            $presence = true;
+        } 
         else
             $result .= " (Repair failed)";
+    }
+
+    if($presence && isset($data['help']) && !empty($data['help'])){
+        db_query_no_result($db, "UPDATE `config` SET `help` = ? WHERE `id` = ?", "ss", [$data['help'], $key]);
+        $result .= " (Help updated)";
     }
 
     $result .= "\n";
