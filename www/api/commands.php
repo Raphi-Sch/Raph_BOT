@@ -132,7 +132,7 @@ function list_alias(mysqli $db)
     $count = 0;
 
     while ($row = $data->fetch_assoc()) {
-        $result += array($count => ["alias" => $row['alias'], "command" => $row['command']]);
+        $result += array($count => ["id" => $row['id'], "alias" => $row['alias'], "command" => $row['command']]);
         $count++;
     }
 

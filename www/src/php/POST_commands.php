@@ -53,14 +53,14 @@ if ($_POST['action'] == "add-alias") {
     $alias = strtolower(trim($_POST['alias']));
     $command = trim($_POST['value']);
 
-    db_query_no_result($db, "REPLACE INTO commands_alias (`alias`, `command`) VALUES (?, ?)", "ss", [$alias, $command]);
+    db_query_no_result($db, "REPLACE INTO commands_alias (`id`, `alias`, `command`) VALUES (NULL, ?, ?)", "ss", [$alias, $command]);
 
     header('Location: ../../commands.php?alias');
     exit();
 }
 
-if ($_POST['action'] == "del-alias" && !empty($_POST['alias'])) {
-    db_query_no_result($db, "DELETE FROM commands_alias WHERE alias = ?", "s", $_POST['alias']);
+if ($_POST['action'] == "del-alias" && !empty($_POST['id'])) {
+    db_query_no_result($db, "DELETE FROM commands_alias WHERE id = ?", "s", $_POST['id']);
     exit();
 }
 

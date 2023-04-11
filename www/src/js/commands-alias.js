@@ -98,7 +98,7 @@ function del_alias(data) {
         if (result.value) {
             $.post("src/php/POST_commands.php", {
                 action: "del-alias",
-                alias: data.alias
+                id: data.id
             }, function () {
                 list_alias(true);
             });
