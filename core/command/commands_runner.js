@@ -34,7 +34,6 @@ async function runCommand(user, message) {
 
                 case "audio":
                     runAudio(command, user);
-                    result = true;
                     break;
 
                 case "tank-random":
@@ -44,7 +43,7 @@ async function runCommand(user, message) {
                     break;
 
                 case "tts":
-                    runTTS(command.value);
+                    runTTS(command.value, user);
                     break;
                 
                 default:
@@ -144,7 +143,7 @@ function logAndTimeoutAudio(command, user) {
     socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
 }
 
-async function runTTS(text){
+async function runTTS(text, user){
     const TTSParameters = {
         voice: `${config.tts_language}+${config.tts_voice}`
     }
@@ -165,6 +164,7 @@ async function runTTS(text){
         }
     });
 
+    socket.log(`[TTS] '${user['display-name']}' said '${text}'`);
 }
 
 module.exports = { runCommand }
