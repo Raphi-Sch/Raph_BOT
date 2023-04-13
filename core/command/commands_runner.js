@@ -3,9 +3,15 @@ const tools = require("../tools");
 const socket = require("../socket");
 const { config } = require("../config");
 const { re } = require('@babel/core/lib/vendor/import-meta-resolve');
+const text2wav = require('text2wav')
+const fs = require('fs');
 
 let excluded_tanks = [];
 let excluded_audio = [];
+
+const TTSParameters = {
+    voice : 'fr+m5'
+};
 
 async function runCommand(user, message) {
     let result = null;
@@ -39,6 +45,10 @@ async function runCommand(user, message) {
                     if (command.exclude !== null) excluded_tanks.push(command.exclude);
                     if (excluded_tanks.length == command.total) excluded_tanks = [];
                     result = command.value
+                    break;
+
+                case "tts":
+                    runTTS(command.value);
                     break;
                 
                 default:
@@ -136,6 +146,25 @@ function logAndTimeoutAudio(command, user) {
         }, command.timeout * 1000);
     }
     socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
+}
+
+async function runTTS(text){
+    if(config.debug_level >= 1){
+        console.error(`[COMMANDS] Text : ${text}, TTS Parameters :`);
+        console.error(TTSParameters);
+    }
+    
+    let out = await text2wav(text, TTSParameters)
+
+    fs.writeFile(__dirname + '/../../www/src/audio/tts.wav', out, (err) => {
+        if (err) {
+            console.error(err);
+        }
+        else{
+            socket.playTTS();
+        }
+    });
+
 }
 
 module.exports = { runCommand }

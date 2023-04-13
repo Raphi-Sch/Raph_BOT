@@ -124,4 +124,8 @@ function playAudio(data) {
     io.to(room).emit('play-audio', JSON.stringify(data));
 }
 
-module.exports = { init, setTwitchState, setShout, setTimeCounter, setMessageCounter, log, playAudio }
+function playTTS(){
+    io.to(room).emit('play-TTS');
+}
+
+module.exports = { init, setTwitchState, setShout, setTimeCounter, setMessageCounter, log, playAudio, playTTS }

@@ -76,6 +76,11 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
         return list_audio_text($db);
     }
 
+    // TTS
+    if ($command == 'tts') {
+        return ['response_type' => 'tts', 'value' => $param];
+    }
+
     // Custom commands
     // Query Text
     $result = db_query($db, "SELECT * FROM commands  WHERE command = ?", "s", $command);

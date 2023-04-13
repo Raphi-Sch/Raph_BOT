@@ -95,7 +95,7 @@ function playAudio(file, volume) {
     if (is_dashboard) {
         const PLAYER = document.createElement('audio');
         document.getElementById('players').appendChild(PLAYER);
-        PLAYER.src = "src/audio/" + file;
+        PLAYER.src = `src/audio/${file}?cachebusting=${new Date().getTime()}`; // Time is needed so TTS file are reloaded no matter what. '?cachebusting' do nothing except tricking the browser.
         PLAYER.volume = parseFloat(volume);
         PLAYER.play();
         PLAYER.onended = function () { PLAYER.remove() };
@@ -180,6 +180,11 @@ function connectSocket() {
             socket.on('reload-log', function (){
                 getLog();
             });
+
+            // TTS
+            socket.on('play-TTS', function(){
+                playAudio('tts.wav', 1);
+            })
 
         },
         error: function (result, status, error) {
