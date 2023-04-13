@@ -64,6 +64,7 @@ function add_alias() {
             "<option disabled selected> - Select a command - </option>" +
             "<option value='audio'>audio (built-in)</option>" +
             "<option value='tank'>tank (built-in)</option>" +
+            "<option value='tts'>Text to speech (built-in)</option>" +
             "</select></form>",
         showCancelButton: true,
         showConfirmButton: confirm,
