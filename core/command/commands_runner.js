@@ -9,10 +9,6 @@ const fs = require('fs');
 let excluded_tanks = [];
 let excluded_audio = [];
 
-const TTSParameters = {
-    voice : 'fr+m5'
-};
-
 async function runCommand(user, message) {
     let result = null;
 
@@ -149,11 +145,15 @@ function logAndTimeoutAudio(command, user) {
 }
 
 async function runTTS(text){
+    const TTSParameters = {
+        voice: `${config.tts_language}+${config.tts_voice}`
+    }
+
     if(config.debug_level >= 1){
         console.error(`[COMMANDS] Text : ${text}, TTS Parameters :`);
         console.error(TTSParameters);
     }
-    
+
     let out = await text2wav(text, TTSParameters)
 
     fs.writeFile(__dirname + '/../../www/src/audio/tts.wav', out, (err) => {
