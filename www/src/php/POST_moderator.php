@@ -4,7 +4,7 @@ require_once("./header-post.php");
 
 // Add
 if ($_POST['action'] == "add" && !empty($_POST['trigger_word'])) {
-    $trigger = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($_POST['trigger_word'])));
+    $trigger = trim(strtolower($_POST['trigger_word']));
     $mod_action = intval($_POST['mod_action']);
     $explanation = trim($_POST['explanation']);
     $duration = intval($_POST['duration']);
@@ -24,7 +24,7 @@ if ($_POST['action'] == "add" && !empty($_POST['trigger_word'])) {
 
 // Edit
 if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
-    $trigger = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($_POST['trigger'])));
+    $trigger = trim(strtolower($_POST['trigger']));
     $mod_action = trim($_POST['mod_action']);
     $explanation = trim($_POST['explanation']);
     $duration = trim($_POST['duration']);

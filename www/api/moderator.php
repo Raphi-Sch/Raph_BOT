@@ -32,31 +32,36 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 }
 
-
 function request(mysqli $db, $message)
 {
-    // Initial clean up
+    $result = null;
+
+    // Convert array to string
     if (is_array($message))
-        $words_in = clean_string_in_array($message);
+        $message = implode(" ", $message);
 
-    if (is_string($message))
-        $words_in = explode(" ", clean_string($message));
+    $message = strtolower($message);
 
-    $SQL_params_type = "";
+    $SQL_query = "SELECT trigger_word FROM moderator";
+    $data = db_query_raw($db, $SQL_query);
 
-    // Build word in
-    $word_in_count = count($words_in);
-    $trigger_word_in = join(',', array_fill(0, $word_in_count, '?'));
-    $SQL_params_type .= str_repeat('s', $word_in_count);
+    $current_expression = "";
+    $action_trigger = false;
 
-    // Build list of all word (in and not in)
-    $SQL_values = $words_in;
+    while($row = $data->fetch_assoc()){
+        $current_expression = $row['trigger_word'];
+        if(strrpos($message, $current_expression) != false){
+            $action_trigger = true;
+            break;
+        }
+    }
 
-    $SQL_query = "SELECT trigger_word, mod_action, duration, explanation, reason
-        FROM moderator
-        WHERE moderator.trigger_word IN (" . $trigger_word_in . ") ORDER BY trigger_word ASC LIMIT 1";
-
-    $result = db_query($db, $SQL_query, $SQL_params_type, $SQL_values);
+    if($action_trigger){
+        $SQL_query = "SELECT * FROM moderator WHERE trigger_word = ?";
+        $SQL_params_type = "s";
+        $SQL_values = $current_expression;
+        $result = db_query($db, $SQL_query, $SQL_params_type, $SQL_values);
+    }
 
     if ($result == null)
         return ['mod_action' => null, 'explanation' => null, 'duration' => null, 'reason' => null, 'trigger_word' => null];
