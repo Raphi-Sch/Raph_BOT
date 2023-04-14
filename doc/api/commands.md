@@ -72,6 +72,7 @@ URL : http://<web_server>/api/commands.php?list-alias
 ### Response body
 Field | Type | Description
 ---|---|---
+id | Integer | ID of the alias in the database
 alias | String | The alias of the command
 command | String | The command link to that alias
 
@@ -79,10 +80,12 @@ command | String | The command link to that alias
 ```json
 [
     {
+        "id" : 1
         "alias": "alias1",
         "command": "command1"
     },
     {
+        "id" : 2
         "alias": "alias2",
         "command": "command2"
     }
