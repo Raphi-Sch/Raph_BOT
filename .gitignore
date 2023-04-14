@@ -5,7 +5,7 @@
 /config*.json
 
 # Test file
-test.*
+test*.*
 
 # Audio folder
 *.mp3
