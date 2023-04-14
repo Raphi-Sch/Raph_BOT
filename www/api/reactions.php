@@ -20,7 +20,13 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
         if (isset($_GET['request']) && isset($body['message'])) {
-            $exclusion = isset($body['exclusion']) ? $body['exclusion'] : "";
+            $exclusion = isset($body['exclusion']) ? $body['exclusion'] : array();
+
+            if (!is_string($body['message']) || !is_array($exclusion)) {
+                header("HTTP/1.0 400 Bad request");
+                break;
+            }
+
             echo json_encode(request($db, $body['message'], $exclusion));
             break;
         }
@@ -39,20 +45,12 @@ exit();
 function request(mysqli $db, $message, $exclusion)
 {
     // Initial clean up
-    if (is_array($message))
-        $words_in = clean_string_in_array($message);
-
-    if (is_string($message))
-        $words_in = explode(" ", clean_string($message));
-
-    if (is_array($exclusion))
-        $words_not_in = clean_string_in_array($exclusion);
-
-    if (is_string($exclusion))
-        $words_not_in = explode(" ", clean_string($exclusion));
+    $message = unleet($db, $message);
+    $words_in = explode(" ", clean_string($message));
+    $words_not_in = clean_string_in_array($exclusion);
 
     // No words in left
-    if(empty($words_in)){
+    if (empty($words_in)) {
         return ['trigger_word' => null, 'reaction' => null, 'frequency' => 0, 'timeout' => 0];
     }
 
