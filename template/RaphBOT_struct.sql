@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4deb2+deb11u1
+-- version 5.0.4deb2~bpo10+1
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : Dim 09 avr. 2023 à 11:09
--- Version du serveur :  10.5.15-MariaDB-0+deb11u1
--- Version de PHP : 7.4.33
+-- Généré le : ven. 14 avr. 2023 à 12:56
+-- Version du serveur :  10.3.36-MariaDB-0+deb10u2
+-- Version de PHP : 7.3.31-1~deb10u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `RaphBOT_DEV`
+-- Base de données : `raphbot`
 --
 
 -- --------------------------------------------------------
@@ -31,9 +31,9 @@ CREATE TABLE `commands` (
   `id` int(11) NOT NULL,
   `command` text NOT NULL,
   `value` text NOT NULL,
-  `auto` tinyint(1) NOT NULL DEFAULT 0,
-  `mod_only` tinyint(1) NOT NULL DEFAULT 0,
-  `sub_only` tinyint(1) NOT NULL DEFAULT 0
+  `auto` tinyint(1) NOT NULL,
+  `sub_only` tinyint(1) NOT NULL DEFAULT 0,
+  `mod_only` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -44,8 +44,8 @@ CREATE TABLE `commands` (
 
 CREATE TABLE `commands_alias` (
   `id` int(11) NOT NULL,
-  `alias` text NOT NULL,
-  `command` text NOT NULL
+  `command` text NOT NULL,
+  `alias` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -58,12 +58,24 @@ CREATE TABLE `commands_audio` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
   `trigger_word` varchar(20) NOT NULL,
-  `file` text NOT NULL,
   `volume` float NOT NULL DEFAULT 1,
-  `timeout` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT 1,
+  `timeout` int(11) NOT NULL,
+  `file` text NOT NULL,
   `mod_only` tinyint(1) NOT NULL DEFAULT 0,
   `sub_only` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `commands_tts`
+--
+
+CREATE TABLE `commands_tts` (
+  `id` int(11) NOT NULL,
+  `expression` text NOT NULL,
+  `replacement` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -77,7 +89,7 @@ CREATE TABLE `config` (
   `value` text NOT NULL,
   `hidden` tinyint(1) DEFAULT 0,
   `type` tinyint(4) NOT NULL DEFAULT 0,
-  `help` text NULL
+  `help` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -89,10 +101,10 @@ CREATE TABLE `config` (
 CREATE TABLE `moderator` (
   `id` int(11) NOT NULL,
   `trigger_word` text NOT NULL,
-  `mod_action` tinyint(1) NOT NULL,
+  `mod_action` text NOT NULL,
   `explanation` text NOT NULL,
   `duration` int(11) NOT NULL,
-  `reason` text DEFAULT NULL
+  `reason` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -105,7 +117,7 @@ CREATE TABLE `reactions` (
   `id` int(11) NOT NULL,
   `trigger_word` varchar(30) NOT NULL,
   `reaction` text NOT NULL,
-  `frequency` int(11) NOT NULL,
+  `frequency` tinyint(4) NOT NULL,
   `timeout` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -197,6 +209,12 @@ ALTER TABLE `commands_audio`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `commands_tts`
+--
+ALTER TABLE `commands_tts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `config`
 --
 ALTER TABLE `config`
@@ -264,6 +282,12 @@ ALTER TABLE `commands_alias`
 -- AUTO_INCREMENT pour la table `commands_audio`
 --
 ALTER TABLE `commands_audio`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `commands_tts`
+--
+ALTER TABLE `commands_tts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
