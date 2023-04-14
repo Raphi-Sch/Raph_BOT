@@ -79,10 +79,7 @@ async function queryAPI(fullCommand) {
     } else {
         console.error("[COMMAND] API ERROR : " + response.status);
         console.error("Context : ");
-        console.error(command);
-        console.error(param);
-        console.error(excluded_tanks);
-        console.error(excluded_audio);
+        console.error(body);
         console.error("-------------------");
         return null;
     }
