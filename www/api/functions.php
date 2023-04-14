@@ -66,3 +66,22 @@ function remove_emoji($string)
 
     return $clean_string;
 }
+
+/**
+ * Convert L33T to regular text
+ * @param string $string Input string
+ * @return string String Input converted to regular text
+ */
+function unleet($db, $input)
+{
+    $leet_original = array();
+    $leet_replacement = array();
+
+    $leet_data = db_query_raw($db, "SELECT original, replacement FROM moderator_leet");
+    while ($row = $leet_data->fetch_assoc()) {
+        array_push($leet_original, $row['original']);
+        array_push($leet_replacement, $row['replacement']);
+    }
+
+    return str_replace($leet_original, $leet_replacement, $input);
+}
