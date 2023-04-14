@@ -13,6 +13,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if (isset($_GET['list-leet'])) {
+            echo json_encode(get_list_leet($db));
+            break;
+        }
+
         header("HTTP/1.0 400 Bad request");
         break;
 
@@ -48,6 +53,22 @@ function get_list(mysqli $db)
     return $result;
 }
 
+function get_list_leet(mysqli $db)
+{
+    $SQL_query = "SELECT * FROM moderator_leet ORDER BY replacement ASC";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = $data->fetch_assoc()) {
+        $result += array($count => ["id" => $row['id'], "replacement" => $row['replacement'], "original" => $row['original']]);
+        $count++;
+    }
+
+    return $result;
+}
+
 function request(mysqli $db, $message)
 {
     $result = null;
@@ -56,21 +77,22 @@ function request(mysqli $db, $message)
     if (is_array($message))
         $message = implode(" ", $message);
 
-    $message = trim(strtolower($message));
+    // Clean up before processing
+    $message = unleet($db, trim(strtolower($message)));
 
     $current_expression = "";
     $action_trigger = false;
     $trigger_data = db_query_raw($db, "SELECT trigger_word FROM moderator");
-    
-    while($row = $trigger_data->fetch_assoc()){
+
+    while ($row = $trigger_data->fetch_assoc()) {
         $current_expression = $row['trigger_word'];
-        if(strrpos($message, $current_expression) !== false){
+        if (strrpos($message, $current_expression) !== false) {
             $action_trigger = true;
             break;
         }
     }
 
-    if($action_trigger){
+    if ($action_trigger) {
         $result = db_query($db, "SELECT * FROM moderator WHERE trigger_word = ?", "s", $current_expression);
     }
 
@@ -78,4 +100,18 @@ function request(mysqli $db, $message)
         return ['mod_action' => null, 'explanation' => null, 'duration' => null, 'reason' => null, 'trigger_word' => null];
     else
         return $result;
+}
+
+function unleet($db, $input)
+{
+    $leet_original = array();
+    $leet_replacement = array();
+
+    $leet_data = db_query_raw($db, "SELECT original, replacement FROM moderator_leet");
+    while ($row = $leet_data->fetch_assoc()) {
+        array_push($leet_original, $row['original']);
+        array_push($leet_replacement, $row['replacement']);
+    }
+
+    return str_replace($leet_original, $leet_replacement, $input);
 }

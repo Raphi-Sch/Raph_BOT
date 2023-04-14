@@ -1,5 +1,35 @@
 const actionText = ["Ban", "Timeout", "Delete message"];
 
+function view(param) {
+    switch (param) {
+        case 'list':
+            document.getElementById("tab-list").classList.add("active");
+            document.getElementById("tab-leet").classList.remove("active");
+
+            document.getElementById('th-list').classList.remove('hidden');
+            document.getElementById('th-leet').classList.add('hidden');
+
+            document.getElementById('btn-refresh').onclick = () => list(true);
+
+            window.history.pushState(null, '', 'moderator.php?list');
+            list();
+            return;
+
+        case 'leet':
+            document.getElementById("tab-list").classList.remove("active");
+            document.getElementById("tab-leet").classList.add("active");
+
+            document.getElementById('th-list').classList.add('hidden');
+            document.getElementById('th-leet').classList.remove('hidden');
+
+            document.getElementById('btn-refresh').onclick = () => listLeet(true);
+
+            window.history.pushState(null, '', 'moderator.php?list-leet');
+            listLeet();
+            return;
+    }
+}
+
 function list(reload = false) {
     $.ajax({
         url: "api/moderator.php?list",

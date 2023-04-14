@@ -45,4 +45,22 @@ if ($_POST['action'] == "del" && !empty($_POST['id'])) {
     exit();
 }
 
+// LEET
+// Add
+if ($_POST['action'] == "add-leet" && !empty($_POST['original']) && !empty($_POST['replacement'])) {
+    $original = trim(strtolower($_POST['original']));
+    $replacement = trim(strtolower($_POST['replacement']));
+
+    db_query_no_result($db, "INSERT INTO `moderator_leet` (id, original, replacement) VALUES (NULL, ?, ?)", "ss", [$original, $replacement]);
+
+    header('Location: ../../moderator.php');
+    exit();
+}
+
+// Delete
+if ($_POST['action'] == "del-leet" && !empty($_POST['id'])) {
+    db_query_no_result($db, "DELETE FROM `moderator_leet` WHERE `id` = ?", "i", $_POST['id']);
+    exit();
+}
+
 exit();
