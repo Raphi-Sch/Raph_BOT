@@ -33,7 +33,7 @@ function add_entry() {
         title: "Add entry",
         html: `<form id='swal-form'>
             <input type='hidden' name='action' value='add'>
-            <label>Trigger word</label><input type='text' class='form-control' name='trigger_word' placeholder='Trigger' required><br/>
+            <label>Trigger</label><input type='text' class='form-control' name='trigger_word' placeholder='Trigger' required><br/>
             <label>Action</label>
             <select class='form-control' name='mod_action'>
                 <option value=0>Ban</option>
