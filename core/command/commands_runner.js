@@ -149,7 +149,7 @@ async function runTTS(text, user){
     }
 
     if(config.debug_level >= 1){
-        console.error(`[COMMANDS] Text : ${text}, TTS Parameters :`);
+        console.error(`[TTS] Text : ${text}, TTS Parameters :`);
         console.error(TTSParameters);
     }
 
