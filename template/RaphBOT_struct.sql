@@ -98,6 +98,18 @@ CREATE TABLE `moderator` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `moderator_leet`
+--
+
+CREATE TABLE `moderator_leet` (
+  `id` int(11) NOT NULL,
+  `original` text NOT NULL,
+  `replacement` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `reactions`
 --
 
@@ -209,6 +221,12 @@ ALTER TABLE `moderator`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `moderator_leet`
+--
+ALTER TABLE `moderator_leet`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `reactions`
 --
 ALTER TABLE `reactions`
@@ -270,6 +288,12 @@ ALTER TABLE `commands_audio`
 -- AUTO_INCREMENT pour la table `moderator`
 --
 ALTER TABLE `moderator`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `moderator_leet`
+--
+ALTER TABLE `moderator_leet`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
