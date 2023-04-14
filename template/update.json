@@ -1,4 +1,5 @@
 {
+    "version":"5.12.x",
     "config": {
         "bot_name": {
             "value" : "Raph_BOT",
