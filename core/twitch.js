@@ -47,6 +47,12 @@ function init() {
         // Do not react to himself
         if (isSelf || user["display-name"] == config.twitch_display_name) return;
 
+        const moderatorResult = await moderator.run(user, message, twitchAPI);
+        if (moderatorResult) {
+            send(moderatorResult);
+            return;
+        }
+
         const messageTriggerResult = await commands.messageTrigger();
         if (messageTriggerResult) {
             send(messageTriggerResult);
@@ -57,12 +63,6 @@ function init() {
             if (commandResult !== true) {
                 send(commandResult);
             }
-            return;
-        }
-
-        const moderatorResult = await moderator.run(user, message, twitchAPI);
-        if (moderatorResult) {
-            send(moderatorResult);
             return;
         }
 
