@@ -183,7 +183,7 @@ function connectSocket() {
 
             // TTS
             socket.on('play-TTS', function(){
-                playAudio('tts.wav', 1);
+                playAudio('tts.mp3', 1);
             })
 
         },

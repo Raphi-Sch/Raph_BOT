@@ -3,8 +3,7 @@ const tools = require("../tools");
 const socket = require("../socket");
 const { config } = require("../config");
 const { re } = require('@babel/core/lib/vendor/import-meta-resolve');
-const text2wav = require('text2wav')
-const fs = require('fs');
+const gTTS = require('gtts');
 
 let excluded_tanks = [];
 let excluded_audio = [];
@@ -19,7 +18,7 @@ async function runCommand(user, message) {
         let command = await queryAPI(fullCommand);
 
         // Default result is true, to stop processing even if command is unknown. Maybe the command is for another bot
-        result = true; 
+        result = true;
 
         if (command.response_type) {
             // Replace @username with current username
@@ -45,7 +44,7 @@ async function runCommand(user, message) {
                 case "tts":
                     runTTS(command.value, user);
                     break;
-                
+
                 default:
                     break;
             }
@@ -140,28 +139,17 @@ function logAndTimeoutAudio(command, user) {
     socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
 }
 
-async function runTTS(text, user){
-    const TTSParameters = {
-        voice: `${config.tts_language}+${config.tts_voice}`
-    }
+async function runTTS(text, user) {
+    const gtts = new gTTS(text, config.tts_language);
 
-    if(config.debug_level >= 1){
-        console.error(`[TTS] Text : ${text}, TTS Parameters :`);
-        console.error(TTSParameters);
-    }
-
-    let out = await text2wav(text, TTSParameters)
-
-    fs.writeFile(__dirname + '/../../www/src/audio/tts.wav', out, (err) => {
-        if (err) {
-            console.error(err);
+    gtts.save(__dirname + '/../../www/src/audio/tts.mp3', function (err, result) {
+        if (err) { 
+            throw new Error(err); 
         }
-        else{
-            socket.playTTS();
-        }
+
+        socket.playTTS();
+        socket.log(`[TTS] '${user['display-name']}' said '${text}'`);
     });
-
-    socket.log(`[TTS] '${user['display-name']}' said '${text}'`);
 }
 
 module.exports = { runCommand }
