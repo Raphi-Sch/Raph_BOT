@@ -50,8 +50,8 @@ require_once('src/php/header.php');
         const is_dashboard = false;
         const is_dock = true;
     </script>
+    <script src="src/socket.io-4.6.1/socket.io.js"></script>
     <script src="src/js/common.js"></script>
-    <script src="src/js/socket.io.js"></script>
     <script src="src/js/dashboard.js"></script>
 
 </body>

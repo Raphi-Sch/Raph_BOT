@@ -1,12 +1,17 @@
-const http = require('http');
 const fs = require('fs');
 const { config } = require('./config');
 const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'a' });
 const tools = require("./tools");
+const { createServer } = require('http');
+const { Server } = require("socket.io");
 
 // Basic HTTP server
-const server = http.createServer();
-const io = require('socket.io').listen(server);
+const httpServer = createServer();
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*"
+  }
+});
 const room = "dashboard";
 
 // GUI info
@@ -36,7 +41,7 @@ function init(version) {
         console.error(`${tools.logTime()} [SOCKET] Listening port ${config.socket_port}`);
     }
 
-    server.listen(config.socket_port);
+    io.listen(config.socket_port);
 
     // GUI set max values
     GUI.shout.max = config.shout_interval;
