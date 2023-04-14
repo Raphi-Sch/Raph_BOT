@@ -40,7 +40,7 @@ function request(mysqli $db, $message)
     if (is_array($message))
         $message = implode(" ", $message);
 
-    $message = strtolower($message);
+    $message = trim(strtolower($message));
 
     $SQL_query = "SELECT trigger_word FROM moderator";
     $data = db_query_raw($db, $SQL_query);
@@ -50,7 +50,7 @@ function request(mysqli $db, $message)
 
     while($row = $data->fetch_assoc()){
         $current_expression = $row['trigger_word'];
-        if(strrpos($message, $current_expression) != false){
+        if(strrpos($message, $current_expression) !== false){
             $action_trigger = true;
             break;
         }
