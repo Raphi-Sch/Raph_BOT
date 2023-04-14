@@ -3,7 +3,7 @@
 require_once('../src/php/db.php');
 require_once('./commands/audio.php');
 require_once('./commands/tanks.php');
-
+require_once('functions.php');
 
 header('Content-Type: application/json');
 
@@ -78,7 +78,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
 
     // TTS
     if ($command == 'tts') {
-        return ['response_type' => 'tts', 'value' => $param];
+        return ['response_type' => 'tts', 'value' => unleet($db, $param)];
     }
 
     // Custom commands
