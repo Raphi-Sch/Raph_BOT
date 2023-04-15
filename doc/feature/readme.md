@@ -10,7 +10,7 @@ Audio commands can be any .mp3 files, they are store in the server Raph_BOT is r
 
 For both TTS and audio commands, the dashboard need to be open and unmute.
 
-## Global Configuration :
+### Global Configuration :
 - cmd_prefix : Prefix before every commands (by default '!')
 - cmd_msg_interval : Number of message send in chat before an auto command is send
 - cmd_time_interval : Time before an auto command is send
@@ -39,10 +39,10 @@ Shout is an event happening one every x messages, x should be high.
 
 Shout use a dictionnary to help it change the pronoun and verb, 'I' become 'YOU' and 'YOU' become 'HE/SHE' for exemple.
 
-## Exemple :
+### Exemple :
 - Original message : "you are really funny !"
 - Shout : "OH WOW, HE IS REALLY FUNNY !"
 
-## Global Configuration :
+### Global Configuration :
 - shout_interval : How often shout should happen (can vary if the message is too short or too long).
 - shout_language : 'fr' and 'fr-uwu'
