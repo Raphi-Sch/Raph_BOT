@@ -36,10 +36,11 @@ require_once('src/php/header.php');
             <thead>
                 <tr id='th-command' class='hidden'>
                     <th class="col-xs-2">Command</th>
-                    <th class="col-xs-5">Text</th>
+                    <th class="col-xs-4">Text</th>
                     <th class="col-xs-1 text-center">Auto</th>
                     <th class="col-xs-1 text-center">Mod Only</th>
                     <th class="col-xs-1 text-center">Sub Only</th>
+                    <th class="col-xs-1 text-center">TTS</th>
                     <th class="table-scroll-th-fix"></th>
                     <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>

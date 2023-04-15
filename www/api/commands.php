@@ -124,7 +124,7 @@ function list_text(mysqli $db)
     $count = 0;
 
     while ($row = $data->fetch_assoc()) {
-        $result += array($count => ["id" => $row['id'], "command" => $row['command'], "value" => $row['value'], "auto" => $row['auto'], 'mod_only' => $row['mod_only'], 'sub_only' => $row['sub_only']]);
+        $result += array($count => ["id" => $row['id'], "command" => $row['command'], "value" => $row['value'], "auto" => $row['auto'], 'mod_only' => $row['mod_only'], 'sub_only' => $row['sub_only'], 'tts' => $row['tts']]);
         $count++;
     }
 

@@ -59,10 +59,11 @@ function list_commands(reload = false) {
             data.forEach(element => {
                 const TR = document.createElement('tr');
                 TR.appendChild(createTableData(element.command, 'col-xs-2'));
-                TR.appendChild(createTableData(element.value, 'col-xs-5'));
+                TR.appendChild(createTableData(element.value, 'col-xs-4'));
                 TR.appendChild(createCheckbox(element.auto));
                 TR.appendChild(createCheckbox(element.mod_only));
                 TR.appendChild(createCheckbox(element.sub_only));
+                TR.appendChild(createCheckbox(element.tts));
                 TR.appendChild(createButtonGroup(() => edit_entry(element), () => del_entry(element)));
                 LIST.appendChild(TR);
             })
@@ -84,6 +85,7 @@ function add_entry() {
             <label>Auto</label><input class='form-control' type='checkbox' name='auto'><br />
             <label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only'><br /> 
             <label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only'><br />
+            <label>TTS</label><input class='form-control' type='checkbox' name='tts'><br />
             </form>`,
         showCancelButton: true,
         showConfirmButton: confirm,
@@ -106,6 +108,7 @@ function edit_entry(data) {
     checkbox_auto = data.auto ? "checked" : "";
     checkbox_mod = data.mod_only ? "checked" : "";
     checkbox_sub = data.sub_only ? "checked" : "";
+    checkbox_tts = data.tts ? "checked" : "";
 
     Swal.fire({
         title: `Editing : "${data.command}"`,
@@ -118,6 +121,7 @@ function edit_entry(data) {
             <label>Auto</label><input class='form-control' type='checkbox' name='auto' ${checkbox_auto}><br />
             <label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only' ${checkbox_mod}><br />
             <label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only' ${checkbox_sub}><br />
+            <label>TTS</label><input class='form-control' type='checkbox' name='tts' ${checkbox_tts}><br />
             </form>`,
         showCancelButton: true,
         focusConfirm: false,

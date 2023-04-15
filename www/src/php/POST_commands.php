@@ -15,8 +15,9 @@ if ($_POST['action'] == "add") {
     $auto = isset($_POST['auto']) ? 1 : 0;
     $mod_only = (isset($_POST['mod_only']) ? 1 : 0) || (isset($_POST['sub_only']) ? 1 : 0);
     $sub_only = isset($_POST['sub_only']) ? 1 : 0;
+    $tts = isset($_POST['tts']) ? 1 : 0;
 
-    db_query_no_result($db, "INSERT INTO commands (`id`, `command`, `value`, `auto`, `mod_only`, `sub_only`) VALUES (NULL, ?, ?, ?, ?, ?)", "ssiii", [$command, $text, $auto, $mod_only, $sub_only]);
+    db_query_no_result($db, "INSERT INTO commands (`id`, `command`, `value`, `auto`, `mod_only`, `sub_only`, `tts`) VALUES (NULL, ?, ?, ?, ?, ?)", "ssiiii", [$command, $text, $auto, $mod_only, $sub_only, $tts]);
 
     header('Location: ../../commands.php');
     exit();
@@ -28,9 +29,10 @@ if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
     $auto = isset($_POST['auto']) ? 1 : 0;
     $mod_only = (isset($_POST['mod_only']) ? 1 : 0) || (isset($_POST['sub_only']) ? 1 : 0);
     $sub_only = isset($_POST['sub_only']) ? 1 : 0;
+    $tts = isset($_POST['tts']) ? 1 : 0;
 
-    db_query_no_result($db, "UPDATE `commands` SET `command` = ?, `value` = ?, `auto` = ?, `mod_only` = ?, `sub_only` = ? WHERE id = ?", 
-        "ssiiii", [$command, $text, $auto, $mod_only, $sub_only, $_POST['id']]);
+    db_query_no_result($db, "UPDATE `commands` SET `command` = ?, `value` = ?, `auto` = ?, `mod_only` = ?, `sub_only` = ?, `tts` = ? WHERE id = ?", 
+        "ssiiiii", [$command, $text, $auto, $mod_only, $sub_only, $tts, $_POST['id']]);
 
     header('Location: ../../commands.php');
     exit();
