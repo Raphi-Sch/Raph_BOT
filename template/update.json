@@ -84,6 +84,11 @@
             "hidden" : 0,
             "type" : 0
         },
+        "tts_prefix" : {
+            "value" : "",
+            "hidden" : 0,
+            "type" : 0
+        },
         "twitch_channel" : {
             "value" : "",
             "hidden" : 0,

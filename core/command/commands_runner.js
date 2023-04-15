@@ -140,6 +140,10 @@ function logAndTimeoutAudio(command, user) {
 }
 
 async function runTTS(text, user) {
+    if(user && config.tts_prefix){
+        text = (config.tts_prefix + " " + text).replace("@username", user['display-name']);
+    }
+        
     const gtts = new gTTS(text, config.tts_language);
 
     gtts.save(__dirname + '/../../www/src/audio/tts.mp3', function (err, result) {

@@ -20,7 +20,7 @@ const config = {
     shout_interval: null,
     shout_language: null,
     tts_language: null,
-    tts_voice: null,
+    tts_prefix: null,
     twitch_channel: null,
     twitch_client_id: null,
     twitch_connection_message: null,
