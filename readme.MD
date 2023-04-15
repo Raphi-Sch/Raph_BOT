@@ -34,6 +34,7 @@ In the folder "template" :
 # Documentation
 
 - [API Documentation](doc/api/readme.md)
+- [Feature Documentation](doc/feature/readme.md)
 
 # DISCLAIMER
 
