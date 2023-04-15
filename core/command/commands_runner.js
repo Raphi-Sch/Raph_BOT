@@ -3,7 +3,6 @@ const tools = require("../tools");
 const socket = require("../socket");
 const { config } = require("../config");
 const { re } = require('@babel/core/lib/vendor/import-meta-resolve');
-const gTTS = require('gtts');
 
 let excluded_tanks = [];
 let excluded_audio = [];
@@ -23,7 +22,7 @@ async function runCommand(user, message) {
         if (command.response_type) {
             if (user) {
                 if (command.response_type == 'tts' || command.response_type == 'tts-bot') {
-                    command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
+                    command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name'])); 
                 }
                 else {
                     command.value = command.value.replace("@username", user['display-name']);
@@ -46,11 +45,17 @@ async function runCommand(user, message) {
                     break;
 
                 case "tts":
-                    runTTS(command.value, user['display-name']);
+                    if (config.tts_prefix !== null) {
+                        command.value = (config.tts_prefix).replace("@username", tools.simplifyUsername(user['display-name'])) + " " + command.value;
+                    } 
+                    tools.runTTS(config, socket, command.value, user['display-name']);
                     break;
 
                 case "tts-bot":
-                    runTTS(command.value, 'RaphBOTE');
+                    if (config.tts_prefix !== null) {
+                        command.value = (config.tts_prefix).replace("@username", "raphbote") + " " + command.value;
+                    } 
+                    tools.runTTS(config, socket, command.value, 'Raph_BOT');
                     break;
 
                 default:
@@ -145,23 +150,6 @@ function logAndTimeoutAudio(command, user) {
         }, command.timeout * 1000);
     }
     socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
-}
-
-async function runTTS(text, username) {
-    if (config.tts_prefix !== null) {
-        text = (config.tts_prefix).replace("@username", tools.simplifyUsername(username)) + " " + text;
-    }
-
-    const gtts = new gTTS(text, config.tts_language);
-
-    gtts.save(__dirname + '/../../www/src/audio/tts.mp3', function (err, result) {
-        if (err) {
-            throw new Error(err);
-        }
-
-        socket.playTTS();
-        socket.log(`[TTS] '${username}' said '${text}'`);
-    });
 }
 
 module.exports = { runCommand }

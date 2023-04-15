@@ -52,4 +52,18 @@ function simplifyUsername(username){
     return username.replace(/[-_]/g, "");
 }
 
-module.exports = { parseCommand, randomInt, normalizeString, timeoutToString, debugTwitchChat, logTime, simplifyUsername}
+async function runTTS(config, socket, text, username) {
+    const gTTS = require('gtts');
+    const gtts = new gTTS(text, config.tts_language);
+
+    gtts.save(__dirname + '/../www/src/audio/tts.mp3', function (err, result) {
+        if (err) {
+            throw new Error(err);
+        }
+
+        socket.playTTS();
+        socket.log(`[TTS] '${username}' said '${text}'`);
+    });
+}
+
+module.exports = { parseCommand, randomInt, normalizeString, timeoutToString, debugTwitchChat, logTime, simplifyUsername, runTTS}
