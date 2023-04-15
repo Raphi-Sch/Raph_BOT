@@ -78,14 +78,17 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
 
     // TTS
     if ($command == 'tts') {
-        return ['response_type' => 'tts', 'value' => unleet($db, $param)];
+        return ['response_type' => 'tts', 'value' => $param];
     }
 
     // Custom commands
     // Query Text
     $result = db_query($db, "SELECT * FROM commands  WHERE command = ?", "s", $command);
     if(!empty($result['value'])){
-        return ['response_type' => 'text', 'value' => $result['value'], 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
+        if($result['tts'] == 0)
+            return ['response_type' => 'text', 'value' => $result['value'], 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
+        else
+            return ['response_type' => 'tts-bot', 'value' => $result['value']];
     }
 
     // Query Audio

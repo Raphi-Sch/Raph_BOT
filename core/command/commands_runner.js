@@ -42,7 +42,11 @@ async function runCommand(user, message) {
                     break;
 
                 case "tts":
-                    runTTS(command.value, user);
+                    runTTS(command.value, user['display-name']);
+                    break;
+
+                case "tts-bot":
+                    runTTS(command.value, 'RaphBOTE');
                     break;
 
                 default:
@@ -139,9 +143,9 @@ function logAndTimeoutAudio(command, user) {
     socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
 }
 
-async function runTTS(text, user) {
-    if(user && config.tts_prefix){
-        text = (config.tts_prefix + " " + text).replace("@username", user['display-name']);
+async function runTTS(text, username) {
+    if(username && config.tts_prefix){
+        text = (config.tts_prefix + " " + text).replace("@username", tools.simplifyUsername(username));
     }
         
     const gtts = new gTTS(text, config.tts_language);
@@ -152,7 +156,7 @@ async function runTTS(text, user) {
         }
 
         socket.playTTS();
-        socket.log(`[TTS] '${user['display-name']}' said '${text}'`);
+        socket.log(`[TTS] '${username}' said '${text}'`);
     });
 }
 
