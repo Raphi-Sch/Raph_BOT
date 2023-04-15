@@ -97,14 +97,16 @@
                 "trigger_word",
                 "reaction",
                 "frequency",
-                "timeout"
+                "timeout",
+                "tts"
             ],
             "types": {
                 "id" : "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
                 "trigger_word" : "varchar(30) NOT NULL",
                 "reaction" : "text NOT NULL",
                 "frequency" : "tinyint(4) NOT NULL",
-                "timeout" : "int(11) NOT NULL"
+                "timeout" : "int(11) NOT NULL",
+                "tts" : "BOOLEAN NOT NULL DEFAULT FALSE"
             }
         },
         "shout": {
