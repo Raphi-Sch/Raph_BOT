@@ -247,7 +247,6 @@ INSERT INTO `moderator_leet` (`id`, `original`, `replacement`) VALUES
 (188, '|_|', 'u'),
 (190, 'L|', 'u'),
 (191, 'µ', 'u'),
-(192, 'J', 'u'),
 (193, '\\/', 'v'),
 (194, '1/', 'v'),
 (195, '|/', 'v'),
