@@ -21,9 +21,13 @@ async function runCommand(user, message) {
         result = true;
 
         if (command.response_type) {
-            // Replace @username with current username
-            if (user && command.value) {
-                command.value = command.value.replace("@username", user['display-name']);
+            if (user) {
+                if (command.response_type == 'tts' || command.response_type == 'tts-bot') {
+                    command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
+                }
+                else {
+                    command.value = command.value.replace("@username", user['display-name']);
+                }
             }
 
             switch (command.response_type) {
@@ -144,15 +148,15 @@ function logAndTimeoutAudio(command, user) {
 }
 
 async function runTTS(text, username) {
-    if(username && config.tts_prefix){
-        text = (config.tts_prefix + " " + text).replace("@username", tools.simplifyUsername(username));
+    if (config.tts_prefix !== null) {
+        text = (config.tts_prefix).replace("@username", tools.simplifyUsername(username)) + " " + text;
     }
-        
+
     const gtts = new gTTS(text, config.tts_language);
 
     gtts.save(__dirname + '/../../www/src/audio/tts.mp3', function (err, result) {
-        if (err) { 
-            throw new Error(err); 
+        if (err) {
+            throw new Error(err);
         }
 
         socket.playTTS();
