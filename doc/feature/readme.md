@@ -1,7 +1,7 @@
 # Commands
 
 Commands provide an easy way to give information to viewer in chat.
-You can set as many commands as you want, with as many aliases as you want. It's not uncommon to have many aliases for one command.
+You can set as many commands as you want, with as many aliases as you need. It's not uncommon to have many aliases for one command.
 
 Raph_BOT support two type of commands : Text and Audio.
 Text commands can be pure text (the text is send directly to chat) or TTS (text is converted by a TTS Engine then played by the dashboard).
