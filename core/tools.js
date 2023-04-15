@@ -48,4 +48,8 @@ function logTime(){
     return `[${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}.${('00' + date.getMilliseconds()).slice(-3)}]`;
 }
 
-module.exports = { parseCommand, randomInt, normalizeString, timeoutToString, debugTwitchChat, logTime }
+function simplifyUsername(username){
+    return username.replace(/[-_]/g, "");
+}
+
+module.exports = { parseCommand, randomInt, normalizeString, timeoutToString, debugTwitchChat, logTime, simplifyUsername}
