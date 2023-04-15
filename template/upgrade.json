@@ -8,7 +8,8 @@
                 "value",
                 "auto",
                 "mod_only",
-                "sub_only"
+                "sub_only",
+                "tts"
             ],
             "types": { 
                 "id" : "INT(11) NULL DEFAULT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
@@ -16,7 +17,8 @@
                 "value" : "TEXT NULL",
                 "auto" : "BOOLEAN NOT NULL DEFAULT FALSE",
                 "mod_only" : "BOOLEAN NOT NULL DEFAULT FALSE",
-                "sub_only" : "BOOLEAN NOT NULL DEFAULT FALSE"
+                "sub_only" : "BOOLEAN NOT NULL DEFAULT FALSE",
+                "tts" : "BOOLEAN NOT NULL DEFAULT FALSE"
             }            
         },
         "commands_alias": {
