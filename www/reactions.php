@@ -33,6 +33,7 @@ require_once('src/php/header.php');
                     <th class="col-xs-5">Reaction</th>
                     <th class="col-xs-1 text-center">Frequency</th>
                     <th class="col-xs-1 text-center">Timeout</th>
+                    <th class="col-xs-1 text-center">TTS</th>
                     <th class="table-scroll-th-fix"></th>
                     <th class="col-xs-2"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>

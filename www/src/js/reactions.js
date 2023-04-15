@@ -13,6 +13,7 @@ function list(reload = false) {
                 TR.appendChild(createTableData(element.reaction, 'col-xs-5'));
                 TR.appendChild(createTableData(element.frequency + '%', 'col-xs-1 text-center'));
                 TR.appendChild(createTableData(timeoutToString(element.timeout), 'col-xs-1 text-center'));
+                TR.appendChild(createCheckbox(element.tts));
                 TR.appendChild(createButtonGroup(() => edit_entry(element), () => del_entry(element)));
                 LIST.appendChild(TR);
             })
@@ -34,6 +35,7 @@ function add_entry() {
             <label>Frequency (<span id='swal-freq'>50</span>%)</label>
             <input type='range' class='form-control' name='frequency' min=0 max=100 step=1 value=50 oninput="document.getElementById('swal-freq').innerText = parseInt((this.value))"><br/>
             <label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 step=1 value=0 required><br/>
+            <label>TTS</label><input class='form-control' type='checkbox' name='tts'><br/>
             </form>`,
         showCancelButton: true,
         showConfirmButton: confirm,
@@ -53,6 +55,8 @@ function add_entry() {
 }
 
 function edit_entry(data) {
+    checkbox_tts = data.tts ? "checked" : "";
+
     Swal.fire({
         title: `Editing : "${data.trigger_word}"`,
         icon: 'info',
@@ -64,6 +68,7 @@ function edit_entry(data) {
             <label>Frequency (<span id='swal-freq'>${data.frequency}</span>%)</label>
             <input type='range' class='form-control' name='frequency' min=0 max=100 step=1 value='${data.frequency}' oninput="document.getElementById('swal-freq').innerText = parseInt((this.value))"><br/>
             <label>Timeout (s)</label><input class='form-control' type='number' name='timeout' min=0 step=1 value="${data.timeout}"><br/>
+            <label>TTS</label><input class='form-control' type='checkbox' name='tts' ${checkbox_tts}><br />
             </form>`,
         showCancelButton: true,
         focusConfirm: false,

@@ -8,8 +8,9 @@ if ($_POST['action'] == "add" && !empty($_POST['trigger']) && !empty($_POST['rea
     $reaction = trim($_POST['reaction']);
     $frequency = intval($_POST['frequency']);
     $timeout = intval($_POST['timeout']);
+    $tts = isset($_POST['tts']) ? 1 : 0;
 
-    db_query_no_result($db, "INSERT INTO reactions (`id`, `trigger_word`, `reaction`, `frequency`, `timeout`) VALUES (NULL, ?, ?, ?, ?)", "ssii", [$trigger, $reaction, $frequency, $timeout]);
+    db_query_no_result($db, "INSERT INTO reactions (`id`, `trigger_word`, `reaction`, `frequency`, `timeout`, `tts`) VALUES (NULL, ?, ?, ?, ?, ?)", "ssiii", [$trigger, $reaction, $frequency, $timeout, $tts]);
 
     header('Location: ../../reactions.php');
     exit();
@@ -21,8 +22,9 @@ if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
     $reaction = trim($_POST['reaction']);
     $frequency = intval($_POST['frequency']);
     $timeout = intval($_POST['timeout']);
+    $tts = isset($_POST['tts']) ? 1 : 0;
 
-    db_query_no_result($db, "UPDATE `reactions` SET `trigger_word` = ?, `reaction` = ?, `frequency` = ?, `timeout` = ? WHERE `id` = ?", "ssiii", [$trigger, $reaction, $frequency, $timeout, $_POST['id']]);
+    db_query_no_result($db, "UPDATE `reactions` SET `trigger_word` = ?, `reaction` = ?, `frequency` = ?, `timeout` = ?, `tts` = ? WHERE `id` = ?", "ssiiii", [$trigger, $reaction, $frequency, $timeout, $tts, $_POST['id']]);
 
     header('Location: ../../reactions.php');
     exit();
