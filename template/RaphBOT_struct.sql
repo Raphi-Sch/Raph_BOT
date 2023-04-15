@@ -33,7 +33,8 @@ CREATE TABLE `commands` (
   `value` text NOT NULL,
   `auto` tinyint(1) NOT NULL,
   `sub_only` tinyint(1) NOT NULL DEFAULT 0,
-  `mod_only` tinyint(1) NOT NULL DEFAULT 0
+  `mod_only` tinyint(1) NOT NULL DEFAULT 0,
+  `tts` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -118,7 +119,8 @@ CREATE TABLE `reactions` (
   `trigger_word` varchar(30) NOT NULL,
   `reaction` text NOT NULL,
   `frequency` tinyint(4) NOT NULL,
-  `timeout` int(11) NOT NULL
+  `timeout` int(11) NOT NULL,
+  `tts` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
