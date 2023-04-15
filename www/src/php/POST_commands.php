@@ -4,7 +4,7 @@ require_once("./header-post.php");
 
 // Commands
 if ($_POST['action'] == "add") {
-    if(empty($_POST['command']) || empty($_POST['text'])){
+    if (empty($_POST['command']) || empty($_POST['text'])) {
         $_SESSION['alert'] = ['error', "Command trigger or text empty", false];
         header('Location: ../../commands.php');
         exit();
@@ -16,6 +16,9 @@ if ($_POST['action'] == "add") {
     $mod_only = (isset($_POST['mod_only']) ? 1 : 0) || (isset($_POST['sub_only']) ? 1 : 0);
     $sub_only = isset($_POST['sub_only']) ? 1 : 0;
     $tts = isset($_POST['tts']) ? 1 : 0;
+
+    if ($auto)
+        $tts = 0;
 
     db_query_no_result($db, "INSERT INTO commands (`id`, `command`, `value`, `auto`, `mod_only`, `sub_only`, `tts`) VALUES (NULL, ?, ?, ?, ?, ?, ?)", "ssiiii", [$command, $text, $auto, $mod_only, $sub_only, $tts]);
 
@@ -31,8 +34,15 @@ if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
     $sub_only = isset($_POST['sub_only']) ? 1 : 0;
     $tts = isset($_POST['tts']) ? 1 : 0;
 
-    db_query_no_result($db, "UPDATE `commands` SET `command` = ?, `value` = ?, `auto` = ?, `mod_only` = ?, `sub_only` = ?, `tts` = ? WHERE id = ?", 
-        "ssiiiii", [$command, $text, $auto, $mod_only, $sub_only, $tts, $_POST['id']]);
+    if ($auto)
+        $tts = 0;
+
+    db_query_no_result(
+        $db,
+        "UPDATE `commands` SET `command` = ?, `value` = ?, `auto` = ?, `mod_only` = ?, `sub_only` = ?, `tts` = ? WHERE id = ?",
+        "ssiiiii",
+        [$command, $text, $auto, $mod_only, $sub_only, $tts, $_POST['id']]
+    );
 
     header('Location: ../../commands.php');
     exit();
@@ -46,7 +56,7 @@ if ($_POST['action'] == "del" && !empty($_POST['id'])) {
 
 // Alias
 if ($_POST['action'] == "add-alias") {
-    if(empty($_POST['alias']) || empty($_POST['value'])){
+    if (empty($_POST['alias']) || empty($_POST['value'])) {
         $_SESSION['alert'] = ['error', "Alias or Command empty", false];
         header('Location: ../../commands.php?alias');
         exit();
@@ -77,8 +87,12 @@ if ($_POST['action'] == "add-audio" && !empty($_POST['name']) && !empty($_POST['
     $sub_only = isset($_POST['sub_only']) ? 1 : 0;
 
     if ($file_name) {
-        db_query_no_result($db, "INSERT INTO commands_audio (`id`, `name`, `trigger_word`, `file`, `volume`, `timeout`, `active`, `mod_only`, `sub_only`) VALUES (NULL, ?, ?, ?, ?, ?, 1, ?, ?)", 
-            "sssdiii", [$name, $trigger, $file_name, $volume, $timeout, $mod_only, $sub_only]);
+        db_query_no_result(
+            $db,
+            "INSERT INTO commands_audio (`id`, `name`, `trigger_word`, `file`, `volume`, `timeout`, `active`, `mod_only`, `sub_only`) VALUES (NULL, ?, ?, ?, ?, ?, 1, ?, ?)",
+            "sssdiii",
+            [$name, $trigger, $file_name, $volume, $timeout, $mod_only, $sub_only]
+        );
     }
 
     header('Location: ../../commands.php?audio');
@@ -95,8 +109,12 @@ if ($_POST['action'] == "edit-audio" && !empty($_POST['id'])) {
     $mod_only = (isset($_POST['mod_only']) ? 1 : 0) || (isset($_POST['sub_only']) ? 1 : 0);
     $sub_only = isset($_POST['sub_only']) ? 1 : 0;
 
-    db_query_no_result($db, "UPDATE `commands_audio` SET `name` = ?, `trigger_word` = ?, `volume` = ?, `timeout` = ?, `active` = ?, `mod_only` = ?, `sub_only` = ? WHERE id = ?", 
-        "ssdiiiii", [$name, $trigger, $volume, $timeout, $active, $mod_only, $sub_only, $id]);
+    db_query_no_result(
+        $db,
+        "UPDATE `commands_audio` SET `name` = ?, `trigger_word` = ?, `volume` = ?, `timeout` = ?, `active` = ?, `mod_only` = ?, `sub_only` = ? WHERE id = ?",
+        "ssdiiiii",
+        [$name, $trigger, $volume, $timeout, $active, $mod_only, $sub_only, $id]
+    );
 
     header('Location: ../../commands.php?audio');
     exit();
