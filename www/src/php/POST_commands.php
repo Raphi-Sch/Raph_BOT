@@ -17,7 +17,7 @@ if ($_POST['action'] == "add") {
     $sub_only = isset($_POST['sub_only']) ? 1 : 0;
     $tts = isset($_POST['tts']) ? 1 : 0;
 
-    db_query_no_result($db, "INSERT INTO commands (`id`, `command`, `value`, `auto`, `mod_only`, `sub_only`, `tts`) VALUES (NULL, ?, ?, ?, ?, ?)", "ssiiii", [$command, $text, $auto, $mod_only, $sub_only, $tts]);
+    db_query_no_result($db, "INSERT INTO commands (`id`, `command`, `value`, `auto`, `mod_only`, `sub_only`, `tts`) VALUES (NULL, ?, ?, ?, ?, ?, ?)", "ssiiii", [$command, $text, $auto, $mod_only, $sub_only, $tts]);
 
     header('Location: ../../commands.php');
     exit();
