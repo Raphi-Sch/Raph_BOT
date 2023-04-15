@@ -72,14 +72,14 @@ function request(mysqli $db, $message, $exclusion)
     // Build list of all word (in and not in)
     $SQL_values = array_merge($words_in, $words_not_in);
 
-    $SQL_query = "SELECT trigger_word, reaction, frequency, `timeout`
+    $SQL_query = "SELECT trigger_word, reaction, frequency, `timeout`, tts
         FROM reactions
         WHERE reactions.trigger_word IN (" . $trigger_word_in . ")" . $trigger_word_not_in . " ORDER BY RAND() LIMIT 1";
 
     $result = db_query($db, $SQL_query, $SQL_params_type, $SQL_values);
 
     if ($result == null)
-        return ['trigger_word' => null, 'reaction' => null, 'frequency' => 0, 'timeout' => 0];
+        return ['trigger_word' => null, 'reaction' => null, 'frequency' => 0, 'timeout' => 0, 'tts' => 0];
     else
         return $result;
 }

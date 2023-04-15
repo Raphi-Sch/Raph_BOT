@@ -11,7 +11,14 @@ async function runReaction(user, message) {
         if (result.reaction !== null) {
             if (tools.randomInt(100) <= result.frequency) {
                 logAndTimeout(result, user);
-                return result.reaction.replace("@username", user['display-name']);
+
+                if(result.tts){
+                    tools.runTTS(config, socket, result.reaction.replace("@username", tools.simplifyUsername(user['display-name'])), config.twitch_display_name);
+                    return null;
+                }
+                else{
+                    return result.reaction.replace("@username", user['display-name']);
+                }
             }
         }
     } catch (err) {
@@ -20,8 +27,9 @@ async function runReaction(user, message) {
         console.error("Context : ");
         console.error(user);
         console.error(message);
-        return null;
     }
+
+    return null;
 }
 
 async function queryAPI(message) {
