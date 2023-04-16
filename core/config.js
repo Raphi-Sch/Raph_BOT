@@ -17,6 +17,7 @@ const config = {
     plugin_moderator: null,
     plugin_reaction: null,
     plugin_shout: null,
+    plugin_tanks: null,
     shout_interval: null,
     shout_language: null,
     shout_prefix: null,
@@ -44,8 +45,11 @@ async function load() {
             config[data[neddle].id] = data[neddle].value;
         }
 
-        console.error(config);
-        
+        if(config.debug_level >= 2){
+            console.error("[CONFIG] Currently loaded :");
+            console.error(config);
+        }        
+
         return null;
     } else {
         console.error("Unable to load configuration from API, starting aborted.")
