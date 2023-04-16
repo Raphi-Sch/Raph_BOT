@@ -74,6 +74,12 @@
             "type" : 0,
             "help" : "Language to use for shout (Available : fr, fr-uwu)"
         },
+        "shout_prefix" : {
+            "value" : "",
+            "hidden" : 0,
+            "type" : 0,
+            "help" : "Text put before generated shout"
+        },
         "tts_character_limit" : {
             "value" : 300,
             "hidden" : 0,

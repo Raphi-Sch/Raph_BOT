@@ -13,6 +13,7 @@ async function runShout(user, message) {
 
         if (result.value !== null) {
             socket.log(`[SHOUT] '${user['display-name']}' got shouted`);
+            result = config.shout_prefix + " " + result;
             result = result.value.replace("@username", user['display-name']);
             shout_counter = 0;
             return result;

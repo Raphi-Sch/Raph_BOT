@@ -19,6 +19,7 @@ const config = {
     plugin_shout: null,
     shout_interval: null,
     shout_language: null,
+    shout_prefix: null,
     tts_character_limit: null,
     tts_character_limit_postfix: null,
     tts_language: null,
