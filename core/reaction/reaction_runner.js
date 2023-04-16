@@ -13,7 +13,7 @@ async function runReaction(user, message) {
                 logAndTimeout(result, user);
 
                 if(result.tts){
-                    tools.runTTS(config, socket, result.reaction.replace("@username", tools.simplifyUsername(user['display-name'])), config.twitch_display_name);
+                    tools.TTS(config, socket, result.reaction.replace("@username", tools.simplifyUsername(user['display-name'])), config.twitch_display_name);
                     return null;
                 }
                 else{

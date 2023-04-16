@@ -52,7 +52,7 @@ function simplifyUsername(username){
     return username.replace(/[-_]/g, "");
 }
 
-async function runTTS(config, socket, text, username) {
+async function TTS(config, socket, text, username) {
     const gTTS = require('gtts');
     const gtts = new gTTS(text, config.tts_language);
 
@@ -66,4 +66,4 @@ async function runTTS(config, socket, text, username) {
     });
 }
 
-module.exports = { parseCommand, randomInt, normalizeString, timeoutToString, debugTwitchChat, logTime, simplifyUsername, runTTS}
+module.exports = { parseCommand, randomInt, normalizeString, timeoutToString, debugTwitchChat, logTime, simplifyUsername, TTS}
