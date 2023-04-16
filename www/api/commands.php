@@ -83,7 +83,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
 
     // Custom commands
     // Query Text
-    $result = db_query($db, "SELECT * FROM commands  WHERE command = ?", "s", $command);
+    $result = db_query($db, "SELECT `value`, `mod_only`, `sub_only`, `tts` FROM commands WHERE command = ?", "s", $command);
     if(!empty($result['value'])){
         if($result['tts'] == 0)
             return ['response_type' => 'text', 'value' => $result['value'], 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
@@ -124,7 +124,7 @@ function list_text(mysqli $db)
     $count = 0;
 
     while ($row = $data->fetch_assoc()) {
-        $result += array($count => ["id" => $row['id'], "command" => $row['command'], "value" => $row['value'], "auto" => $row['auto'], 'mod_only' => $row['mod_only'], 'sub_only' => $row['sub_only'], 'tts' => $row['tts']]);
+        $result[$count] = $row;
         $count++;
     }
 
@@ -140,7 +140,7 @@ function list_alias(mysqli $db)
     $count = 0;
 
     while ($row = $data->fetch_assoc()) {
-        $result += array($count => ["id" => $row['id'], "alias" => $row['alias'], "command" => $row['command']]);
+        $result[$count] = $row;
         $count++;
     }
 
