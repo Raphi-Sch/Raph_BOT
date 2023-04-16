@@ -41,7 +41,7 @@ function list_audio_text(mysqli $db){
             $result .= ", !" . $row['trigger_word'];
     }
 
-    return ['response_type' => 'text', 'value' => $result];
+    return ['response_type' => 'text', 'value' => $result, 'mod_only' => 0, 'sub_only' => 0];
 }
 
 function request_audio(mysqli $db, string $command, array $excluded_audio)
