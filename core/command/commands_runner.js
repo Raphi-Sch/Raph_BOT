@@ -26,7 +26,7 @@ async function runCommand(user, message) {
                     break;
 
                 case "audio":
-                    result = runAudio(command, user);
+                    runAudio(command, user);
                     break;
 
                 case "tank-random":
@@ -34,8 +34,7 @@ async function runCommand(user, message) {
                     break;
 
                 case "tts":
-                case "tts-bot":
-                    result = runTTS(command, user);
+                    runTTS(command, user);
                     break;
 
                 default:
@@ -118,36 +117,28 @@ function runTankRandom(command, user) {
 
 function runAudio(command, user) {
     if (canUseCommand(command, user)) {
-        logAndTimeoutAudio(command, user);
+        if (command.timeout > 0) {
+            excluded_audio.push(command.trigger_word);
+    
+            setTimeout(function () {
+                excluded_audio.splice(excluded_audio.indexOf(command.trigger_word), 1);
+                socket.log(`[AUDIO] '${command.name}' has been removed from the exclusion list`);
+            }, command.timeout * 1000);
+        }
+        socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
         socket.playAudio(command);
-        return true;
     }
-
-    return null;
-}
-
-function logAndTimeoutAudio(command, user) {
-    if (command.timeout > 0) {
-        excluded_audio.push(command.trigger_word);
-
-        setTimeout(function () {
-            excluded_audio.splice(excluded_audio.indexOf(command.trigger_word), 1);
-            socket.log(`[AUDIO] '${command.name}' has been removed from the exclusion list`);
-        }, command.timeout * 1000);
-    }
-    socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
 }
 
 function runTTS(command, user) {
-    if (command.response_type == 'tts') {
+    if (command.tts_type == 'user') {
         if (config.tts_prefix !== null && user) {
             command.value = (config.tts_prefix).replace("@username", tools.simplifyUsername(user['display-name'])) + " " + command.value;
         }
         tools.TTS(config, socket, command.value, user['display-name']);
-        return true;
     }
 
-    if (command.response_type == 'tts-bot') {
+    if (command.tts_type == 'bot') {
         if (config.tts_prefix !== null) {
             command.value = (config.tts_prefix).replace("@username", "raphbote") + " " + command.value;
         }
@@ -155,10 +146,7 @@ function runTTS(command, user) {
             command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
         }
         tools.TTS(config, socket, command.value, 'Raph_BOT');
-        return true;
     }
-
-    return null;
 }
 
 module.exports = { runCommand }
