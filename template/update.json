@@ -79,15 +79,29 @@
             "type" : 0,
             "help" : "Language to use for shout (Available : fr, fr-uwu)"
         },
+        "tts_character_limit" : {
+            "value" : 300,
+            "hidden" : 0,
+            "type" : 2,
+            "help" : "Character limit for users only (!tts)"
+        },
+        "tts_character_limit_postfix" : {
+            "value" : "",
+            "hidden" : 0,
+            "type" : 0,
+            "help" : "Text put after user entry when character limit is reached"
+        },
         "tts_language" : {
             "value" : "",
             "hidden" : 0,
-            "type" : 0
+            "type" : 0,
+            "help" : "Any language supported by Google TTS"
         },
         "tts_prefix" : {
             "value" : "",
             "hidden" : 0,
-            "type" : 0
+            "type" : 0,
+            "help" : "Text put before any user entry"
         },
         "twitch_channel" : {
             "value" : "",

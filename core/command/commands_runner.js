@@ -132,6 +132,9 @@ function runAudio(command, user) {
 
 function runTTS(command, user) {
     if (command.tts_type == 'user') {
+        if (command.value.length > config.tts_character_limit)
+            command.value = command.value.substring(0, config.tts_character_limit) + " " + config.tts_character_limit_postfix;
+
         if (config.tts_prefix !== null && user) {
             command.value = (config.tts_prefix).replace("@username", tools.simplifyUsername(user['display-name'])) + " " + command.value;
         }

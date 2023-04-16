@@ -19,6 +19,8 @@ const config = {
     plugin_shout: null,
     shout_interval: null,
     shout_language: null,
+    tts_character_limit: null,
+    tts_character_limit_postfix: null,
     tts_language: null,
     tts_prefix: null,
     twitch_channel: null,
