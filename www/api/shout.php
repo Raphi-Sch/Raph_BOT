@@ -102,7 +102,7 @@ function shout_fr(mysqli $db, string $message)
         $message .= $replaced_word . " ";
     }
 
-    $message = "AH OUAIS @username, " . strtoupper($message) . "!";
+    $message = strtoupper($message) . "!";
 
     // Send result
     return ['value' => $message];
