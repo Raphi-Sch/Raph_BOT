@@ -20,42 +20,22 @@ async function runCommand(user, message) {
         result = true;
 
         if (command.response_type) {
-            if (user) {
-                if (command.response_type == 'tts' || command.response_type == 'tts-bot') {
-                    command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name'])); 
-                }
-                else {
-                    command.value = command.value.replace("@username", user['display-name']);
-                }
-            }
-
             switch (command.response_type) {
                 case "text":
                     result = runText(command, user);
                     break;
 
                 case "audio":
-                    runAudio(command, user);
+                    result = runAudio(command, user);
                     break;
 
                 case "tank-random":
-                    if (command.exclude !== null) excluded_tanks.push(command.exclude);
-                    if (excluded_tanks.length == command.total) excluded_tanks = [];
-                    result = command.value
+                    result = runTankRandom(command, user);
                     break;
 
                 case "tts":
-                    if (config.tts_prefix !== null) {
-                        command.value = (config.tts_prefix).replace("@username", tools.simplifyUsername(user['display-name'])) + " " + command.value;
-                    } 
-                    tools.runTTS(config, socket, command.value, user['display-name']);
-                    break;
-
                 case "tts-bot":
-                    if (config.tts_prefix !== null) {
-                        command.value = (config.tts_prefix).replace("@username", "raphbote") + " " + command.value;
-                    } 
-                    tools.runTTS(config, socket, command.value, 'Raph_BOT');
+                    result = runTTS(command, user);
                     break;
 
                 default:
@@ -110,6 +90,9 @@ function canUseCommandEveryone(command) {
 }
 
 function runText(command, user) {
+    if (user)
+        command.value = command.value.replace("@username", user['display-name']);
+
     if (canUseCommandModerator(command, user))
         return command.value;
 
@@ -120,24 +103,39 @@ function runText(command, user) {
         return command.value;
 }
 
+function runTankRandom(command, user) {
+    if (user)
+        command.value = command.value.replace("@username", user['display-name']);
+
+    if (command.exclude !== null)
+        excluded_tanks.push(command.exclude);
+
+    if (excluded_tanks.length == command.total)
+        excluded_tanks = [];
+
+    return command.value
+}
+
 function runAudio(command, user) {
     if (canUseCommandModerator(command, user)) {
         logAndTimeoutAudio(command, user);
         socket.playAudio(command);
-        return null;
+        return true;
     }
 
     if (canUseCommandSubscriber(command, user)) {
         logAndTimeoutAudio(command, user);
         socket.playAudio(command);
-        return null;
+        return true;
     }
 
     if (canUseCommandEveryone(command)) {
         logAndTimeoutAudio(command, user);
         socket.playAudio(command);
-        return null;
+        return true;
     }
+
+    return null;
 }
 
 function logAndTimeoutAudio(command, user) {
@@ -150,6 +148,29 @@ function logAndTimeoutAudio(command, user) {
         }, command.timeout * 1000);
     }
     socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
+}
+
+function runTTS(command, user) {
+    if (command.response_type == 'tts') {
+        if (config.tts_prefix !== null && user) {
+            command.value = (config.tts_prefix).replace("@username", tools.simplifyUsername(user['display-name'])) + " " + command.value;
+        }
+        tools.TTS(config, socket, command.value, user['display-name']);
+        return true;
+    }
+
+    if (command.response_type == 'tts-bot') {
+        if (config.tts_prefix !== null) {
+            command.value = (config.tts_prefix).replace("@username", "raphbote") + " " + command.value;
+        }
+        if (user) {
+            command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
+        }
+        tools.TTS(config, socket, command.value, 'Raph_BOT');
+        return true;
+    }
+
+    return null;
 }
 
 module.exports = { runCommand }
