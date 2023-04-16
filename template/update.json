@@ -37,11 +37,6 @@
             "type" : 2,
             "help" : "Interval (in seconds) before forcing refresh of the WebUI"
         },
-        "plugin_audio" : {
-            "value" : 0,
-            "hidden" : 0,
-            "type" : 1
-        },
         "plugin_commands" : {
             "value" : 0,
             "hidden" : 0,
