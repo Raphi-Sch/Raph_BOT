@@ -77,30 +77,30 @@ async function queryAPI(fullCommand) {
     }
 }
 
-function canUseCommandModerator(command, user) {
-    return (command.mod_only && user && (user.mod || user.username === config.twitch_channel.toLowerCase()))
-}
+function canUseCommand(command, user){
+    // Mod Only
+    if (command.mod_only && user && (user.mod || user.username === config.twitch_channel.toLowerCase()))
+        return true;
 
-function canUseCommandSubscriber(command, user) {
-    return (command.sub_only && user && user.subscriber);
-}
+    // Sub only
+    if (command.sub_only && user && user.subscriber)
+        return true;
 
-function canUseCommandEveryone(command) {
-    return (!command.mod_only && !command.sub_only)
+    // Everyone
+    if (!command.mod_only && !command.sub_only)
+        return true;
+
+    return false
 }
 
 function runText(command, user) {
     if (user)
         command.value = command.value.replace("@username", user['display-name']);
 
-    if (canUseCommandModerator(command, user))
+    if(canUseCommand(command, user))
         return command.value;
 
-    if (canUseCommandSubscriber(command, user))
-        return command.value;
-
-    if (canUseCommandEveryone(command))
-        return command.value;
+    return null;
 }
 
 function runTankRandom(command, user) {
@@ -117,19 +117,7 @@ function runTankRandom(command, user) {
 }
 
 function runAudio(command, user) {
-    if (canUseCommandModerator(command, user)) {
-        logAndTimeoutAudio(command, user);
-        socket.playAudio(command);
-        return true;
-    }
-
-    if (canUseCommandSubscriber(command, user)) {
-        logAndTimeoutAudio(command, user);
-        socket.playAudio(command);
-        return true;
-    }
-
-    if (canUseCommandEveryone(command)) {
+    if (canUseCommand(command, user)) {
         logAndTimeoutAudio(command, user);
         socket.playAudio(command);
         return true;
