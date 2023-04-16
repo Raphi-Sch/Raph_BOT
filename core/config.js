@@ -41,8 +41,10 @@ async function load() {
         const data = await response.json();
 
         for (const neddle in data) {
-            config[neddle] = data[neddle];
+            config[data[neddle].id] = data[neddle].value;
         }
+
+        console.error(config);
         
         return null;
     } else {
