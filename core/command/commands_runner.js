@@ -131,6 +131,9 @@ function runAudio(command, user) {
 }
 
 function runTTS(command, user) {
+    if (!canUseCommand(command, user))
+        return null;
+
     if (command.tts_type == 'user') {
         if (command.value.length > config.tts_character_limit)
             command.value = command.value.substring(0, config.tts_character_limit) + " " + config.tts_character_limit_postfix;

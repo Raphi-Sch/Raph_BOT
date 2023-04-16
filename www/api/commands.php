@@ -88,7 +88,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
         if($result['tts'] == 0)
             return ['response_type' => 'text', 'value' => $result['value'], 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
         else
-            return ['response_type' => 'tts', 'value' => $result['value'], 'tts_type' => 'bot'];
+            return ['response_type' => 'tts', 'value' => $result['value'], 'tts_type' => 'bot', 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
     }
 
     // Query Audio
