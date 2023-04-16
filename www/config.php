@@ -1,59 +1,6 @@
 <?php
 require_once('src/php/header.php');
 
-// Listing
-$data = db_query_raw($db, "SELECT * FROM config ORDER BY id");
-$list = "";
-while ($row = mysqli_fetch_assoc($data)) {
-    $HTML_value = "";
-
-    // Type
-    switch ($row['type']) {
-        default:
-        case 0:
-            if(strlen($row['value']) >= 50)
-                $js_function = "edit_textarea";
-            else
-                $js_function = "edit_text";
-            $HTML_value = $row["value"];
-            break;
-        case 1:
-            $js_function = "edit_bool";
-            $HTML_value = $row["value"] ? "Enable" : "Disable";
-            break;
-        case 2:
-            $js_function = "edit_number";
-            $HTML_value = $row["value"];
-            break;
-    }
-
-    // Hidden value
-    if ($row['hidden']) {
-        $HTML_value = "";
-        for ($i = 0; $i <= strlen($row['value']); $i++) {
-            $HTML_value .= "#";
-        }
-    }
-
-    // Help
-    $HTML_help = "";
-    if(!empty($row['help'])){
-        $HTML_help = "<button onClick='show_help(\"" . $row["id"] . "\", \"" . $row["help"] . "\")' class='btn btn-info' type='button'><i class='glyphicon glyphicon-info-sign'></i></button>";
-    }
-
-    $list .= "
-    <tr>
-        <td>" . $row["id"] . "</td>
-        <td id='value_" . $row["id"] . "'>$HTML_value</td>
-        <td>
-            <span class='pull-right'>
-                $HTML_help
-                <button onClick='$js_function(\"" . $row["id"] . "\", \"" . $row["value"] . "\")' class='btn btn-warning' type='button'><i class='glyphicon glyphicon-pencil'></i></button>
-            </span>
-        </td>
-    </tr>";
-}
-
 $token_id = db_query($db, "SELECT `value` FROM config WHERE id = 'twitch_client_id'")['value'];
 $token_scope = db_query($db, "SELECT `value` FROM config WHERE id = 'twitch_scope'")['value'];
 $token_return = db_query($db, "SELECT `value` FROM config WHERE id = 'twitch_redirect_uri'")['value'];
@@ -81,7 +28,7 @@ $token_URL = "https://id.twitch.tv/oauth2/authorize?response_type=token&client_i
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h1 class="page-header">Configuration</h1>
 
-        <table class="table table-hover table-condensed">
+        <table class="table table-hover table-condensed table-scroll">
             <thead>
                 <tr>
                     <th class="col-xs-2">Id</th>
@@ -89,8 +36,8 @@ $token_URL = "https://id.twitch.tv/oauth2/authorize?response_type=token&client_i
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
-                <?php echo $list; ?>
+            <tbody class="table-scroll-td" id='tbody-list'>
+                
             </tbody>
         </table>
 
@@ -111,6 +58,8 @@ $token_URL = "https://id.twitch.tv/oauth2/authorize?response_type=token&client_i
         if (window.location.hash !== "") {
             twitch_token(window.location.hash);
         }
+
+        list();
     </script>
 
 </body>

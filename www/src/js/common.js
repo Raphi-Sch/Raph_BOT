@@ -105,6 +105,17 @@ function createPlayer(data){
     return TD_PLAYER;
 }
 
+function createConfigButtonGroup(helpFunction, editFunction) {
+    const TD = document.createElement('td');
+    const SPAN = document.createElement('span');
+    SPAN.className = "pull-right";
+    SPAN.appendChild(createButton("btn btn-info", "glyphicon glyphicon-info-sign", helpFunction));
+    SPAN.appendChild(document.createTextNode(" "));
+    SPAN.appendChild(createButton("btn btn-warning", "glyphicon glyphicon-pencil", editFunction));
+    TD.appendChild(SPAN);
+    return TD;
+}
+
 function errorAPI(result, status, error){
     Swal.fire({
         title: "API Error while loading",

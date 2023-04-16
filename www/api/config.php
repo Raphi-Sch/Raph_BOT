@@ -98,9 +98,11 @@ function get_config(mysqli $db){
     $data = db_query_raw($db, $SQL_query);
 
     $result = array();
+    $count = 0;
 
     while ($row = $data->fetch_assoc()) {
-        $result += array($row['id'] => $row['value']);
+        $result[$count] = $row;
+        $count++;
     }
 
     return $result;
