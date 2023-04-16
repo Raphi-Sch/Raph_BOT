@@ -12,7 +12,7 @@ function list(){
 
                 switch (element.type) {
                     case 0:
-                        if(element.value.lenght >= 50)
+                        if(element.value.length >= 50)
                             editFunction = editTextarea;
                         else
                             editFunction = editText;
