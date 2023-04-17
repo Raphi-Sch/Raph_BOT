@@ -1,9 +1,10 @@
 <?php
 
 require_once('../src/php/db.php');
+require_once('functions.php');
 require_once('./commands/audio.php');
 require_once('./commands/tanks.php');
-require_once('functions.php');
+require_once('./commands/tts.php');
 
 header('Content-Type: application/json');
 
@@ -42,7 +43,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             $excluded_tanks = isset($body['excluded_tanks']) ? $body['excluded_tanks'] : array();
             $excluded_audio = isset($body['excluded_audio']) ? $body['excluded_audio'] : array();
 
-            echo json_encode(request($db, trim($body['command']), $param, $excluded_tanks, $excluded_audio));
+            echo json_encode(request($db, trim($body['command']), $param, $excluded_tanks, $excluded_audio, $body['timeout_tts']));
             break;
         }
 
@@ -57,7 +58,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 exit();
 
 
-function request(mysqli $db, string $command, string $param, array $excluded_tanks, array $excluded_audio)
+function request(mysqli $db, string $command, string $param, array $excluded_tanks, array $excluded_audio, $timeout_tts)
 {
     // Check for alias
     $result = db_query($db, "SELECT `command` FROM commands_alias WHERE alias = ?", "s", $command);
@@ -78,7 +79,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
 
     // TTS
     if ($command == 'tts') {
-        return ['response_type' => 'tts', 'value' => $param, 'tts_type' => 'user', 'mod_only' => 0, 'sub_only' => 0];
+        return run_TTS($param, $timeout_tts);
     }
 
     // Custom commands

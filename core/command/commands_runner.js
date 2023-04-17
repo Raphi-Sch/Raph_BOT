@@ -6,6 +6,8 @@ const { re } = require('@babel/core/lib/vendor/import-meta-resolve');
 
 let excluded_tanks = [];
 let excluded_audio = [];
+let ttsTimeout = 0;
+let ttsTimeoutInterval = null;
 
 async function runCommand(user, message) {
     let result = null;
@@ -56,7 +58,8 @@ async function queryAPI(fullCommand) {
         command: fullCommand[1],
         param: fullCommand[2],
         excluded_tanks: excluded_tanks,
-        excluded_audio: excluded_audio
+        excluded_audio: excluded_audio,
+        timeout_tts: ttsTimeout
     }
 
     const response = await fetch(config.api_url + "commands.php?request", {
@@ -76,7 +79,7 @@ async function queryAPI(fullCommand) {
     }
 }
 
-function canUseCommand(command, user){
+function canUseCommand(command, user) {
     // Mod Only
     if (command.mod_only && user && (user.mod || user.username === config.twitch_channel.toLowerCase()))
         return true;
@@ -96,7 +99,7 @@ function runText(command, user) {
     if (user)
         command.value = command.value.replace("@username", user['display-name']);
 
-    if(canUseCommand(command, user))
+    if (canUseCommand(command, user))
         return command.value;
 
     return null;
@@ -119,7 +122,7 @@ function runAudio(command, user) {
     if (canUseCommand(command, user)) {
         if (command.timeout > 0) {
             excluded_audio.push(command.trigger_word);
-    
+
             setTimeout(function () {
                 excluded_audio.splice(excluded_audio.indexOf(command.trigger_word), 1);
                 socket.log(`[AUDIO] '${command.name}' has been removed from the exclusion list`);
@@ -141,7 +144,25 @@ function runTTS(command, user) {
         if (config.tts_prefix !== null && user) {
             command.value = (config.tts_prefix).replace("@username", tools.simplifyUsername(user['display-name'])) + " " + command.value;
         }
+
         tools.TTS(config, socket, command.value, user['display-name']);
+        socket.log(`[TTS] Timeout for ${tools.timeoutToString(config.tts_timeout)}`);
+       
+        // Timeout
+        ttsTimeout = parseInt(config.tts_timeout);
+
+        ttsTimeoutInterval = setInterval(() => {
+            ttsTimeout -= 5;
+
+            if(ttsTimeout <= 0){
+                clearInterval(ttsTimeoutInterval);
+                socket.log(`[TTS] Timeout cleared`);
+            }
+
+            if(config.debug_level >= 1){
+                console.error(`[TTS] Timeout updated (current : ${ttsTimeout})`);
+            } 
+        }, 5000); // Every 5 sec
     }
 
     if (command.tts_type == 'bot') {
