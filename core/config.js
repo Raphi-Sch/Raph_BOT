@@ -22,7 +22,7 @@ const config = {
     shout_language: "",
     shout_prefix: "",
     tts_character_limit: 0,
-    tts_character_limit_replacement: "",
+    tts_character_limit_replace: "",
     tts_language: "",
     tts_prefix: "",
     tts_timeout: 0,
