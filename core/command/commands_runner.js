@@ -4,8 +4,8 @@ const socket = require("../socket");
 const { config } = require("../config");
 const { re } = require('@babel/core/lib/vendor/import-meta-resolve');
 
-let excluded_tanks = [];
-let excluded_audio = [];
+let excludedTanks = [];
+let excludedAudio = [];
 let ttsTimeout = 0;
 let ttsTimeoutInterval = null;
 
@@ -57,8 +57,8 @@ async function queryAPI(fullCommand) {
     const body = {
         command: fullCommand[1],
         param: fullCommand[2],
-        excluded_tanks: excluded_tanks,
-        excluded_audio: excluded_audio,
+        excluded_tanks: excludedTanks,
+        excluded_audio: excludedAudio,
         timeout_tts: ttsTimeout
     }
 
@@ -110,10 +110,10 @@ function runTankRandom(command, user) {
         command.value = command.value.replace("@username", user['display-name']);
 
     if (command.exclude !== null)
-        excluded_tanks.push(command.exclude);
+        excludedTanks.push(command.exclude);
 
-    if (excluded_tanks.length == command.total)
-        excluded_tanks = [];
+    if (excludedTanks.length == command.total)
+        excludedTanks = [];
 
     return command.value
 }
@@ -121,10 +121,10 @@ function runTankRandom(command, user) {
 function runAudio(command, user) {
     if (canUseCommand(command, user)) {
         if (command.timeout > 0) {
-            excluded_audio.push(command.trigger_word);
+            excludedAudio.push(command.trigger_word);
 
             setTimeout(function () {
-                excluded_audio.splice(excluded_audio.indexOf(command.trigger_word), 1);
+                excludedAudio.splice(excludedAudio.indexOf(command.trigger_word), 1);
                 socket.log(`[AUDIO] '${command.name}' has been removed from the exclusion list`);
             }, command.timeout * 1000);
         }
