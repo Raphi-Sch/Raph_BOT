@@ -78,7 +78,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
 
     // TTS
     if ($command == 'tts') {
-        return ['response_type' => 'tts', 'value' => $param, 'tts_type' => 'user'];
+        return ['response_type' => 'tts', 'value' => $param, 'tts_type' => 'user', 'mod_only' => 0, 'sub_only' => 0];
     }
 
     // Custom commands
