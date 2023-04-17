@@ -139,7 +139,7 @@ function runTTS(command, user) {
 
     if (command.tts_type == 'user') {
         if (command.value.length > config.tts_character_limit)
-            command.value = command.value.substring(0, config.tts_character_limit) + " " + config.tts_character_limit_postfix;
+            command.value = (config.tts_character_limit_replace).replace("@username", tools.simplifyUsername(user['display-name']));
 
         if (config.tts_prefix !== null && user) {
             command.value = (config.tts_prefix).replace("@username", tools.simplifyUsername(user['display-name'])) + " " + command.value;

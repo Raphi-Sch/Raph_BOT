@@ -22,7 +22,7 @@ const config = {
     shout_language: null,
     shout_prefix: null,
     tts_character_limit: 0,
-    tts_character_limit_postfix: null,
+    tts_character_limit_replacement: null,
     tts_language: null,
     tts_prefix: null,
     tts_timeout: 0,

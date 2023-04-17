@@ -86,11 +86,11 @@
             "type" : 2,
             "help" : "Character limit for users only (!tts)"
         },
-        "tts_character_limit_postfix" : {
+        "tts_character_limit_replace" : {
             "value" : "",
             "hidden" : 0,
             "type" : 0,
-            "help" : "Text put after user entry when character limit is reached"
+            "help" : "Text to put instead of user entry when it reach the limit"
         },
         "tts_language" : {
             "value" : "",
