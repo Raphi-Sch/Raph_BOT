@@ -1,14 +1,16 @@
 const actionText = ["Ban", "Timeout", "Delete message"];
 
 function view(param) {
+    document.getElementById("tab-expression").classList.remove("active");
+    document.getElementById("tab-leet").classList.remove("active");
+
+    document.getElementById('div-expression').classList.add('hidden');
+    document.getElementById('div-leet').classList.add('hidden');
+
     switch (param) {
-        case 'list':
-            document.getElementById("tab-list").classList.add("active");
-            document.getElementById("tab-leet").classList.remove("active");
-
-            document.getElementById('th-list').classList.remove('hidden');
-            document.getElementById('th-leet').classList.add('hidden');
-
+        case 'expression':
+            document.getElementById("tab-expression").classList.add("active");
+            document.getElementById('div-expression').classList.remove('hidden');
             document.getElementById('btn-refresh').onclick = () => list(true);
 
             window.history.pushState(null, '', 'moderator.php?list');
@@ -16,12 +18,8 @@ function view(param) {
             return;
 
         case 'leet':
-            document.getElementById("tab-list").classList.remove("active");
             document.getElementById("tab-leet").classList.add("active");
-
-            document.getElementById('th-list').classList.add('hidden');
-            document.getElementById('th-leet').classList.remove('hidden');
-
+            document.getElementById('div-leet').classList.remove('hidden');
             document.getElementById('btn-refresh').onclick = () => listLeet(true);
 
             window.history.pushState(null, '', 'moderator.php?list-leet');
@@ -36,7 +34,7 @@ function list(reload = false) {
         type: "GET",
         dataType: "json",
         success: function (data) {
-            const LIST = document.getElementById('tbody-list');
+            const LIST = document.getElementById('tbody-expression');
             LIST.innerHTML = "";
 
             data.forEach(element => {

@@ -4,7 +4,7 @@ function listLeet(reload = false) {
         type: "GET",
         dataType: "json",
         success: function (data) {
-            const LIST = document.getElementById('tbody-list');
+            const LIST = document.getElementById('tbody-leet');
             LIST.innerHTML = "";
 
             data.forEach(element => {

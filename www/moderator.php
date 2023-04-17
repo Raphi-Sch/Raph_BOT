@@ -26,34 +26,48 @@ require_once('src/php/header.php');
         </h1>
 
         <ul class="nav nav-tabs">
-            <li id="tab-list"><a href="#" onclick='view("list")'>Ban Expression</a></li>
+            <li id="tab-expression"><a href="#" onclick='view("expression")'>Ban Expression</a></li>
             <li id="tab-leet"><a href="#" onclick='view("leet")'>Leet</a></li>
         </ul>
 
-        <!-- Add command -->
-        <table class="table table-hover table-condensed table-scroll">
-            <thead>
-                <tr id='th-list' class='hidden'>
-                    <th class="col-xs-2">Trigger</th>
-                    <th class="col-xs-1 text-center">Action</th>
-                    <th class="col-xs-2">Reason</th>
-                    <th class="col-xs-1 text-center">Duration</th>
-                    <th class="col-xs-4">Shaming</th>
-                    <th class="table-scroll-th-fix"></th>
-                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
-                </tr>
+        <!-- Expression -->
+        <div id='div-expression'>
+            <table class="table table-hover table-condensed table-scroll">
+                <thead>
+                    <tr>
+                        <th class="col-xs-2">Trigger</th>
+                        <th class="col-xs-1 text-center">Action</th>
+                        <th class="col-xs-2">Reason</th>
+                        <th class="col-xs-1 text-center">Duration</th>
+                        <th class="col-xs-4">Shaming</th>
+                        <th class="table-scroll-th-fix"></th>
+                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                    </tr>
+                </thead>
+                <tbody class="table-scroll-td" id='tbody-expression'>
+                    <!-- Dynamic -->
+                </tbody>
+            </table>
+        </div>
 
-                <tr id='th-leet' class='hidden'>
-                    <th class="col-xs-5">Replacement</th>
-                    <th class="col-xs-5">original</th>
-                    <th class="table-scroll-th-fix"></th>
-                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='addLeet()'><i class="glyphicon glyphicon-plus"></i></button></th>
-                </tr>
-            </thead>
-            <tbody class="table-scroll-td" id='tbody-list'>
-                <!-- Dynamic -->
-            </tbody>
-        </table>
+        <!-- Leet -->
+        <div id='div-leet'>
+            <table class="table table-hover table-condensed table-scroll">
+                <thead>
+                    <tr>
+                        <th class="col-xs-5">Replacement</th>
+                        <th class="col-xs-5">original</th>
+                        <th class="table-scroll-th-fix"></th>
+                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='addLeet()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                    </tr>
+                </thead>
+                <tbody class="table-scroll-td" id='tbody-leet'>
+                    <!-- Dynamic -->
+                </tbody>
+            </table>
+        </div>
+
+
     </div>
 
     <script src="src/js/common.js"></script>
@@ -65,13 +79,13 @@ require_once('src/php/header.php');
             document.getElementById("plugin_moderator").classList.add("active");
 
             const param_name = getParameterName(0);
-            if(param_name)
+            if (param_name)
                 view(param_name);
             else
-                view('list');
+                view('expression');
         });
     </script>
-    
+
 
 </body>
 
