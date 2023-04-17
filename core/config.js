@@ -25,6 +25,7 @@ const config = {
     tts_character_limit_postfix: null,
     tts_language: null,
     tts_prefix: null,
+    tts_timeout: 0,
     twitch_channel: null,
     twitch_client_id: null,
     twitch_connection_message: null,

@@ -104,6 +104,11 @@
             "type" : 0,
             "help" : "Text put before any user entry"
         },
+        "tts_timeout" : {
+            "value" : 60,
+            "hidden" : 0,
+            "type" : 2
+        },
         "twitch_channel" : {
             "value" : "",
             "hidden" : 0,
