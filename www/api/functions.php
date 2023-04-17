@@ -96,8 +96,8 @@ function timeout_to_string($seconds) {
     if($seconds >= 3600)
         return intval($seconds / 3600) . " hour";
 
-    if($seconds >= 120)
-        return intval($seconds / 120) . " min";
+    if($seconds >= 60)
+        return intval($seconds / 60) . " min";
 
     if($seconds == 0)
         return "No timeout";
