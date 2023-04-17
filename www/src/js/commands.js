@@ -2,10 +2,12 @@ function view(param) {
     document.getElementById("tab-text").classList.remove("active");
     document.getElementById("tab-alias").classList.remove("active");
     document.getElementById("tab-audio").classList.remove("active");
+    document.getElementById("tab-tts").classList.remove("active");
 
     document.getElementById('div-text').classList.add("hidden");
     document.getElementById('div-alias').classList.add("hidden");
     document.getElementById('div-audio').classList.add("hidden");
+    document.getElementById('div-tts').classList.add("hidden");
 
 
     switch (param) {
@@ -35,6 +37,14 @@ function view(param) {
             window.history.pushState(null, '', 'commands.php?audio');
             list_audio();
             return;
+
+        case 'tts':
+            document.getElementById("tab-tts").classList.add("active");
+            document.getElementById('div-tts').classList.remove('hidden');
+
+            window.history.pushState(null, '', 'commands.php?tts');
+            listTTS();
+            break;
     }
 }
 

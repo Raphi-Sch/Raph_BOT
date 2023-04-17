@@ -95,6 +95,24 @@ require_once('src/php/header.php');
             </table>
         </div>
 
+        <!-- TTS -->
+        <div id='div-tts'>
+            <h3>Config</h3>
+            <table class="table table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th class="col-xs-2">Key</th>
+                        <th class="col-xs-5">Value</th>
+                        <th class="col-xs-1"></th>
+                    </tr>
+                </thead>
+                <tbody id='tbody-tts-config'>
+                    <!-- Dynamic -->
+                </tbody>
+            </table>
+
+        </div>
+
 
     </div>
 
@@ -104,6 +122,7 @@ require_once('src/php/header.php');
     <script src="src/js/commands.js"></script>
     <script src="src/js/commands-alias.js"></script>
     <script src="src/js/commands-audio.js"></script>
+    <script src="src/js/commands-tts.js"></script>
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar

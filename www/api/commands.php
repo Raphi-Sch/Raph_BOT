@@ -32,6 +32,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if (isset($_GET['list-tts-config'])) {
+            echo json_encode(list_tts_config($db));
+            break;
+        }
+
         header("HTTP/1.0 400 Bad request");
         break;
 
