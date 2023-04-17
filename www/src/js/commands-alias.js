@@ -4,7 +4,7 @@ function list_alias(reload = false) {
         type: "GET",
         dataType: "json",
         success: function (data) {
-            const LIST = document.getElementById('tbody-list');
+            const LIST = document.getElementById('tbody-alias');
             LIST.innerHTML = "";
 
             data.forEach(element => {

@@ -4,7 +4,7 @@ function list_audio(reload = false) {
         type: "GET",
         dataType: "json",
         success: function (data) {
-            const LIST = document.getElementById('tbody-list');
+            const LIST = document.getElementById('tbody-audio');
             LIST.innerHTML = "";
 
             data.forEach(element => {

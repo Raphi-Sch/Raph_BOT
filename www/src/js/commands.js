@@ -1,14 +1,17 @@
 function view(param) {
+    document.getElementById("tab-text").classList.remove("active");
+    document.getElementById("tab-alias").classList.remove("active");
+    document.getElementById("tab-audio").classList.remove("active");
+
+    document.getElementById('div-text').classList.add("hidden");
+    document.getElementById('div-alias').classList.add("hidden");
+    document.getElementById('div-audio').classList.add("hidden");
+
+
     switch (param) {
         case 'alias':
-            document.getElementById("tab-text").classList.remove("active");
             document.getElementById("tab-alias").classList.add("active");
-            document.getElementById("tab-audio").classList.remove("active");
-
-            document.getElementById('th-command').classList.add('hidden');
-            document.getElementById('th-alias').classList.remove('hidden');
-            document.getElementById('th-audio').classList.add('hidden');
-
+            document.getElementById('div-alias').classList.remove('hidden');
             document.getElementById('btn-refresh').onclick = () => list_alias(true);
 
             window.history.pushState(null, '', 'commands.php?alias');
@@ -17,13 +20,7 @@ function view(param) {
 
         case 'commands':
             document.getElementById("tab-text").classList.add("active");
-            document.getElementById("tab-alias").classList.remove("active");
-            document.getElementById("tab-audio").classList.remove("active");
-
-            document.getElementById('th-alias').classList.add('hidden');
-            document.getElementById('th-command').classList.remove('hidden');
-            document.getElementById('th-audio').classList.add('hidden');
-
+            document.getElementById('div-text').classList.remove('hidden');
             document.getElementById('btn-refresh').onclick = () => list_commands(true);
 
             window.history.pushState(null, '', 'commands.php?commands');
@@ -31,14 +28,8 @@ function view(param) {
             return;
 
         case 'audio':
-            document.getElementById("tab-text").classList.remove("active");
-            document.getElementById("tab-alias").classList.remove("active");
             document.getElementById("tab-audio").classList.add("active");
-
-            document.getElementById('th-alias').classList.add('hidden');
-            document.getElementById('th-command').classList.add('hidden');
-            document.getElementById('th-audio').classList.remove('hidden');
-
+            document.getElementById('div-audio').classList.remove('hidden');
             document.getElementById('btn-refresh').onclick = () => list_audio(true);
 
             window.history.pushState(null, '', 'commands.php?audio');
@@ -53,7 +44,7 @@ function list_commands(reload = false) {
         type: "GET",
         dataType: "json",
         success: function (data) {
-            const LIST = document.getElementById('tbody-list');
+            const LIST = document.getElementById('tbody-text');
             LIST.innerHTML = "";
 
             data.forEach(element => {
