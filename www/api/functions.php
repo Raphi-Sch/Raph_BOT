@@ -85,3 +85,22 @@ function unleet($db, $input)
 
     return str_replace($leet_original, $leet_replacement, $input);
 }
+
+function timeout_to_string($seconds) {
+    if($seconds >= 604800)
+        return intval($seconds / 604800) + " week";
+
+    if($seconds >= 86400)
+        return intval($seconds / 86400) + " day";
+
+    if($seconds >= 3600)
+        return intval($seconds / 3600) + " hour";
+
+    if($seconds >= 60)
+        return intval($seconds / 60) + " min";
+
+    if($seconds == 0)
+        return "No timeout";
+
+    return $seconds + " sec";
+}
