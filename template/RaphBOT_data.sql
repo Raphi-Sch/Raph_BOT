@@ -52,6 +52,8 @@ INSERT INTO `config` (`id`, `value`, `hidden`, `type`) VALUES
 ('plugin_tanks', '1', 0, 1),
 ('shout_interval', '10', 0, 2),
 ('shout_language', 'fr', 0, 0),
+('shout_prefix', 'AH OUAIS @username,', 0, 0, 'Text put before generated shout'),
+('tts_language', 'fr', 0, 0, 'Any language supported by Google TTS'),
 ('twitch_channel', 'YOUR CHANNEL HERE', 0, 0),
 ('twitch_client_id', 'AUTH ID', 1, 0),
 ('twitch_connection_message', 'Raph_BOT Greatings', 0, 0),
