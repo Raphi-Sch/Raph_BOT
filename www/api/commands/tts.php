@@ -20,7 +20,7 @@ function run_TTS($db, $text, $timeout)
 {
     // Load config dynamically
     $TTS_config = array();
-    $data = db_query_raw($db, "SELECT * FROM commands_tts_config ORDER BY `id` ASC");
+    $data = db_query_raw($db, "SELECT `id`, `value` FROM commands_tts_config");
     while ($row = mysqli_fetch_assoc($data)) {
         $TTS_config[$row['id']] = $row['value'];
     }
