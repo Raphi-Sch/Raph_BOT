@@ -17,7 +17,7 @@ function listTTS(reload = false) {
                         break;
                     case 1:
                         editFunction = editBool;
-                        displayValue = element.value ? "Enabled" : "Disabled";
+                        displayValue = element.value == '1' ? "Enabled" : "Disabled";
                         break;
                     case 2:
                         editFunction = editNumber;
