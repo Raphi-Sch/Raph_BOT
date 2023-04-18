@@ -14,7 +14,7 @@ function list(reload = false) {
                 TR.appendChild(createTableData(element.frequency + '%', 'col-xs-1 text-center'));
                 TR.appendChild(createTableData(timeoutToString(element.timeout), 'col-xs-1 text-center'));
                 TR.appendChild(createCheckbox(element.tts));
-                TR.appendChild(createButtonGroup(() => edit_entry(element), () => del_entry(element)));
+                TR.appendChild(createButtonGroupEditDelete(() => edit_entry(element), () => del_entry(element)));
                 LIST.appendChild(TR);
             })
 

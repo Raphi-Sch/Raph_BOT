@@ -66,7 +66,7 @@ function list_commands(reload = false) {
                 TR.appendChild(createCheckbox(element.mod_only));
                 TR.appendChild(createCheckbox(element.sub_only));
                 TR.appendChild(createCheckbox(element.tts));
-                TR.appendChild(createButtonGroup(() => edit_entry(element), () => del_entry(element)));
+                TR.appendChild(createButtonGroupEditDelete(() => edit_entry(element), () => del_entry(element)));
                 LIST.appendChild(TR);
             })
 

@@ -45,7 +45,7 @@ function list(reload = false) {
                 TR.appendChild(createTableData(element.reason, 'col-xs-2'));
                 TR.appendChild(createTableData((element.mod_action ? element.duration : "N/A"), 'col-xs-1 text-center'));
                 TR.appendChild(createTableData(element.explanation, 'col-xs-4'));
-                TR.appendChild(createButtonGroup(() => edit_entry(element), () => del_entry(element)))
+                TR.appendChild(createButtonGroupEditDelete(() => edit_entry(element), () => del_entry(element)))
                 LIST.appendChild(TR);
             })
 

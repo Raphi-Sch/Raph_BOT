@@ -17,7 +17,7 @@ function list_audio(reload = false) {
                 TR.appendChild(createCheckbox(element.mod_only));
                 TR.appendChild(createCheckbox(element.sub_only));
                 TR.appendChild(createPlayer(element));
-                TR.appendChild(createButtonGroup(() => edit_audio(element), () => del_audio(element)))
+                TR.appendChild(createButtonGroupEditDelete(() => edit_audio(element), () => del_audio(element)))
                 LIST.appendChild(TR);
             })
 

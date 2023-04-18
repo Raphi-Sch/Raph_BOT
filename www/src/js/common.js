@@ -66,7 +66,7 @@ function createButton(btnClass, icoClass, onclick) {
     return BTN;
 }
 
-function createButtonGroup(editFunction, deleteFunction) {
+function createButtonGroupEditDelete(editFunction, deleteFunction) {
     const TD = document.createElement('td');
     const SPAN = document.createElement('span');
     SPAN.className = "pull-right";

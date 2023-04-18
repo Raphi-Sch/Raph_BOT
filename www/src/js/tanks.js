@@ -66,7 +66,7 @@ function list_tanks(reload = false) {
                 TR.appendChild(createTableData(element.max_dmg, 'col-xs-1'));
                 TR.appendChild(createTableData(element.type, 'col-xs-1'));
                 TR.appendChild(createTableData(element.note, 'col-xs-1'));
-                TR.appendChild(createButtonGroup(() => edit_tank(element), () => del_tank(element)));
+                TR.appendChild(createButtonGroupEditDelete(() => edit_tank(element), () => del_tank(element)));
                 LIST.appendChild(TR);
             })
 

@@ -15,7 +15,7 @@ function list(reload = false) {
                 TR.appendChild(createTableData(element.replacement, 'col-xs-2'));
                 TR.appendChild(createTableData(element.language, 'col-xs-2'));
                 TR.appendChild(createTableData(type[element.type], 'col-xs-2'));
-                TR.appendChild(createButtonGroup(() => edit_entry(element), () => del_entry(element)));
+                TR.appendChild(createButtonGroupEditDelete(() => edit_entry(element), () => del_entry(element)));
                 LIST.appendChild(TR);
             })
 
