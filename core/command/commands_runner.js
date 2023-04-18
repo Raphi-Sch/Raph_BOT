@@ -138,7 +138,7 @@ function runTTS(command, user) {
         if(config.debug_level >= 1){
             console.error(`[TTS] Access denied to ${user['display-name']}`);
         } 
-        return `@${user['display-name']} : TTS is not available for you`;
+        return `@${user['display-name']} : TTS is not available to you`;
     }
         
     if (command.tts_type == 'user') {
