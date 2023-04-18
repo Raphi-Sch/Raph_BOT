@@ -134,9 +134,13 @@ function runAudio(command, user) {
 }
 
 function runTTS(command, user) {
-    if (!canUseCommand(command, user))
+    if (!canUseCommand(command, user)){
+        if(config.debug_level >= 1){
+            console.error(`[TTS] Access denied to ${user['display-name']}`);
+        } 
         return null;
-
+    }
+        
     if (command.tts_type == 'user') {
         command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
         tools.TTS(config, socket, command.value, user['display-name']);
