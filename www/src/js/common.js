@@ -80,26 +80,6 @@ function createButtonGroup(...buttons) {
     return TD;
 }
 
-function createButtonGroupEditDelete(editFunction, deleteFunction) {
-    const TD = document.createElement('td');
-    const SPAN = document.createElement('span');
-    SPAN.className = "pull-right";
-    SPAN.appendChild(createButton("btn btn-warning", "glyphicon glyphicon-pencil", editFunction));
-    SPAN.appendChild(document.createTextNode(" "));
-    SPAN.appendChild(createButton("btn btn-danger", "glyphicon glyphicon-remove", deleteFunction));
-    TD.appendChild(SPAN);
-    return TD;
-}
-
-function createDeleteButton(deleteFunction) {
-    const TD = document.createElement('td');
-    const SPAN = document.createElement('span');
-    SPAN.className = "pull-right";
-    SPAN.appendChild(createButton("btn btn-danger", "glyphicon glyphicon-remove", deleteFunction));
-    TD.appendChild(SPAN);
-    return TD;
-}
-
 function createOption(text, value) {
     const OPTION = document.createElement('option');
     OPTION.innerText = text;
@@ -117,17 +97,6 @@ function createPlayer(data) {
     PLAYER.controls = "enable";
     TD_PLAYER.appendChild(PLAYER);
     return TD_PLAYER;
-}
-
-function createConfigButtonGroup(helpFunction, editFunction) {
-    const TD = document.createElement('td');
-    const SPAN = document.createElement('span');
-    SPAN.className = "pull-right";
-    SPAN.appendChild(createButton("btn btn-info", "glyphicon glyphicon-info-sign", helpFunction));
-    SPAN.appendChild(document.createTextNode(" "));
-    SPAN.appendChild(createButton("btn btn-warning", "glyphicon glyphicon-pencil", editFunction));
-    TD.appendChild(SPAN);
-    return TD;
 }
 
 function errorAPI(result, status, error) {
