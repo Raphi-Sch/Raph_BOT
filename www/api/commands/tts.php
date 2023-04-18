@@ -27,13 +27,13 @@ function run_TTS($db, $text, $timeout)
 
     // Check if TTS user active
     if($TTS_config['active'] == 0){
-        return ['response_type' => 'text', 'value' => "TTS is disabled.", 'mod_only' => 0, 'sub_only' => 0];
+        return ['response_type' => 'text', 'value' => "@username : TTS is disabled", 'mod_only' => 0, 'sub_only' => 0];
     }
 
     // TTS timeout
     if (intval($timeout) > 5) {
-        return ['response_type' => 'text', 'value' => "TTS is not available yet (retry in $timeout seconds)", 'mod_only' => 0, 'sub_only' => 0];
+        return ['response_type' => 'text', 'value' => "@username : TTS is not available yet (retry in $timeout seconds)", 'mod_only' => 0, 'sub_only' => 0];
     }
 
-    return ['response_type' => 'tts', 'value' => $text, 'tts_type' => 'user', 'mod_only' => $TTS_config['mod_only'], 'sub_only' => $TTS_config['sub_only'], 'timeout' => $TTS_config['timeout']];
+    return ['response_type' => 'tts', 'value' => $text, 'tts_type' => 'user', 'mod_only' => intval($TTS_config['mod_only']), 'sub_only' => intval($TTS_config['sub_only']), 'timeout' => intval($TTS_config['timeout'])];
 }
