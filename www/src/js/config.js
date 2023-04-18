@@ -26,9 +26,13 @@ function list(){
                 }
 
                 const TR = document.createElement('tr');
+                const btnHelp = createButton("btn btn-info", "glyphicon glyphicon-info-sign", () => showHelp(element));
+                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", editFunction);
+
                 TR.appendChild(createTableData(element.id, 'col-xs-2'));
                 TR.appendChild(createTableData((element.hidden ? '##########' : element.value), 'col-xs-4'));
-                TR.appendChild(createConfigButtonGroup(() => showHelp(element), () => editFunction(element)));
+                TR.appendChild(createButtonGroup(btnHelp, btnEdit));
+
                 LIST.appendChild(TR);
             })
 
