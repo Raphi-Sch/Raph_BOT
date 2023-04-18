@@ -75,7 +75,8 @@ CREATE TABLE `commands_audio` (
 
 CREATE TABLE `commands_tts_config` (
   `id` varchar(30) NOT NULL,
-  `value` text DEFAULT NULL
+  `value` text DEFAULT NULL,
+  `type` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
