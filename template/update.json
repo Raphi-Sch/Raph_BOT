@@ -80,34 +80,11 @@
             "type" : 0,
             "help" : "Text put before generated shout"
         },
-        "tts_character_limit" : {
-            "value" : 300,
-            "hidden" : 0,
-            "type" : 2,
-            "help" : "Character limit for users only (!tts)"
-        },
-        "tts_character_limit_replace" : {
-            "value" : "",
-            "hidden" : 0,
-            "type" : 0,
-            "help" : "Text to put instead of user entry when it reach the limit"
-        },
         "tts_language" : {
             "value" : "",
             "hidden" : 0,
             "type" : 0,
             "help" : "Any language supported by Google TTS"
-        },
-        "tts_prefix" : {
-            "value" : "",
-            "hidden" : 0,
-            "type" : 0,
-            "help" : "Text put before any user entry"
-        },
-        "tts_timeout" : {
-            "value" : 60,
-            "hidden" : 0,
-            "type" : 2
         },
         "twitch_channel" : {
             "value" : "",
