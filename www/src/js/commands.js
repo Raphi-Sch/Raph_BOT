@@ -41,6 +41,7 @@ function view(param) {
         case 'tts':
             document.getElementById("tab-tts").classList.add("active");
             document.getElementById('div-tts').classList.remove('hidden');
+            document.getElementById('btn-refresh').onclick = () => listTTS(true);
 
             window.history.pushState(null, '', 'commands.php?tts');
             listTTS();
