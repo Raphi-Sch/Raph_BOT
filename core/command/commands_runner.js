@@ -36,7 +36,7 @@ async function runCommand(user, message) {
                     break;
 
                 case "tts":
-                    runTTS(command, user);
+                    result = runTTS(command, user);
                     break;
 
                 default:
@@ -138,7 +138,7 @@ function runTTS(command, user) {
         if(config.debug_level >= 1){
             console.error(`[TTS] Access denied to ${user['display-name']}`);
         } 
-        return null;
+        return `@${user['display-name']} : TTS is not available for you`;
     }
         
     if (command.tts_type == 'user') {
@@ -169,6 +169,8 @@ function runTTS(command, user) {
         }
         tools.TTS(config, socket, command.value, 'Raph_BOT');
     }
+
+    return true; // No text output, but command success
 }
 
 module.exports = { runCommand }
