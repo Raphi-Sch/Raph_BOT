@@ -138,18 +138,12 @@ function runTTS(command, user) {
         return null;
 
     if (command.tts_type == 'user') {
-        if (command.value.length > config.tts_character_limit)
-            command.value = (config.tts_character_limit_replace).replace("@username", tools.simplifyUsername(user['display-name']));
-
-        if (config.tts_prefix !== null && user) {
-            command.value = (config.tts_prefix).replace("@username", tools.simplifyUsername(user['display-name'])) + " " + command.value;
-        }
-
+        command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
         tools.TTS(config, socket, command.value, user['display-name']);
-        socket.log(`[TTS] Timeout for ${tools.timeoutToString(config.tts_timeout)}`);
+        socket.log(`[TTS] Timeout for ${tools.timeoutToString(command.tts_timeout)}`);
        
         // Timeout
-        ttsTimeout = parseInt(config.tts_timeout);
+        ttsTimeout = parseInt(command.timeout);
 
         ttsTimeoutInterval = setInterval(() => {
             ttsTimeout -= 5;
@@ -166,9 +160,6 @@ function runTTS(command, user) {
     }
 
     if (command.tts_type == 'bot') {
-        if (config.tts_prefix !== null) {
-            command.value = (config.tts_prefix).replace("@username", "raphbote") + " " + command.value;
-        }
         if (user) {
             command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
         }

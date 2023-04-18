@@ -84,7 +84,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
 
     // TTS
     if ($command == 'tts') {
-        return run_TTS($param, $timeout_tts);
+        return run_TTS($db, $param, $timeout_tts);
     }
 
     // Custom commands
