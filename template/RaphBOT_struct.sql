@@ -70,6 +70,17 @@ CREATE TABLE `commands_audio` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `commands_tts_config`
+--
+
+CREATE TABLE `commands_tts_config` (
+  `id` varchar(30) NOT NULL,
+  `value` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `config`
 --
 
@@ -208,6 +219,12 @@ ALTER TABLE `commands_alias`
 -- Index pour la table `commands_audio`
 --
 ALTER TABLE `commands_audio`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `commands_tts_config`
+--
+ALTER TABLE `commands_tts_config`
   ADD PRIMARY KEY (`id`);
 
 --
