@@ -9,6 +9,7 @@ function list(reload = false){
 
             data.forEach(element => {
                 let editFunction = null;
+                let displayValue = element.value;
 
                 switch (element.type) {
                     case 0:
@@ -19,18 +20,21 @@ function list(reload = false){
                         break;
                     case 1:
                         editFunction = editBool;
+                        displayValue = element.value ? "Enabled" : "Disabled";
                         break;
                     case 2:
                         editFunction = editNumber;
                         break;
                 }
 
+                displayValue = element.hidden ? '##########' : displayValue;
+
                 const TR = document.createElement('tr');
                 const btnHelp = createButton("btn btn-info", "glyphicon glyphicon-info-sign", () => showHelp(element));
                 const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => editFunction(element));
 
                 TR.appendChild(createTableData(element.id, 'col-xs-2'));
-                TR.appendChild(createTableData((element.hidden ? '##########' : element.value), 'col-xs-4'));
+                TR.appendChild(createTableData(displayValue, 'col-xs-4'));
                 TR.appendChild(createButtonGroup(btnHelp, btnEdit));
 
                 LIST.appendChild(TR);
