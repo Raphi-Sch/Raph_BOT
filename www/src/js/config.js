@@ -1,4 +1,4 @@
-function list(){
+function list(reload = false){
     $.ajax({
         url: "api/config.php?list",
         type: "GET",
