@@ -35,5 +35,8 @@ function run_TTS($db, $text, $timeout)
         return ['response_type' => 'text', 'value' => "@username : TTS is not available yet (retry in $timeout seconds)", 'mod_only' => 0, 'sub_only' => 0];
     }
 
+    // Format text output
+    $text = $TTS_config['prefix'] . " " . $text;
+
     return ['response_type' => 'tts', 'value' => $text, 'tts_type' => 'user', 'mod_only' => intval($TTS_config['mod_only']), 'sub_only' => intval($TTS_config['sub_only']), 'timeout' => intval($TTS_config['timeout'])];
 }
