@@ -66,6 +66,20 @@ function createButton(btnClass, icoClass, onclick) {
     return BTN;
 }
 
+function createButtonGroup(...buttons) {
+    const TD = document.createElement('td');
+    const SPAN = document.createElement('span');
+    SPAN.className = "pull-right";
+
+    buttons.forEach(button => {
+        SPAN.appendChild(button);
+        SPAN.appendChild(document.createTextNode(" "));
+    })
+
+    TD.appendChild(SPAN);
+    return TD;
+}
+
 function createButtonGroupEditDelete(editFunction, deleteFunction) {
     const TD = document.createElement('td');
     const SPAN = document.createElement('span');
@@ -86,14 +100,14 @@ function createDeleteButton(deleteFunction) {
     return TD;
 }
 
-function createOption(text, value){
+function createOption(text, value) {
     const OPTION = document.createElement('option');
     OPTION.innerText = text;
     OPTION.value = value;
     return OPTION;
 }
 
-function createPlayer(data){
+function createPlayer(data) {
     const TD_PLAYER = document.createElement('td');
     const PLAYER = document.createElement('audio');
     TD_PLAYER.classList.add('col-xs-2');
@@ -116,7 +130,7 @@ function createConfigButtonGroup(helpFunction, editFunction) {
     return TD;
 }
 
-function errorAPI(result, status, error){
+function errorAPI(result, status, error) {
     Swal.fire({
         title: "API Error while loading",
         icon: 'error',
