@@ -58,6 +58,9 @@ function list_tanks(reload = false) {
 
             data.forEach(element => {
                 const TR = document.createElement('tr');
+                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => edit_tank(element));
+                const btnDel  = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => del_tank(element));
+
                 TR.appendChild(createTableData(element.trigger_word, 'col-xs-1'));
                 TR.appendChild(createTableData(element.name, 'col-xs-2'));
                 TR.appendChild(createTableData(element.nation, 'col-xs-1'));
@@ -66,7 +69,8 @@ function list_tanks(reload = false) {
                 TR.appendChild(createTableData(element.max_dmg, 'col-xs-1'));
                 TR.appendChild(createTableData(element.type, 'col-xs-1'));
                 TR.appendChild(createTableData(element.note, 'col-xs-1'));
-                TR.appendChild(createButtonGroupEditDelete(() => edit_tank(element), () => del_tank(element)));
+                TR.appendChild(createButtonGroup(btnEdit, btnDel));
+
                 LIST.appendChild(TR);
             })
 

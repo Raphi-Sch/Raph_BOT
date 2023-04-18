@@ -60,13 +60,17 @@ function list_commands(reload = false) {
 
             data.forEach(element => {
                 const TR = document.createElement('tr');
+                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => edit_entry(element));
+                const btnDel  = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => del_entry(element));
+
                 TR.appendChild(createTableData(element.command, 'col-xs-2'));
                 TR.appendChild(createTableData(element.value, 'col-xs-4'));
                 TR.appendChild(createCheckbox(element.auto));
                 TR.appendChild(createCheckbox(element.mod_only));
                 TR.appendChild(createCheckbox(element.sub_only));
                 TR.appendChild(createCheckbox(element.tts));
-                TR.appendChild(createButtonGroupEditDelete(() => edit_entry(element), () => del_entry(element)));
+                TR.appendChild(createButtonGroup(btnEdit, btnDel));
+
                 LIST.appendChild(TR);
             })
 

@@ -9,6 +9,9 @@ function list_audio(reload = false) {
 
             data.forEach(element => {
                 const TR = document.createElement('tr');
+                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => edit_audio(element));
+                const btnDel  = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => del_audio(element));
+
                 TR.appendChild(createTableData(element.name, 'col-xs-2'));
                 TR.appendChild(createTableData(element.trigger_word, 'col-xs-1'));
                 TR.appendChild(createTableData(parseInt(element.volume * 100) + '%', 'col-xs-1 text-center'));
@@ -17,7 +20,8 @@ function list_audio(reload = false) {
                 TR.appendChild(createCheckbox(element.mod_only));
                 TR.appendChild(createCheckbox(element.sub_only));
                 TR.appendChild(createPlayer(element));
-                TR.appendChild(createButtonGroupEditDelete(() => edit_audio(element), () => del_audio(element)))
+                TR.appendChild(createButtonGroup(btnEdit, btnDel));
+                
                 LIST.appendChild(TR);
             })
 

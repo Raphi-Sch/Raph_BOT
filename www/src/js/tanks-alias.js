@@ -9,9 +9,11 @@ function list_alias(reload = false) {
 
             data.forEach(element => {
                 const TR = document.createElement('tr');
+
                 TR.appendChild(createTableData(element.alias, 'col-xs-6'));
                 TR.appendChild(createTableData(element.tank, 'col-xs-5'));
-                TR.appendChild(createDeleteButton(() => del_alias(element)));
+                TR.appendChild(createButtonGroup(createButton("btn btn-danger", "glyphicon glyphicon-remove", () => del_alias(element))));
+                
                 LIST.appendChild(TR);
             })
 

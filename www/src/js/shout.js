@@ -11,11 +11,15 @@ function list(reload = false) {
 
             data.forEach(element => {
                 const TR = document.createElement('tr');
+                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => edit_entry(element));
+                const btnDel  = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => del_entry(element));
+
                 TR.appendChild(createTableData(element.original, 'col-xs-2'));
                 TR.appendChild(createTableData(element.replacement, 'col-xs-2'));
                 TR.appendChild(createTableData(element.language, 'col-xs-2'));
                 TR.appendChild(createTableData(type[element.type], 'col-xs-2'));
-                TR.appendChild(createButtonGroupEditDelete(() => edit_entry(element), () => del_entry(element)));
+                TR.appendChild(createButtonGroup(btnEdit, btnDel));
+
                 LIST.appendChild(TR);
             })
 

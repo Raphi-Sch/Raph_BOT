@@ -12,7 +12,8 @@ function listLeet(reload = false) {
 
                 TR.appendChild(createTableData(element.replacement, 'col-xs-5'));
                 TR.appendChild(createTableData(element.original, 'col-xs-5'));
-                TR.appendChild(createDeleteButton(() => delLeet(element)))
+                TR.appendChild(createButtonGroup(createButton("btn btn-danger", "glyphicon glyphicon-remove", () => delLeet(element))));
+                
                 LIST.appendChild(TR);
             })
 

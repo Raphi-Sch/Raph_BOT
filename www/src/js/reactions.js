@@ -9,12 +9,16 @@ function list(reload = false) {
 
             data.forEach(element => {
                 const TR = document.createElement('tr');
+                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => edit_entry(element));
+                const btnDel  = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => del_entry(element));
+
                 TR.appendChild(createTableData(element.trigger_word, 'col-xs-2'));
                 TR.appendChild(createTableData(element.reaction, 'col-xs-5'));
                 TR.appendChild(createTableData(element.frequency + '%', 'col-xs-1 text-center'));
                 TR.appendChild(createTableData(timeoutToString(element.timeout), 'col-xs-1 text-center'));
                 TR.appendChild(createCheckbox(element.tts));
-                TR.appendChild(createButtonGroupEditDelete(() => edit_entry(element), () => del_entry(element)));
+                TR.appendChild(createButtonGroup(btnEdit, btnDel));
+
                 LIST.appendChild(TR);
             })
 

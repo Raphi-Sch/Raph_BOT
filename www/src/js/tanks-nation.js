@@ -9,9 +9,11 @@ function list_nation(reload = false){
 
             data.forEach(element => {
                 const TR = document.createElement('tr');
+
                 TR.appendChild(createTableData(element.alias, 'col-xs-6'));
                 TR.appendChild(createTableData(element.nation, 'col-xs-5'));
-                TR.appendChild(createDeleteButton(() => del_nation(element)));
+                TR.appendChild(createButtonGroup(createButton("btn btn-danger", "glyphicon glyphicon-remove", () => del_nation(element))));
+                
                 LIST.appendChild(TR);
             })
 
