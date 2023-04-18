@@ -135,5 +135,17 @@ if ($_POST['action'] == "del-audio" && !empty($_POST['id'])) {
     exit();
 }
 
+// TTS
+if ($_POST['action'] == "edit-tts-config" && !empty($_POST['id'])) {
+    db_query_no_result(
+        $db,
+        "UPDATE `commands_tts_config` SET `value` = ? WHERE id = ?",
+        "ss",
+        [$_POST['value'], $_POST['id']]
+    );
+
+    exit();
+}
+
 
 exit();
