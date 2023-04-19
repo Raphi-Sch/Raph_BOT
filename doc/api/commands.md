@@ -173,7 +173,7 @@ Field | Type | When | Description
 reponse_type | String | Always | What type of response the API gave you
 mod_only | Boolean | Always |  Is the command only available to moderator
 sub_only | Boolean | Always |  Is the command only available to subscriber and moderator
-value | String | response_type is 'text' or 'tank-random' | Text to send to chat
+value | String | response_type is not 'audio' | Text to send to chat
 trigger_word | String | response_type is 'audio' | Trigger of the audio command (use for timeout list)
 volume | Integer | response_type is 'audio' | The timeout of the audio command in seconds 
 file | String | response_type is 'audio' | File link to the audio command
@@ -181,6 +181,7 @@ name | String | response_type is 'audio' | Name of the audio command
 volume | Float | response_type is 'audio' | Volume for audio playback
 exclude | Integer | response_type is 'tank-random' | ID of the tank to exclude
 total | Integer | response_type is 'tank-random' | Number of tank available for the command 'tank random'
+tts_type | String | response_type is 'tts' | Either 'user' or 'bot', depending on who issued the command
 
 ### Exemple Request 1
 ```json
@@ -238,6 +239,25 @@ total | Integer | response_type is 'tank-random' | Number of tank available for 
     "value": "@username Next tank : E100",
     "exclude": 3,
     "total": 2,
+    "mod_only": 0,
+    "sub_only": 0
+}
+```
+
+### Exemple Request 4
+```json
+{
+    "command":"tts",
+    "param":"Hello tchat"
+}
+```
+
+### Exemple Response 4
+```json
+{
+    "response_type": "tts",
+    "tts_type": "user",
+    "value": "@username said : Hello tchat", // TTS prefix added
     "mod_only": 0,
     "sub_only": 0
 }
