@@ -146,7 +146,7 @@ function runTTS(command, user) {
 
         command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
         tools.TTS(config, socket, command.value, user['display-name']);
-        socket.log(`[TTS] Timeout for ${tools.timeoutToString(ttsTimeout)}`);
+        socket.log(`${tools.logTime()} [TTS] Timeout for ${tools.timeoutToString(ttsTimeout)}`);
 
         ttsTimeoutInterval = setInterval(() => {
             ttsTimeout -= 5;
@@ -157,7 +157,7 @@ function runTTS(command, user) {
             }
 
             if(config.debug_level >= 1){
-                console.error(`[TTS] Timeout updated (current : ${ttsTimeout})`);
+                console.error(`${tools.logTime()} [TTS] Timeout updated (current : ${ttsTimeout})`);
             } 
         }, 5000); // Every 5 sec
     }
