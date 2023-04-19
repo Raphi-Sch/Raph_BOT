@@ -14,9 +14,10 @@ Linux package :
 - Screen
 
 NodeJS module: 
-- socket.io@2.4.1
-- tmi.js@1.8.5
-- node-fetch@3.3.0,
+- socket.io : ^4.6.1
+- tmi.js : 1.8.5
+- node-fetch : ^3.3.1,
+- gtts : ^0.2.1
 
 # First time setup (Debian based distro)
 
