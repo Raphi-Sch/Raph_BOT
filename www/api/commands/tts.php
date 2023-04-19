@@ -27,12 +27,12 @@ function run_TTS($db, $text, $timeout)
 
     // Active
     if($TTS_config['active'] == 0){
-        return ['response_type' => 'text', 'value' => "@username : TTS is disabled", 'mod_only' => 0, 'sub_only' => 0];
+        return ['response_type' => 'text', 'value' => $TTS_config['text_when_disable'], 'mod_only' => 0, 'sub_only' => 0];
     }
 
     // Timeout
-    if (intval($timeout) > 5) {
-        return ['response_type' => 'text', 'value' => "@username : TTS is not available yet (retry in $timeout seconds)", 'mod_only' => 0, 'sub_only' => 0];
+    if (intval($timeout) > intval($TTS_config['timeout_tolerance'])) {
+        return ['response_type' => 'text', 'value' => str_replace("@timeout", $timeout, $TTS_config['text_when_timeout']), 'mod_only' => 0, 'sub_only' => 0];
     }
 
     // Format text output
