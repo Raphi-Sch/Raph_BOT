@@ -27,12 +27,15 @@ SET time_zone = "+00:00";
 
 INSERT INTO `commands_tts_config` (`id`, `value`) VALUES
 ('active', '0', 1),
-('character_limit', '200', 2),
-('character_limit_replace', 'Default replace', 0),
+('character_limit', '50', 2),
+('character_limit_replace', '', 0),
 ('mod_only', '0', 1),
-('prefix', 'Default prefix', 0),
+('prefix', '@username said :', 0),
 ('sub_only', '0', 1),
-('timeout', '60', 2);
+('text_when_disable', '@username : TTS is disabled', 0),
+('text_when_timeout', '@username : TTS is not available yet (retry in @timeout seconds)', 0),
+('timeout', '30', 2),
+('timeout_tolerance', '5', 2);
 
 --
 -- Déchargement des données de la table `config`
