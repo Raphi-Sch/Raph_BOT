@@ -134,13 +134,13 @@ function runAudio(command, user) {
 }
 
 function runTTS(command, user) {
-    if (command.tts_type == 'user') {
-        if (!canUseCommand(command, user)){
-            if(config.debug_level >= 1){
-                console.error(`[TTS] Access denied to ${user['display-name']}`);
-            } 
-            return `@${user['display-name']} : TTS is not available to you`;
-        }
+    if (user && command.tts_type == 'user') {
+        if (!canUseCommand(command, user)) {
+                if (config.debug_level >= 1) {
+                    console.error(`[TTS] Access denied to ${user['display-name']}`);
+                }
+                return `@${user['display-name']} : TTS is not available to you`;
+            }
 
         ttsTimeout = parseInt(command.timeout);
 
@@ -151,14 +151,14 @@ function runTTS(command, user) {
         ttsTimeoutInterval = setInterval(() => {
             ttsTimeout -= 5;
 
-            if(ttsTimeout <= 0){
+            if (ttsTimeout <= 0) {
                 clearInterval(ttsTimeoutInterval);
                 socket.log(`[TTS] Timeout cleared`);
             }
 
-            if(config.debug_level >= 1){
+            if (config.debug_level >= 1) {
                 console.error(`${tools.logTime()} [TTS] Timeout updated (current : ${ttsTimeout})`);
-            } 
+            }
         }, 5000); // Every 5 sec
     }
 
