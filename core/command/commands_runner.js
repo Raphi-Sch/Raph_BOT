@@ -134,14 +134,14 @@ function runAudio(command, user) {
 }
 
 function runTTS(command, user) {
-    if (!canUseCommand(command, user)){
-        if(config.debug_level >= 1){
-            console.error(`[TTS] Access denied to ${user['display-name']}`);
-        } 
-        return `@${user['display-name']} : TTS is not available to you`;
-    }
-        
     if (command.tts_type == 'user') {
+        if (!canUseCommand(command, user)){
+            if(config.debug_level >= 1){
+                console.error(`[TTS] Access denied to ${user['display-name']}`);
+            } 
+            return `@${user['display-name']} : TTS is not available to you`;
+        }
+
         ttsTimeout = parseInt(command.timeout);
 
         command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
