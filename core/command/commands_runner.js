@@ -146,7 +146,7 @@ function runTTS(command, user) {
 
         command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
         tools.TTS(config, socket, command.value, user['display-name']);
-        socket.log(`${tools.logTime()} [TTS] Timeout for ${tools.timeoutToString(ttsTimeout)}`);
+        socket.log(`[TTS] Timeout for ${tools.timeoutToString(ttsTimeout)}`);
 
         ttsTimeoutInterval = setInterval(() => {
             ttsTimeout -= 5;
