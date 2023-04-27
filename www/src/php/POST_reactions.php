@@ -47,5 +47,3 @@ function reaction_delete(mysqli $db){
     db_query_no_result($db, "DELETE FROM `reactions` WHERE `id` = ?", "i", $_POST['id']);
     exit();
 }
-
-exit();
