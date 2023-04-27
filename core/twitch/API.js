@@ -22,7 +22,7 @@ function errorLog(functionName, response) {
     console.error(configAPI);
 }
 
-async function getUserInfo(userName){
+async function getUser(userName){
     const response = await fetch(`https://api.twitch.tv/helix/users?login=${userName}`, {
         method: "get",
         headers: {
@@ -46,7 +46,7 @@ async function getUserInfo(userName){
 }
 
 async function getUserId(userName) {
-    const result = await getUserInfo(userName);
+    const result = await getUser(userName);
 
     if(result)
         return result.id;
@@ -143,4 +143,4 @@ async function shoutout(userName){
     }
 }
 
-module.exports = { init, getUserInfo, getUserId, banUser, timeoutUser, deleteChatMessage, shoutout }
+module.exports = { init, getUser, getUserId, banUser, timeoutUser, deleteChatMessage, shoutout }
