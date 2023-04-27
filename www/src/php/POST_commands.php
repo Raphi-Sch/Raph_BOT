@@ -2,8 +2,51 @@
 
 require_once("./header-post.php");
 
-// Commands
-if ($_POST['action'] == "add") {
+switch ($_POST['action']) {
+    case "add":
+        command_add($db);
+        break;
+
+    case "edit":
+        command_edit($db);
+        break;
+
+    case "del":
+        command_delete($db);
+        break;
+
+    case "add-alias":
+        alias_add($db);
+        break;
+
+    case "del-alias":
+        alias_delete($db);
+        break;
+
+    case "add-audio":
+        audio_add($db);
+        break;
+
+    case "edit-audio":
+        audio_edit($db);
+        break;
+
+    case "del-audio":
+        audio_delete($db);
+        break;
+
+    case "edit-tts-config":
+        tts_config_edit($db);
+        break;
+
+    default:
+        exit();
+}
+
+exit();
+
+function command_add(mysqli $db)
+{
     if (empty($_POST['command']) || empty($_POST['text'])) {
         $_SESSION['alert'] = ['error', "Command trigger or text empty", false];
         header('Location: ../../commands.php');
@@ -21,12 +64,11 @@ if ($_POST['action'] == "add") {
         $tts = 0;
 
     db_query_no_result($db, "INSERT INTO commands (`id`, `command`, `value`, `auto`, `mod_only`, `sub_only`, `tts`) VALUES (NULL, ?, ?, ?, ?, ?, ?)", "ssiiii", [$command, $text, $auto, $mod_only, $sub_only, $tts]);
-
-    header('Location: ../../commands.php');
     exit();
 }
 
-if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
+function command_edit(mysqli $db)
+{
     $command = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($_POST['command'])));
     $text = trim($_POST['text']);
     $auto = isset($_POST['auto']) ? 1 : 0;
@@ -44,21 +86,19 @@ if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
         [$command, $text, $auto, $mod_only, $sub_only, $tts, $_POST['id']]
     );
 
-    header('Location: ../../commands.php');
     exit();
 }
 
-if ($_POST['action'] == "del" && !empty($_POST['id'])) {
+function command_delete(mysqli $db)
+{
     db_query_no_result($db, "DELETE FROM commands WHERE id = ?", "i", $_POST['id']);
     exit();
 }
 
-
-// Alias
-if ($_POST['action'] == "add-alias") {
+function alias_add(mysqli $db)
+{
     if (empty($_POST['alias']) || empty($_POST['value'])) {
         $_SESSION['alert'] = ['error', "Alias or Command empty", false];
-        header('Location: ../../commands.php?alias');
         exit();
     }
 
@@ -66,18 +106,16 @@ if ($_POST['action'] == "add-alias") {
     $command = trim($_POST['value']);
 
     db_query_no_result($db, "REPLACE INTO commands_alias (`id`, `alias`, `command`) VALUES (NULL, ?, ?)", "ss", [$alias, $command]);
-
-    header('Location: ../../commands.php?alias');
     exit();
 }
 
-if ($_POST['action'] == "del-alias" && !empty($_POST['id'])) {
+function alias_delete(mysqli $db)
+{
     db_query_no_result($db, "DELETE FROM commands_alias WHERE id = ?", "s", $_POST['id']);
     exit();
 }
 
-// Audio
-if ($_POST['action'] == "add-audio" && !empty($_POST['name']) && !empty($_POST['trigger'])) {
+function audio_add(mysqli $db) {
     $name = trim($_POST['name']);
     $trigger = trim($_POST['trigger']);
     $volume = floatval($_POST['volume']);
@@ -99,7 +137,7 @@ if ($_POST['action'] == "add-audio" && !empty($_POST['name']) && !empty($_POST['
     exit();
 }
 
-if ($_POST['action'] == "edit-audio" && !empty($_POST['id'])) {
+function audio_edit(mysqli $db) {
     $id = $_POST['id'];
     $name = $_POST['name'];
     $trigger = $_POST['trigger'];
@@ -120,7 +158,7 @@ if ($_POST['action'] == "edit-audio" && !empty($_POST['id'])) {
     exit();
 }
 
-if ($_POST['action'] == "del-audio" && !empty($_POST['id'])) {
+function audio_delete(mysqli $db) {
     $id = $_POST['id'];
 
     // Get filename
@@ -135,8 +173,7 @@ if ($_POST['action'] == "del-audio" && !empty($_POST['id'])) {
     exit();
 }
 
-// TTS
-if ($_POST['action'] == "edit-tts-config" && !empty($_POST['id'])) {
+function tts_config_edit(mysqli $db) {
     db_query_no_result(
         $db,
         "UPDATE `commands_tts_config` SET `value` = ? WHERE id = ?",
@@ -146,6 +183,3 @@ if ($_POST['action'] == "edit-tts-config" && !empty($_POST['id'])) {
 
     exit();
 }
-
-
-exit();

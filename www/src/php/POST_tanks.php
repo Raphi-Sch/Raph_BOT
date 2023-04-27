@@ -2,8 +2,43 @@
 
 require_once("./header-post.php");
 
-// Add tank
-if ($_POST['action'] == "add-tank" && !empty($_POST['form_key']) && !empty($_POST['form_nation']) && !empty($_POST['form_tier']) && !empty($_POST['form_type']) && !empty($_POST['form_name'])) {
+switch ($_POST['action']) {
+    case "add-tank":
+        tank_add($db);
+        break;
+
+    case "edit-tank":
+        tank_edit($db);
+        break;
+
+    case "del-tank":
+        tank_delete($db);
+        break;
+
+    case "add-nation":
+        nation_add($db);
+        break;
+
+    case "del-nation":
+        nation_delete($db);
+        break;
+
+    case "add-alias":
+        alias_add($db);
+        break;
+
+    case "del-alias":
+        alias_delete($db);
+        break;
+
+    default:
+        exit();
+}
+
+exit();
+
+function tank_add(mysqli $db)
+{
     $trigger_word = strtolower(trim($_POST['form_key']));
     $nation = trim($_POST['form_nation']);
     $tier = intval($_POST['form_tier']);
@@ -17,8 +52,8 @@ if ($_POST['action'] == "add-tank" && !empty($_POST['form_key']) && !empty($_POS
     exit();
 }
 
-// Edit tank
-if ($_POST['action'] == "edit-tank") {
+function tank_edit(mysqli $db)
+{
     $trigger_word = trim($_POST['swal-trigger']);
     $name = trim($_POST['swal-name']);
     $dmg = intval($_POST['swal-dmg']);
@@ -28,38 +63,36 @@ if ($_POST['action'] == "edit-tank") {
     exit();
 }
 
-// Delete tank
-if ($_POST['action'] == "del-tank") {
+function tank_delete(mysqli $db)
+{
     db_query_no_result($db, "DELETE FROM tanks WHERE id= ?", "i", $_POST['id']);
     exit();
 }
 
-// Add nation
-if (isset($_POST['action']) && $_POST['action'] == "add-nation" && !empty($_POST['alias']) && !empty($_POST['value'])) {
+function nation_add(mysqli $db)
+{
     $alias = strtolower(trim($_POST['alias']));
     $nation = $_POST['value'];
     db_query_no_result($db, "REPLACE INTO tanks_nation (`alias`, `nation`) VALUES (?, ?)", "ss", [$alias, $nation]);
     exit();
 }
 
-// Delete nation
-if (isset($_POST['action']) && $_POST['action'] == "del-nation") {
+function nation_delete(mysqli $db)
+{
     db_query_no_result($db, "DELETE FROM tanks_nation WHERE alias = ?", "s", $_POST['alias']);
     exit();
 }
 
-// Add alias
-if ($_POST['action'] == "add-alias" && !empty($_POST['alias']) && !empty($_POST['value'])) {
+function alias_add(mysqli $db)
+{
     $alias = strtolower(trim($_POST['alias']));
     $tank = $_POST['value'];
     db_query_no_result($db, "REPLACE INTO tanks_alias (`alias`, `tank`) VALUES (?, ?)", "ss", [$alias, $tank]);
     exit();
 }
 
-// Delete alias
-if (isset($_POST) && $_POST['action'] == "del-alias") {
+function alias_delete(mysqli $db)
+{
     db_query_no_result($db, "DELETE FROM tanks_alias WHERE alias = ?", "s", $_POST['alias']);
     exit();
 }
-
-exit();
