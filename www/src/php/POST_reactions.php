@@ -21,7 +21,6 @@ switch($_POST['action']){
 
 exit();
 
-// Add
 function reaction_add(mysqli $db){
     $trigger = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($_POST['trigger'])));
     $reaction = trim($_POST['reaction']);
@@ -33,7 +32,6 @@ function reaction_add(mysqli $db){
     exit();
 }
 
-// Edit
 function reaction_edit(mysqli $db){
     $trigger = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($_POST['trigger'])));
     $reaction = trim($_POST['reaction']);
