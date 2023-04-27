@@ -26,17 +26,30 @@ function run_TTS($db, $text, $timeout)
     }
 
     // Active
-    if($TTS_config['active'] == 0){
-        return ['response_type' => 'text', 'value' => $TTS_config['text_when_disable'], 'mod_only' => 0, 'sub_only' => 0];
+    if ($TTS_config['active'] == 0) {
+        if ($TTS_config['no_text_answer'])
+            return ['response_type' => null];
+        else
+            return ['response_type' => 'text', 'value' => $TTS_config['text_when_disable'], 'mod_only' => 0, 'sub_only' => 0];
     }
 
     // Timeout
-    if (intval($timeout) > intval($TTS_config['timeout_tolerance'])) {
-        return ['response_type' => 'text', 'value' => str_replace("@timeout", $timeout, $TTS_config['text_when_timeout']), 'mod_only' => 0, 'sub_only' => 0];
+    if ((intval($timeout) > intval($TTS_config['timeout_tolerance']))) {
+        if ($TTS_config['no_text_answer'])
+            return ['response_type' => null];
+        else
+            return ['response_type' => 'text', 'value' => str_replace("@timeout", $timeout, $TTS_config['text_when_timeout']), 'mod_only' => 0, 'sub_only' => 0];
     }
 
     // Format text output
     $text = $TTS_config['prefix'] . " " . $text;
 
-    return ['response_type' => 'tts', 'value' => $text, 'tts_type' => 'user', 'mod_only' => intval($TTS_config['mod_only']), 'sub_only' => intval($TTS_config['sub_only']), 'timeout' => intval($TTS_config['timeout'])];
+    return [
+        'response_type' => 'tts',
+        'value' => $text,
+        'tts_type' => 'user',
+        'mod_only' => intval($TTS_config['mod_only']),
+        'sub_only' => intval($TTS_config['sub_only']),
+        'timeout' => intval($TTS_config['timeout'])
+    ];
 }
