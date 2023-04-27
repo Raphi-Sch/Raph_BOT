@@ -123,6 +123,36 @@ CREATE TABLE `moderator_leet` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `moderator_warning`
+--
+
+CREATE TABLE `moderator_warning` (
+  `id` int(11) NOT NULL,
+  `userid` varchar(30) NOT NULL,
+  `username` varchar(30) NOT NULL,
+  `count` int(11) NOT NULL DEFAULT 1,
+  `datetime_insert` datetime NOT NULL,
+  `datetime_update` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `moderator_warning_level`
+--
+
+CREATE TABLE `moderator_warning_level` (
+  `id` int(11) NOT NULL,
+  `level` int(11) NOT NULL,
+  `action` int(11) NOT NULL,
+  `duration` int(11) NOT NULL DEFAULT 0,
+  `explanation` text NOT NULL,
+  `reason` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `reactions`
 --
 
@@ -247,6 +277,19 @@ ALTER TABLE `moderator_leet`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `moderator_warning`
+--
+ALTER TABLE `moderator_warning`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `userID` (`userid`);
+
+--
+-- Index pour la table `moderator_warning_level`
+--
+ALTER TABLE `moderator_warning_level`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `reactions`
 --
 ALTER TABLE `reactions`
@@ -314,6 +357,18 @@ ALTER TABLE `moderator`
 -- AUTO_INCREMENT pour la table `moderator_leet`
 --
 ALTER TABLE `moderator_leet`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `moderator_warning`
+--
+ALTER TABLE `moderator_warning`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `moderator_warning_level`
+--
+ALTER TABLE `moderator_warning_level`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
