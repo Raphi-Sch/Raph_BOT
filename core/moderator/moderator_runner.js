@@ -1,45 +1,23 @@
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const socket = require("../socket");
 const { config } = require("../config");
 const tools = require("../tools");
 const actionText = ["Ban", "Timeout", "Delete message"];
+const moderatorAPI = require('./queryAPI');
 
 const { re } = require("@babel/core/lib/vendor/import-meta-resolve");
 
 async function runModerator(user, message, twitchAPI) {
     const fullCommand = tools.parseCommand(message, config.cmd_prefix);
     if(fullCommand){
-        return commandModerator(fullCommand, user, message, twitchAPI);
+        return command(fullCommand, user, message, twitchAPI);
     }
     else{
         return checkMessage(user, message, twitchAPI);
     }
 }
 
-async function queryAPI(message){
-    const body = {
-        message: message,
-    }
-
-    const response = await fetch(config.api_url + "moderator.php?request", {
-        method: "post",
-        body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" }
-    })
-    
-    if (response.ok) {
-        return await response.json();
-    } else {
-        console.error("[MODERATOR] API ERROR : " + response.status);
-        console.error("Context : ");
-        console.error(message);
-        console.error("-------------------");
-        return null;
-    }
-}
-
 async function checkMessage(user, message, twitchAPI){
-    const result = await queryAPI(message);
+    const result = await moderatorAPI.checkMessage(message);
 
     try {
         if (result && result.mod_action) {
@@ -68,7 +46,7 @@ async function checkMessage(user, message, twitchAPI){
     }
 }
 
-function commandModerator(command, user, message, twitchAPI){
+function command(command, user, message, twitchAPI){
     if(command[1] == "warn")
         return "TEST command moderator";
 
