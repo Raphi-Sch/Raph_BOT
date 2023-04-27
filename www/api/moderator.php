@@ -111,10 +111,10 @@ function warn_user(mysqli $db, $data){
     $datetime = date('Y-m-d H:i:s');
 
     db_query_no_result($db, 
-        "INSERT INTO moderator_warning (`id`, `user`, `count`, `datetime_insert`, `datetime_update`) VALUES(NULL, ?, 1, ?, ?) ON DUPLICATE KEY UPDATE count = count + 1, datetime_update = ? ",
-        "ssss",
-        [$data['username'], $datetime, $datetime, $datetime] 
+        "INSERT INTO moderator_warning (`id`, `userid`, `username`, `count`, `datetime_insert`, `datetime_update`) VALUES(NULL, ?, ?, 1, ?, ?) ON DUPLICATE KEY UPDATE count = count + 1, datetime_update = ? ",
+        "sssss",
+        [$data['userid'], $data['username'], $datetime, $datetime, $datetime] 
     );
 
-    return db_query($db, "SELECT * FROM moderator_warning WHERE user = ?", "s", $data['username']);
+    return db_query($db, "SELECT * FROM moderator_warning WHERE username = ?", "s", $data['username']);
 }

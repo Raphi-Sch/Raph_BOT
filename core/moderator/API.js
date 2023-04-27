@@ -23,9 +23,10 @@ async function checkMessage(message){
     }
 }
 
-async function warnUser(username){
+async function warnUser(user){
     const body = {
-        username: username,
+        userID: user.id,
+        username: user.username
     }
 
     const response = await fetch(config.api_url + "moderator.php?warn-user", {
