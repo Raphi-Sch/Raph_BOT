@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- Déchargement des données de la table `commands_tts_config`
 --
 
-INSERT INTO `commands_tts_config` (`id`, `value`) VALUES
+INSERT INTO `commands_tts_config` (`id`, `value`, `type`) VALUES
 ('active', '0', 1),
 ('character_limit', '50', 2),
 ('character_limit_replace', '', 0),
