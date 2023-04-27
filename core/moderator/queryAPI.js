@@ -16,11 +16,33 @@ async function checkMessage(message){
         return await response.json();
     } else {
         console.error("[MODERATOR] API ERROR : " + response.status);
-        console.error("Context : ");
+        console.error("Function checkMessage(), Context : ");
         console.error(message);
         console.error("-------------------");
         return null;
     }
 }
 
-module.exports = { checkMessage }
+async function warnUser(username){
+    const body = {
+        username: username,
+    }
+
+    const response = await fetch(config.api_url + "moderator.php?warn-user", {
+        method: "post",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" }
+    })
+    
+    if (response.ok) {
+        return await response.json();
+    } else {
+        console.error("[MODERATOR] API ERROR : " + response.status);
+        console.error("Function warnUser(), Context : ");
+        console.error(message);
+        console.error("-------------------");
+        return null;
+    }
+}
+
+module.exports = { checkMessage, warnUser }

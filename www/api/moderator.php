@@ -29,6 +29,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if (isset($_GET['warn-user'])) {
+            echo json_encode(warn_user($db, $body));
+            break;
+        }
+
         header("HTTP/1.0 400 Bad request");
         break;
 
@@ -100,4 +105,16 @@ function check_message(mysqli $db, $message)
         return ['mod_action' => null, 'explanation' => null, 'duration' => null, 'reason' => null, 'trigger_word' => null];
     else
         return $result;
+}
+
+function warn_user(mysqli $db, $data){
+    $datetime = date('Y-m-d H:i:s');
+
+    db_query_no_result($db, 
+        "INSERT INTO moderator_warning (`id`, `user`, `count`, `datetime_insert`, `datetime_update`) VALUES(NULL, ?, 1, ?, ?) ON DUPLICATE KEY UPDATE count = count + 1, datetime_update = ? ",
+        "ssss",
+        [$data['username'], $datetime, $datetime, $datetime] 
+    );
+
+    return db_query($db, "SELECT * FROM moderator_warning WHERE user = ?", "s", $data['username']);
 }
