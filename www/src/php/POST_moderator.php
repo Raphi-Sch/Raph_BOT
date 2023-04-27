@@ -2,8 +2,38 @@
 
 require_once("./header-post.php");
 
-// Add
-if ($_POST['action'] == "add" && !empty($_POST['trigger_word'])) {
+switch($_POST['action']){
+    case "add":
+        expression_add($db);
+        break;
+
+    case "edit":
+        expression_edit($db);
+        break;
+
+    case "del":
+        expression_delete($db);
+        break;
+
+    case "leet-add":
+        leet_add($db);
+        exit();
+
+    case "leet-del":
+        leet_delete($db);
+        break; 
+
+    case "warning-del":
+        warning_delete($db);
+        break;
+
+    default:
+        exit();
+}
+
+exit();
+
+function expression_add(mysqli $db){
     $trigger = trim(strtolower($_POST['trigger_word']));
     $mod_action = intval($_POST['mod_action']);
     $explanation = trim($_POST['explanation']);
@@ -22,8 +52,7 @@ if ($_POST['action'] == "add" && !empty($_POST['trigger_word'])) {
     exit();
 }
 
-// Edit
-if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
+function expression_edit(mysqli $db){
     $trigger = trim(strtolower($_POST['trigger']));
     $mod_action = trim($_POST['mod_action']);
     $explanation = trim($_POST['explanation']);
@@ -39,15 +68,12 @@ if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
     exit();
 }
 
-// Delete
-if ($_POST['action'] == "del" && !empty($_POST['id'])) {
+function expression_delete(mysqli $db){
     db_query_no_result($db, "DELETE FROM `moderator` WHERE `id` = ?", "i", $_POST['id']);
     exit();
 }
 
-// LEET
-// Add
-if ($_POST['action'] == "add-leet" && !empty($_POST['original']) && !empty($_POST['replacement'])) {
+function leet_add(mysqli $db){
     $original = trim(strtolower($_POST['original']));
     $replacement = trim(strtolower($_POST['replacement']));
 
@@ -57,10 +83,13 @@ if ($_POST['action'] == "add-leet" && !empty($_POST['original']) && !empty($_POS
     exit();
 }
 
-// Delete
-if ($_POST['action'] == "del-leet" && !empty($_POST['id'])) {
+function leet_delete(mysqli $db){
     db_query_no_result($db, "DELETE FROM `moderator_leet` WHERE `id` = ?", "i", $_POST['id']);
     exit();
 }
 
-exit();
+
+function warning_delete(mysqli $db){
+    db_query_no_result($db, "DELETE FROM `moderator_warning` WHERE `id` = ?", "i", $_POST['id']);
+    exit();
+}

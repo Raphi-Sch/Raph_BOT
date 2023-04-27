@@ -28,7 +28,7 @@ function addLeet(){
     Swal.fire({
         title: "Add leet conversion",
         html: "<form id='swal-form' method='post'>" +
-            "<input type='hidden' name='action' value='add-leet'/>" +
+            "<input type='hidden' name='action' value='leet-add'/>" +
             "<label>Original</label><input type='text' class='form-control' name='original'><br/>" +
             "<label>Replacement</label><input type='text' class='form-control' name='replacement'>" +
             "</form>",
@@ -61,7 +61,7 @@ function delLeet(data){
     }).then((result) => {
         if (result.value) {
             $.post("src/php/POST_moderator.php", {
-                action: "del-leet",
+                action: "leet-del",
                 id: data.id
             }, function () {
                 listLeet(true);
