@@ -1,4 +1,4 @@
-function list(reload = false){
+function list(reload = false) {
     $.ajax({
         url: "api/config.php?list",
         type: "GET",
@@ -8,30 +8,19 @@ function list(reload = false){
             LIST.innerHTML = "";
 
             data.forEach(element => {
-                let editFunction = null;
                 let displayValue = element.value;
 
-                switch (element.type) {
-                    case 0:
-                        if(element.value.length >= 50)
-                            editFunction = editTextarea;
-                        else
-                            editFunction = editText;
-                        break;
-                    case 1:
-                        editFunction = editBool;
-                        displayValue = element.value == '1' ? "Enabled" : "Disabled";
-                        break;
-                    case 2:
-                        editFunction = editNumber;
-                        break;
-                }
+                if (element.type == 1) {
+                    displayValue = (element.value == '1' ? "Enabled" : "Disabled")
+                };
 
-                displayValue = element.hidden ? '##########' : displayValue;
+                if (element.hidden){
+                    displayValue = '##########';
+                }
 
                 const TR = document.createElement('tr');
                 const btnHelp = createButton("btn btn-info", "glyphicon glyphicon-info-sign", () => showHelp(element));
-                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => editFunction(element));
+                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => editConfig(element));
 
                 TR.appendChild(createTableData(element.id, 'col-xs-2'));
                 TR.appendChild(createTableData(displayValue, 'col-xs-4'));
@@ -47,88 +36,49 @@ function list(reload = false){
     })
 }
 
-function editText(element) {
-    Swal.fire({
-        title: `Editing : ${element.id}`,
-        icon: 'info',
-        html: "<form id='swal-form' method='post' action='src/php/POST_config.php'>" +
-            "<input type='hidden' name='action' value='edit'>" +
-            `<input type='hidden' name='id' value='${element.id}'>` +
-            `<input class='form-control' type='text' name='value' value="${element.value}"></form>`,
-        showCancelButton: true,
-        focusConfirm: false,
-        allowOutsideClick: false,
-        width: "30%",
-        confirmButtonText: 'Edit',
-        cancelButtonText: 'Cancel'
-    }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
-    })
-}
+function editConfig(element) {
+    let input = "";
+    let didOpen = null;
+    switch (element.type) {
+        case 0:
+            if (element.value.length <= 50)
+                input = `<input class='form-control' type='text' name='value' value="${element.value}">`;
+            else
+                input = `<textarea class='form-control' type='text' name='value'>${element.value}</textarea>`;
+            break;
 
-function editTextarea(element) {
+        case 1:
+            input = `<select id='swal-select' name='value' class='form-control'><option value=0>Disable</option><option value=1>Enable</option></select>`;
+            didOpen = () => { document.getElementById('swal-select').value = element.value; }
+            break;
+
+        case 2:
+            input = `<input class='form-control' type='number' name='value' step=1 min=1 max=1000 value="${element.value}">`;
+            break;
+    }
+
     Swal.fire({
         title: `Editing : ${element.id}`,
         icon: 'info',
-        html: "<form id='swal-form' method='post' action='src/php/POST_config.php'>" +
-            "<input type='hidden' name='action' value='edit'>" +
-            `<input type='hidden' name='id' value='${element.id}'>` +
-            `<textarea class='form-control' type='text' name='value'>${element.value}</textarea>
+        html: `<form id='swal-form'>
+            <input type='hidden' name='action' value='edit'>
+            <input type='hidden' name='id' value='${element.id}'>
+            ${input}
             </form>`,
         showCancelButton: true,
         focusConfirm: false,
         allowOutsideClick: false,
         width: "30%",
         confirmButtonText: 'Edit',
-        cancelButtonText: 'Cancel'
-    }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
-    })
-}
-
-function editBool(element) {
-    Swal.fire({
-        title: `Editing : ${element.id}`,
-        icon: 'info',
-        html: "<form id='swal-form' method='post' action='src/php/POST_config.php'>" +
-            "<input type='hidden' name='action' value='edit'>" +
-            `<input type='hidden' name='id' value='${element.id}'>` +
-            "<select id='swal-select' name='value' class='form-control'>" +
-            "<option value=0>Disable</option>" +
-            "<option value=1>Enable</option>" +
-            "</select></form>",
-        showCancelButton: true,
-        focusConfirm: false,
-        allowOutsideClick: false,
-        width: "30%",
-        confirmButtonText: 'Edit',
         cancelButtonText: 'Cancel',
-        didOpen: () => { document.getElementById('swal-select').value = element.value; }
+        didOpen: didOpen
     }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
-    })
-}
-
-function editNumber(element) {
-    Swal.fire({
-        title: `Editing : ${element.id}`,
-        icon: 'info',
-        html: "<form id='swal-form' method='post' action='src/php/POST_config.php'>" +
-            "<input type='hidden' name='action' value='edit'>" +
-            `<input type='hidden' name='id' value='${element.id}'>` +
-            `<input class='form-control' type='number' name='value' step=1 min=1 max=1000 value="${element.value}"></form>`,
-        showCancelButton: true,
-        focusConfirm: false,
-        allowOutsideClick: false,
-        width: "30%",
-        confirmButtonText: 'Edit',
-        cancelButtonText: 'Cancel',
-    }).then((result) => {
-        if (result.value)
-            document.getElementById('swal-form').submit();
+        if (result.value) {
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_config.php', FORM_DATA).done(function () {
+                list(true);
+            });
+        }
     })
 }
 
