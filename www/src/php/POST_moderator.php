@@ -47,8 +47,6 @@ function expression_add(mysqli $db){
         $duration = 1209600;
 
     db_query_no_result($db, "INSERT INTO `moderator` (id, trigger_word, mod_action, explanation, duration, reason) VALUES (NULL, ?, ?, ?, ?, ?)", "sisis", [$trigger, $mod_action, $explanation, $duration, $reason]);
-
-    header('Location: ../../moderator.php');
     exit();
 }
 
@@ -63,8 +61,6 @@ function expression_edit(mysqli $db){
         $duration = 0;
 
     db_query_no_result($db, "UPDATE `moderator` SET `trigger_word` = ?, `mod_action` = ?, `explanation` = ?, `duration` = ?, `reason` = ? WHERE `id` = ?", "sisisi", [$trigger, $mod_action, $explanation, $duration, $reason, $_POST['id']]);
-    
-    header('Location: ../../moderator.php');
     exit();
 }
 
@@ -78,8 +74,6 @@ function leet_add(mysqli $db){
     $replacement = trim(strtolower($_POST['replacement']));
 
     db_query_no_result($db, "INSERT INTO `moderator_leet` (id, original, replacement) VALUES (NULL, ?, ?)", "ss", [$original, $replacement]);
-
-    header('Location: ../../moderator.php');
     exit();
 }
 
