@@ -266,7 +266,7 @@ function warningList(reload){
     })
 }
 
-function warning(data){
+function warningDelete(data){
     Swal.fire({
         title: `Delete warning for "${data.username}" ?`,
         icon: 'question',
