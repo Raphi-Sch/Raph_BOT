@@ -82,7 +82,19 @@ function editConfig(element) {
     })
 }
 
-function twitch_token(hash) {
+function showHelp(element) {
+    Swal.fire({
+        title: `Information about '${element.id}'`,
+        html: `<h4>${element.help}</h4>`,
+        icon: 'info',
+        width: "500px",
+        showCancelButton: false,
+        focusConfirm: true,
+        confirmButtonText: 'Ok',
+    })
+}
+
+function updateTwitchToken(hash) {
     let token = hash.substring(hash.search("access_token=") + 13, hash.search("&"));
 
     $.post("src/php/POST_config.php", { action: "edit", id: "twitch_token", value: token }, function () {
@@ -98,16 +110,4 @@ function twitch_token(hash) {
                 window.location = window.location.origin + window.location.pathname;
         })
     });
-}
-
-function showHelp(element) {
-    Swal.fire({
-        title: `Information about '${element.id}'`,
-        html: `<h4>${element.help}</h4>`,
-        icon: 'info',
-        width: "500px",
-        showCancelButton: false,
-        focusConfirm: true,
-        confirmButtonText: 'Ok',
-    })
 }

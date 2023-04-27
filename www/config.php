@@ -56,7 +56,7 @@ $token_URL = "https://id.twitch.tv/oauth2/authorize?response_type=token&client_i
         });
 
         if (window.location.hash !== "") {
-            twitch_token(window.location.hash);
+            updateTwitchToken(window.location.hash);
         }
 
         list();
