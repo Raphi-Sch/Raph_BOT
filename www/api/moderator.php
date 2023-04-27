@@ -116,5 +116,5 @@ function warn_user(mysqli $db, $data){
         [$data['userid'], $data['username'], $datetime, $datetime, $datetime] 
     );
 
-    return db_query($db, "SELECT * FROM moderator_warning WHERE username = ?", "s", $data['username']);
+    return db_query($db, "SELECT * FROM moderator_warning WHERE userid = ?", "s", $data['userid']);
 }
