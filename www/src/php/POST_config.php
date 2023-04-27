@@ -9,8 +9,6 @@ if ($_POST['action'] == "edit" && !empty($_POST['id'])) {
     db_query_no_result($db, "UPDATE config SET `value` = ? WHERE id = ?", "ss", [$value, $_POST['id']]);
 
     $_SESSION['alert'] = ['success', 'Saved !', false, false];
-
-    header('Location: ../../config.php');
     exit();
 }
 
