@@ -33,6 +33,11 @@ async function getUserId(userName) {
 
     if (response.ok) {
         const json = await response.json();
+
+        if(json.data[0] == null){
+            return false;
+        }
+        
         return json.data[0].id;
     } else {
         errorLog('getUserID()', response);
@@ -129,4 +134,4 @@ async function shoutout(userName){
     }
 }
 
-module.exports = { init, banUser, timeoutUser, deleteChatMessage, shoutout }
+module.exports = { init, getUserId, banUser, timeoutUser, deleteChatMessage, shoutout }
