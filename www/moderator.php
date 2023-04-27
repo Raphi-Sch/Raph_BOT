@@ -93,8 +93,6 @@ require_once('src/php/header.php');
 
     <script src="src/js/common.js"></script>
     <script src="src/js/moderator.js"></script>
-    <script src="src/js/moderator-leet.js"></script>
-    <script src="src/js/moderator-warning.js"></script>
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
