@@ -30,6 +30,7 @@ INSERT INTO `commands_tts_config` (`id`, `value`, `type`) VALUES
 ('character_limit', '50', 2),
 ('character_limit_replace', '', 0),
 ('mod_only', '0', 1),
+('no_text_answer', '1', 1),
 ('prefix', '@username said :', 0),
 ('sub_only', '0', 1),
 ('text_when_disable', '@username : TTS is disabled', 0),
