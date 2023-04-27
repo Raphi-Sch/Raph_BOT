@@ -2,7 +2,7 @@ const socket = require("../socket");
 const { config } = require("../config");
 const tools = require("../tools");
 const actionText = ["Ban", "Timeout", "Delete message"];
-const moderatorAPI = require('./queryAPI');
+const moderatorAPI = require('./API');
 
 const { re } = require("@babel/core/lib/vendor/import-meta-resolve");
 
@@ -46,11 +46,22 @@ async function checkMessage(user, message, twitchAPI){
     }
 }
 
-function command(command, user, message, twitchAPI){
-    if(command[1] == "warn")
-        return "TEST command moderator";
+async function command(command, user, message, twitchAPI){
+    switch(command[1]){
+        case 'warn':
+            return await warnUser(command, twitchAPI);
+    }
 
     return null;
+}
+
+async function warnUser(command, twitchAPI){
+    const user = await twitchAPI.getUserInfo(command[2]);
+
+    if(user !== null)
+        result = await moderatorAPI.warnUser(user);
+
+    return `${result.user} this is your ${result.count} warning, be careful !`;
 }
 
 module.exports = { runModerator }
