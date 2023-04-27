@@ -63,24 +63,24 @@ async function warnUser(command, moderator, twitchAPI) {
 
     if (user !== null) {
         result = await moderatorAPI.warnUser(user);
-        if(result !== null){
-            switch (result.count){
+        if (result !== null) {
+            switch (result.action) {
+                case 0:
+                    break;
                 case 1:
-                    return `${result.username} : This is your first and last warning before being timeout, be careful !`;
+                    twitchAPI.timeoutUser(result.userid, result.reason, result.duration);
+                    break;
                 case 2:
-                    twitchAPI.timeoutUser(user.id, "Too much warnings", 30);
-                    return `${result.username} : Go touch some grass (timeout 30s)`;
-                case 3:
-                    twitchAPI.timeoutUser(user.is, "3rd warning ...", 60);
-                    return `${result.username} : Seriously, you again ? (timeout 1min)`;
-                case 4:
-                    twitchAPI.timeoutUser(user.is, "4th and last warning ...", 600);
-                    return `${result.username} : No comment (timeout 10min)`;
-                case 5:
-                    twitchAPI.banUser(user.id, "Bye bye.")
-                    return `${result.username} : Looks like you will touch grass forever.`;
+                    twitchAPI.banUser(result.userid, result.reason);
+                    break;
             }
-        }       
+
+            if (result.explanation) {
+                result.explanation = result.explanation.replace("@username", result.username);
+                return result.explanation;
+            }
+            return true;
+        }
     }
     else {
         return `${moderator['display-name']} : User '${userInput}' doesn't exist.`;
