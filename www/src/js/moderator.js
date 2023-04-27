@@ -74,7 +74,7 @@ function expressionAdd() {
     Swal.fire({
         title: "Add entry",
         html: `<form id='swal-form'>
-            <input type='hidden' name='action' value='add'>
+            <input type='hidden' name='action' value='expression-add'>
             <label>Trigger</label><input type='text' class='form-control' name='trigger_word' placeholder='Trigger' required><br/>
             <label>Action</label>
             <select class='form-control' name='mod_action'>
@@ -108,7 +108,7 @@ function expressionEdit(data) {
         title: `Editing : '${data.trigger_word}'`,
         icon: 'info',
         html: `<form id='swal-form' method='post'><br/>
-            <input type='hidden' name='action' value='edit'>
+            <input type='hidden' name='action' value='expression-edit'>
             <input type='hidden' name='id' value='${data.id}'>
             <label>Trigger</label><input class='form-control' type='text' name='trigger' value="${data.trigger_word}"><br/>
             <label>Action</label>
@@ -152,7 +152,7 @@ function expressionDelete(data) {
     }).then((result) => {
         if (result.value) {
             $.post("src/php/POST_moderator.php", {
-                action: "del",
+                action: "expression-del",
                 id: data.id
             }, function () {
                 list(true);

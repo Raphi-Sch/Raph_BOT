@@ -3,15 +3,15 @@
 require_once("./header-post.php");
 
 switch($_POST['action']){
-    case "add":
+    case "expression-add":
         expression_add($db);
         break;
 
-    case "edit":
+    case "expression-edit":
         expression_edit($db);
         break;
 
-    case "del":
+    case "expression-del":
         expression_delete($db);
         break;
 
