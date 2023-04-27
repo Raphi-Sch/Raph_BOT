@@ -25,8 +25,8 @@ async function checkMessage(message){
 
 async function warnUser(user){
     const body = {
-        userID: user.id,
-        username: user.username
+        userid: user.id,
+        username: user.login
     }
 
     const response = await fetch(config.api_url + "moderator.php?warn-user", {
@@ -40,7 +40,7 @@ async function warnUser(user){
     } else {
         console.error("[MODERATOR] API ERROR : " + response.status);
         console.error("Function warnUser(), Context : ");
-        console.error(message);
+        console.error(body);
         console.error("-------------------");
         return null;
     }
