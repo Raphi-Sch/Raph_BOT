@@ -18,6 +18,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if (isset($_GET['list-warning'])) {
+            echo json_encode(list_warning($db));
+            break;
+        }
+
         header("HTTP/1.0 400 Bad request");
         break;
 
@@ -107,13 +112,31 @@ function check_message(mysqli $db, $message)
         return $result;
 }
 
-function warn_user(mysqli $db, $data){
+function list_warning(mysqli $db)
+{
+    $SQL_query = "SELECT * FROM moderator_warning ORDER BY username ASC";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = $data->fetch_assoc()) {
+        $result += array($count => $row);
+        $count++;
+    }
+
+    return $result;
+}
+
+function warn_user(mysqli $db, $data)
+{
     $datetime = date('Y-m-d H:i:s');
 
-    db_query_no_result($db, 
+    db_query_no_result(
+        $db,
         "INSERT INTO moderator_warning (`id`, `userid`, `username`, `count`, `datetime_insert`, `datetime_update`) VALUES(NULL, ?, ?, 1, ?, ?) ON DUPLICATE KEY UPDATE count = count + 1, datetime_update = ? ",
         "sssss",
-        [$data['userid'], $data['username'], $datetime, $datetime, $datetime] 
+        [$data['userid'], $data['username'], $datetime, $datetime, $datetime]
     );
 
     $warning = db_query($db, "SELECT * FROM moderator_warning WHERE userid = ?", "s", $data['userid']);

@@ -28,6 +28,7 @@ require_once('src/php/header.php');
         <ul class="nav nav-tabs">
             <li id="tab-expression"><a href="#" onclick='view("expression")'>Ban Expression</a></li>
             <li id="tab-leet"><a href="#" onclick='view("leet")'>Leet</a></li>
+            <li id="tab-warning"><a href="#" onclick='view("warning")'>Warning</a></li>
         </ul>
 
         <!-- Expression -->
@@ -67,12 +68,33 @@ require_once('src/php/header.php');
             </table>
         </div>
 
+        <!-- Warnings -->
+        <div id='div-warning'>
+            <br/>
+            <table class="table table-hover table-condensed table-scroll">
+                <thead>
+                    <tr>
+                        <th class='col-xs-2'>Username</th>
+                        <th class='col-xs-1'>Count</th>
+                        <th class='col-xs-2'>First warning</th>
+                        <th class='col-xs-2'>Last warning</th>
+                        <th class='table-scroll-th-fix'></th>
+                        <th class='col-xs-1'></th>
+                    </tr>
+                </thead>
+                <tbody class="table-scroll-td" id='tbody-warning'>
+                    <!-- Dynamic -->
+                </tbody>
+            </table>
+        </div>
+
 
     </div>
 
     <script src="src/js/common.js"></script>
     <script src="src/js/moderator.js"></script>
     <script src="src/js/moderator-leet.js"></script>
+    <script src="src/js/moderator-warning.js"></script>
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
