@@ -48,8 +48,9 @@ function init() {
         if (isSelf || user["display-name"] == config.twitch_display_name) return;
 
         const moderatorResult = await moderator.run(user, message, twitchAPI);
-        if (moderatorResult) {
-            send(moderatorResult);
+        if (moderatorResult !== null) {
+            if(moderatorResult !== true)
+                send(moderatorResult);
             return;
         }
 

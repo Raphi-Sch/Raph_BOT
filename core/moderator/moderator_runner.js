@@ -7,6 +7,38 @@ const actionText = ["Ban", "Timeout", "Delete message"];
 const { re } = require("@babel/core/lib/vendor/import-meta-resolve");
 
 async function runModerator(user, message, twitchAPI) {
+    const fullCommand = tools.parseCommand(message, config.cmd_prefix);
+    if(fullCommand){
+        return commandModerator(fullCommand, user, message, twitchAPI);
+    }
+    else{
+        return checkMessage(user, message, twitchAPI);
+    }
+}
+
+async function queryAPI(message){
+    const body = {
+        message: message,
+    }
+
+    const response = await fetch(config.api_url + "moderator.php?request", {
+        method: "post",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" }
+    })
+    
+    if (response.ok) {
+        return await response.json();
+    } else {
+        console.error("[MODERATOR] API ERROR : " + response.status);
+        console.error("Context : ");
+        console.error(message);
+        console.error("-------------------");
+        return null;
+    }
+}
+
+async function checkMessage(user, message, twitchAPI){
     const result = await queryAPI(message);
 
     try {
@@ -36,26 +68,11 @@ async function runModerator(user, message, twitchAPI) {
     }
 }
 
-async function queryAPI(message){
-    const body = {
-        message: message,
-    }
+function commandModerator(command, user, message, twitchAPI){
+    if(command[1] == "warn")
+        return "TEST command moderator";
 
-    const response = await fetch(config.api_url + "moderator.php?request", {
-        method: "post",
-        body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" }
-    })
-    
-    if (response.ok) {
-        return await response.json();
-    } else {
-        console.error("[MODERATOR] API ERROR : " + response.status);
-        console.error("Context : ");
-        console.error(message);
-        console.error("-------------------");
-        return null;
-    }
+    return null;
 }
 
 module.exports = { runModerator }
