@@ -40,7 +40,7 @@ async function getUserInfo(userName){
         
         return json.data[0];
     } else {
-        errorLog('getUserID()', response);
+        errorLog('getUserInfo()', response);
         process.exit(1);
     }
 }
