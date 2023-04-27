@@ -12,7 +12,7 @@ function listLeet(reload = false) {
 
                 TR.appendChild(createTableData(element.replacement, 'col-xs-5'));
                 TR.appendChild(createTableData(element.original, 'col-xs-5'));
-                TR.appendChild(createButtonGroup(createButton("btn btn-danger", "glyphicon glyphicon-remove", () => delLeet(element))));
+                TR.appendChild(createButtonGroup(createButton("btn btn-danger", "glyphicon glyphicon-remove", () => leetDel(element))));
                 
                 LIST.appendChild(TR);
             })
@@ -24,7 +24,7 @@ function listLeet(reload = false) {
     })
 }
 
-function addLeet(){
+function leetAdd(){
     Swal.fire({
         title: "Add leet conversion",
         html: "<form id='swal-form' method='post'>" +
@@ -49,7 +49,7 @@ function addLeet(){
     });
 }
 
-function delLeet(data){
+function leetDel(data){
     Swal.fire({
         title: `Delete "${data.original}" -> "${data.replacement}" ?`,
         icon: 'question',

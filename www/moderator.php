@@ -42,7 +42,7 @@ require_once('src/php/header.php');
                         <th class="col-xs-1 text-center">Duration</th>
                         <th class="col-xs-4">Shaming</th>
                         <th class="table-scroll-th-fix"></th>
-                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='expressionAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
                     </tr>
                 </thead>
                 <tbody class="table-scroll-td" id='tbody-expression'>
@@ -59,7 +59,7 @@ require_once('src/php/header.php');
                         <th class="col-xs-5">Replacement</th>
                         <th class="col-xs-5">original</th>
                         <th class="table-scroll-th-fix"></th>
-                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='addLeet()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='leetAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
                     </tr>
                 </thead>
                 <tbody class="table-scroll-td" id='tbody-leet'>
