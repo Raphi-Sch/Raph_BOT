@@ -1,4 +1,4 @@
-function listLeet(reload = false) {
+function leetList(reload = false) {
     $.ajax({
         url: "api/moderator.php?list-leet",
         type: "GET",
@@ -43,7 +43,7 @@ function leetAdd(){
         if (result.value) {
             const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
             $.post('src/php/POST_moderator.php', FORM_DATA).done(function () {
-                listLeet(true);
+                leetList(true);
             });
         }
     });
@@ -64,7 +64,7 @@ function leetDel(data){
                 action: "leet-del",
                 id: data.id
             }, function () {
-                listLeet(true);
+                leetList(true);
             });
         }
     })

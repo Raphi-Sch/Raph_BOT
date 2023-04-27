@@ -1,4 +1,4 @@
-function listWarning(reload){
+function warningList(reload){
     $.ajax({
         url: "api/moderator.php?list-warning",
         type: "GET",
@@ -7,11 +7,9 @@ function listWarning(reload){
             const LIST = document.getElementById('tbody-warning');
             LIST.innerHTML = "";
 
-            console.log(data);
-
             data.forEach(element => {
                 const TR = document.createElement('tr');
-                const btnDel = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => deleteWarning(element));
+                const btnDel = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => warningDelete(element));
 
                 TR.appendChild(createTableData(element.username, 'col-xs-2'));
                 TR.appendChild(createTableData(element.count, 'col-xs-1'));
@@ -30,7 +28,7 @@ function listWarning(reload){
     })
 }
 
-function deleteWarning(data){
+function warning(data){
     Swal.fire({
         title: `Delete warning for "${data.username}" ?`,
         icon: 'question',
@@ -45,7 +43,7 @@ function deleteWarning(data){
                 action: "warning-del",
                 id: data.id
             }, function () {
-                listWarning(true);
+                warningList(true);
             });
         }
     })

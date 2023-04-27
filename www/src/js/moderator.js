@@ -13,33 +13,33 @@ function view(param) {
         case 'expression':
             document.getElementById("tab-expression").classList.add("active");
             document.getElementById('div-expression').classList.remove('hidden');
-            document.getElementById('btn-refresh').onclick = () => list(true);
+            document.getElementById('btn-refresh').onclick = () => expressionList(true);
 
             window.history.pushState(null, '', 'moderator.php?list');
-            list();
+            expressionList();
             return;
 
         case 'leet':
             document.getElementById("tab-leet").classList.add("active");
             document.getElementById('div-leet').classList.remove('hidden');
-            document.getElementById('btn-refresh').onclick = () => listLeet(true);
+            document.getElementById('btn-refresh').onclick = () => leetList(true);
 
             window.history.pushState(null, '', 'moderator.php?list-leet');
-            listLeet();
+            leetList();
             return;
 
         case 'warning':
             document.getElementById("tab-warning").classList.add("active");
             document.getElementById('div-warning').classList.remove('hidden');
-            document.getElementById('btn-refresh').onclick = () => listWarning(true);
+            document.getElementById('btn-refresh').onclick = () => warningList(true);
 
             window.history.pushState(null, '', 'moderator.php?list-warning');
-            listWarning();
+            warningList();
             return;
     }
 }
 
-function list(reload = false) {
+function expressionList(reload = false) {
     $.ajax({
         url: "api/moderator.php?list",
         type: "GET",
@@ -97,7 +97,7 @@ function expressionAdd() {
         if (result.value) {
             const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
             $.post('src/php/POST_moderator.php', FORM_DATA).done(function () {
-                list(true);
+                expressionList(true);
             });
         }
     });
@@ -134,7 +134,7 @@ function expressionEdit(data) {
         if (result.value) {
             const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
             $.post('src/php/POST_moderator.php', FORM_DATA).done(function () {
-                list(true);
+                expressionList(true);
             });
         }
     })
@@ -155,7 +155,7 @@ function expressionDelete(data) {
                 action: "expression-del",
                 id: data.id
             }, function () {
-                list(true);
+                expressionList(true);
             });
         }
     })
