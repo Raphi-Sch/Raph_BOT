@@ -9,8 +9,8 @@ function list(reload = false) {
 
             data.forEach(element => {
                 const TR = document.createElement('tr');
-                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => edit_entry(element));
-                const btnDel  = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => del_entry(element));
+                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => reactionEdit(element));
+                const btnDel  = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => reactionDelete(element));
 
                 TR.appendChild(createTableData(element.trigger_word, 'col-xs-2'));
                 TR.appendChild(createTableData(element.reaction, 'col-xs-5'));
@@ -29,7 +29,7 @@ function list(reload = false) {
     })
 }
 
-function add_entry() {
+function reactionAdd() {
     Swal.fire({
         title: "Add entry",
         html: `<form id='swal-form' method='post'>
@@ -58,7 +58,7 @@ function add_entry() {
     });
 }
 
-function edit_entry(data) {
+function reactionEdit(data) {
     checkbox_tts = data.tts ? "checked" : "";
 
     Swal.fire({
@@ -90,7 +90,7 @@ function edit_entry(data) {
     })
 }
 
-function del_entry(data) {
+function reactionDelete(data) {
     Swal.fire({
         title: `Delete '${data.trigger_word}' ?`,
         icon: 'question',
