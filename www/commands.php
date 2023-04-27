@@ -46,7 +46,7 @@ require_once('src/php/header.php');
                         <th class="col-xs-1 text-center">Sub Only</th>
                         <th class="col-xs-1 text-center">TTS</th>
                         <th class="table-scroll-th-fix"></th>
-                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='commandAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
                     </tr>
                 </thead>
                 <tbody class="table-scroll-td" id='tbody-text'>
@@ -63,7 +63,7 @@ require_once('src/php/header.php');
                         <th class="col-xs-5">Alias</th>
                         <th class="col-xs-5">Command</th>
                         <th class="table-scroll-th-fix"></th>
-                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_alias()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='aliasAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
                     </tr>
                 </thead>
                 <tbody class="table-scroll-td" id='tbody-alias'>
@@ -86,7 +86,7 @@ require_once('src/php/header.php');
                         <th class="col-xs-1 text-center">Sub Only</th>
                         <th class="col-xs-2 text-center">Player</th>
                         <th class="table-scroll-th-fix"></th>
-                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_audio()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='audioAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
                     </tr>
                 </thead>
                 <tbody class="table-scroll-td" id='tbody-audio'>
@@ -120,9 +120,6 @@ require_once('src/php/header.php');
 
     <script src="src/js/common.js"></script>
     <script src="src/js/commands.js"></script>
-    <script src="src/js/commands-alias.js"></script>
-    <script src="src/js/commands-audio.js"></script>
-    <script src="src/js/commands-tts.js"></script>
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
