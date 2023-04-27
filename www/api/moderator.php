@@ -24,8 +24,8 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     case 'POST':
         $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
-        if (isset($_GET['request'])) {
-            echo json_encode(request($db, $body["message"]));
+        if (isset($_GET['check-message'])) {
+            echo json_encode(check_message($db, $body["message"]));
             break;
         }
 
@@ -69,7 +69,7 @@ function get_list_leet(mysqli $db)
     return $result;
 }
 
-function request(mysqli $db, $message)
+function check_message(mysqli $db, $message)
 {
     $result = null;
 
