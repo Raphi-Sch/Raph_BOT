@@ -53,7 +53,7 @@ while($row = $data->fetch_assoc()){
             <thead>
                 <tr>
                     <th class="col-xs-3">Client</th>
-                    <th class="col-xs-1">Expiration date</th>
+                    <th class="col-xs-2">Expiration date</th>
                     <th>Note</th>
                     <th class="col-xs-2"><button type="button" class="btn btn-success pull-right" onclick='authAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
