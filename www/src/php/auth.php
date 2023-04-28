@@ -26,6 +26,10 @@ $data_auth = db_query(
     [$headers['Client'], $headers['Authorization']]
 );
 
-if (empty($data_auth) || (!empty($data_auth['expiration']) && $data_auth['expiration'] < $current_datetime)) {
+if (empty($data_auth)) {
     unauhorized("Client and Authorization token do not match");
+}
+
+if (!empty($data_auth['expiration']) && $data_auth['expiration'] < $current_datetime){
+    unauhorized("Authorization token expired");
 }
