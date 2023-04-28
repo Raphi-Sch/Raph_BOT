@@ -100,10 +100,14 @@ function createPlayer(data) {
 }
 
 function errorAPI(result, status, error) {
+    if(result.responseJSON){
+        error = error + "<br/>" +  result.responseJSON.message;
+    }
+
     Swal.fire({
-        title: "API Error while loading",
+        title: `API Error while loading`,
         icon: 'error',
-        text: error
+        html: error
     })
 }
 
