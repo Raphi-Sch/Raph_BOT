@@ -3,8 +3,7 @@
     "db_user" : "",
     "db_pass" : "",
     "db_name" : "",
-    
     "socket_port" : 3000,
-
-    "API_URL" : "<PATH_TO_SERVER>/www/api/"
+    "client" : "",
+    "token" : ""
 }

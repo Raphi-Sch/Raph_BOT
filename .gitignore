@@ -3,6 +3,7 @@
 
 # Config File
 /config*.json
+core/config.json
 
 # Test file
 test*.*
