@@ -66,8 +66,8 @@ function auth_delete($db)
 function auth_renew($db)
 {
     $id = $_POST['id'];
-    $token = "Basic " . base64_encode(random_bytes(32));
-    $hash = password_hash($token, PASSWORD_BCRYPT);
+    $token = base64_encode(random_bytes(32));
+    $hash = password_hash("Basic " . $token, PASSWORD_BCRYPT);
 
     db_query_no_result(
         $db,
