@@ -18,7 +18,6 @@ if (!isset($headers['Client']) || empty($headers['Client'])) {
     unauhorized("Invalid client");
 }
 
-$current_datetime = date('Y-m-d H:i:s');
 $data_auth = db_query(
     $db,
     "SELECT expiration FROM `authentication` WHERE client = ? AND token = ?",
@@ -30,6 +29,6 @@ if (empty($data_auth)) {
     unauhorized("Client and Authorization token do not match");
 }
 
-if (!empty($data_auth['expiration']) && $data_auth['expiration'] < $current_datetime){
+if (!empty($data_auth['expiration']) && ($data_auth['expiration'] < date('Y-m-d H:i:s'))){
     unauhorized("Authorization token expired");
 }
