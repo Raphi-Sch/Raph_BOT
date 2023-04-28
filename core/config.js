@@ -1,10 +1,12 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-const config_file = require("../config.json");
+const config_file = require("./config.json");
 
 const config = {
     // From file
     api_url: config_file.API_URL,
     socket_port: config_file.socket_port,
+    client: config_file.client,
+    token: config_file.token,
 
     // From DB
     bot_name: "",
@@ -32,7 +34,12 @@ const config = {
 async function load() {
     const response = await fetch(config.api_url + "config.php?list", {
         method: "get",
-        headers: { "Content-Type": "application/json" }
+        headers: { 
+            "Content-Type" : "application/json",
+            "Authorization" : `Basic ${config.token}`,
+            "Client" : config.client
+        }
+        
     })
 
     if (response.ok) {
@@ -50,7 +57,7 @@ async function load() {
         return null;
     } else {
         console.error("Unable to load configuration from API, starting aborted.")
-        console.error("API ERROR : " + response.status);
+        console.error(`API ERROR : ${response.status} ${response.statusText}`);
         process.exit(1);
     }
 }
