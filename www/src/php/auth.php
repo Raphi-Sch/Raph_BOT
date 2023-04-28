@@ -20,12 +20,12 @@ if (!isset($headers['Client']) || empty($headers['Client'])) {
 
 $data_auth = db_query(
     $db,
-    "SELECT expiration FROM `authentication` WHERE client = ? AND token = ?",
-    "ss",
-    [$headers['Client'], $headers['Authorization']]
+    "SELECT token_hash, expiration FROM `authentication` WHERE client = ?",
+    "s",
+    $headers['Client']
 );
 
-if (empty($data_auth)) {
+if (!password_verify($headers['Authorization'], $data_auth['token_hash'])) {
     unauhorized("Client and Authorization token do not match");
 }
 
