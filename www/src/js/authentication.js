@@ -1,4 +1,37 @@
-function authEdit(data){
+function authAdd() {
+    Swal.fire({
+        title: "Add authentication",
+        icon: 'question',
+        showCancelButton: true,
+        showConfirmButton: true,
+        focusConfirm: false,
+        allowOutsideClick: false,
+        confirmButtonText: 'Add',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.value) {
+            $.post("src/php/POST_authentication.php", {
+                action: 'auth-add'
+            }, function (data) {
+                data = JSON.parse(data);
+                if (data) {
+                    Swal.fire({
+                        title: `Token generated, don't forget to copy it`,
+                        icon: 'info',
+                        text: `${data.token}`,
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                        allowEnterKey: false
+                    }).then(() => {
+                        document.location.reload();
+                    })
+                }
+            });
+        }
+    });
+}
+
+function authEdit(data) {
     element = JSON.parse(data);
 
     Swal.fire({
@@ -30,7 +63,7 @@ function authEdit(data){
     })
 }
 
-function authDelete(data){
+function authDelete(data) {
     element = JSON.parse(data);
 
     Swal.fire({
@@ -53,7 +86,7 @@ function authDelete(data){
     })
 }
 
-function authRenew(data){
+function authRenew(data) {
     element = JSON.parse(data);
 
     Swal.fire({
@@ -66,10 +99,22 @@ function authRenew(data){
     }).then((result) => {
         if (result.value) {
             $.post("src/php/POST_authentication.php", {
-                action: "auth-renew",
+                action: 'auth-renew',
                 id: element.id
-            }, function () {
-                document.location.reload();
+            }, function (data) {
+                if (data) {
+                    data = JSON.parse(data);
+                    Swal.fire({
+                        title: `Token generated, don't forget to copy it`,
+                        icon: 'info',
+                        text: `${data.token}`,
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                        allowEnterKey: false
+                    }).then(() => {
+                        document.location.reload();
+                    })
+                }
             });
         }
     })
