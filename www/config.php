@@ -52,7 +52,7 @@ $token_URL = "https://id.twitch.tv/oauth2/authorize?response_type=token&client_i
     <script>
         $(document).ready(function() {
             // Active the corresponding button in the navbar
-            document.getElementById("core").className = "active";
+            document.getElementById("config").className = "active";
         });
 
         if (window.location.hash !== "") {
