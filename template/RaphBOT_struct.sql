@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `authentication` (
   `id` int(11) NOT NULL,
   `client` varchar(64) NOT NULL,
-  `token` text NOT NULL,
+  `token_hash` text NOT NULL,
   `expiration` datetime DEFAULT NULL,
   `note` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
