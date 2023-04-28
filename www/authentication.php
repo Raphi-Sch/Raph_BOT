@@ -10,6 +10,7 @@ while($row = $data->fetch_assoc()){
     $exp = empty($row['expiration']) ? "None" : $row['expiration'];
     $note = $row['note'];
 
+    $data_renew = ['id' => $row['id'], 'client' => $row['client']];
     $data_edit = ['id' => $row['id'], 'client' => $row['client'], 'expiration' => $row['expiration'], 'note' => $row['note']];
     $data_del = ['id' => $row['id'], 'client' => $row['client']];
 
@@ -19,7 +20,7 @@ while($row = $data->fetch_assoc()){
         <td>$note</td>
         <td>
             <span class='pull-right'>
-                <button class='btn btn-info' onclick='authRenew(`".json_encode($data_edit)."`)'><i class='glyphicon glyphicon-refresh'></i></button>
+                <button class='btn btn-info' onclick='authRenew(`".json_encode($data_renew)."`)'><i class='glyphicon glyphicon-refresh'></i></button>
                 <button class='btn btn-warning' onclick='authEdit(`".json_encode($data_edit)."`)'><i class='glyphicon glyphicon-pencil'></i></button>
                 <button class='btn btn-danger' onclick='authDelete(`".json_encode($data_del)."`)'><i class='glyphicon glyphicon-remove'></i></button>
             </span>
