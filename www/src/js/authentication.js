@@ -11,7 +11,7 @@ function authEdit(data){
             <input type='date' class='form-control' name='expiration' value='${element.expiration}'>
             <br/>
             <label>Note</label>
-            <input type='text' class='form-control' name='expiration' value='${element.note}'>
+            <input type='text' class='form-control' name='expiration' value='${(element.note === null) ? "" : element.note}'>
             <br/>
             </form>`,
         showCancelButton: true,
