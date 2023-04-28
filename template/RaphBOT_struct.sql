@@ -24,6 +24,18 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `authentication`
+--
+
+CREATE TABLE `authentication` (
+  `id` int(11) NOT NULL,
+  `client` varchar(64) NOT NULL,
+  `token` text NOT NULL,
+  `expiration` datetime DEFAULT NULL,
+  `note` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
 -- Structure de la table `commands`
 --
 
@@ -235,6 +247,12 @@ CREATE TABLE `users` (
 --
 
 --
+-- Index pour la table `authentication`
+--
+ALTER TABLE `authentication`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `commands`
 --
 ALTER TABLE `commands`
@@ -328,6 +346,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT pour les tables déchargées
 --
+
+--
+-- AUTO_INCREMENT pour la table `authentication`
+--
+ALTER TABLE `authentication`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `commands`
