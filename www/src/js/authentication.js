@@ -16,12 +16,16 @@ function authAdd() {
                 data = JSON.parse(data);
                 if (data) {
                     Swal.fire({
-                        title: `Token generated, don't forget to copy it`,
+                        title: `Token generated (copied to clipboard)`,
                         icon: 'info',
-                        text: `${data.token}`,
+                        width: '25%',
+                        html: `<p id='swal-token'>${data.token}</p>`,
                         allowEscapeKey: false,
                         allowOutsideClick: false,
-                        allowEnterKey: false
+                        allowEnterKey: false,
+                        didOpen: () => {
+                            navigator.clipboard.writeText(document.getElementById('swal-token').innerText);
+                        }
                     }).then(() => {
                         document.location.reload();
                     })
@@ -105,12 +109,16 @@ function authRenew(data) {
                 if (data) {
                     data = JSON.parse(data);
                     Swal.fire({
-                        title: `Token generated, don't forget to copy it`,
+                        title: `Token renewed (copied to clipboard)`,
                         icon: 'info',
-                        text: `${data.token}`,
+                        width: '25%',
+                        html: `<p id='swal-token'>${data.token}</p>`,
                         allowEscapeKey: false,
                         allowOutsideClick: false,
-                        allowEnterKey: false
+                        allowEnterKey: false,
+                        didOpen: () => {
+                            navigator.clipboard.writeText(document.getElementById('swal-token').innerText);
+                        }
                     }).then(() => {
                         document.location.reload();
                     })
