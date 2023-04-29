@@ -3,6 +3,8 @@ require_once('../src/php/db.php');
 
 $db = db_connect("../../config.json");
 
+require_once('../src/php/auth.php');
+
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['plugin'])) {
