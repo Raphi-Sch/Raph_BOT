@@ -1,6 +1,22 @@
 {
-    "version":"6.0.x",
+    "version": "7.0.x",
     "table": {
+        "authentication": {
+            "fields": [
+                "id",
+                "client",
+                "token_hash",
+                "expiration",
+                "note"
+            ],
+            "types": {
+                "id": "INT(11) NULL DEFAULT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
+                "client": "text NOT NULL",
+                "token_hash": "text NOT NULL",
+                "expiration": "date DEFAULT NULL",
+                "note": "text DEFAULT NULL"
+            }
+        },
         "commands": {
             "fields": [
                 "id",
@@ -11,15 +27,15 @@
                 "sub_only",
                 "tts"
             ],
-            "types": { 
-                "id" : "INT(11) NULL DEFAULT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
-                "command" : "TEXT NULL",
-                "value" : "TEXT NULL",
-                "auto" : "BOOLEAN NOT NULL DEFAULT FALSE",
-                "mod_only" : "BOOLEAN NOT NULL DEFAULT FALSE",
-                "sub_only" : "BOOLEAN NOT NULL DEFAULT FALSE",
-                "tts" : "BOOLEAN NOT NULL DEFAULT FALSE"
-            }            
+            "types": {
+                "id": "INT(11) NULL DEFAULT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
+                "command": "TEXT NULL",
+                "value": "TEXT NULL",
+                "auto": "BOOLEAN NOT NULL DEFAULT FALSE",
+                "mod_only": "BOOLEAN NOT NULL DEFAULT FALSE",
+                "sub_only": "BOOLEAN NOT NULL DEFAULT FALSE",
+                "tts": "BOOLEAN NOT NULL DEFAULT FALSE"
+            }
         },
         "commands_alias": {
             "fields": [
@@ -27,10 +43,10 @@
                 "alias",
                 "command"
             ],
-            "types":{
-                "id" : "INT(11) NULL DEFAULT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
-                "alias" : "text NOT NULL",
-                "command" : "text NOT NULL"
+            "types": {
+                "id": "INT(11) NULL DEFAULT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
+                "alias": "text NOT NULL",
+                "command": "text NOT NULL"
             }
         },
         "commands_audio": {
@@ -46,15 +62,15 @@
                 "sub_only"
             ],
             "types": {
-                "id" : "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
-                "name" : "text NOT NULL",
-                "trigger_word" : "varchar(20) NOT NULL",
-                "file" : "text NOT NULL",
-                "volume" : "float NOT NULL DEFAULT 1",
-                "timeout" : "int(11) NOT NULL",
-                "active" : "tinyint(1) NOT NULL DEFAULT 1",
-                "mod_only" : "tinyint(1) NOT NULL DEFAULT 0",
-                "sub_only" : "tinyint(1) NOT NULL DEFAULT 0"
+                "id": "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
+                "name": "text NOT NULL",
+                "trigger_word": "varchar(20) NOT NULL",
+                "file": "text NOT NULL",
+                "volume": "float NOT NULL DEFAULT 1",
+                "timeout": "int(11) NOT NULL",
+                "active": "tinyint(1) NOT NULL DEFAULT 1",
+                "mod_only": "tinyint(1) NOT NULL DEFAULT 0",
+                "sub_only": "tinyint(1) NOT NULL DEFAULT 0"
             }
         },
         "config": {
@@ -66,11 +82,11 @@
                 "help"
             ],
             "types": {
-                "id" : "varchar(30) NOT NULL",
-                "value" : "text NOT NULL",
-                "hidden" : "tinyint(1) DEFAULT 0",
-                "type" : "tinyint(4) NOT NULL DEFAULT 0",
-                "help" : "text NULL"
+                "id": "varchar(30) NOT NULL",
+                "value": "text NOT NULL",
+                "hidden": "tinyint(1) DEFAULT 0",
+                "type": "tinyint(4) NOT NULL DEFAULT 0",
+                "help": "text NULL"
             }
         },
         "moderator": {
@@ -83,12 +99,12 @@
                 "reason"
             ],
             "types": {
-                "id" : "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
-                "trigger_word" : "text NOT NULL",
-                "mod_action" : "tinyint(1) NOT NULL",
-                "explanation" : "text NOT NULL",
-                "duration" : "int(11) NOT NULL",
-                "reason" : "text NOT NULL"
+                "id": "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
+                "trigger_word": "text NOT NULL",
+                "mod_action": "tinyint(1) NOT NULL",
+                "explanation": "text NOT NULL",
+                "duration": "int(11) NOT NULL",
+                "reason": "text NOT NULL"
             }
         },
         "reactions": {
@@ -101,12 +117,12 @@
                 "tts"
             ],
             "types": {
-                "id" : "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
-                "trigger_word" : "varchar(30) NOT NULL",
-                "reaction" : "text NOT NULL",
-                "frequency" : "tinyint(4) NOT NULL",
-                "timeout" : "int(11) NOT NULL",
-                "tts" : "BOOLEAN NOT NULL DEFAULT FALSE"
+                "id": "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
+                "trigger_word": "varchar(30) NOT NULL",
+                "reaction": "text NOT NULL",
+                "frequency": "tinyint(4) NOT NULL",
+                "timeout": "int(11) NOT NULL",
+                "tts": "BOOLEAN NOT NULL DEFAULT FALSE"
             }
         },
         "shout": {
@@ -118,11 +134,11 @@
                 "type"
             ],
             "types": {
-                "id" : "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
-                "original" : "text NOT NULL",
-                "replacement" : "text NOT NULL",
-                "language" : "text NOT NULL",
-                "type" : "int(11) NOT NULL DEFAULT 0"
+                "id": "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
+                "original": "text NOT NULL",
+                "replacement": "text NOT NULL",
+                "language": "text NOT NULL",
+                "type": "int(11) NOT NULL DEFAULT 0"
             }
         },
         "tanks": {
@@ -138,15 +154,15 @@
                 "type"
             ],
             "types": {
-                "id" : "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
-                "trigger_word" : "varchar(30) NOT NULL",
-                "nation" : "text NOT NULL",
-                "tier" : "tinyint(2) NOT NULL",
-                "name" : "text NOT NULL",
-                "mark" : "tinyint(1) NOT NULL",
-                "max_dmg" : "int(5) NOT NULL",
-                "note" : "text NULL",
-                "type" : "varchar(10) NOT NULL"
+                "id": "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
+                "trigger_word": "varchar(30) NOT NULL",
+                "nation": "text NOT NULL",
+                "tier": "tinyint(2) NOT NULL",
+                "name": "text NOT NULL",
+                "mark": "tinyint(1) NOT NULL",
+                "max_dmg": "int(5) NOT NULL",
+                "note": "text NULL",
+                "type": "varchar(10) NOT NULL"
             }
         },
         "tanks_alias": {
@@ -155,8 +171,8 @@
                 "tank"
             ],
             "types": {
-                "alias" : "varchar(30) NOT NULL",
-                "tank" : "text NOT NULL"
+                "alias": "varchar(30) NOT NULL",
+                "tank": "text NOT NULL"
             }
         },
         "tanks_nation": {
@@ -165,8 +181,8 @@
                 "nation"
             ],
             "types": {
-                "alias" : "varchar(30) NOT NULL",
-                "nation" : "text NOT NULL"
+                "alias": "varchar(30) NOT NULL",
+                "nation": "text NOT NULL"
             }
         },
         "users": {
@@ -175,8 +191,8 @@
                 "password"
             ],
             "types": {
-                "username" : "varchar(20) NOT NULL",
-                "password" : "text DEFAULT 0"
+                "username": "varchar(20) NOT NULL",
+                "password": "text DEFAULT 0"
             }
         }
     }
