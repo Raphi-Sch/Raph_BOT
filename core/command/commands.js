@@ -65,7 +65,11 @@ function resetMessageCounter() {
 async function loadAutoCommand() {
     const response = await fetch(config.api_url + "commands.php?list-auto", {
         method: "get",
-        headers: { "Content-Type": "application/json" }
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${config.token}`,
+            "Client": config.client
+        }
     })
 
     if (response.ok) {
@@ -73,7 +77,8 @@ async function loadAutoCommand() {
         return json;
 
     } else {
-        console.error("API ERROR : " + response.status);
+        console.error(`[COMMAND] API ERROR : ${response.status} ${response.statusText}`);
+        console.error('[COMMAND] Unable to load auto commands');
         return null;
     }
 }
@@ -84,14 +89,19 @@ async function loadAutoCommand() {
  */
 async function autoCommand() {
     const list = await loadAutoCommand();
-    let index;
-    do {
-        index = Math.floor(Math.random() * Math.floor(list.length));
-    } while (index === last_auto_cmd && list.length > 1)
 
-    last_auto_cmd = index;
+    if (list !== null) {
+        let index;
+        do {
+            index = Math.floor(Math.random() * Math.floor(list.length));
+        } while (index === last_auto_cmd && list.length > 1)
 
-    return run(null, config.cmd_prefix + list[index]);
+        last_auto_cmd = index;
+
+        return run(null, config.cmd_prefix + list[index]);
+    }
+
+    return null;
 }
 
 function run(user, message) {
