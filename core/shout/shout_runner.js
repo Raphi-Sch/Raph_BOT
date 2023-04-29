@@ -34,7 +34,11 @@ async function queryAPI(message, language) {
     const response = await fetch(config.api_url + "shout.php?request", {
         method: "post",
         body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" }
+        headers: { 
+            "Content-Type": "application/json",
+            "Authorization" : `Bearer ${config.token}`,
+            "Client" : config.client
+        }
     })
 
     if (response.ok) {

@@ -1,9 +1,10 @@
 <?php
 
 require_once('../src/php/db.php');
-header('Content-Type: application/json');
-
 $db = db_connect("../../config.json");
+require_once('../src/php/auth.php');
+
+header('Content-Type: application/json');
 
 // Abort after 2s
 set_time_limit(2);
