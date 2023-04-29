@@ -29,7 +29,7 @@ exit();
 function auth_add($db)
 {
     $client = guidv4();
-    $token = "Basic " . base64_encode(random_bytes(32));
+    $token = base64_encode(random_bytes(32));
     $hash = password_hash($token, PASSWORD_BCRYPT);
 
     db_query_no_result(
@@ -67,7 +67,7 @@ function auth_renew($db)
 {
     $id = $_POST['id'];
     $token = base64_encode(random_bytes(32));
-    $hash = password_hash("Basic " . $token, PASSWORD_BCRYPT);
+    $hash = password_hash($token, PASSWORD_BCRYPT);
 
     db_query_no_result(
         $db,

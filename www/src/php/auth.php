@@ -14,6 +14,14 @@ if (!isset($headers['Authorization']) || empty($headers['Authorization'])) {
     unauhorized("Invalid Authorization token");
 }
 
+$headers['Authorization'] = explode(" ", $headers['Authorization'], 2);
+
+error_log(print_r($headers, true));
+
+if ($headers['Authorization'][0] !== "Bearer"){
+    unauhorized("Wrong token type, must be 'Bearer'");
+}
+
 if (!isset($headers['Client']) || empty($headers['Client'])) {
     unauhorized("Invalid client");
 }
@@ -25,7 +33,7 @@ $data_auth = db_query(
     $headers['Client']
 );
 
-if (!password_verify($headers['Authorization'], $data_auth['token_hash'])) {
+if (!password_verify($headers['Authorization'][1], $data_auth['token_hash'])) {
     unauhorized("Client and Authorization token do not match");
 }
 
