@@ -88,8 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 
-    <script src="src/js/common.js"></script>
-
     <?php require_once("src/php/alert.php"); ?>
 </body>
 
