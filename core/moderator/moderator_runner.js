@@ -44,6 +44,8 @@ async function checkMessage(user, message, twitchAPI) {
         console.error(err);
         return null;
     }
+
+    return null;
 }
 
 async function command(command, user, twitchAPI) {
