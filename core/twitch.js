@@ -61,15 +61,15 @@ function init() {
 
         const commandResult = await commands.run(user, message)
         if (commandResult !== null) {
-            if (commandResult !== true) {
+            if (commandResult !== true)
                 send(commandResult);
-            }
             return;
         }
 
         const reactionResult = await reaction.run(user, message);
-        if (reactionResult) {
-            send(reactionResult);
+        if (reactionResult !== null) {
+            if (reactionResult !== true)
+                send(reactionResult);
             return;
         }
 
