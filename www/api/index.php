@@ -1,4 +1,1 @@
-<?php
-
-echo "<h2>What the f*** are you doing here ?!</h2>";
-exit();
+<h2>Nothing to see here.</h2>
