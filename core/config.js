@@ -36,10 +36,9 @@ async function load() {
         method: "get",
         headers: { 
             "Content-Type" : "application/json",
-            "Authorization" : `Basic ${config.token}`,
+            "Authorization" : `Bearer ${config.token}`,
             "Client" : config.client
         }
-        
     })
 
     if (response.ok) {
