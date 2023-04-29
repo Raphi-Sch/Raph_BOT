@@ -30,6 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['username'] = $username;
             $_SESSION['login'] = true;
 
+            // API Token
+            $data_api = json_decode(file_get_contents("../config.json"), true);
+            setcookie('raphbot_api_client', $data_api['client'], time()+60*60*24, '/');
+            setcookie('raphbot_api_token', $data_api['token'], time()+60*60*24, '/');
+
             if (isset($_POST['redirect']) && !empty($_POST['redirect']))
                 header('Location: ' . $_POST['redirect']);
             else
