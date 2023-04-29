@@ -16,8 +16,6 @@ if (!isset($headers['Authorization']) || empty($headers['Authorization'])) {
 
 $headers['Authorization'] = explode(" ", $headers['Authorization'], 2);
 
-error_log(print_r($headers, true));
-
 if ($headers['Authorization'][0] !== "Bearer"){
     unauhorized("Wrong token type, must be 'Bearer'");
 }
