@@ -26,6 +26,12 @@ NodeJS module:
 - Use raphbot_struct.sql and raphbot_data.sql to configure your database with the required tables
 - Make sure the folder 'core' can be written by the web server (needed for log files)
 
+### WebUI
+- Move "config_UI.json" from the template folder to the root folder and rename it "config.json" (mv ./template/config_UI.json ./config.json)
+- Open "config.json"
+- Setup your database config (host, user, password, database)
+- Set "socket_port" (default is 3000)
+
 ### Create auth token
 - Log into RaphBOT WebUI (default user is 'admin' with password '0'), ignore all errors related to "API ERROR". You don't have any pair of client/token yet.
 - Go to "Authentication", create two key. One is for the core, the other for the WebUI
@@ -35,13 +41,11 @@ NodeJS module:
 - Open "config.json"
 - Set "client" and "token" with the information you got earlier
 - Set "API_URL" with the complete URL to access the RaphBOT API
-- Set "socket_port" (default is 3000)
+- Set "socket_port" (default is 3000), it need to match the port you set earlier
 
-### WebUI
-- Move "config_UI.json" from the template folder to the root folder and rename it "config.json" (mv ./template/config_UI.json ./config.json)
+### WebUI (next)
 - Open "config.json"
-- Setup your database config (host, user, password, database)
-- Set "socket_port" (default is 3000). It need to match the port you set earlier
+- Set "client" and "token" with the information you got earlier
 
 ### Configure bot
 - Log into the dashboard
