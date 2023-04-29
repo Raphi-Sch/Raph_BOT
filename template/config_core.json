@@ -1,4 +1,5 @@
 {
+    "version":"7.0.x",
     "socket_port" : 3000,
     "API_URL" : "<PATH_TO_SERVER>/api/",
     "client" : "",
