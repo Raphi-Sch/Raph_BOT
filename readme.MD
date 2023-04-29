@@ -19,31 +19,31 @@ NodeJS module:
 - node-fetch : ^3.3.1,
 - gtts : ^0.2.1
 
-# First time setup (Debian based distro)
+# First time setup
 
-## Backend
+### Backend
 - Configure your web server so it uses the 'www' folder as document root. The virtual host must be HTTPS.
 - Use raphbot_struct.sql and raphbot_data.sql to configure your database with the required tables
 - Make sure the folder 'core' can be written by the web server (needed for log files)
 
-## Create auth token
+### Create auth token
 - Log into RaphBOT WebUI (default user is 'admin' with password '0'), ignore all errors related to "API ERROR". You don't have any pair of client/token yet.
 - Go to "Authentication", create two key. One is for the core, the other for the WebUI
 
-## Core config
+### Core config
 - Move "config_core.json" from the template folder to the root folder and rename it "config.json" (mv ./template/config_UI.json ./core/config.json)
 - Open "config.json"
 - Set "client" and "token" with the information you got earlier
 - Set "API_URL" with the complete URL to access the RaphBOT API
 - Set "socket_port" (default is 3000)
 
-## WebUI
+### WebUI
 - Move "config_UI.json" from the template folder to the root folder and rename it "config.json" (mv ./template/config_UI.json ./config.json)
 - Open "config.json"
 - Setup your database config (host, user, password, database)
 - Set "socket_port" (default is 3000). It need to match the port you set earlier
 
-# Configure bot
+### Configure bot
 - Log into the dashboard
 - Got to the "Configuration" tab and setup your twitch key, etc.
 
