@@ -71,7 +71,7 @@ async function queryAPI(fullCommand) {
     if (response.ok) {
         return response.json();
     } else {
-        console.error("[COMMAND] API ERROR : " + response.status);
+        console.error(`[COMMAND] API ERROR : ${response.status} ${response.statusText}`);
         console.error("Context : ");
         console.error(body);
         console.error("-------------------");
