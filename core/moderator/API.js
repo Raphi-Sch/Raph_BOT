@@ -9,13 +9,17 @@ async function checkMessage(message){
     const response = await fetch(config.api_url + "moderator.php?check-message", {
         method: "post",
         body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" }
+        headers: { 
+            "Content-Type": "application/json",
+            "Authorization" : `Bearer ${config.token}`,
+            "Client" : config.client
+        }
     })
     
     if (response.ok) {
         return await response.json();
     } else {
-        console.error("[MODERATOR] API ERROR : " + response.status);
+        console.error(`[MODERATOR] API ERROR : ${response.status} ${response.statusText}`);
         console.error("Function checkMessage(), Context : ");
         console.error(message);
         console.error("-------------------");
@@ -32,13 +36,17 @@ async function warnUser(user){
     const response = await fetch(config.api_url + "moderator.php?warn-user", {
         method: "post",
         body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" }
+        headers: { 
+            "Content-Type": "application/json",
+            "Authorization" : `Bearer ${config.token}`,
+            "Client" : config.client
+        }
     })
     
     if (response.ok) {
         return await response.json();
     } else {
-        console.error("[MODERATOR] API ERROR : " + response.status);
+        console.error(`[MODERATOR] API ERROR : ${response.status} ${response.statusText}`);
         console.error("Function warnUser(), Context : ");
         console.error(body);
         console.error("-------------------");
