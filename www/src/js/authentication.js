@@ -44,6 +44,7 @@ function authEdit(data) {
         html: `<form id='swal-form'>
             <input type='hidden' name='action' value='auth-edit'>
             <input type='hidden' name='id' value='${element.id}'>
+            <input type='hidden' name='client' value='${element.client}'>
             <label>Expiration date</label>
             <input type='date' class='form-control' name='expiration' value='${element.expiration}'>
             <br/>
@@ -82,7 +83,8 @@ function authDelete(data) {
         if (result.value) {
             $.post("src/php/POST_authentication.php", {
                 action: "auth-del",
-                id: element.id
+                id: element.id,
+                client: element.client
             }, function () {
                 document.location.reload();
             });
@@ -104,7 +106,8 @@ function authRenew(data) {
         if (result.value) {
             $.post("src/php/POST_authentication.php", {
                 action: 'auth-renew',
-                id: element.id
+                id: element.id,
+                client: element.client
             }, function (data) {
                 if (data) {
                     data = JSON.parse(data);

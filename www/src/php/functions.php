@@ -1,6 +1,7 @@
 <?php
 
-function guidv4($data = null) {
+function guidv4($data = null)
+{
     // Generate 16 bytes (128 bits) of random data or use the data passed into the function.
     $data = $data ?? random_bytes(16);
     assert(strlen($data) == 16);
@@ -14,7 +15,8 @@ function guidv4($data = null) {
     return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
 }
 
-function file_upload($file_field, $dest_dir, $name_prefix = "", $original_name = false, $new_name = "", $extension = ""){
+function file_upload($file_field, $dest_dir, $name_prefix = "", $original_name = false, $new_name = "", $extension = "")
+{
     // Return true if everything OK.
     $MAX_FILE_SIZE = 10485760;
     try {
@@ -39,7 +41,7 @@ function file_upload($file_field, $dest_dir, $name_prefix = "", $original_name =
         // You should also check filesize here. 1MB = 1048576 Bytes
         if ($_FILES[$file_field]['size'] > $MAX_FILE_SIZE) {
             $size = $_FILES[$file_field]['size'] / $MAX_FILE_SIZE;
-            throw new RuntimeException("File size is larger than the server allows. (Limit : ".number_format($MAX_FILE_SIZE/1048576, 2)." MB, Your file : ".number_format($_FILES[$file_field]['size'] / 1048576, 2)." MB).");
+            throw new RuntimeException("File size is larger than the server allows. (Limit : " . number_format($MAX_FILE_SIZE / 1048576, 2) . " MB, Your file : " . number_format($_FILES[$file_field]['size'] / 1048576, 2) . " MB).");
         }
 
         // Check MIME
@@ -55,31 +57,40 @@ function file_upload($file_field, $dest_dir, $name_prefix = "", $original_name =
         }
 
         // Name
-        if($original_name)
+        if ($original_name)
             $name = pathinfo($_FILES[$file_field]['name'])['filename'];
         else
-            if(empty($new_name))
-                $name = sha1_file($_FILES[$file_field]['tmp_name']);
-            else
-                $name = $new_name;
+            if (empty($new_name))
+            $name = sha1_file($_FILES[$file_field]['tmp_name']);
+        else
+            $name = $new_name;
 
         // Extension
-        if($extension){
+        if ($extension) {
             $ext = $extension;
         }
 
         // Move
-        if (!move_uploaded_file($_FILES[$file_field]['tmp_name'],sprintf("$dest_dir/%s.%s",$name_prefix.$name,$ext))) {
+        if (!move_uploaded_file($_FILES[$file_field]['tmp_name'], sprintf("$dest_dir/%s.%s", $name_prefix . $name, $ext))) {
             throw new RuntimeException('Unable to move the file.');
         }
-    }
-    catch (RuntimeException $e) {
+    } catch (RuntimeException $e) {
         $_SESSION['alert'] = ["error", "Error when receiving the file", $e->getMessage()];
         return false; // Error append
     }
-    return $name.".".$ext; // Everything OK
+    return $name . "." . $ext; // Everything OK
 }
 
-function error_post(){
-    error_log("UNAUTHORIZED Request method :". $_SERVER['REQUEST_METHOD']. ", on : " . $_SERVER['REQUEST_URI'] . ", referer : " . $_SERVER['HTTP_REFERER']);
+function error_post()
+{
+    error_log("UNAUTHORIZED Request method :" . $_SERVER['REQUEST_METHOD'] . ", on : " . $_SERVER['REQUEST_URI'] . ", referer : " . $_SERVER['HTTP_REFERER']);
+}
+
+function log_activity($db, $user, $title, $message = null)
+{
+    if ($message) {
+        $title = $title  . " (" . $message . ")";
+    }
+
+    db_query_no_result($db, "INSERT INTO `activity` (`id`, `datetime`, `user`, `note`) VALUES (NULL, ?, ?, ?)", "sss", [date('Y-m-d H:i:s'), $user, $title]);
 }
