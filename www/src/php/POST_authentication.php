@@ -2,7 +2,6 @@
 
 require_once("./header-post.php");
 
-
 switch ($_POST['action']) {
     case "auth-add":
         echo json_encode(auth_add($db));
@@ -39,6 +38,7 @@ function auth_add($db)
         [$client, $hash]
     );
 
+    log_activity($db, $_SESSION['username'], "[AUTH] Key added", $client);
     return ['token' => $token];
 }
 
@@ -54,12 +54,14 @@ function auth_edit($db)
         [$note, $expiration, $_POST['id']]
     );
 
+    log_activity($db, $_SESSION['username'], "[AUTH] Key edited", $_POST['client']);
     exit();
 }
 
 function auth_delete($db)
 {
     db_query_no_result($db, "DELETE FROM `authentication` WHERE id = ?", "i", $_POST['id']);
+    log_activity($db, $_SESSION['username'], "[AUTH] Key removed", $_POST['client']);
     exit();
 }
 
@@ -76,5 +78,6 @@ function auth_renew($db)
         [$hash, $id]
     );
 
+    log_activity($db, $_SESSION['username'], "[AUTH] Key renew", $_POST['client']);
     return ['token' => $token];
 }
