@@ -64,8 +64,7 @@ function reactionEdit(data) {
     Swal.fire({
         title: `Editing : "${data.trigger_word}"`,
         icon: 'info',
-        html: `<form id='swal-form' method='post'>
-            <input type='hidden' name='action' value='edit'>
+        html: `<form id='swal-form'>
             <input type='hidden' name='id' value='${data.id}'>
             <label>Trigger</label><input class='form-control' type='text' name='trigger' value="${data.trigger_word}"><br/>
             <label>Reaction</label><textarea class='form-control' type='text' name='reaction'>${data.reaction}</textarea><br/>
@@ -82,10 +81,26 @@ function reactionEdit(data) {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_reactions.php', FORM_DATA).done(function () {
-                list(true);
-            });
+            const FORM =  document.getElementById('swal-form');
+            const FORM_DATA = {
+                'id': FORM.id.value,
+                'trigger': FORM.trigger.value,
+                'reaction': FORM.reaction.value,
+                'frequency': FORM.frequency.value,
+                'timeout': FORM.timeout.value,
+                'tts': FORM.tts.checked,
+            };
+            
+            $.ajax({
+                url: "api/reactions.php",
+                type: "PATCH",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    list(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }

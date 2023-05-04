@@ -35,6 +35,18 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         header("HTTP/1.0 400 Bad request");
         break;
 
+    case 'PATCH':
+        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+
+        if (isset($body['id'])) {
+            header('Content-Type: application/json');
+            echo json_encode(edit($db, $body));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
     case 'DELETE':
         if (isset($_GET['id'])) {
             echo json_encode(delete($db, $_GET['id']));
@@ -108,6 +120,18 @@ function get_list(mysqli $db)
     }
 
     return $result;
+}
+
+function edit(mysqli $db, $data)
+{
+    $trigger = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($data['trigger'])));
+    $reaction = trim($data['reaction']);
+    $frequency = intval($data['frequency']);
+    $timeout = intval($data['timeout']);
+    $tts = intval($data['tts']);
+
+    db_query_no_result($db, "UPDATE `reactions` SET `trigger_word` = ?, `reaction` = ?, `frequency` = ?, `timeout` = ?, `tts` = ? WHERE `id` = ?", "ssiiii", [$trigger, $reaction, $frequency, $timeout, $tts, $data['id']]);
+    return true;
 }
 
 function delete(mysqli $db, int $id)
