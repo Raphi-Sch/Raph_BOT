@@ -8,6 +8,12 @@ Method : GET
 URL : http://<web_server>/api/commands.php?list-text
 ```
 
+### Headers
+Name | Value
+--- | ----
+Authorization |  Bearer YOUR_TOKEN
+Client | CLIENT_ID
+
 ### Response body
 Field | Type | Description
 ---|---|---
@@ -48,6 +54,12 @@ Method : GET
 URL : http://<web_server>/api/commands.php?list-auto
 ```
 
+### Headers
+Name | Value
+--- | ----
+Authorization |  Bearer YOUR_TOKEN
+Client | CLIENT_ID
+
 ### Exemple response 1
 ```json
 [
@@ -68,6 +80,12 @@ URL : http://<web_server>/api/commands.php?list-auto
 Method : GET
 URL : http://<web_server>/api/commands.php?list-alias
 ```
+
+### Headers
+Name | Value
+--- | ----
+Authorization |  Bearer YOUR_TOKEN
+Client | CLIENT_ID
 
 ### Response body
 Field | Type | Description
@@ -104,6 +122,12 @@ command | String | The command link to that alias
 Method : GET
 URL : http://<web_server>/api/commands.php?list-audio
 ```
+
+### Headers
+Name | Value
+--- | ----
+Authorization |  Bearer YOUR_TOKEN
+Client | CLIENT_ID
 
 ### Response body
 Field | Type | Description
@@ -158,6 +182,12 @@ sub_only | Boolean | Is the command only available to subscriber and moderator
 Method : POST
 URL : http://<web_server>/api/commands.php?request
 ```
+
+### Headers
+Name | Value
+--- | ----
+Authorization |  Bearer YOUR_TOKEN
+Client | CLIENT_ID
 
 ### Request query parameters
 Field | Type | Required | Description

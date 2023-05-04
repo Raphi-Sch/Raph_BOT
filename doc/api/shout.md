@@ -8,6 +8,12 @@ Method : GET
 URL : http://<web_server>/api/shout.php?list
 ```
 
+### Headers
+Name | Value
+--- | ----
+Authorization |  Bearer YOUR_TOKEN
+Client | CLIENT_ID
+
 ### Response body
 Field | Type | Description
 ---|---|---
@@ -38,6 +44,13 @@ type | Integer | Type of word (0 : Word, 1 : Consonant, 2 : Vowel)
 Method : POST
 URL : http://<web_server>/api/shout.php?request
 ```
+
+### Headers
+Name | Value
+--- | ----
+Authorization |  Bearer YOUR_TOKEN
+Client | CLIENT_ID
+
 ### Request query parameters
 Field | Type | Required | Description
 ---|---|---|---

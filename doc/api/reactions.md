@@ -8,6 +8,12 @@ Method : GET
 URL : http://<web_server>/api/reations.php?list
 ```
 
+### Headers
+Name | Value
+--- | ----
+Authorization |  Bearer YOUR_TOKEN
+Client | CLIENT_ID
+
 ### Response body
 Field | Type | Description
 ---|---|---
@@ -43,6 +49,13 @@ With 'trigger_word' and 'timeout' you can make an exclusion list on your end, an
 Method : POST
 URL : http://<web_server>/api/reations.php?request
 ```
+
+### Headers
+Name | Value
+--- | ----
+Authorization |  Bearer YOUR_TOKEN
+Client | CLIENT_ID
+
 ### Request query parameters
 Field | Type | Required | Description
 ---|---|---|---

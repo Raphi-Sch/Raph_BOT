@@ -8,6 +8,12 @@ Method : GET
 URL : http://<web_server>/api/moderator.php?list
 ```
 
+### Headers
+Name | Value
+--- | ----
+Authorization |  Bearer YOUR_TOKEN
+Client | CLIENT_ID
+
 ### Response body
 Field | Type | Description
 ---|---|---
@@ -39,6 +45,13 @@ reason | String | Reason send to user only
 Method : POST
 URL : http://<web_server>/api/moderator.php?request
 ```
+
+### Headers
+Name | Value
+--- | ----
+Authorization |  Bearer YOUR_TOKEN
+Client | CLIENT_ID
+
 ### Request query parameters
 Field | Type | Required | Description
 ---|---|---|---
