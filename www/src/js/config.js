@@ -14,7 +14,7 @@ function list(reload = false) {
                     displayValue = (element.value == '1' ? "Enabled" : "Disabled")
                 };
 
-                if (element.hidden){
+                if (element.hidden) {
                     displayValue = '##########';
                 }
 
@@ -74,8 +74,8 @@ function editConfig(element) {
     }).then((result) => {
         if (result.value) {
             const FORM_DATA = {
-                'id' : document.getElementById('swal-form').id.value,
-                'value' : document.getElementById('swal-form').value.value 
+                'id': document.getElementById('swal-form').id.value,
+                'value': document.getElementById('swal-form').value.value
             }
 
             $.ajax({
@@ -107,17 +107,29 @@ function showHelp(element) {
 function updateTwitchToken(hash) {
     let token = hash.substring(hash.search("access_token=") + 13, hash.search("&"));
 
-    $.post("src/php/POST_config.php", { action: "edit", id: "twitch_token", value: token }, function () {
-        Swal.fire({
-            title: `Twitch token updated !`,
-            icon: 'info',
-            showCancelButton: false,
-            focusConfirm: false,
-            allowOutsideClick: false,
-            confirmButtonText: 'Ok',
-        }).then((result) => {
-            if (result.value)
-                window.location = window.location.origin + window.location.pathname;
-        })
-    });
+    const FORM_DATA = {
+        'id': 'twitch_token',
+        'value': token
+    }
+
+    $.ajax({
+        url: "api/config.php?edit",
+        type: "PATCH",
+        dataType: "json",
+        data: JSON.stringify(FORM_DATA),
+        success: function () {
+            Swal.fire({
+                title: `Twitch token updated !`,
+                icon: 'info',
+                showCancelButton: false,
+                focusConfirm: false,
+                allowOutsideClick: false,
+                confirmButtonText: 'Ok',
+            }).then((result) => {
+                if (result.value)
+                    window.location = window.location.origin + window.location.pathname;
+            })
+        },
+        error: errorAPI
+    })
 }
