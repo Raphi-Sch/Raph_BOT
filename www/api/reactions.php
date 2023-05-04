@@ -3,6 +3,7 @@
 require_once('../src/php/db.php');
 $db = db_connect("../../config.json");
 require_once('../src/php/auth.php');
+require_once('../src/php/functions.php');
 require_once('functions.php');
 
 header('Content-Type: application/json');
@@ -143,6 +144,8 @@ function add(mysqli $db, $data)
     $timeout = intval($data['timeout']);
     $tts = intval($data['tts']);
 
+    log_activity($db, "API", "[REACTION] Created", $trigger);
+
     db_query_no_result($db, "INSERT INTO reactions (`id`, `trigger_word`, `reaction`, `frequency`, `timeout`, `tts`) VALUES (NULL, ?, ?, ?, ?, ?)", "ssiii", [$trigger, $reaction, $frequency, $timeout, $tts]);
     return true;
 }
@@ -155,12 +158,17 @@ function edit(mysqli $db, $data)
     $timeout = intval($data['timeout']);
     $tts = intval($data['tts']);
 
+    log_activity($db, "API", "[REACTION] Edited", $trigger);
+
     db_query_no_result($db, "UPDATE `reactions` SET `trigger_word` = ?, `reaction` = ?, `frequency` = ?, `timeout` = ?, `tts` = ? WHERE `id` = ?", "ssiiii", [$trigger, $reaction, $frequency, $timeout, $tts, $data['id']]);
     return true;
 }
 
 function delete(mysqli $db, int $id)
 {
+    $trigger = db_query($db, 'SELECT `trigger_word` FROM `reactions` WHERE id = ?', "s", $id)['trigger_word'];
+    log_activity($db, "API", "[REACTION] Deleted", $trigger);
+    
     db_query_no_result($db, "DELETE FROM `reactions` WHERE `id` = ?", "i", $id);
     return true;
 }
