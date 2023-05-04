@@ -101,12 +101,15 @@ function reactionDelete(data) {
         focusCancel: true
     }).then((result) => {
         if (result.value) {
-            $.post("src/php/POST_reactions.php", {
-                action: "del",
-                id: data.id
-            }, function () {
-                list(true);
-            });
+            $.ajax({
+                url: `api/reactions.php?id=${data.id}`,
+                type: "DELETE",
+                dataType: "json",
+                success: function () {
+                    list(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }

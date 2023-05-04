@@ -35,6 +35,15 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         header("HTTP/1.0 400 Bad request");
         break;
 
+    case 'DELETE':
+        if (isset($_GET['id'])) {
+            echo json_encode(delete($db, $_GET['id']));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
     default:
         header("HTTP/1.0 405 Method Not Allowed");
         break;
@@ -99,4 +108,10 @@ function get_list(mysqli $db)
     }
 
     return $result;
+}
+
+function delete(mysqli $db, int $id)
+{
+    db_query_no_result($db, "DELETE FROM `reactions` WHERE `id` = ?", "i", $id);
+    return true;
 }
