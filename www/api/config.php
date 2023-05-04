@@ -112,12 +112,9 @@ function get_config(mysqli $db){
 function patch_config(mysqli $db, $body){
     $id = $body['id'];
     $value = $body['value'];
-
-    $previous_value = db_query($db, 'SELECT `value` FROM config WHERE id = ?', "s", $id)['value'];
-
+    
     db_query_no_result($db, "UPDATE config SET `value` = ? WHERE id = ?", "ss", [$value, $id]);
-
-    log_activity($db, "API", "[CONFIG] Key edited", "$id : $previous_value → $value");
+    log_activity($db, "API", "[CONFIG] Key edited", "$id");
 
     return ['id' => $id, 'value' => $value];
 }
