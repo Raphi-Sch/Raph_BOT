@@ -3,7 +3,7 @@
 require_once('../src/php/db.php');
 $db = db_connect("../../config.json");
 require_once('../src/php/auth.php');
-require_once('functions.php');
+require_once('../src/php/functions.php');
 
 header('Content-Type: application/json');
 
