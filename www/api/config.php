@@ -2,6 +2,7 @@
 require_once('../src/php/db.php');
 $db = db_connect("../../config.json");
 require_once('../src/php/auth.php');
+require_once('../src/php/functions.php');
 
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
@@ -44,12 +45,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         header("HTTP/1.0 400 Bad request");
         break;
 
-    case 'PUT':
+    case 'PATCH':
         $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
         if(isset($_GET['edit']) && isset($body['id']) && isset($body['value'])){
             header('Content-Type: application/json');
-            echo json_encode(put_config($db, $body));
+            echo json_encode(patch_config($db, $body));
             break;
         }
 
@@ -108,11 +109,15 @@ function get_config(mysqli $db){
     return $result;
 }
 
-function put_config(mysqli $db, $body){
+function patch_config(mysqli $db, $body){
     $id = $body['id'];
     $value = $body['value'];
 
+    $previous_value = db_query($db, 'SELECT `value` FROM config WHERE id = ?', "s", $id)['value'];
+
     db_query_no_result($db, "UPDATE config SET `value` = ? WHERE id = ?", "ss", [$value, $id]);
+
+    log_activity($db, "API", "[CONFIG] Key edited", "$id : $previous_value → $value");
 
     return ['id' => $id, 'value' => $value];
 }
