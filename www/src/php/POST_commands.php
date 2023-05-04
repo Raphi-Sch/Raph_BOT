@@ -165,7 +165,7 @@ function audio_delete(mysqli $db) {
     $file = db_query($db, "SELECT `file` FROM commands_audio WHERE id = ?", "i", $id)['file'];
 
     // Remove file
-    shell_exec("rm ../audio/$file");
+    unlink("../audio/$file");
 
     // Remove from database
     db_query_no_result($db, "DELETE FROM commands_audio WHERE id = ?", "i", $id);
