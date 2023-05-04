@@ -61,7 +61,6 @@ function editConfig(element) {
         title: `Editing : ${element.id}`,
         icon: 'info',
         html: `<form id='swal-form'>
-            <input type='hidden' name='action' value='edit'>
             <input type='hidden' name='id' value='${element.id}'>
             ${input}
             </form>`,
@@ -74,10 +73,21 @@ function editConfig(element) {
         didOpen: didOpen
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_config.php', FORM_DATA).done(function () {
-                list(true);
-            });
+            const FORM_DATA = {
+                'id' : document.getElementById('swal-form').id.value,
+                'value' : document.getElementById('swal-form').value.value 
+            }
+
+            $.ajax({
+                url: "api/config.php?edit",
+                type: "PATCH",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    list(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }
