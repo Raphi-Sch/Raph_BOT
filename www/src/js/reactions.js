@@ -32,8 +32,7 @@ function list(reload = false) {
 function reactionAdd() {
     Swal.fire({
         title: "Add entry",
-        html: `<form id='swal-form' method='post'>
-            <input type='hidden' name='action' value='add'>
+        html: `<form id='swal-form'>
             <label>Trigger</label><input type='text' class='form-control' name='trigger' placeholder='Trigger' required><br/>
             <label>Reaction</label><textarea type='text' class='form-control' name='reaction' placeholder='Reaction' required></textarea><br/>
             <label>Frequency (<span id='swal-freq'>50</span>%)</label>
@@ -50,10 +49,26 @@ function reactionAdd() {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_reactions.php', FORM_DATA).done(function () {
-                list(true);
-            });
+            const FORM =  document.getElementById('swal-form');
+            const FORM_DATA = {
+                'id': FORM.id.value,
+                'trigger': FORM.trigger.value,
+                'reaction': FORM.reaction.value,
+                'frequency': FORM.frequency.value,
+                'timeout': FORM.timeout.value,
+                'tts': FORM.tts.checked,
+            };
+            
+            $.ajax({
+                url: "api/reactions.php",
+                type: "PUT",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    list(true);
+                },
+                error: errorAPI
+            })
         }
     });
 }

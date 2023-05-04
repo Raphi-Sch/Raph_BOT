@@ -35,6 +35,19 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         header("HTTP/1.0 400 Bad request");
         break;
 
+
+    case 'PUT':
+        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+
+        if (isset($body['trigger'])) {
+            header('Content-Type: application/json');
+            echo json_encode(add($db, $body));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
     case 'PATCH':
         $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
@@ -120,6 +133,18 @@ function get_list(mysqli $db)
     }
 
     return $result;
+}
+
+function add(mysqli $db, $data)
+{
+    $trigger = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($data['trigger'])));
+    $reaction = trim($data['reaction']);
+    $frequency = intval($data['frequency']);
+    $timeout = intval($data['timeout']);
+    $tts = intval($data['tts']);
+
+    db_query_no_result($db, "INSERT INTO reactions (`id`, `trigger_word`, `reaction`, `frequency`, `timeout`, `tts`) VALUES (NULL, ?, ?, ?, ?, ?)", "ssiii", [$trigger, $reaction, $frequency, $timeout, $tts]);
+    return true;
 }
 
 function edit(mysqli $db, $data)
