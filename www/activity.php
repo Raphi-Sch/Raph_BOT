@@ -1,18 +1,5 @@
 <?php
 require_once('src/php/header.php');
-
-$db = db_connect();
-
-$HTML = "";
-$data = db_query_raw($db, "SELECT * FROM `activity` ORDER BY `datetime` DESC LIMIT 100");
-while ($row = $data->fetch_assoc()) {
-    $HTML .= "<tr>
-        <td>" . $row['datetime'] . "</td>
-        <td>" . $row['user'] . "</td>
-        <td>" . $row['note'] . "</td>
-    </tr>";
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -34,18 +21,9 @@ while ($row = $data->fetch_assoc()) {
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h1 class="page-header">Activity</h1>
 
-        <table class="table table-hover table-condensed">
-            <thead>
-                <tr>
-                    <th class="col-xs-1">Datetime</th>
-                    <th class="col-xs-1">User</th>
-                    <th>Note</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php echo $HTML; ?>
-            </tbody>
-        </table>
+        <div class="log-activity">
+            <pre id="log" class="log"><?php echo file_get_contents(dirname(__FILE__) . "/src/activity.log"); ?></pre>
+        </div>
     </div>
 
     <?php include("src/php/alert.php"); ?>

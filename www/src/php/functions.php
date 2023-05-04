@@ -92,5 +92,7 @@ function log_activity($db, $user, $title, $message = null)
         $title = $title  . " (" . $message . ")";
     }
 
-    db_query_no_result($db, "INSERT INTO `activity` (`id`, `datetime`, `user`, `note`) VALUES (NULL, ?, ?, ?)", "sss", [date('Y-m-d H:i:s'), $user, $title]);
+    $row = "[" . date('Y-m-d H:i:s') . "] [" . $user . "] " . $title . "\n";
+
+    file_put_contents(dirname(__FILE__) . "/../activity.log", $row, FILE_APPEND);
 }
