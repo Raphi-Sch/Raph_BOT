@@ -19,7 +19,12 @@ require_once('src/php/header.php');
 
     <!-- Main area -->
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">Activity</h1>
+        <h1 class="page-header">
+            Activity
+            <div class='pull-right'>
+                <button type="button" class="btn btn-danger" onclick='clearActivity()'><i class="glyphicon glyphicon-erase"></i></button>
+            </div>
+        </h1>
 
         <div class="log-activity">
             <pre id="log" class="log"><?php echo file_get_contents(dirname(__FILE__) . "/src/activity.log"); ?></pre>
