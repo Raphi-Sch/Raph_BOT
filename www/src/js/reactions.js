@@ -80,7 +80,6 @@ function reactionEdit(data) {
         title: `Editing : "${data.trigger_word}"`,
         icon: 'info',
         html: `<form id='swal-form'>
-            <input type='hidden' name='id' value='${data.id}'>
             <label>Trigger</label><input class='form-control' type='text' name='trigger' value="${data.trigger_word}"><br/>
             <label>Reaction</label><textarea class='form-control' type='text' name='reaction'>${data.reaction}</textarea><br/>
             <label>Frequency (<span id='swal-freq'>${data.frequency}</span>%)</label>
@@ -98,7 +97,7 @@ function reactionEdit(data) {
         if (result.value) {
             const FORM =  document.getElementById('swal-form');
             const FORM_DATA = {
-                'id': FORM.id.value,
+                'id': data.id,
                 'trigger': FORM.trigger.value,
                 'reaction': FORM.reaction.value,
                 'frequency': FORM.frequency.value,
