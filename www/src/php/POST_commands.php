@@ -3,18 +3,6 @@
 require_once("./header-post.php");
 
 switch ($_POST['action']) {
-    case "add":
-        command_add($db);
-        break;
-
-    case "edit":
-        command_edit($db);
-        break;
-
-    case "del":
-        command_delete($db);
-        break;
-
     case "add-alias":
         alias_add($db);
         break;
@@ -36,56 +24,6 @@ switch ($_POST['action']) {
 }
 
 exit();
-
-function command_add(mysqli $db)
-{
-    if (empty($_POST['command']) || empty($_POST['text'])) {
-        $_SESSION['alert'] = ['error', "Command trigger or text empty", false];
-        header('Location: ../../commands.php');
-        exit();
-    }
-
-    $command = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($_POST['command'])));
-    $text = trim($_POST['text']);
-    $auto = isset($_POST['auto']) ? 1 : 0;
-    $mod_only = (isset($_POST['mod_only']) ? 1 : 0) || (isset($_POST['sub_only']) ? 1 : 0);
-    $sub_only = isset($_POST['sub_only']) ? 1 : 0;
-    $tts = isset($_POST['tts']) ? 1 : 0;
-
-    if ($auto)
-        $tts = 0;
-
-    db_query_no_result($db, "INSERT INTO commands (`id`, `command`, `value`, `auto`, `mod_only`, `sub_only`, `tts`) VALUES (NULL, ?, ?, ?, ?, ?, ?)", "ssiiii", [$command, $text, $auto, $mod_only, $sub_only, $tts]);
-    exit();
-}
-
-function command_edit(mysqli $db)
-{
-    $command = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($_POST['command'])));
-    $text = trim($_POST['text']);
-    $auto = isset($_POST['auto']) ? 1 : 0;
-    $mod_only = (isset($_POST['mod_only']) ? 1 : 0) || (isset($_POST['sub_only']) ? 1 : 0);
-    $sub_only = isset($_POST['sub_only']) ? 1 : 0;
-    $tts = isset($_POST['tts']) ? 1 : 0;
-
-    if ($auto)
-        $tts = 0;
-
-    db_query_no_result(
-        $db,
-        "UPDATE `commands` SET `command` = ?, `value` = ?, `auto` = ?, `mod_only` = ?, `sub_only` = ?, `tts` = ? WHERE id = ?",
-        "ssiiiii",
-        [$command, $text, $auto, $mod_only, $sub_only, $tts, $_POST['id']]
-    );
-
-    exit();
-}
-
-function command_delete(mysqli $db)
-{
-    db_query_no_result($db, "DELETE FROM commands WHERE id = ?", "i", $_POST['id']);
-    exit();
-}
 
 function alias_add(mysqli $db)
 {

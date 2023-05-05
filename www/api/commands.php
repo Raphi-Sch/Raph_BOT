@@ -55,11 +55,27 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         header("HTTP/1.0 400 Bad request");
         break;
 
+    case 'PUT':
+        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+
+        if (isset($_GET['command'])) {
+            echo json_encode(command_add($db, $body));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
     case 'PATCH':
         $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
-        if (isset($_GET['audio'])){
+        if (isset($_GET['audio'])) {
             echo json_encode(audio_edit($db, $body));
+            break;
+        }
+
+        if (isset($_GET['command'])) {
+            echo json_encode(command_edit($db, $body));
             break;
         }
 
@@ -67,8 +83,13 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'DELETE':
-        if (isset($_GET['audio']) && isset($_GET['id'])){
+        if (isset($_GET['audio']) && isset($_GET['id'])) {
             echo json_encode(audio_delete($db, $_GET['id']));
+            break;
+        }
+
+        if (isset($_GET['command']) && isset($_GET['id'])) {
+            echo json_encode(command_delete($db, $_GET['id']));
             break;
         }
 
@@ -84,7 +105,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
 {
     // Check for alias
     $result = db_query($db, "SELECT `command` FROM commands_alias WHERE alias = ?", "s", $command);
-    if(!empty($result['command'])){
+    if (!empty($result['command'])) {
         $command = $result['command'];
     }
 
@@ -107,8 +128,8 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
     // Custom commands
     // Query Text
     $result = db_query($db, "SELECT `value`, `mod_only`, `sub_only`, `tts` FROM commands WHERE command = ?", "s", $command);
-    if(!empty($result['value'])){
-        if($result['tts'] == 0)
+    if (!empty($result['value'])) {
+        if ($result['tts'] == 0)
             return ['response_type' => 'text', 'value' => $result['value'], 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
         else
             return ['response_type' => 'tts', 'value' => $result['value'], 'tts_type' => 'bot', 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
@@ -168,4 +189,58 @@ function list_alias(mysqli $db)
     }
 
     return $result;
+}
+
+function command_add(mysqli $db, $data)
+{
+    if (empty($data['command']) || empty($data['text'])) {
+        $_SESSION['alert'] = ['error', "Command trigger or text empty", false];
+        return false;
+    }
+
+    $command = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($data['command'])));
+    $text = trim($data['text']);
+    $auto = boolval($data['auto']);
+    $mod_only = boolval($data['mod_only']) || boolval($data['sub_only']);
+    $sub_only = boolval($data['sub_only']);
+    $tts = boolval($data['tts']);
+
+    if ($auto)
+        $tts = 0;
+
+    db_query_no_result($db, "INSERT INTO commands (`id`, `command`, `value`, `auto`, `mod_only`, `sub_only`, `tts`) VALUES (NULL, ?, ?, ?, ?, ?, ?)", "ssiiii", [$command, $text, $auto, $mod_only, $sub_only, $tts]);
+
+    log_activity($db, "API", "[COMMAND] Added", $command);
+    return true;
+}
+
+function command_edit(mysqli $db, $data)
+{
+    $command = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($data['command'])));
+    $text = trim($data['text']);
+    $auto = boolval($data['auto']);
+    $mod_only = boolval($data['mod_only']) || boolval($data['sub_only']);
+    $sub_only = boolval($data['sub_only']);
+    $tts = boolval($data['tts']);
+
+    if ($auto)
+        $tts = 0;
+
+    db_query_no_result(
+        $db,
+        "UPDATE `commands` SET `command` = ?, `value` = ?, `auto` = ?, `mod_only` = ?, `sub_only` = ?, `tts` = ? WHERE id = ?",
+        "ssiiiii",
+        [$command, $text, $auto, $mod_only, $sub_only, $tts, $data['id']]
+    );
+
+    log_activity($db, "API", "[COMMAND] Edited", $command);
+    return true;
+}
+
+function command_delete(mysqli $db, $id)
+{
+    $command = db_query($db, "SELECT command FROM commands WHERE id = ?", "i", $id)['command'];
+    db_query_no_result($db, "DELETE FROM commands WHERE id = ?", "i", $id);
+    log_activity($db, "API", "[COMMAND] Deleted", $command);
+    return true;
 }

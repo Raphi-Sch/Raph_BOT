@@ -85,7 +85,6 @@ function commandAdd() {
     Swal.fire({
         title: "Add command",
         html: `<form id='swal-form'>
-            <input type='hidden' name='action' value='add'>
             <label>Command</label><input type='text' class='form-control' name='command' placeholder='Command' required><br/>
             <label>Text</label><textarea type='text' class='form-control' name='text' placeholder='Text' required></textarea><br/>
             <label>Auto</label><input class='form-control' type='checkbox' name='auto'><br />
@@ -102,10 +101,26 @@ function commandAdd() {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_commands.php', FORM_DATA).done(function () {
-                commandList(true);
-            });
+            const FORM = document.getElementById('swal-form');
+            const FORM_DATA = {
+                'command': FORM.command.value,
+                'text': FORM.text.value,
+                'auto': FORM.auto.checked,
+                'mod_only': FORM.mod_only.checked,
+                'sub_only': FORM.sub_only.checked,
+                'tts': FORM.tts.checked,
+            };
+
+            $.ajax({
+                url: "api/commands.php?command",
+                type: "PUT",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    commandList(true);
+                },
+                error: errorAPI
+            })
         }
     });
 }
@@ -120,8 +135,6 @@ function commandEdit(data) {
         title: `Editing : "${data.command}"`,
         icon: 'info',
         html: `<form id='swal-form'>
-            <input type='hidden' name='action' value='edit'>
-            <input type='hidden' name='id' value='${data.id}'>
             <label>Command</label><input class='form-control' type='text' name='command' value="${data.command}"><br />
             <label>Text</label><textarea class='form-control' type='text' name='text'>${data.value}</textarea><br />
             <label>Auto</label><input class='form-control' type='checkbox' name='auto' ${checkbox_auto}><br />
@@ -137,10 +150,27 @@ function commandEdit(data) {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_commands.php', FORM_DATA).done(function () {
-                commandList(true);
-            });
+            const FORM = document.getElementById('swal-form');
+            const FORM_DATA = {
+                'id' : data.id,
+                'command': FORM.command.value,
+                'text': FORM.text.value,
+                'auto': FORM.auto.checked,
+                'mod_only': FORM.mod_only.checked,
+                'sub_only': FORM.sub_only.checked,
+                'tts': FORM.tts.checked
+            };
+
+            $.ajax({
+                url: "api/commands.php?command",
+                type: "PATCH",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    commandList(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }
@@ -156,9 +186,15 @@ function commandDelete(data) {
         focusCancel: true
     }).then((result) => {
         if (result.value) {
-            $.post("src/php/POST_commands.php", { action: "del", id: data.id }, function () {
-                commandList(true);
-            });
+            $.ajax({
+                url: `api/commands.php?command&id=${data.id}`,
+                type: "DELETE",
+                dataType: "json",
+                success: function () {
+                    commandList(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }
