@@ -1,4 +1,4 @@
-function clearActivity(data) {
+function clearActivity() {
     Swal.fire({
         title: `Clear activity log ?`,
         icon: 'question',
