@@ -44,19 +44,19 @@ require_once('src/php/header.php');
                     <th class="col-xs-1">Damage</th>
                     <th class="col-xs-1">Type</th>
                     <th class="col-xs-3">Note</th>
-                    <th class="col-xs-1"><button class="btn btn-success pull-right" onclick='add_tank()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                    <th class="col-xs-1"><button class="btn btn-success pull-right" onclick='tankAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
 
                 <tr id='th-alias' class='hidden'>
                     <th class="col-xs-6">Alias</th>
                     <th class="col-xs-5">Tank</th>
-                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_alias()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='aliasAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
 
                 <tr id='th-nation' class='hidden'>
                     <th class="col-xs-6">Alias</th>
                     <th class="col-xs-5">Nation</th>
-                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='add_nation()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                    <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='nationAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
                 </tr>
             </thead>
             <tbody class="table-scroll-td" id='tbody-list'>
@@ -67,8 +67,6 @@ require_once('src/php/header.php');
 
     <script src="src/js/common.js"></script>
     <script src="src/js/tanks.js"></script>
-    <script src="src/js/tanks-alias.js"></script>
-    <script src="src/js/tanks-nation.js"></script>
     <script>
         $(document).ready(function() {
             document.getElementById("plugin_tanks").classList.add("active");

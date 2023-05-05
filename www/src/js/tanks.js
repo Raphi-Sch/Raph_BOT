@@ -9,10 +9,10 @@ function view(param) {
             document.getElementById('th-alias').classList.add('hidden');
             document.getElementById('th-nation').classList.add('hidden');
 
-            document.getElementById('btn-refresh').onclick = () => list_tanks(true);
+            document.getElementById('btn-refresh').onclick = () => tankList(true);
 
             window.history.pushState(null, '', 'tanks.php?tanks');
-            list_tanks();
+            tankList();
             return;
 
         case 'alias':
@@ -24,10 +24,10 @@ function view(param) {
             document.getElementById('th-alias').classList.remove('hidden');
             document.getElementById('th-nation').classList.add('hidden');
 
-            document.getElementById('btn-refresh').onclick = () => list_alias(true);
+            document.getElementById('btn-refresh').onclick = () => aliasList(true);
 
             window.history.pushState(null, '', 'tanks.php?alias');
-            list_alias();
+            aliasList();
             return;
 
         case 'nation':
@@ -39,15 +39,15 @@ function view(param) {
             document.getElementById('th-alias').classList.add('hidden');
             document.getElementById('th-nation').classList.remove('hidden');
 
-            document.getElementById('btn-refresh').onclick = () => list_nation(true);
+            document.getElementById('btn-refresh').onclick = () => nationList(true);
 
             window.history.pushState(null, '', 'tanks.php?nation');
-            list_nation();
+            nationList();
             return;
     }
 }
 
-function list_tanks(reload = false) {
+function tankList(reload = false) {
     $.ajax({
         url: "api/tanks.php?list-tanks",
         type: "GET",
@@ -58,8 +58,8 @@ function list_tanks(reload = false) {
 
             data.forEach(element => {
                 const TR = document.createElement('tr');
-                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => edit_tank(element));
-                const btnDel  = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => del_tank(element));
+                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => tankEdit(element));
+                const btnDel  = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => tankDelete(element));
 
                 TR.appendChild(createTableData(element.trigger_word, 'col-xs-1'));
                 TR.appendChild(createTableData(element.name, 'col-xs-2'));
@@ -81,15 +81,14 @@ function list_tanks(reload = false) {
     })
 }
 
-function add_tank() {
+function tankAdd() {
     Swal.fire({
         title: "New tank",
         html: `<form id='swal-form'>
-            <input type='hidden' name='action' value='add-tank'>
-            <label>Tank trigger</label><input type='text' class='form-control' name='form_key' required></br>
-            <label>Tank name</label><input type='text' class='form-control' name='form_name' required></br>
+            <label>Tank trigger</label><input type='text' class='form-control' name='trigger' required></br>
+            <label>Tank name</label><input type='text' class='form-control' name='name' required></br>
             <label>Nation</label>
-            <select class='form-control' name='form_nation' required>
+            <select class='form-control' name='nation' required>
                 <option>china</option>
                 <option>czechoslovakia</option>
                 <option>france</option>
@@ -103,7 +102,7 @@ function add_tank() {
                 <option>ussr</option>
             </select></br>
             <label>Tier</label>
-            <select class='form-control' name='form_tier' required>
+            <select class='form-control' name='tier' required>
                 <option>5</option>
                 <option>6</option>
                 <option>7</option>
@@ -112,7 +111,7 @@ function add_tank() {
                 <option>10</option>
             </select></br>
             <label>Type</label>
-            <select class='form-control' name='form_type' required>
+            <select class='form-control' name='type' required>
                 <option>light</option>
                 <option>medium</option>
                 <option>heavy</option>
@@ -120,14 +119,14 @@ function add_tank() {
                 <option>spg</option>
             </select></br>
             <label>MoE</label>
-            <select class='form-control' name='form_mark' required>
+            <select class='form-control' name='mark' required>
                 <option>0</option>
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
             </select></br>
-            <label>Damage max</label><input type='text' class='form-control' name='form_max_dmg' required></br>
-            <label>Note</label><input type='text' class='form-control' name='form_note'/>
+            <label>Damage max</label><input type='text' class='form-control' name='max_dmg' required></br>
+            <label>Note</label><input type='text' class='form-control' name='note'/>
             </form>`,
         showCancelButton: true,
         showConfirmButton: confirm,
@@ -138,26 +137,42 @@ function add_tank() {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_tanks.php', FORM_DATA).done(function () {
-                list_tanks(true);
-            });
+            const FORM = document.getElementById('swal-form');
+            const FORM_DATA = {
+                'trigger': FORM.trigger.value,
+                'name': FORM.name.value,
+                'nation': FORM.nation.value,
+                'tier': FORM.tier.value,
+                'type': FORM.type.value,
+                'mark': FORM.mark.value,
+                'max_dmg': FORM.max_dmg.value,
+                'note': FORM.note.value
+            };
+
+            $.ajax({
+                url: "api/tanks.php?tank",
+                type: "PUT",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    tankList(true);
+                },
+                error: errorAPI
+            })
         }
     });
 }
 
-function edit_tank(data) {
+function tankEdit(data) {
     Swal.fire({
         title: `Editing : ${data.trigger_word}`,
         icon: 'info',
         html: `<form id='swal-form'>
-            <input type='hidden' name='action' value='edit-tank'>
-            <input type='hidden' name='swal-key' value='${data.id}'>
-            <label>Trigger</label><input class='form-control' type='text' name='swal-trigger' value='${data.trigger_word}'></br>
-            <label>Tank name</label><input class='form-control' type='text' name='swal-name' value='${data.name}'></br>
-            <label>Mark</label><input class='form-control' type='number' min=0 max=3 name='swal-mark' value='${data.mark}'></br>
-            <label>Damage max</label><input class='form-control' type='number' name='swal-dmg' value='${data.max_dmg}'></br>
-            <label>Note</label><input class='form-control' type='text' name='swal-note' value='${data.note}'></br>
+            <label>Trigger</label><input class='form-control' type='text' name='trigger' value='${data.trigger_word}'></br>
+            <label>Tank name</label><input class='form-control' type='text' name='name' value='${data.name}'></br>
+            <label>Mark</label><input class='form-control' type='number' min=0 max=3 name='mark' value='${data.mark}'></br>
+            <label>Damage max</label><input class='form-control' type='number' name='max_dmg' value='${data.max_dmg}'></br>
+            <label>Note</label><input class='form-control' type='text' name='note' value='${data.note}'></br>
             </form>`,
         showCancelButton: true,
         focusConfirm: false,
@@ -167,15 +182,31 @@ function edit_tank(data) {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_tanks.php', FORM_DATA).done(function () {
-                list_tanks(true);
-            });
+            const FORM = document.getElementById('swal-form');
+            const FORM_DATA = {
+                'id' : data.id,
+                'trigger': FORM.trigger.value,
+                'name': FORM.name.value,
+                'mark': FORM.mark.value,
+                'max_dmg': FORM.max_dmg.value,
+                'note': FORM.note.value
+            };
+
+            $.ajax({
+                url: "api/tanks.php?tank",
+                type: "PATCH",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    tankList(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }
 
-function del_tank(data) {
+function tankDelete(data) {
     Swal.fire({
         title: `Delete '${data.name}' ?`,
         icon: 'info',
@@ -186,12 +217,218 @@ function del_tank(data) {
         cancelButtonText: 'No'
     }).then((result) => {
         if (result.value) {
-            $.post("src/php/POST_tanks.php", {
-                action: "del-tank",
-                id: data.id
-            }, function () {
-                list_tanks(true)
-            });
+            $.ajax({
+                url: `api/tanks.php?tank&id=${data.id}`,
+                type: "DELETE",
+                dataType: "json",
+                success: function () {
+                    tankList(true);
+                },
+                error: errorAPI
+            })
+        }
+    })
+}
+
+function nationList(reload = false){
+    $.ajax({
+        url: "api/tanks.php?list-nation",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            const LIST = document.getElementById('tbody-list');
+            LIST.innerHTML = "";
+
+            data.forEach(element => {
+                const TR = document.createElement('tr');
+
+                TR.appendChild(createTableData(element.alias, 'col-xs-6'));
+                TR.appendChild(createTableData(element.nation, 'col-xs-5'));
+                TR.appendChild(createButtonGroup(createButton("btn btn-danger", "glyphicon glyphicon-remove", () => nationDelete(element))));
+                
+                LIST.appendChild(TR);
+            })
+
+            if (reload)
+                reloadSuccess();
+        },
+        error: errorAPI
+    }) 
+}
+
+function nationAdd() {
+    Swal.fire({
+        title: "Add entry",
+        html: `<form id='swal-form'>
+            <label>Alias</label><input type='text' class='form-control' name='alias'><br/>
+            <label>Nation</label><select class='form-control' name='nation'>
+                <option selected disabled> - Select a nation - </option>
+                <option>china</option>
+                <option>czechoslovakia</option>
+                <option>france</option>
+                <option>germany</option>
+                <option>italy</option>
+                <option>japan</option>
+                <option>poland</option>
+                <option>sweden</option>
+                <option>uk</option>
+                <option>usa</option>
+                <option>ussr</option></select>
+            </form>`,
+        showCancelButton: true,
+        showConfirmButton: confirm,
+        focusConfirm: false,
+        allowOutsideClick: false,
+        width: "25%",
+        confirmButtonText: 'Add',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.value) {
+            const FORM = document.getElementById('swal-form');
+            const FORM_DATA = {
+                'alias': FORM.alias.value,
+                'nation': FORM.nation.value
+            };
+
+            $.ajax({
+                url: "api/tanks.php?nation",
+                type: "PUT",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    nationList(true);
+                },
+                error: errorAPI
+            })
+        }
+    });
+}
+
+function nationDelete(data) {
+    Swal.fire({
+        title: `Delete '${data.alias}' ?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        focusCancel: true
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: `api/tanks.php?nation&alias=${data.alias}`,
+                type: "DELETE",
+                dataType: "json",
+                success: function () {
+                    nationList(true);
+                },
+                error: errorAPI
+            })
+        }
+    })
+}
+
+function aliasList(reload = false) {
+    $.ajax({
+        url: "api/tanks.php?list-alias",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            const LIST = document.getElementById('tbody-list');
+            LIST.innerHTML = "";
+
+            data.forEach(element => {
+                const TR = document.createElement('tr');
+
+                TR.appendChild(createTableData(element.alias, 'col-xs-6'));
+                TR.appendChild(createTableData(element.tank, 'col-xs-5'));
+                TR.appendChild(createButtonGroup(createButton("btn btn-danger", "glyphicon glyphicon-remove", () => aliasDelete(element))));
+                
+                LIST.appendChild(TR);
+            })
+
+            if (reload)
+                reloadSuccess();
+        },
+        error: errorAPI
+    }) 
+}
+
+function aliasOptions() {
+    $.ajax({
+        url: "api/tanks.php?list-tanks",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            let select = document.getElementById('swal-select');
+
+            data.forEach(element => {
+                select.appendChild(createOption(element.trigger_word, element.trigger_word));
+            })
+        },
+        error: errorAPI
+    })
+}
+
+function aliasAdd() {
+    Swal.fire({
+        title: "Add entry",
+        html: `<form id='swal-form'>
+            <label>Alias</label><input type='text' class='form-control' name='alias'><br/>
+            <label>Tank</label><select id='swal-select' class='form-control' name='tank'><option disabled selected> - Select a tank - </option></select>
+            </form>`,
+        showCancelButton: true,
+        showConfirmButton: confirm,
+        focusConfirm: false,
+        allowOutsideClick: false,
+        width: "25%",
+        confirmButtonText: 'Add',
+        cancelButtonText: 'Cancel',
+        didOpen: () => {
+            aliasOptions();
+        }
+    }).then((result) => {
+        if (result.value) {
+            const FORM = document.getElementById('swal-form');
+            const FORM_DATA = {
+                'alias': FORM.alias.value,
+                'tank': FORM.tank.value
+            };
+
+            $.ajax({
+                url: "api/tanks.php?alias",
+                type: "PUT",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    aliasList(true);
+                },
+                error: errorAPI
+            })
+        }
+    });
+}
+
+function aliasDelete(data) {
+    Swal.fire({
+        title: `Delete '${data.alias}' ?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        focusCancel: true
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: `api/tanks.php?alias&alias=${data.alias}`,
+                type: "DELETE",
+                dataType: "json",
+                success: function () {
+                    aliasList(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }
