@@ -210,7 +210,7 @@ function expression_add(mysqli $db, $data){
 
     db_query_no_result($db, "INSERT INTO `moderator` (id, trigger_word, mod_action, explanation, duration, reason) VALUES (NULL, ?, ?, ?, ?, ?)", "sisis", [$trigger, $mod_action, $explanation, $duration, $reason]);
 
-    log_activity($db, "API", "[MODERATOR] Added", $trigger);
+    log_activity("API", "[MODERATOR] Added", $trigger);
     return true;
 }
 
@@ -226,13 +226,13 @@ function expression_edit(mysqli $db, $data){
 
     db_query_no_result($db, "UPDATE `moderator` SET `trigger_word` = ?, `mod_action` = ?, `explanation` = ?, `duration` = ?, `reason` = ? WHERE `id` = ?", "sisisi", [$trigger, $mod_action, $explanation, $duration, $reason, $data['id']]);
 
-    log_activity($db, "API", "[MODERATOR] Edited", $trigger);
+    log_activity("API", "[MODERATOR] Edited", $trigger);
     return true;
 }
 
 function expression_delete(mysqli $db, $id){
     db_query_no_result($db, "DELETE FROM `moderator` WHERE `id` = ?", "i", $id);
-    log_activity($db, "API", "[MODERATOR] Deleted");
+    log_activity("API", "[MODERATOR] Deleted");
     return true;
 }
 
@@ -242,18 +242,18 @@ function leet_add(mysqli $db, $data){
 
     db_query_no_result($db, "INSERT INTO `moderator_leet` (id, original, replacement) VALUES (NULL, ?, ?)", "ss", [$original, $replacement]);
 
-    log_activity($db, "API", "[MODERATOR-LEET] Added", $original);
+    log_activity("API", "[MODERATOR-LEET] Added", $original);
     return true;
 }
 
 function leet_delete(mysqli $db, $id){
     db_query_no_result($db, "DELETE FROM `moderator_leet` WHERE `id` = ?", "i", $id);
-    log_activity($db, "API", "[MODERATOR-LEET] Deleted");
+    log_activity("API", "[MODERATOR-LEET] Deleted");
     return true;
 }
 
 function warning_delete(mysqli $db, $id){
     db_query_no_result($db, "DELETE FROM `moderator_warning` WHERE `id` = ?", "i", $id);
-    log_activity($db, "API", "[MODERATOR-WARNING] Deleted");
+    log_activity("API", "[MODERATOR-WARNING] Deleted");
     return true;
 }

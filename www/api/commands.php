@@ -225,7 +225,7 @@ function command_add(mysqli $db, $data)
 
     db_query_no_result($db, "INSERT INTO commands (`id`, `command`, `value`, `auto`, `mod_only`, `sub_only`, `tts`) VALUES (NULL, ?, ?, ?, ?, ?, ?)", "ssiiii", [$command, $text, $auto, $mod_only, $sub_only, $tts]);
 
-    log_activity($db, "API", "[COMMAND] Added", $command);
+    log_activity("API", "[COMMAND] Added", $command);
     return true;
 }
 
@@ -248,7 +248,7 @@ function command_edit(mysqli $db, $data)
         [$command, $text, $auto, $mod_only, $sub_only, $tts, $data['id']]
     );
 
-    log_activity($db, "API", "[COMMAND] Edited", $command);
+    log_activity("API", "[COMMAND] Edited", $command);
     return true;
 }
 
@@ -256,7 +256,7 @@ function command_delete(mysqli $db, $id)
 {
     $command = db_query($db, "SELECT command FROM commands WHERE id = ?", "i", $id)['command'];
     db_query_no_result($db, "DELETE FROM commands WHERE id = ?", "i", $id);
-    log_activity($db, "API", "[COMMAND] Deleted", $command);
+    log_activity("API", "[COMMAND] Deleted", $command);
     return true;
 }
 
@@ -271,7 +271,7 @@ function alias_add(mysqli $db, $data)
     $command = trim($data['command']);
 
     db_query_no_result($db, "REPLACE INTO commands_alias (`id`, `alias`, `command`) VALUES (NULL, ?, ?)", "ss", [$alias, $command]);
-    log_activity($db, "API", "[COMMAND-ALIAS] Added", $alias);
+    log_activity("API", "[COMMAND-ALIAS] Added", $alias);
     return true;
 }
 
@@ -279,6 +279,6 @@ function alias_delete(mysqli $db, $id)
 {
     $alias = db_query($db, "SELECT alias FROM commands_alias WHERE id = ?", "i", $id)['alias'];
     db_query_no_result($db, "DELETE FROM commands_alias WHERE id = ?", "s", $id);
-    log_activity($db, "API", "[COMMAND-ALIAS] Deleted", $alias);
+    log_activity("API", "[COMMAND-ALIAS] Deleted", $alias);
     return true;
 }

@@ -62,7 +62,7 @@ function tts_config_edit(mysqli $db, $data) {
         [$data['value'], $data['id']]
     );
 
-    log_activity($db, "API", "[COMMAND-TTS-CONFIG] Edited", $data['id']);
+    log_activity("API", "[COMMAND-TTS-CONFIG] Edited", $data['id']);
     return true;
 }
 

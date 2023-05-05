@@ -214,7 +214,7 @@ function add(mysqli $db, $data)
 {
     $original = trim($data['original']);
     $replacement = trim($data['replacement']);
-    log_activity($db, "API", "[SHOUT] Added", $original);
+    log_activity("API", "[SHOUT] Added", $original);
     db_query_no_result($db, "INSERT INTO shout (`id`, `original`, `replacement`, `language`, `type`) VALUES (NULL, ?, ?, ?, ?)", "sssi", [$original, $replacement, $data['language'], $data['type']]);
     return true;
 }
@@ -223,7 +223,7 @@ function edit(mysqli $db, $data)
 {
     $original = trim($data['original']);
     $replacement = trim($data['replacement']);
-    log_activity($db, "API", "[SHOUT] Edited", $original);
+    log_activity("API", "[SHOUT] Edited", $original);
     db_query_no_result($db, "UPDATE `shout` SET `original` = ?, `replacement` = ?, `language` = ?, `type` = ? WHERE `id` = ?", "sssii", [$original, $replacement, $data['language'], $data['type'], $data['id']]);
     return true;
 }
@@ -231,7 +231,7 @@ function edit(mysqli $db, $data)
 function delete(mysqli $db, $id)
 {
     $original = db_query($db, "SELECT original FROM shout WHERE id = ?", "i", $id)['original'];
-    log_activity($db, "API", "[SHOUT] Deleted", $original);
+    log_activity("API", "[SHOUT] Deleted", $original);
     db_query_no_result($db, "DELETE FROM shout WHERE id = ?", "i", $id);
     return true;
 }

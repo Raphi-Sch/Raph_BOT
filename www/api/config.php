@@ -114,7 +114,7 @@ function patch_config(mysqli $db, $body){
     $value = $body['value'];
     
     db_query_no_result($db, "UPDATE config SET `value` = ? WHERE id = ?", "ss", [$value, $id]);
-    log_activity($db, "API", "[CONFIG] Key edited", "$id");
+    log_activity("API", "[CONFIG] Key edited", "$id");
 
     return ['id' => $id, 'value' => $value];
 }

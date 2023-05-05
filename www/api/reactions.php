@@ -143,7 +143,7 @@ function add(mysqli $db, $data)
     $timeout = intval($data['timeout']);
     $tts = boolval($data['tts']);
 
-    log_activity($db, "API", "[REACTION] Created", $trigger);
+    log_activity("API", "[REACTION] Created", $trigger);
 
     db_query_no_result($db, "INSERT INTO reactions (`id`, `trigger_word`, `reaction`, `frequency`, `timeout`, `tts`) VALUES (NULL, ?, ?, ?, ?, ?)", "ssiii", [$trigger, $reaction, $frequency, $timeout, $tts]);
     return true;
@@ -157,7 +157,7 @@ function edit(mysqli $db, $data)
     $timeout = intval($data['timeout']);
     $tts = boolval($data['tts']);
 
-    log_activity($db, "API", "[REACTION] Edited", $trigger);
+    log_activity("API", "[REACTION] Edited", $trigger);
 
     db_query_no_result($db, "UPDATE `reactions` SET `trigger_word` = ?, `reaction` = ?, `frequency` = ?, `timeout` = ?, `tts` = ? WHERE `id` = ?", "ssiiii", [$trigger, $reaction, $frequency, $timeout, $tts, $data['id']]);
     return true;
@@ -166,7 +166,7 @@ function edit(mysqli $db, $data)
 function delete(mysqli $db, int $id)
 {
     $trigger = db_query($db, 'SELECT `trigger_word` FROM `reactions` WHERE id = ?', "s", $id)['trigger_word'];
-    log_activity($db, "API", "[REACTION] Deleted", $trigger);
+    log_activity("API", "[REACTION] Deleted", $trigger);
     
     db_query_no_result($db, "DELETE FROM `reactions` WHERE `id` = ?", "i", $id);
     return true;

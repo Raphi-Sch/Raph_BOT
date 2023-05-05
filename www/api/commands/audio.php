@@ -92,7 +92,7 @@ function audio_edit(mysqli $db, $data) {
         [$name, $trigger, $volume, $timeout, $active, $mod_only, $sub_only, $id]
     );
 
-    log_activity($db, "API", "[COMMAND-AUDIO] Edited", $name);
+    log_activity("API", "[COMMAND-AUDIO] Edited", $name);
     return true;
 }
 
@@ -106,6 +106,6 @@ function audio_delete(mysqli $db, $id) {
     // Remove from database
     db_query_no_result($db, "DELETE FROM commands_audio WHERE id = ?", "i", $id);
 
-    log_activity($db, "API", "[COMMAND-AUDIO] Deleted", $file_data['name']);
+    log_activity("API", "[COMMAND-AUDIO] Deleted", $file_data['name']);
     return true;
 }

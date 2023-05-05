@@ -86,7 +86,7 @@ function error_post()
     error_log("UNAUTHORIZED Request method :" . $_SERVER['REQUEST_METHOD'] . ", on : " . $_SERVER['REQUEST_URI'] . ", referer : " . $_SERVER['HTTP_REFERER']);
 }
 
-function log_activity($db, $user, $title, $message = null)
+function log_activity($user, $title, $message = null)
 {
     if ($message) {
         $title = $title  . " (" . $message . ")";

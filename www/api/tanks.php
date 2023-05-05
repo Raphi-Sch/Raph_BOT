@@ -149,7 +149,7 @@ function tank_add(mysqli $db, $data)
 
     db_query_no_result($db, "INSERT INTO tanks (`id`, `trigger_word`, `nation`, `tier`, `name`, `mark`, `max_dmg`, `note`, `type`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)", "ssisiiss", [$trigger_word, $nation, $tier, $name, $mark, $max_dmg, $note, $type]);
 
-    log_activity($db, "API", "[TANKS] Added", $name);
+    log_activity("API", "[TANKS] Added", $name);
     return true;
 }
 
@@ -163,14 +163,14 @@ function tank_edit(mysqli $db, $data)
 
     db_query_no_result($db, "UPDATE `tanks` SET `trigger_word` = ?, `name` = ?, `mark` = ?, `max_dmg` = ?, `note` = ? WHERE `id` = ?", "ssiisi", [$trigger_word, $name, $mark, $dmg, $note, $data['id']]);
 
-    log_activity($db, "API", "[TANKS] Edited", $name);
+    log_activity("API", "[TANKS] Edited", $name);
     return true;
 }
 
 function tank_delete(mysqli $db, $id)
 {
     db_query_no_result($db, "DELETE FROM tanks WHERE id= ?", "i", $id);
-    log_activity($db, "API", "[TANKS] Deleted");
+    log_activity("API", "[TANKS] Deleted");
     return true;
 }
 
@@ -179,7 +179,7 @@ function nation_add(mysqli $db, $data)
     $alias = strtolower(trim($data['alias']));
     $nation = $data['nation'];
     db_query_no_result($db, "REPLACE INTO tanks_nation (`alias`, `nation`) VALUES (?, ?)", "ss", [$alias, $nation]);
-    log_activity($db, "API", "[TANKS-NATION] Added", $alias);
+    log_activity("API", "[TANKS-NATION] Added", $alias);
     return true;
 }
 
@@ -187,7 +187,7 @@ function nation_delete(mysqli $db, $alias)
 {
     db_query_no_result($db, "DELETE FROM tanks_nation WHERE alias = ?", "s", $alias);
 
-    log_activity($db, "API", "[TANKS-NATION] Deleted");
+    log_activity("API", "[TANKS-NATION] Deleted");
     return true;
 }
 
@@ -197,7 +197,7 @@ function alias_add(mysqli $db, $data)
     $tank = $data['tank'];
     db_query_no_result($db, "REPLACE INTO tanks_alias (`alias`, `tank`) VALUES (?, ?)", "ss", [$alias, $tank]);
 
-    log_activity($db, "API", "[TANKS-ALIAS] Added", $alias);
+    log_activity("API", "[TANKS-ALIAS] Added", $alias);
     return true;
 }
 
@@ -205,6 +205,6 @@ function alias_delete(mysqli $db, $alias)
 {
     db_query_no_result($db, "DELETE FROM tanks_alias WHERE alias = ?", "s", $alias);
 
-    log_activity($db, "API", "[TANKS-ALIAS] Deleted");
+    log_activity("API", "[TANKS-ALIAS] Deleted");
     return true;
 }
