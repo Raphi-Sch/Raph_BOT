@@ -3,14 +3,6 @@
 require_once("./header-post.php");
 
 switch ($_POST['action']) {
-    case "add-alias":
-        alias_add($db);
-        break;
-
-    case "del-alias":
-        alias_delete($db);
-        break;
-
     case "add-audio":
         audio_add($db);
         break;
@@ -24,26 +16,6 @@ switch ($_POST['action']) {
 }
 
 exit();
-
-function alias_add(mysqli $db)
-{
-    if (empty($_POST['alias']) || empty($_POST['value'])) {
-        $_SESSION['alert'] = ['error', "Alias or Command empty", false];
-        exit();
-    }
-
-    $alias = strtolower(trim($_POST['alias']));
-    $command = trim($_POST['value']);
-
-    db_query_no_result($db, "REPLACE INTO commands_alias (`id`, `alias`, `command`) VALUES (NULL, ?, ?)", "ss", [$alias, $command]);
-    exit();
-}
-
-function alias_delete(mysqli $db)
-{
-    db_query_no_result($db, "DELETE FROM commands_alias WHERE id = ?", "s", $_POST['id']);
-    exit();
-}
 
 function audio_add(mysqli $db) {
     $name = trim($_POST['name']);

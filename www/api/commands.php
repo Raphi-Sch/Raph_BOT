@@ -63,6 +63,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if (isset($_GET['alias'])) {
+            echo json_encode(alias_add($db, $body));
+            break;
+        }
+
         header("HTTP/1.0 400 Bad request");
         break;
 
@@ -90,6 +95,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
         if (isset($_GET['command']) && isset($_GET['id'])) {
             echo json_encode(command_delete($db, $_GET['id']));
+            break;
+        }
+
+        if (isset($_GET['alias']) && isset($_GET['id'])) {
+            echo json_encode(alias_delete($db, $_GET['id']));
             break;
         }
 
@@ -242,5 +252,28 @@ function command_delete(mysqli $db, $id)
     $command = db_query($db, "SELECT command FROM commands WHERE id = ?", "i", $id)['command'];
     db_query_no_result($db, "DELETE FROM commands WHERE id = ?", "i", $id);
     log_activity($db, "API", "[COMMAND] Deleted", $command);
+    return true;
+}
+
+function alias_add(mysqli $db, $data)
+{
+    if (empty($data['alias']) || empty($data['command'])) {
+        $_SESSION['alert'] = ['error', "Alias or Command empty", false];
+        return false;
+    }
+
+    $alias = strtolower(trim($data['alias']));
+    $command = trim($data['command']);
+
+    db_query_no_result($db, "REPLACE INTO commands_alias (`id`, `alias`, `command`) VALUES (NULL, ?, ?)", "ss", [$alias, $command]);
+    log_activity($db, "API", "[COMMAND-ALIAS] Added", $alias);
+    return true;
+}
+
+function alias_delete(mysqli $db, $id)
+{
+    $alias = db_query($db, "SELECT alias FROM commands_alias WHERE id = ?", "i", $id)['alias'];
+    db_query_no_result($db, "DELETE FROM commands_alias WHERE id = ?", "s", $id);
+    log_activity($db, "API", "[COMMAND-ALIAS] Deleted", $alias);
     return true;
 }

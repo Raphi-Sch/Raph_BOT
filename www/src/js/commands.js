@@ -260,10 +260,9 @@ function aliasListOption() {
 function aliasAdd() {
     Swal.fire({
         title: "Add command alias",
-        html: "<form id='swal-form' method='post'>" +
-            "<input type='hidden' name='action' value='add-alias'/>" +
+        html: "<form id='swal-form'>" +
             "<label>Alias</label><input type='text' class='form-control' name='alias' required><br/>" +
-            "<label>Command</label><select id='swal-select' class='form-control' name='value' required>" +
+            "<label>Command</label><select id='swal-select' class='form-control' name='command' required>" +
             "<option disabled selected> - Select a command - </option>" +
             "<option value='audio'>audio (built-in)</option>" +
             "<option value='tank'>tank (built-in)</option>" +
@@ -281,10 +280,22 @@ function aliasAdd() {
         }
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_commands.php', FORM_DATA).done(function () {
-                aliasList(true);
-            });
+            const FORM = document.getElementById('swal-form');
+            const FORM_DATA = {
+                'alias': FORM.alias.value,
+                'command': FORM.command.value
+            };
+
+            $.ajax({
+                url: "api/commands.php?alias",
+                type: "PUT",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    aliasList(true);
+                },
+                error: errorAPI
+            })
         }
     });
 }
@@ -300,12 +311,15 @@ function aliasDelete(data) {
         focusCancel: true
     }).then((result) => {
         if (result.value) {
-            $.post("src/php/POST_commands.php", {
-                action: "del-alias",
-                id: data.id
-            }, function () {
-                aliasList(true);
-            });
+            $.ajax({
+                url: `api/commands.php?alias&id=${data.id}`,
+                type: "DELETE",
+                dataType: "json",
+                success: function () {
+                    aliasList(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }
