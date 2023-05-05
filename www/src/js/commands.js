@@ -394,12 +394,15 @@ function audioDelete(data) {
         focusCancel: true
     }).then((result) => {
         if (result.value) {
-            $.post("src/php/POST_commands.php", {
-                action: "del-audio",
-                id: data.id
-            }, function () {
-                audioList(true);
-            });
+            $.ajax({
+                url: `api/commands.php?audio&id=${data.id}`,
+                type: "DELETE",
+                dataType: "json",
+                success: function () {
+                    audioList(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }
