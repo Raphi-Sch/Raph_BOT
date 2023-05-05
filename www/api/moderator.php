@@ -43,10 +43,58 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         header("HTTP/1.0 400 Bad request");
         break;
 
+    case 'PUT':
+        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+
+        if(isset($_GET['expression'])){
+            echo json_encode(expression_add($db, $body));
+            break;
+        }
+
+        if(isset($_GET['leet'])){
+            echo json_encode(leet_add($db, $body));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
+    case 'PATCH':
+        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+
+        if(isset($_GET['expression'])){
+            echo json_encode(expression_edit($db, $body));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
+    case 'DELETE':
+        if(isset($_GET['expression']) && isset($_GET['id'])){
+            echo json_encode(expression_delete($db, $_GET['id']));
+            break;
+        }
+
+        if(isset($_GET['leet']) && isset($_GET['id'])){
+            echo json_encode(leet_delete($db, $_GET['id']));
+            break;
+        }
+
+        if(isset($_GET['warning']) && isset($_GET['id'])){
+            echo json_encode(warning_delete($db, $_GET['id']));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
     default:
         header("HTTP/1.0 405 Method Not Allowed");
         break;
 }
+
+exit();
 
 function get_list(mysqli $db)
 {
@@ -145,4 +193,67 @@ function warn_user(mysqli $db, $data)
     $level = db_query($db, "SELECT * FROM moderator_warning_level WHERE `level` = ?", "i", $warning['count']);
 
     return ['userid' => $warning['userid'], 'username' => $warning['username'], 'action' => $level['action'], 'duration' => $level['duration'], 'explanation' => $level['explanation'], 'reason' => $level['reason']];
+}
+
+function expression_add(mysqli $db, $data){
+    $trigger = trim(strtolower($data['trigger_word']));
+    $mod_action = intval($data['mod_action']);
+    $explanation = trim($data['explanation']);
+    $duration = intval($data['duration']);
+    $reason = trim($data['reason']);
+
+    if($mod_action == 0)
+        $duration = 0;
+
+    if($duration > 1209600)
+        $duration = 1209600;
+
+    db_query_no_result($db, "INSERT INTO `moderator` (id, trigger_word, mod_action, explanation, duration, reason) VALUES (NULL, ?, ?, ?, ?, ?)", "sisis", [$trigger, $mod_action, $explanation, $duration, $reason]);
+
+    log_activity($db, "API", "[MODERATOR] Added", $trigger);
+    return true;
+}
+
+function expression_edit(mysqli $db, $data){
+    $trigger = trim(strtolower($data['trigger_word']));
+    $mod_action = trim($data['mod_action']);
+    $explanation = trim($data['explanation']);
+    $duration = trim($data['duration']);
+    $reason = trim($data['reason']);
+
+    if($mod_action == 0)
+        $duration = 0;
+
+    db_query_no_result($db, "UPDATE `moderator` SET `trigger_word` = ?, `mod_action` = ?, `explanation` = ?, `duration` = ?, `reason` = ? WHERE `id` = ?", "sisisi", [$trigger, $mod_action, $explanation, $duration, $reason, $data['id']]);
+
+    log_activity($db, "API", "[MODERATOR] Edited", $trigger);
+    return true;
+}
+
+function expression_delete(mysqli $db, $id){
+    db_query_no_result($db, "DELETE FROM `moderator` WHERE `id` = ?", "i", $id);
+    log_activity($db, "API", "[MODERATOR] Deleted");
+    return true;
+}
+
+function leet_add(mysqli $db, $data){
+    $original = trim(strtolower($data['original']));
+    $replacement = trim(strtolower($data['replacement']));
+
+    db_query_no_result($db, "INSERT INTO `moderator_leet` (id, original, replacement) VALUES (NULL, ?, ?)", "ss", [$original, $replacement]);
+
+    log_activity($db, "API", "[MODERATOR-LEET] Added", $original);
+    return true;
+}
+
+function leet_delete(mysqli $db, $id){
+    db_query_no_result($db, "DELETE FROM `moderator_leet` WHERE `id` = ?", "i", $id);
+    log_activity($db, "API", "[MODERATOR-LEET] Deleted");
+    return true;
+}
+
+function warning_delete(mysqli $db, $id){
+    db_query_no_result($db, "DELETE FROM `moderator_warning` WHERE `id` = ?", "i", $id);
+    log_activity($db, "API", "[MODERATOR-WARNING] Deleted");
+    return true;
 }

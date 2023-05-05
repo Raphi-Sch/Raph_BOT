@@ -75,7 +75,6 @@ function expressionAdd() {
     Swal.fire({
         title: "Add entry",
         html: `<form id='swal-form'>
-            <input type='hidden' name='action' value='expression-add'>
             <label>Trigger</label><input type='text' class='form-control' name='trigger_word' placeholder='Trigger' required><br/>
             <label>Action</label>
             <select class='form-control' name='mod_action'>
@@ -96,10 +95,25 @@ function expressionAdd() {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_moderator.php', FORM_DATA).done(function () {
-                expressionList(true);
-            });
+            const FORM =  document.getElementById('swal-form');
+            const FORM_DATA = {
+                'trigger_word': FORM.trigger_word.value,
+                'mod_action': FORM.mod_action.value,
+                'reason': FORM.reason.value,
+                'duration': FORM.duration.value,
+                'explanation': FORM.explanation.value
+            };
+            
+            $.ajax({
+                url: "api/moderator.php?expression",
+                type: "PUT",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    expressionList(true);
+                },
+                error: errorAPI
+            })
         }
     });
 }
@@ -108,10 +122,8 @@ function expressionEdit(data) {
     Swal.fire({
         title: `Editing : '${data.trigger_word}'`,
         icon: 'info',
-        html: `<form id='swal-form' method='post'><br/>
-            <input type='hidden' name='action' value='expression-edit'>
-            <input type='hidden' name='id' value='${data.id}'>
-            <label>Trigger</label><input class='form-control' type='text' name='trigger' value="${data.trigger_word}"><br/>
+        html: `<form id='swal-form'><br/>
+            <label>Trigger</label><input class='form-control' type='text' name='trigger_word' value="${data.trigger_word}"><br/>
             <label>Action</label>
             <select class='form-control' name='mod_action' id='swal-select-action'>
                 <option value=0>Ban</option>
@@ -133,10 +145,26 @@ function expressionEdit(data) {
         }
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_moderator.php', FORM_DATA).done(function () {
-                expressionList(true);
-            });
+            const FORM =  document.getElementById('swal-form');
+            const FORM_DATA = {
+                'id' : data.id,
+                'trigger_word': FORM.trigger_word.value,
+                'mod_action': FORM.mod_action.value,
+                'reason': FORM.reason.value,
+                'duration': FORM.duration.value,
+                'explanation': FORM.explanation.value
+            };
+            
+            $.ajax({
+                url: "api/moderator.php?expression",
+                type: "PATCH",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    expressionList(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }
@@ -152,12 +180,15 @@ function expressionDelete(data) {
         focusCancel: true
     }).then((result) => {
         if (result.value) {
-            $.post("src/php/POST_moderator.php", {
-                action: "expression-del",
-                id: data.id
-            }, function () {
-                expressionList(true);
-            });
+            $.ajax({
+                url: `api/moderator.php?expression&id=${data.id}`,
+                type: "DELETE",
+                dataType: "json",
+                success: function () {
+                    expressionList(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }
@@ -192,8 +223,7 @@ function leetList(reload = false) {
 function leetAdd(){
     Swal.fire({
         title: "Add leet conversion",
-        html: "<form id='swal-form' method='post'>" +
-            "<input type='hidden' name='action' value='leet-add'/>" +
+        html: "<form id='swal-form'>" +
             "<label>Original</label><input type='text' class='form-control' name='original'><br/>" +
             "<label>Replacement</label><input type='text' class='form-control' name='replacement'>" +
             "</form>",
@@ -206,10 +236,22 @@ function leetAdd(){
         cancelButtonText: 'Cancel',
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_moderator.php', FORM_DATA).done(function () {
-                leetList(true);
-            });
+            const FORM =  document.getElementById('swal-form');
+            const FORM_DATA = {
+                'original': FORM.original.value,
+                'replacement': FORM.replacement.value
+            };
+            
+            $.ajax({
+                url: "api/moderator.php?leet",
+                type: "PUT",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    leetList(true);
+                },
+                error: errorAPI
+            })
         }
     });
 }
@@ -225,12 +267,15 @@ function leetDel(data){
         focusCancel: true
     }).then((result) => {
         if (result.value) {
-            $.post("src/php/POST_moderator.php", {
-                action: "leet-del",
-                id: data.id
-            }, function () {
-                leetList(true);
-            });
+            $.ajax({
+                url: `api/moderator.php?leet&id=${data.id}`,
+                type: "DELETE",
+                dataType: "json",
+                success: function () {
+                    leetList(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }
@@ -277,12 +322,15 @@ function warningDelete(data){
         focusCancel: true
     }).then((result) => {
         if (result.value) {
-            $.post("src/php/POST_moderator.php", {
-                action: "warning-del",
-                id: data.id
-            }, function () {
-                warningList(true);
-            });
+            $.ajax({
+                url: `api/moderator.php?warning&id=${data.id}`,
+                type: "DELETE",
+                dataType: "json",
+                success: function () {
+                    warningList(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }
