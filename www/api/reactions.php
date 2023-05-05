@@ -141,7 +141,7 @@ function add(mysqli $db, $data)
     $reaction = trim($data['reaction']);
     $frequency = intval($data['frequency']);
     $timeout = intval($data['timeout']);
-    $tts = intval($data['tts']);
+    $tts = boolval($data['tts']);
 
     log_activity($db, "API", "[REACTION] Created", $trigger);
 
@@ -155,7 +155,7 @@ function edit(mysqli $db, $data)
     $reaction = trim($data['reaction']);
     $frequency = intval($data['frequency']);
     $timeout = intval($data['timeout']);
-    $tts = intval($data['tts']);
+    $tts = boolval($data['tts']);
 
     log_activity($db, "API", "[REACTION] Edited", $trigger);
 
