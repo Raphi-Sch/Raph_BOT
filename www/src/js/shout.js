@@ -33,8 +33,7 @@ function list(reload = false) {
 function add_entry() {
     Swal.fire({
         title: "Add entry",
-        html: `<form id='swal-form' method='post'>
-            <input type='hidden' name='action' value='add'>
+        html: `<form id='swal-form'>
             <label>Original</label><input type='text' class='form-control' name='original' placeholder='Original' required><br/>
             <label>Replacement</label><input type='text' class='form-control' name='replacement' placeholder='Replacement' required><br/>
             <label>Language</label><select class='form-control' name='language'><option>fr</option><option>fr-uwu</option></select><br/>
@@ -49,10 +48,24 @@ function add_entry() {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_shout.php', FORM_DATA).done(function () {
-                list(true);
-            });
+            const FORM =  document.getElementById('swal-form');
+            const FORM_DATA = {
+                'original': FORM.original.value,
+                'replacement': FORM.replacement.value,
+                'language': FORM.language.value,
+                'type': FORM.type.value,
+            };
+            
+            $.ajax({
+                url: "api/shout.php",
+                type: "PUT",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    list(true);
+                },
+                error: errorAPI
+            })
         }
     });
 }
@@ -61,9 +74,8 @@ function edit_entry(data) {
     Swal.fire({
         title: `Editing : '${data.original}'`,
         icon: 'info',
-        html: `<form id='swal-form' method='post' action='src/php/POST_shout.php'>
-            <input type='hidden' name='action' value='edit'>
-            <input type='hidden' name='id' value='${data.id}'>
+        html: `<form id='swal-form'>
+            <label>Original</label><input class='form-control' type='text' name='original' value="${data.original}"><br/>
             <label>Replacement</label><input class='form-control' type='text' name='replacement' value="${data.replacement}"><br/>
             <label>Language</label><select id='swal-select-lang' class='form-control' name='language'><option>fr</option><option>fr-uwu</option></select><br/>
             <label>Type</label><select id='swal-select-type' class='form-control' name='type'><option value=0>Word</option><option value=1>Consonant</option><option value=2>Vowel</option></select><br/>
@@ -80,10 +92,25 @@ function edit_entry(data) {
         }
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_shout.php', FORM_DATA).done(function () {
-                list(true);
-            });
+            const FORM =  document.getElementById('swal-form');
+            const FORM_DATA = {
+                'id' : data.id,
+                'original': FORM.original.value,
+                'replacement': FORM.replacement.value,
+                'language': FORM.language.value,
+                'type': FORM.type.value,
+            };
+            
+            $.ajax({
+                url: "api/shout.php",
+                type: "PATCH",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    list(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }
@@ -99,12 +126,15 @@ function del_entry(data) {
         focusCancel: true
     }).then((result) => {
         if (result.value) {
-            $.post("src/php/POST_shout.php", {
-                action: "del",
-                id: data.id
-            }, function () {
-                list(true);
-            });
+            $.ajax({
+                url: `api/shout.php?id=${data.id}`,
+                type: "DELETE",
+                dataType: "json",
+                success: function () {
+                    list(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }

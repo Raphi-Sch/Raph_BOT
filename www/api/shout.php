@@ -3,6 +3,7 @@
 require_once('../src/php/db.php');
 $db = db_connect("../../config.json");
 require_once('../src/php/auth.php');
+require_once('../src/php/functions.php');
 
 header('Content-Type: application/json');
 
@@ -32,15 +33,15 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
         if (isset($_GET['request'])) {
-            switch($body["language"]){
-                case "fr" :
+            switch ($body["language"]) {
+                case "fr":
                     echo json_encode(shout_fr($db, $body["message"]));
                     break;
-                
-                case "fr-uwu" :
+
+                case "fr-uwu":
                     echo json_encode(shout_fr_uwu($db, $body["message"]));
                     break;
-                    
+
                 default:
                     header("HTTP/1.0 400 Bad request");
                     break;
@@ -50,6 +51,37 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
         header("HTTP/1.0 400 Bad request");
         exit();
+
+    case 'PUT':
+        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+
+        if (isset($body['original'])) {
+            echo json_encode(add($db, $body));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
+    case 'PATCH':
+        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+
+        if (isset($body['id'])) {
+            echo json_encode(edit($db, $body));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
+    case 'DELETE':
+        if (isset($_GET['id'])) {
+            echo json_encode(delete($db, $_GET['id']));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
 
     default:
         header("HTTP/1.0 405 Method Not Allowed");
@@ -113,7 +145,7 @@ function shout_fr_uwu(mysqli $db, string $message)
 {
     $message = shout_fr($db, $message)['value'];
 
-    if($message === null){
+    if ($message === null) {
         return ['value' => null];
     }
 
@@ -126,12 +158,11 @@ function shout_fr_uwu(mysqli $db, string $message)
     $previous_letter_replaced = false;
     $message_exploded = str_split($message, 1);
     for ($i = 1; $i < count($message_exploded); $i++) {
-        if(array_key_exists($message_exploded[$i], $consonant)){
+        if (array_key_exists($message_exploded[$i], $consonant)) {
             // Current letter can be replaced
             $message_exploded[$i] = $consonant[$message_exploded[$i]];
             $previous_letter_replaced = true;
-        }
-        else{
+        } else {
             if (!in_array($message_exploded[$i - 1], VOWELS) && !$previous_letter_replaced) {
                 // Previous letter is not a vowel and not already replaced
                 if (array_key_exists($message_exploded[$i], $vowel)) {
@@ -177,4 +208,30 @@ function get_list(mysqli $db)
     }
 
     return $result;
+}
+
+function add(mysqli $db, $data)
+{
+    $original = trim($data['original']);
+    $replacement = trim($data['replacement']);
+    log_activity($db, "API", "[SHOUT] Added", $original);
+    db_query_no_result($db, "INSERT INTO shout (`id`, `original`, `replacement`, `language`, `type`) VALUES (NULL, ?, ?, ?, ?)", "sssi", [$original, $replacement, $data['language'], $data['type']]);
+    return true;
+}
+
+function edit(mysqli $db, $data)
+{
+    $original = trim($data['original']);
+    $replacement = trim($data['replacement']);
+    log_activity($db, "API", "[SHOUT] Edited", $original);
+    db_query_no_result($db, "UPDATE `shout` SET `original` = ?, `replacement` = ?, `language` = ?, `type` = ? WHERE `id` = ?", "sssii", [$original, $replacement, $data['language'], $data['type'], $data['id']]);
+    return true;
+}
+
+function delete(mysqli $db, $id)
+{
+    $original = db_query($db, "SELECT original FROM shout WHERE id = ?", "i", $id)['original'];
+    log_activity($db, "API", "[SHOUT] Deleted", $original);
+    db_query_no_result($db, "DELETE FROM shout WHERE id = ?", "i", $id);
+    return true;
 }
