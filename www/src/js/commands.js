@@ -61,7 +61,7 @@ function commandList(reload = false) {
             data.forEach(element => {
                 const TR = document.createElement('tr');
                 const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => commandEdit(element));
-                const btnDel  = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => commandDelete(element));
+                const btnDel = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => commandDelete(element));
 
                 TR.appendChild(createTableData(element.command, 'col-xs-2'));
                 TR.appendChild(createTableData(element.value, 'col-xs-4'));
@@ -178,7 +178,7 @@ function aliasList(reload = false) {
                 TR.appendChild(createTableData(element.alias, 'col-xs-5'));
                 TR.appendChild(createTableData(element.command, 'col-xs-5'));
                 TR.appendChild(createButtonGroup(createButton("btn btn-danger", "glyphicon glyphicon-remove", () => aliasDelete(element))));
-                
+
                 LIST.appendChild(TR);
             })
 
@@ -286,7 +286,7 @@ function audioList(reload = false) {
             data.forEach(element => {
                 const TR = document.createElement('tr');
                 const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => audioEdit(element));
-                const btnDel  = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => audioDelete(element));
+                const btnDel = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => audioDelete(element));
 
                 TR.appendChild(createTableData(element.name, 'col-xs-2'));
                 TR.appendChild(createTableData(element.trigger_word, 'col-xs-1'));
@@ -297,7 +297,7 @@ function audioList(reload = false) {
                 TR.appendChild(createCheckbox(element.sub_only));
                 TR.appendChild(createPlayer(element));
                 TR.appendChild(createButtonGroup(btnEdit, btnDel));
-                
+
                 LIST.appendChild(TR);
             })
 
@@ -338,9 +338,7 @@ function audioAdd() {
 function audioEdit(data) {
     Swal.fire({
         title: `Edit : '${data.name}'`,
-        html: `<form id='swal-form' method='post'>
-            <input type='hidden' name='action' value='edit-audio'>
-            <input type='hidden' name='id' value='${data.id}'>
+        html: `<form id='swal-form'>
             <label>Name</label><input type='text' class='form-control' name='name' value="${data.name}" required><br/>
             <label>Trigger</label><input type='text' class='form-control' name='trigger' value='${data.trigger_word}'  required><br/>
             <label>Volume (<span id='swal-volume'>${parseInt(data.volume * 100)}</span>%)</label>
@@ -359,10 +357,28 @@ function audioEdit(data) {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_commands.php', FORM_DATA).done(function () {
-                audioList(true);
-            });
+            const FORM = document.getElementById('swal-form');
+            const FORM_DATA = {
+                'id': data.id,
+                'name': FORM.name.value,
+                'trigger': FORM.trigger.value,
+                'volume': FORM.volume.value,
+                'timeout': FORM.timeout.value,
+                'active': FORM.active.checked,
+                'mod_only': FORM.mod_only.checked,
+                'sub_only': FORM.sub_only.checked,
+            };
+
+            $.ajax({
+                url: "api/commands.php?audio",
+                type: "PATCH",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    audioList(true);
+                },
+                error: errorAPI
+            })
         }
     });
 }
@@ -400,9 +416,9 @@ function listTTS(reload = false) {
             data.forEach(element => {
                 const TR = document.createElement('tr');
 
-                if(element.type == 1)
+                if (element.type == 1)
                     displayValue = (element.value == '1' ? "Enabled" : "Disabled");
-                else    
+                else
                     displayValue = element.value;
 
                 TR.appendChild(createTableData(element.id, 'col-xs-2'));
@@ -423,7 +439,7 @@ function listTTS(reload = false) {
 function editTTS(element) {
     let input = "";
     let didOpen = null;
-    switch(element.type){
+    switch (element.type) {
         case 0:
             input = `<input class='form-control' type='text' name='value' value="${element.value}">`;
             break;

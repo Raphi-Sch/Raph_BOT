@@ -55,6 +55,23 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         header("HTTP/1.0 400 Bad request");
         break;
 
+    case 'PATCH':
+        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+
+        if (isset($_GET['audio'])){
+            echo json_encode(audio_edit($db, $body));
+            break;
+        }
+
+        header("HTTP/1.0 400 Bad request");
+        break;
+
+    case 'DELETE':
+        if (isset($_GET['audio']) && isset($_GET['id'])){
+            echo json_encode(audio_delete($db, $_GET['id']));
+            break;
+        }
+
     default:
         header("HTTP/1.0 405 Method Not Allowed");
         break;

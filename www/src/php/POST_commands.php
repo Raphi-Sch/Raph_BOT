@@ -27,14 +27,6 @@ switch ($_POST['action']) {
         audio_add($db);
         break;
 
-    case "edit-audio":
-        audio_edit($db);
-        break;
-
-    case "del-audio":
-        audio_delete($db);
-        break;
-
     case "edit-tts-config":
         tts_config_edit($db);
         break;
@@ -134,42 +126,6 @@ function audio_add(mysqli $db) {
     }
 
     header('Location: ../../commands.php?audio');
-    exit();
-}
-
-function audio_edit(mysqli $db) {
-    $id = $_POST['id'];
-    $name = $_POST['name'];
-    $trigger = $_POST['trigger'];
-    $volume = floatval($_POST['volume']);
-    $timeout = intval($_POST['timeout']);
-    $active = isset($_POST['active']) ? 1 : 0;
-    $mod_only = (isset($_POST['mod_only']) ? 1 : 0) || (isset($_POST['sub_only']) ? 1 : 0);
-    $sub_only = isset($_POST['sub_only']) ? 1 : 0;
-
-    db_query_no_result(
-        $db,
-        "UPDATE `commands_audio` SET `name` = ?, `trigger_word` = ?, `volume` = ?, `timeout` = ?, `active` = ?, `mod_only` = ?, `sub_only` = ? WHERE id = ?",
-        "ssdiiiii",
-        [$name, $trigger, $volume, $timeout, $active, $mod_only, $sub_only, $id]
-    );
-
-    header('Location: ../../commands.php?audio');
-    exit();
-}
-
-function audio_delete(mysqli $db) {
-    $id = $_POST['id'];
-
-    // Get filename
-    $file = db_query($db, "SELECT `file` FROM commands_audio WHERE id = ?", "i", $id)['file'];
-
-    // Remove file
-    unlink("../audio/$file");
-
-    // Remove from database
-    db_query_no_result($db, "DELETE FROM commands_audio WHERE id = ?", "i", $id);
-
     exit();
 }
 

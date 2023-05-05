@@ -74,3 +74,38 @@ function request_audio(mysqli $db, string $command, array $excluded_audio)
     else
         return array_merge(['response_type' => 'audio'], $result);
 }
+
+function audio_edit(mysqli $db, $data) {
+    $id = $data['id'];
+    $name = $data['name'];
+    $trigger = $data['trigger'];
+    $volume = floatval($data['volume']);
+    $timeout = intval($data['timeout']);
+    $active = boolval($data['active']);
+    $mod_only = boolval($data['mod_only']) || boolval($data['sub_only']);
+    $sub_only = boolval($data['sub_only']);
+
+    db_query_no_result(
+        $db,
+        "UPDATE `commands_audio` SET `name` = ?, `trigger_word` = ?, `volume` = ?, `timeout` = ?, `active` = ?, `mod_only` = ?, `sub_only` = ? WHERE id = ?",
+        "ssdiiiii",
+        [$name, $trigger, $volume, $timeout, $active, $mod_only, $sub_only, $id]
+    );
+
+    log_activity($db, "API", "[AUDIO] Edited", $name);
+    return true;
+}
+
+function audio_delete(mysqli $db, $id) {
+    // Get file data
+    $file_data = db_query($db, "SELECT `name`, `file` FROM commands_audio WHERE id = ?", "i", $id);
+
+    // Remove file
+    unlink("../audio/" . $file_data['file']);
+
+    // Remove from database
+    db_query_no_result($db, "DELETE FROM commands_audio WHERE id = ?", "i", $id);
+
+    log_activity($db, "API", "[AUDIO] Deleted", $file_data['name']);
+    return true;
+}
