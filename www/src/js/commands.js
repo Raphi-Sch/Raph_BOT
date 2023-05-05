@@ -41,10 +41,10 @@ function view(param) {
         case 'tts':
             document.getElementById("tab-tts").classList.add("active");
             document.getElementById('div-tts').classList.remove('hidden');
-            document.getElementById('btn-refresh').onclick = () => listTTS(true);
+            document.getElementById('btn-refresh').onclick = () => TTSList(true);
 
             window.history.pushState(null, '', 'commands.php?tts');
-            listTTS();
+            TTSList();
             break;
     }
 }
@@ -457,7 +457,7 @@ function audioDelete(data) {
     })
 }
 
-function listTTS(reload = false) {
+function TTSList(reload = false) {
     $.ajax({
         url: "api/commands.php?list-tts-config",
         type: "GET",
@@ -476,7 +476,7 @@ function listTTS(reload = false) {
 
                 TR.appendChild(createTableData(element.id, 'col-xs-2'));
                 TR.appendChild(createTableData(displayValue, 'col-xs-5'));
-                TR.appendChild(createButtonGroup(createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => editTTS(element))));
+                TR.appendChild(createButtonGroup(createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => TTSEdit(element))));
 
                 LIST.appendChild(TR);
             })
@@ -489,7 +489,7 @@ function listTTS(reload = false) {
     })
 }
 
-function editTTS(element) {
+function TTSEdit(element) {
     let input = "";
     let didOpen = null;
     switch (element.type) {
@@ -511,8 +511,6 @@ function editTTS(element) {
         title: `Editing : ${element.id}`,
         icon: 'info',
         html: `<form id='swal-form'>
-            <input type='hidden' name='action' value='edit-tts-config'>
-            <input type='hidden' name='id' value='${element.id}'>
             ${input}
             </form>`,
         showCancelButton: true,
@@ -524,10 +522,22 @@ function editTTS(element) {
         didOpen: didOpen
     }).then((result) => {
         if (result.value) {
-            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
-            $.post('src/php/POST_commands.php', FORM_DATA).done(function () {
-                listTTS(true);
-            });
+            const FORM = document.getElementById('swal-form');
+            const FORM_DATA = {
+                'id': element.id,
+                'value': FORM.value.value
+            };
+
+            $.ajax({
+                url: "api/commands.php?tts-config",
+                type: "PATCH",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    TTSList(true);
+                },
+                error: errorAPI
+            })
         }
     })
 }

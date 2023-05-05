@@ -84,6 +84,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if (isset($_GET['tts-config'])) {
+            echo json_encode(tts_config_edit($db, $body));
+            break;
+        }
+
         header("HTTP/1.0 400 Bad request");
         break;
 

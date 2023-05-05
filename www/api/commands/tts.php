@@ -53,3 +53,16 @@ function run_TTS($db, $text, $timeout)
         'timeout' => intval($TTS_config['timeout'])
     ];
 }
+
+function tts_config_edit(mysqli $db, $data) {
+    db_query_no_result(
+        $db,
+        "UPDATE `commands_tts_config` SET `value` = ? WHERE id = ?",
+        "ss",
+        [$data['value'], $data['id']]
+    );
+
+    log_activity($db, "API", "[COMMAND-TTS-CONFIG] Edited", $data['id']);
+    return true;
+}
+

@@ -7,10 +7,6 @@ switch ($_POST['action']) {
         audio_add($db);
         break;
 
-    case "edit-tts-config":
-        tts_config_edit($db);
-        break;
-
     default:
         exit();
 }
@@ -39,13 +35,3 @@ function audio_add(mysqli $db) {
     exit();
 }
 
-function tts_config_edit(mysqli $db) {
-    db_query_no_result(
-        $db,
-        "UPDATE `commands_tts_config` SET `value` = ? WHERE id = ?",
-        "ss",
-        [$_POST['value'], $_POST['id']]
-    );
-
-    exit();
-}
