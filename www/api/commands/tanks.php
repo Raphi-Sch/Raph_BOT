@@ -85,7 +85,7 @@ function get_random($db, $excluded_tanks)
     return ['response_type' => 'tank-random', 'value' => "@username Voici un char : " . $result['name'], 'exclude' => $result['id'], 'total' => $count, 'mod_only' => 0, 'sub_only' => 0];
 }
 
-function run_tank(mysqli $db, string $param, array $excluded_tanks = null)
+function tank_run(mysqli $db, string $param, array $excluded_tanks = null)
 {
     if (empty($param)) {
         return ['response_type' => 'text', 'value' => "@username Ecrit \"!char 5\" pour les chars de tier 5 ou \"!char e100\" pour les détails du E100, \"!char fr\" pour les chars Français, ...", 'mod_only' => 0, 'sub_only' => 0];

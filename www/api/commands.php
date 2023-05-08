@@ -127,7 +127,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
     // Built-in commands
     // Tank
     if ($command == 'tank') {
-        return run_tank($db, $param, $excluded_tanks);
+        return tank_run($db, $param, $excluded_tanks);
     }
 
     // List audio
