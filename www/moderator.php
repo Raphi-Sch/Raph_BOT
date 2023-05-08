@@ -38,8 +38,9 @@ require_once('src/php/header.php');
                     <tr>
                         <th class="col-xs-2">Trigger</th>
                         <th class="col-xs-1 text-center">Action</th>
-                        <th class="col-xs-2">Reason</th>
                         <th class="col-xs-1 text-center">Duration</th>
+                        <th class="col-xs-1 text-center">Seriousness</th>
+                        <th class="col-xs-2">Reason</th>
                         <th class="col-xs-4">Shaming</th>
                         <th class="table-scroll-th-fix"></th>
                         <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='expressionAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>

@@ -107,20 +107,20 @@ function check_message(mysqli $db, $message)
     // Clean up before processing
     $message = unleet($db, trim(strtolower($message)));
 
-    $current_expression = "";
+    $id_expression = null;
     $action_trigger = false;
-    $trigger_data = db_query_raw($db, "SELECT trigger_word FROM moderator");
+    $trigger_data = db_query_raw($db, "SELECT id, trigger_word FROM moderator ORDER BY seriousness DESC");
 
     while ($row = $trigger_data->fetch_assoc()) {
-        $current_expression = $row['trigger_word'];
-        if (strrpos($message, $current_expression) !== false) {
+        $id_expression = $row['id'];
+        if (strrpos($message, $row['trigger_word']) !== false) {
             $action_trigger = true;
             break;
         }
     }
 
     if ($action_trigger) {
-        $result = db_query($db, "SELECT * FROM moderator WHERE trigger_word = ?", "s", $current_expression);
+        $result = db_query($db, "SELECT * FROM moderator WHERE id = ?", "i", $id_expression);
     }
 
     if ($result == null)
@@ -179,7 +179,7 @@ function expression_list(mysqli $db)
     $count = 0;
 
     while ($row = $data->fetch_assoc()) {
-        $result += array($count => ["id" => $row['id'], "trigger_word" => $row['trigger_word'], "mod_action" => $row['mod_action'], 'duration' => $row['duration'], "explanation" => $row['explanation'], 'reason' => $row['reason']]);
+        $result += array($count => $row);
         $count++;
     }
 
@@ -193,6 +193,7 @@ function expression_add(mysqli $db, $data)
     $explanation = trim($data['explanation']);
     $duration = intval($data['duration']);
     $reason = trim($data['reason']);
+    $seriousness = intval($data['seriousness']);
 
     if ($mod_action == 0)
         $duration = 0;
@@ -200,7 +201,12 @@ function expression_add(mysqli $db, $data)
     if ($duration > 1209600)
         $duration = 1209600;
 
-    db_query_no_result($db, "INSERT INTO `moderator` (id, trigger_word, mod_action, explanation, duration, reason) VALUES (NULL, ?, ?, ?, ?, ?)", "sisis", [$trigger, $mod_action, $explanation, $duration, $reason]);
+    db_query_no_result(
+        $db, 
+        "INSERT INTO `moderator` (id, trigger_word, mod_action, explanation, duration, reason, seriousness) VALUES (NULL, ?, ?, ?, ?, ?, ?)", 
+        "sisisi", 
+        [$trigger, $mod_action, $explanation, $duration, $reason, $seriousness]
+    );
 
     log_activity("API", "[MODERATOR] Added", $trigger);
     return true;
@@ -213,11 +219,17 @@ function expression_edit(mysqli $db, $data)
     $explanation = trim($data['explanation']);
     $duration = trim($data['duration']);
     $reason = trim($data['reason']);
+    $seriousness = intval($data['seriousness']);
 
     if ($mod_action == 0)
         $duration = 0;
 
-    db_query_no_result($db, "UPDATE `moderator` SET `trigger_word` = ?, `mod_action` = ?, `explanation` = ?, `duration` = ?, `reason` = ? WHERE `id` = ?", "sisisi", [$trigger, $mod_action, $explanation, $duration, $reason, $data['id']]);
+    db_query_no_result(
+        $db, 
+        "UPDATE `moderator` SET `trigger_word` = ?, `mod_action` = ?, `explanation` = ?, `duration` = ?, `reason` = ?, `seriousness` = ? WHERE `id` = ?", 
+        "sisisii", 
+        [$trigger, $mod_action, $explanation, $duration, $reason, $seriousness, $data['id']]
+    );
 
     log_activity("API", "[MODERATOR] Edited", $trigger);
     return true;

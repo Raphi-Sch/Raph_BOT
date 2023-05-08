@@ -56,8 +56,9 @@ function expressionList(reload = false) {
 
                 TR.appendChild(createTableData(element.trigger_word, 'col-xs-2'));
                 TR.appendChild(createTableData(actionText[element.mod_action], 'col-xs-1 text-center'));
-                TR.appendChild(createTableData(element.reason, 'col-xs-2'));
                 TR.appendChild(createTableData((element.mod_action ? element.duration : "N/A"), 'col-xs-1 text-center'));
+                TR.appendChild(createTableData(element.seriousness, 'col-xs-1 text-center'));
+                TR.appendChild(createTableData(element.reason, 'col-xs-2'));
                 TR.appendChild(createTableData(element.explanation, 'col-xs-4'));
                 TR.appendChild(createButtonGroup(btnEdit, btnDel));
 
@@ -82,8 +83,9 @@ function expressionAdd() {
                 <option value=1>Timeout</option>
                 <option value=2>Delete message</option>
             </select><br/>
-            <label>Reason</label><textarea type='text' class='form-control' name='reason' placeholder='Reason given to user' required></textarea><br/>
             <label>Duration (timeout only)</label><input type='number' class='form-control' name='duration' placeholder='Duration in seconds' step=1 min=0 max=1209600><br/>
+            <label>Seriousness</label><input type='number' class='form-control' name='seriousness' placeholder='Level of seriousness compare to other expression' step=1 min=1 max=10><br/>
+            <label>Reason</label><textarea type='text' class='form-control' name='reason' placeholder='Reason given to user' required></textarea><br/>
             <label>Shaming</label><textarea type='text' class='form-control' name='explanation' placeholder='Shaming in chat' required></textarea><br/>
             </form>`,
         showCancelButton: true,
@@ -101,7 +103,8 @@ function expressionAdd() {
                 'mod_action': FORM.mod_action.value,
                 'reason': FORM.reason.value,
                 'duration': FORM.duration.value,
-                'explanation': FORM.explanation.value
+                'explanation': FORM.explanation.value,
+                'seriousness': FORM.seriousness.value
             };
             
             $.ajax({
@@ -130,8 +133,9 @@ function expressionEdit(data) {
                 <option value=1>Timeout</option>
                 <option value=2>Delete message</option>
             </select><br/>
-            <label>Reason</label><textarea class='form-control' type='text' name='reason'>${data.reason}</textarea><br/>
             <label>Duration (timeout only)</label><input type='number' class='form-control' name='duration' placeholder='Duration in seconds' value='${data.duration}' step=1 min=0 max=1209600><br/>
+            <label>Seriousness</label><input type='number' class='form-control' name='seriousness' placeholder='Duration in seconds' value='${data.seriousness}' step=1 min=1 max=10><br/>
+            <label>Reason</label><textarea class='form-control' type='text' name='reason'>${data.reason}</textarea><br/>
             <label>Explanation</label><textarea class='form-control' type='text' name='explanation'>${data.explanation}</textarea><br/>
             </form>`,
         showCancelButton: true,
@@ -152,7 +156,8 @@ function expressionEdit(data) {
                 'mod_action': FORM.mod_action.value,
                 'reason': FORM.reason.value,
                 'duration': FORM.duration.value,
-                'explanation': FORM.explanation.value
+                'explanation': FORM.explanation.value,
+                'seriousness': FORM.seriousness.value
             };
             
             $.ajax({

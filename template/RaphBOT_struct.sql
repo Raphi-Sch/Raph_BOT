@@ -117,7 +117,8 @@ CREATE TABLE `moderator` (
   `mod_action` text NOT NULL,
   `explanation` text NOT NULL,
   `duration` int(11) NOT NULL,
-  `reason` text NOT NULL
+  `reason` text NOT NULL,
+  `seriousness` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
