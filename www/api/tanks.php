@@ -10,17 +10,17 @@ header('Content-Type: application/json');
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['list-tanks'])) {
-            echo json_encode(get_list_tanks($db));
+            echo json_encode(tank_list($db));
             break;
         }
 
         if (isset($_GET['list-alias'])) {
-            echo json_encode(get_list_alias($db));
+            echo json_encode(alias_list($db));
             break;
         }
 
         if (isset($_GET['list-nation'])) {
-            echo json_encode(get_list_nation($db));
+            echo json_encode(nation_list($db));
             break;
         }
 
@@ -86,7 +86,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 exit();
 
-function get_list_tanks(mysqli $db)
+function tank_list(mysqli $db)
 {
     $SQL_query = "SELECT * FROM tanks ORDER BY `trigger_word` ASC";
     $data = db_query_raw($db, $SQL_query);
@@ -96,38 +96,6 @@ function get_list_tanks(mysqli $db)
 
     while ($row = $data->fetch_assoc()) {
         $result += array($count => ['id' => $row['id'], 'trigger_word' => $row['trigger_word'], 'name' => $row['name'], 'nation' => $row['nation'], 'tier' => $row['tier'], 'mark' => $row["mark"], 'max_dmg' =>  $row["max_dmg"], 'type' => $row['type'], 'note' => $row['note']]);
-        $count++;
-    }
-
-    return $result;
-}
-
-function get_list_alias(mysqli $db)
-{
-    $SQL_query = "SELECT * FROM tanks_alias ORDER BY tank ASC";
-    $data = db_query_raw($db, $SQL_query);
-
-    $result = array();
-    $count = 0;
-
-    while ($row = $data->fetch_assoc()) {
-        $result += array($count => ['alias' => $row['alias'], 'tank' => $row['tank']]);
-        $count++;
-    }
-
-    return $result;
-}
-
-function get_list_nation(mysqli $db)
-{
-    $SQL_query = "SELECT * FROM tanks_nation ORDER BY nation ASC";
-    $data = db_query_raw($db, $SQL_query);
-
-    $result = array();
-    $count = 0;
-
-    while ($row = $data->fetch_assoc()) {
-        $result += array($count => ['alias' => $row['alias'], 'nation' => $row['nation']]);
         $count++;
     }
 
@@ -174,6 +142,22 @@ function tank_delete(mysqli $db, $id)
     return true;
 }
 
+function nation_list(mysqli $db)
+{
+    $SQL_query = "SELECT * FROM tanks_nation ORDER BY nation ASC";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = $data->fetch_assoc()) {
+        $result += array($count => ['alias' => $row['alias'], 'nation' => $row['nation']]);
+        $count++;
+    }
+
+    return $result;
+}
+
 function nation_add(mysqli $db, $data)
 {
     $alias = strtolower(trim($data['alias']));
@@ -189,6 +173,22 @@ function nation_delete(mysqli $db, $alias)
 
     log_activity("API", "[TANKS-NATION] Deleted");
     return true;
+}
+
+function alias_list(mysqli $db)
+{
+    $SQL_query = "SELECT * FROM tanks_alias ORDER BY tank ASC";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = $data->fetch_assoc()) {
+        $result += array($count => ['alias' => $row['alias'], 'tank' => $row['tank']]);
+        $count++;
+    }
+
+    return $result;
 }
 
 function alias_add(mysqli $db, $data)
