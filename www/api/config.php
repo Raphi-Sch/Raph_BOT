@@ -8,19 +8,19 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['plugin'])) {
             header('Content-Type: application/json');
-            echo json_encode(get_plugin($db));
+            echo json_encode(plugin_list($db));
             break;
         }
 
         if (isset($_GET['name'])) {
             header('Content-Type: application/json');
-            echo json_encode(get_name($db));
+            echo json_encode(bot_name($db));
             break;
         }
 
         if (isset($_GET['socket-port'])) {
             header('Content-Type: application/json');
-            echo json_encode(get_socket_port());
+            echo json_encode(socket_port());
             break;
         }
 
@@ -36,9 +36,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
-        if(isset($_GET['list'])){
+        if (isset($_GET['list'])) {
             header('Content-Type: application/json');
-            echo json_encode(get_config($db));
+            echo json_encode(config_list($db));
             break;
         }
 
@@ -48,9 +48,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     case 'PATCH':
         $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
-        if(isset($_GET['edit']) && isset($body['id']) && isset($body['value'])){
+        if (isset($_GET['edit']) && isset($body['id']) && isset($body['value'])) {
             header('Content-Type: application/json');
-            echo json_encode(patch_config($db, $body));
+            echo json_encode(config_patch($db, $body));
             break;
         }
 
@@ -64,7 +64,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 exit();
 
-function get_plugin(mysqli $db)
+function plugin_list(mysqli $db)
 {
     $SQL_query = "SELECT * FROM `config` WHERE id LIKE 'plugin_%'";
     $data = db_query_raw($db, $SQL_query);
@@ -78,23 +78,28 @@ function get_plugin(mysqli $db)
     return $result;
 }
 
-function get_name(mysqli $db){
+function bot_name(mysqli $db)
+{
     return array("value" => db_query($db, "SELECT `value` FROM config WHERE id = 'bot_name'")["value"]);
 }
 
-function get_socket_port(){
+function socket_port()
+{
     return array("value" => json_decode(file_get_contents("../../config.json"), true)['socket_port']);
 }
 
-function get_log(){
+function get_log()
+{
     return file_get_contents(dirname(__FILE__) . "/../../core/lastest.log");
 }
 
-function get_debug(){
+function get_debug()
+{
     return file_get_contents(dirname(__FILE__) . "/../../core/debug.log");
 }
 
-function get_config(mysqli $db){
+function config_list(mysqli $db)
+{
     $SQL_query = "SELECT * FROM `config`";
     $data = db_query_raw($db, $SQL_query);
 
@@ -109,10 +114,11 @@ function get_config(mysqli $db){
     return $result;
 }
 
-function patch_config(mysqli $db, $body){
+function config_patch(mysqli $db, $body)
+{
     $id = $body['id'];
     $value = $body['value'];
-    
+
     db_query_no_result($db, "UPDATE config SET `value` = ? WHERE id = ?", "ss", [$value, $id]);
     log_activity("API", "[CONFIG] Key edited", "$id");
 
