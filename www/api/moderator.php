@@ -10,17 +10,17 @@ header('Content-Type: application/json');
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['list'])) {
-            echo json_encode(get_list($db));
+            echo json_encode(expression_list($db));
             break;
         }
 
         if (isset($_GET['list-leet'])) {
-            echo json_encode(get_list_leet($db));
+            echo json_encode(leet_list($db));
             break;
         }
 
         if (isset($_GET['list-warning'])) {
-            echo json_encode(list_warning($db));
+            echo json_encode(warn_list($db));
             break;
         }
 
@@ -46,12 +46,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     case 'PUT':
         $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
-        if(isset($_GET['expression'])){
+        if (isset($_GET['expression'])) {
             echo json_encode(expression_add($db, $body));
             break;
         }
 
-        if(isset($_GET['leet'])){
+        if (isset($_GET['leet'])) {
             echo json_encode(leet_add($db, $body));
             break;
         }
@@ -62,7 +62,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     case 'PATCH':
         $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
-        if(isset($_GET['expression'])){
+        if (isset($_GET['expression'])) {
             echo json_encode(expression_edit($db, $body));
             break;
         }
@@ -71,18 +71,18 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'DELETE':
-        if(isset($_GET['expression']) && isset($_GET['id'])){
+        if (isset($_GET['expression']) && isset($_GET['id'])) {
             echo json_encode(expression_delete($db, $_GET['id']));
             break;
         }
 
-        if(isset($_GET['leet']) && isset($_GET['id'])){
+        if (isset($_GET['leet']) && isset($_GET['id'])) {
             echo json_encode(leet_delete($db, $_GET['id']));
             break;
         }
 
-        if(isset($_GET['warning']) && isset($_GET['id'])){
-            echo json_encode(warning_delete($db, $_GET['id']));
+        if (isset($_GET['warning']) && isset($_GET['id'])) {
+            echo json_encode(warn_delete($db, $_GET['id']));
             break;
         }
 
@@ -95,38 +95,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 }
 
 exit();
-
-function get_list(mysqli $db)
-{
-    $SQL_query = "SELECT * FROM moderator ORDER BY trigger_word ASC";
-    $data = db_query_raw($db, $SQL_query);
-
-    $result = array();
-    $count = 0;
-
-    while ($row = $data->fetch_assoc()) {
-        $result += array($count => ["id" => $row['id'], "trigger_word" => $row['trigger_word'], "mod_action" => $row['mod_action'], 'duration' => $row['duration'], "explanation" => $row['explanation'], 'reason' => $row['reason']]);
-        $count++;
-    }
-
-    return $result;
-}
-
-function get_list_leet(mysqli $db)
-{
-    $SQL_query = "SELECT * FROM moderator_leet ORDER BY replacement ASC";
-    $data = db_query_raw($db, $SQL_query);
-
-    $result = array();
-    $count = 0;
-
-    while ($row = $data->fetch_assoc()) {
-        $result += array($count => ["id" => $row['id'], "replacement" => $row['replacement'], "original" => $row['original']]);
-        $count++;
-    }
-
-    return $result;
-}
 
 function check_message(mysqli $db, $message)
 {
@@ -161,7 +129,7 @@ function check_message(mysqli $db, $message)
         return $result;
 }
 
-function list_warning(mysqli $db)
+function warn_list(mysqli $db)
 {
     $SQL_query = "SELECT * FROM moderator_warning ORDER BY username ASC";
     $data = db_query_raw($db, $SQL_query);
@@ -195,17 +163,41 @@ function warn_user(mysqli $db, $data)
     return ['userid' => $warning['userid'], 'username' => $warning['username'], 'action' => $level['action'], 'duration' => $level['duration'], 'explanation' => $level['explanation'], 'reason' => $level['reason']];
 }
 
-function expression_add(mysqli $db, $data){
+function warn_delete(mysqli $db, $id)
+{
+    db_query_no_result($db, "DELETE FROM `moderator_warning` WHERE `id` = ?", "i", $id);
+    log_activity("API", "[MODERATOR-WARNING] Deleted");
+    return true;
+}
+
+function expression_list(mysqli $db)
+{
+    $SQL_query = "SELECT * FROM moderator ORDER BY trigger_word ASC";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = $data->fetch_assoc()) {
+        $result += array($count => ["id" => $row['id'], "trigger_word" => $row['trigger_word'], "mod_action" => $row['mod_action'], 'duration' => $row['duration'], "explanation" => $row['explanation'], 'reason' => $row['reason']]);
+        $count++;
+    }
+
+    return $result;
+}
+
+function expression_add(mysqli $db, $data)
+{
     $trigger = trim(strtolower($data['trigger_word']));
     $mod_action = intval($data['mod_action']);
     $explanation = trim($data['explanation']);
     $duration = intval($data['duration']);
     $reason = trim($data['reason']);
 
-    if($mod_action == 0)
+    if ($mod_action == 0)
         $duration = 0;
 
-    if($duration > 1209600)
+    if ($duration > 1209600)
         $duration = 1209600;
 
     db_query_no_result($db, "INSERT INTO `moderator` (id, trigger_word, mod_action, explanation, duration, reason) VALUES (NULL, ?, ?, ?, ?, ?)", "sisis", [$trigger, $mod_action, $explanation, $duration, $reason]);
@@ -214,14 +206,15 @@ function expression_add(mysqli $db, $data){
     return true;
 }
 
-function expression_edit(mysqli $db, $data){
+function expression_edit(mysqli $db, $data)
+{
     $trigger = trim(strtolower($data['trigger_word']));
     $mod_action = trim($data['mod_action']);
     $explanation = trim($data['explanation']);
     $duration = trim($data['duration']);
     $reason = trim($data['reason']);
 
-    if($mod_action == 0)
+    if ($mod_action == 0)
         $duration = 0;
 
     db_query_no_result($db, "UPDATE `moderator` SET `trigger_word` = ?, `mod_action` = ?, `explanation` = ?, `duration` = ?, `reason` = ? WHERE `id` = ?", "sisisi", [$trigger, $mod_action, $explanation, $duration, $reason, $data['id']]);
@@ -230,13 +223,31 @@ function expression_edit(mysqli $db, $data){
     return true;
 }
 
-function expression_delete(mysqli $db, $id){
+function expression_delete(mysqli $db, $id)
+{
     db_query_no_result($db, "DELETE FROM `moderator` WHERE `id` = ?", "i", $id);
     log_activity("API", "[MODERATOR] Deleted");
     return true;
 }
 
-function leet_add(mysqli $db, $data){
+function leet_list(mysqli $db)
+{
+    $SQL_query = "SELECT * FROM moderator_leet ORDER BY replacement ASC";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = $data->fetch_assoc()) {
+        $result += array($count => ["id" => $row['id'], "replacement" => $row['replacement'], "original" => $row['original']]);
+        $count++;
+    }
+
+    return $result;
+}
+
+function leet_add(mysqli $db, $data)
+{
     $original = trim(strtolower($data['original']));
     $replacement = trim(strtolower($data['replacement']));
 
@@ -246,14 +257,9 @@ function leet_add(mysqli $db, $data){
     return true;
 }
 
-function leet_delete(mysqli $db, $id){
+function leet_delete(mysqli $db, $id)
+{
     db_query_no_result($db, "DELETE FROM `moderator_leet` WHERE `id` = ?", "i", $id);
     log_activity("API", "[MODERATOR-LEET] Deleted");
-    return true;
-}
-
-function warning_delete(mysqli $db, $id){
-    db_query_no_result($db, "DELETE FROM `moderator_warning` WHERE `id` = ?", "i", $id);
-    log_activity("API", "[MODERATOR-WARNING] Deleted");
     return true;
 }
