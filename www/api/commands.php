@@ -33,7 +33,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         }
 
         if (isset($_GET['list-tts-config'])) {
-            echo json_encode(list_tts_config($db));
+            echo json_encode(tts_config_list($db));
             break;
         }
 
@@ -137,7 +137,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
 
     // TTS
     if ($command == 'tts') {
-        return run_TTS($db, $param, $timeout_tts);
+        return tts_run($db, $param, $timeout_tts);
     }
 
     // Custom commands

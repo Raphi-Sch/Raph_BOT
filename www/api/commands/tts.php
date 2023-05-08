@@ -1,22 +1,6 @@
 <?php
 
-function list_tts_config($db)
-{
-    $SQL_query = "SELECT * FROM commands_tts_config ORDER BY `id` ASC";
-    $data = db_query_raw($db, $SQL_query);
-
-    $result = array();
-    $count = 0;
-
-    while ($row = mysqli_fetch_assoc($data)) {
-        $result[$count] = $row;
-        $count++;
-    }
-
-    return $result;
-}
-
-function run_TTS($db, $text, $timeout)
+function tts_run($db, $text, $timeout)
 {
     // Load config dynamically
     $TTS_config = array();
@@ -54,7 +38,24 @@ function run_TTS($db, $text, $timeout)
     ];
 }
 
-function tts_config_edit(mysqli $db, $data) {
+function tts_config_list($db)
+{
+    $SQL_query = "SELECT * FROM commands_tts_config ORDER BY `id` ASC";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = mysqli_fetch_assoc($data)) {
+        $result[$count] = $row;
+        $count++;
+    }
+
+    return $result;
+}
+
+function tts_config_edit(mysqli $db, $data)
+{
     db_query_no_result(
         $db,
         "UPDATE `commands_tts_config` SET `value` = ? WHERE id = ?",
@@ -65,4 +66,3 @@ function tts_config_edit(mysqli $db, $data) {
     log_activity("API", "[COMMAND-TTS-CONFIG] Edited", $data['id']);
     return true;
 }
-
