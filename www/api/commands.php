@@ -28,7 +28,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         }
 
         if (isset($_GET['list-audio'])) {
-            echo json_encode(list_audio($db));
+            echo json_encode(audio_list($db));
             break;
         }
 
@@ -132,7 +132,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
 
     // List audio
     if ($command == 'audio') {
-        return list_audio_text($db);
+        return audio_list_text($db);
     }
 
     // TTS
@@ -151,7 +151,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
     }
 
     // Query Audio
-    $result = request_audio($db, $command, $excluded_audio);
+    $result = audio_request($db, $command, $excluded_audio);
     if (!empty($result)) {
         return $result;
     }

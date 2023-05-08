@@ -1,6 +1,6 @@
 <?php
 
-function list_audio(mysqli $db)
+function audio_list(mysqli $db)
 {
     $SQL_query = "SELECT * FROM commands_audio ORDER BY `name` ASC";
     $data = db_query_raw($db, $SQL_query);
@@ -16,41 +16,40 @@ function list_audio(mysqli $db)
     return $result;
 }
 
-function list_audio_text(mysqli $db){
+function audio_list_text(mysqli $db)
+{
     $result = "Audio commands : ";
     $first = true;
 
     $data = db_query_raw($db, "SELECT * FROM commands_audio WHERE active = 1 AND sub_only = 0 AND mod_only = 0 ORDER BY `trigger_word` ASC");
     while ($row = mysqli_fetch_assoc($data)) {
-        if ($first){
+        if ($first) {
             $result .= "!" . $row['trigger_word'];
             $first = false;
-        }
-        else
+        } else
             $result .= ", !" . $row['trigger_word'];
     }
 
     $first = true;
     $data = db_query_raw($db, "SELECT * FROM commands_audio WHERE active = 1 AND sub_only = 1 ORDER BY `trigger_word` ASC");
     while ($row = mysqli_fetch_assoc($data)) {
-        if ($first){
+        if ($first) {
             $result .= " - Sub only : !" . $row['trigger_word'];
             $first = false;
-        }
-        else
+        } else
             $result .= ", !" . $row['trigger_word'];
     }
 
     return ['response_type' => 'text', 'value' => $result, 'mod_only' => 0, 'sub_only' => 0];
 }
 
-function request_audio(mysqli $db, string $command, array $excluded_audio)
+function audio_request(mysqli $db, string $command, array $excluded_audio)
 {
     $SQL_params_type = "";
     $SQL_params = array();
     $trigger_word_not_in = "";
 
-    if(in_array($command, $excluded_audio)){
+    if (in_array($command, $excluded_audio)) {
         return ['response_type' => 'text', 'value' => "Command '!$command' is not available yet."];
     }
 
@@ -75,7 +74,8 @@ function request_audio(mysqli $db, string $command, array $excluded_audio)
         return array_merge(['response_type' => 'audio'], $result);
 }
 
-function audio_edit(mysqli $db, $data) {
+function audio_edit(mysqli $db, $data)
+{
     $id = $data['id'];
     $name = $data['name'];
     $trigger = $data['trigger'];
@@ -96,7 +96,8 @@ function audio_edit(mysqli $db, $data) {
     return true;
 }
 
-function audio_delete(mysqli $db, $id) {
+function audio_delete(mysqli $db, $id)
+{
     // Get file data
     $file_data = db_query($db, "SELECT `name`, `file` FROM commands_audio WHERE id = ?", "i", $id);
 
