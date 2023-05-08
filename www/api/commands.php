@@ -13,17 +13,17 @@ header('Content-Type: application/json');
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['list-auto'])) {
-            echo json_encode(list_auto($db));
+            echo json_encode(command_auto_list($db));
             break;
         }
 
         if (isset($_GET['list-text'])) {
-            echo json_encode(list_text($db));
+            echo json_encode(command_list($db));
             break;
         }
 
         if (isset($_GET['list-alias'])) {
-            echo json_encode(list_alias($db));
+            echo json_encode(alias_list($db));
             break;
         }
 
@@ -160,21 +160,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
     return ['response_type' => null];
 }
 
-function list_auto(mysqli $db)
-{
-    $SQL_query = "SELECT command FROM commands WHERE commands.auto = 1";
-    $data = db_query_raw($db, $SQL_query);
-
-    $result = array();
-
-    while ($row = $data->fetch_assoc()) {
-        array_push($result, $row['command']);
-    }
-
-    return $result;
-}
-
-function list_text(mysqli $db)
+function command_list(mysqli $db)
 {
     $SQL_query = "SELECT * FROM commands ORDER BY command ASC";
     $data = db_query_raw($db, $SQL_query);
@@ -190,17 +176,15 @@ function list_text(mysqli $db)
     return $result;
 }
 
-function list_alias(mysqli $db)
+function command_auto_list(mysqli $db)
 {
-    $SQL_query = "SELECT * FROM commands_alias ORDER BY command ASC";
+    $SQL_query = "SELECT command FROM commands WHERE commands.auto = 1";
     $data = db_query_raw($db, $SQL_query);
 
     $result = array();
-    $count = 0;
 
     while ($row = $data->fetch_assoc()) {
-        $result[$count] = $row;
-        $count++;
+        array_push($result, $row['command']);
     }
 
     return $result;
@@ -258,6 +242,22 @@ function command_delete(mysqli $db, $id)
     db_query_no_result($db, "DELETE FROM commands WHERE id = ?", "i", $id);
     log_activity("API", "[COMMAND] Deleted", $command);
     return true;
+}
+
+function alias_list(mysqli $db)
+{
+    $SQL_query = "SELECT * FROM commands_alias ORDER BY command ASC";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = $data->fetch_assoc()) {
+        $result[$count] = $row;
+        $count++;
+    }
+
+    return $result;
 }
 
 function alias_add(mysqli $db, $data)
