@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <head>
     <?php include("src/html/header.html"); ?>
-    <title id='bot_name'>Login - </title>
+    <title>Login - <?php echo $bot_name;?> </title>
 </head>
 
 <body>
