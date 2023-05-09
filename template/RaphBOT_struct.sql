@@ -32,7 +32,8 @@ CREATE TABLE `authentication` (
   `client` text NOT NULL,
   `token_hash` text NOT NULL,
   `expiration` date DEFAULT NULL,
-  `note` text DEFAULT NULL
+  `note` text DEFAULT NULL,
+  `usage_type` INT(4) DEFAULT 2
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
