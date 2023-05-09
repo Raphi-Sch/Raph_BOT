@@ -43,6 +43,7 @@ NodeJS module:
 - Go to "Authentication". 
 - Add two client, set usage to 'Core' for the first one and 'WebUI' for the seconds. 
 - Use the renew button on both client to generate a token. Config files are automatically edited.
+- Relog into the WebUI for the change to be effective.
 
 ### Configure bot
 - Log into the dashboard
