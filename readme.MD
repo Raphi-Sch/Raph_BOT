@@ -23,7 +23,7 @@ NodeJS module:
 ### Backend
 - Configure your web server so it uses the 'www' folder as document root. The virtual host must be HTTPS.
 - Use raphbot_struct.sql and raphbot_data.sql to configure your database with the required tables
-- Make sure the folder 'core' can be written by the web server (needed for log files, core will crash if it can't write)
+- Make sure the folder 'core' and 'www/src/audio' can be written by the web server.
 
 ### WebUI
 - Move "config_UI.json" from the template folder to the root folder and rename it "config.json" (mv ./template/config_UI.json ./config.json)
