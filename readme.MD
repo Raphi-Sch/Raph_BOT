@@ -24,12 +24,12 @@ NodeJS module:
 ### Backend
 - Configure your web server so it uses the 'www' folder as document root. The virtual host must be HTTPS.
 - Use raphbot_struct.sql and raphbot_data.sql to configure your database with the required tables
-- Make sure the folder 'core' can be written by the web server (needed for log files)
+- Make sure the folder 'core' can be written by the web server (needed for log files, core will crash if it can't write)
 
 ### WebUI
 - Move "config_UI.json" from the template folder to the root folder and rename it "config.json" (mv ./template/config_UI.json ./config.json)
 - Open "config.json"
-- Setup your database config (host, user, password, database)
+- Set your database config (host, user, password, database)
 - Set "socket_port" (default is 3000)
 
 ### Core config
@@ -40,7 +40,9 @@ NodeJS module:
 
 ### Create auth token
 - Log into RaphBOT WebUI (default user is 'admin' with password '0'), ignore all errors related to "API ERROR". You don't have any pair of client/token yet.
-- Go to "Authentication", create two key. Set usage to core for the first one and WebUI for the seconds. The config file are automatically edited.
+- Go to "Authentication". 
+- Add two client, set usage to 'Core' for the first one and 'WebUI' for the seconds. 
+- Use the renew button on both client to generate a token. Config files are automatically edited.
 
 ### Configure bot
 - Log into the dashboard
