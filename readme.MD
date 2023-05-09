@@ -11,7 +11,6 @@ Linux package :
 - PHP 7.0 (or higher)
 - MySQL / MariaDB
 - NodeJS (v16)
-- Screen
 
 NodeJS module: 
 - socket.io : ^4.6.1
