@@ -3,19 +3,23 @@ require_once('src/php/header.php');
 
 $db = db_connect();
 
+const USAGE_TEXT = ['Core', 'WebUI', 'Other'];
+
 $HTML = "";
 $data = db_query_raw($db, "SELECT * FROM `authentication`");
 while($row = $data->fetch_assoc()){
     $client = $row['client'];
     $exp = empty($row['expiration']) ? "None" : $row['expiration'];
     $note = $row['note'];
+    $usage = USAGE_TEXT[$row['usage_type']];
 
     $data_renew = ['id' => $row['id'], 'client' => $row['client']];
-    $data_edit = ['id' => $row['id'], 'client' => $row['client'], 'expiration' => $row['expiration'], 'note' => $row['note']];
+    $data_edit = ['id' => $row['id'], 'client' => $row['client'], 'expiration' => $row['expiration'], 'note' => $row['note'], 'usage' => $row['usage_type']];
     $data_del = ['id' => $row['id'], 'client' => $row['client']];
 
     $HTML .= "<tr>
         <td>$client</td>
+        <td>$usage</td>
         <td>$exp</td>
         <td>$note</td>
         <td>
@@ -53,6 +57,7 @@ while($row = $data->fetch_assoc()){
             <thead>
                 <tr>
                     <th class="col-xs-3">Client</th>
+                    <th class="col-xs-1">Usage</th>
                     <th class="col-xs-2">Expiration date</th>
                     <th>Note</th>
                     <th class="col-xs-2"><button type="button" class="btn btn-success pull-right" onclick='authAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>

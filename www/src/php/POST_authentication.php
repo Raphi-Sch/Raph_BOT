@@ -4,6 +4,9 @@ require_once('db.php');
 require_once('access.php');
 require_once('functions.php');
 
+const USAGE_CORE = 0;
+const USAGE_WEBUI = 1;
+
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     error_post();
     exit();
@@ -55,12 +58,13 @@ function auth_edit($db)
 {
     $expiration = (empty($_POST['expiration']) ? NULL : $_POST['expiration']);
     $note = trim($_POST['note']);
+    $usage = intval($_POST['usage']);
 
     db_query_no_result(
         $db,
-        "UPDATE `authentication` SET `note` = ?, `expiration` = ?  WHERE id = ?",
-        "ssi",
-        [$note, $expiration, $_POST['id']]
+        "UPDATE `authentication` SET `note` = ?, `expiration` = ?, `usage_type` = ?  WHERE id = ?",
+        "ssii",
+        [$note, $expiration, $usage, $_POST['id']]
     );
 
     log_activity($_SESSION['username'], "[AUTH] Key edited", $_POST['client']);
@@ -87,6 +91,45 @@ function auth_renew($db)
         [$hash, $id]
     );
 
+    // Auto update
+    $data_auth = db_query($db, 'SELECT client, usage_type FROM `authentication` WHERE id = ?', 'i', $id);
+    $updated = update_config($data_auth['client'], $token, $data_auth['usage_type']);
+
     log_activity($_SESSION['username'], "[AUTH] Key renew", $_POST['client']);
+
+    if ($updated)
+        log_activity($_SESSION['username'], "[AUTH] Token updated in config file");
+
     return ['token' => $token];
+}
+
+function update_config($client, $token, $usage)
+{
+    $config = null;
+
+    switch ($usage) {
+        case USAGE_CORE:
+            $config_path = dirname(__DIR__) . "/../../core/config.json";
+            break;
+
+        case USAGE_WEBUI:
+            $config_path = dirname(__DIR__) . "/../../config.json";
+            break;
+
+        default:
+            return false;
+    }
+
+    $config = file_get_contents($config_path);
+    if ($config === false) {
+        return false;
+    }
+
+    $config = json_decode($config, true);
+
+    $config['client'] = $client;
+    $config['token'] = $token;
+
+    file_put_contents($config_path, json_encode($config));
+    return true;
 }

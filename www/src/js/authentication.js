@@ -45,6 +45,13 @@ function authEdit(data) {
             <input type='hidden' name='action' value='auth-edit'>
             <input type='hidden' name='id' value='${element.id}'>
             <input type='hidden' name='client' value='${element.client}'>
+            <label>Command</label>
+            <select id='swal-usage' class='form-control' name='usage'>
+                <option value=0>Core</option>
+                <option value=1>WebUI</option>
+                <option value=2>Other</option>
+            </select>
+            <br/>
             <label>Expiration date</label>
             <input type='date' class='form-control' name='expiration' value='${element.expiration}'>
             <br/>
@@ -57,7 +64,10 @@ function authEdit(data) {
         allowOutsideClick: false,
         width: "30%",
         confirmButtonText: 'Edit',
-        cancelButtonText: 'Cancel'
+        cancelButtonText: 'Cancel',
+        didOpen: () => {
+            document.getElementById('swal-usage').value = element.usage;
+        }
     }).then((result) => {
         if (result.value) {
             const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
