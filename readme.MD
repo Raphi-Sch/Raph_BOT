@@ -32,20 +32,15 @@ NodeJS module:
 - Setup your database config (host, user, password, database)
 - Set "socket_port" (default is 3000)
 
-### Create auth token
-- Log into RaphBOT WebUI (default user is 'admin' with password '0'), ignore all errors related to "API ERROR". You don't have any pair of client/token yet.
-- Go to "Authentication", create two key. One is for the core, the other for the WebUI
-
 ### Core config
 - Move "config_core.json" from the template folder to the root folder and rename it "config.json" (mv ./template/config_UI.json ./core/config.json)
 - Open "config.json"
-- Set "client" and "token" with the information you got earlier
 - Set "API_URL" with the complete URL to access the RaphBOT API
 - Set "socket_port" (default is 3000), it need to match the port you set earlier
 
-### WebUI (next)
-- Open "config.json"
-- Set "client" and "token" with the information you got earlier
+### Create auth token
+- Log into RaphBOT WebUI (default user is 'admin' with password '0'), ignore all errors related to "API ERROR". You don't have any pair of client/token yet.
+- Go to "Authentication", create two key. Set usage to core for the first one and WebUI for the seconds. The config file are automatically edited.
 
 ### Configure bot
 - Log into the dashboard
