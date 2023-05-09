@@ -40,18 +40,16 @@ exit();
 function auth_add($db)
 {
     $client = guidv4();
-    $token = base64_encode(random_bytes(32));
-    $hash = password_hash($token, PASSWORD_BCRYPT);
 
     db_query_no_result(
         $db,
-        "INSERT INTO `authentication` (`id`, `client`, `token_hash`, `expiration`, `note`) VALUES (NULL, ?, ?, NULL, NULL) ",
-        "ss",
-        [$client, $hash]
+        "INSERT INTO `authentication` (`id`, `client`, `token_hash`, `expiration`, `note`, `usage_type`) VALUES (NULL, ?, '', NULL, NULL, ?)",
+        "si",
+        [$client, $_POST['usage']]
     );
 
-    log_activity($_SESSION['username'], "[AUTH] Key added", $client);
-    return ['token' => $token];
+    log_activity($_SESSION['username'], "[AUTH] Client added", $client);
+    return true;
 }
 
 function auth_edit($db)

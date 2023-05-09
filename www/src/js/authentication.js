@@ -1,7 +1,16 @@
 function authAdd() {
     Swal.fire({
-        title: "Add authentication",
+        title: "Add client",
         icon: 'question',
+        html: `<form id='swal-form'>
+            <input type='hidden' name='action' value='auth-add'>
+            <label>Usage</label>
+            <select id='swal-usage' class='form-control' name='usage'>
+                <option value=0>Core</option>
+                <option value=1>WebUI</option>
+                <option value=2>Other</option>
+            </select>
+            </form>`,
         showCancelButton: true,
         showConfirmButton: true,
         focusConfirm: false,
@@ -10,26 +19,9 @@ function authAdd() {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.value) {
-            $.post("src/php/POST_authentication.php", {
-                action: 'auth-add'
-            }, function (data) {
-                data = JSON.parse(data);
-                if (data) {
-                    Swal.fire({
-                        title: `Token generated (copied to clipboard)`,
-                        icon: 'info',
-                        width: '25%',
-                        html: `<p id='swal-token'>${data.token}</p>`,
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        allowEnterKey: false,
-                        didOpen: () => {
-                            navigator.clipboard.writeText(document.getElementById('swal-token').innerText);
-                        }
-                    }).then(() => {
-                        document.location.reload();
-                    })
-                }
+            const FORM_DATA = $(document.getElementById('swal-form')).serializeArray();
+            $.post('src/php/POST_authentication.php', FORM_DATA).done(function () {
+                document.location.reload();
             });
         }
     });
@@ -45,7 +37,7 @@ function authEdit(data) {
             <input type='hidden' name='action' value='auth-edit'>
             <input type='hidden' name='id' value='${element.id}'>
             <input type='hidden' name='client' value='${element.client}'>
-            <label>Command</label>
+            <label>Usage</label>
             <select id='swal-usage' class='form-control' name='usage'>
                 <option value=0>Core</option>
                 <option value=1>WebUI</option>
@@ -122,11 +114,11 @@ function authRenew(data) {
                 if (data) {
                     data = JSON.parse(data);
 
-                    if(data.file_updated){
+                    if (data.file_updated) {
                         title = `Token renewed (config file updated)`;
                         html = "";
                     }
-                    else{
+                    else {
                         title = `Token renewed (copied to clipboard)`;
                         html = `<p id='swal-token'>${data.token}</p>`;
                     }
@@ -140,7 +132,7 @@ function authRenew(data) {
                         allowOutsideClick: false,
                         allowEnterKey: false,
                         didOpen: () => {
-                            if(!data.file_updated)
+                            if (!data.file_updated)
                                 navigator.clipboard.writeText(document.getElementById('swal-token').innerText);
                         }
                     }).then(() => {
