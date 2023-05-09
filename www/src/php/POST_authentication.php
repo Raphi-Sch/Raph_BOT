@@ -65,7 +65,7 @@ function auth_edit($db)
         [$note, $expiration, $usage, $_POST['id']]
     );
 
-    log_activity($_SESSION['username'], "[AUTH] Key edited", $_POST['client']);
+    log_activity($_SESSION['username'], "[AUTH] Client edited", $_POST['client']);
     exit();
 }
 
@@ -93,7 +93,7 @@ function auth_renew($db)
     $data_auth = db_query($db, 'SELECT client, usage_type FROM `authentication` WHERE id = ?', 'i', $id);
     $updated = update_config($data_auth['client'], $token, $data_auth['usage_type']);
 
-    log_activity($_SESSION['username'], "[AUTH] Key renew", $_POST['client']);
+    log_activity($_SESSION['username'], "[AUTH] Client token renew", $_POST['client']);
 
     if ($updated)
         log_activity($_SESSION['username'], "[AUTH] Token updated in config file");
