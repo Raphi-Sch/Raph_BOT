@@ -130,6 +130,6 @@ function update_config($client, $token, $usage)
     $config['client'] = $client;
     $config['token'] = $token;
 
-    file_put_contents($config_path, json_encode($config));
+    file_put_contents($config_path, json_encode($config, JSON_PRETTY_PRINT));
     return true;
 }
