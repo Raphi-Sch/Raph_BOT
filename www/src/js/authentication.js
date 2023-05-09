@@ -121,16 +121,27 @@ function authRenew(data) {
             }, function (data) {
                 if (data) {
                     data = JSON.parse(data);
+
+                    if(data.file_updated){
+                        title = `Token renewed (config file updated)`;
+                        html = "";
+                    }
+                    else{
+                        title = `Token renewed (copied to clipboard)`;
+                        html = `<p id='swal-token'>${data.token}</p>`;
+                    }
+
                     Swal.fire({
-                        title: `Token renewed (copied to clipboard)`,
+                        title: title,
                         icon: 'info',
                         width: '25%',
-                        html: `<p id='swal-token'>${data.token}</p>`,
+                        html: html,
                         allowEscapeKey: false,
                         allowOutsideClick: false,
                         allowEnterKey: false,
                         didOpen: () => {
-                            navigator.clipboard.writeText(document.getElementById('swal-token').innerText);
+                            if(!data.file_updated)
+                                navigator.clipboard.writeText(document.getElementById('swal-token').innerText);
                         }
                     }).then(() => {
                         document.location.reload();

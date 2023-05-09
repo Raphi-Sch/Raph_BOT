@@ -100,7 +100,7 @@ function auth_renew($db)
     if ($updated)
         log_activity($_SESSION['username'], "[AUTH] Token updated in config file");
 
-    return ['token' => $token];
+    return ['token' => $token, 'file_updated' => $updated];
 }
 
 function update_config($client, $token, $usage)
