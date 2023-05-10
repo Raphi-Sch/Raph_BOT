@@ -110,7 +110,7 @@ function connectSocket() {
         success: function (data) {
             port = data['value'];
 
-            socket = io('http://' + window.location.hostname + ':' + port);
+            socket = io('//' + window.location.hostname + ':' + port);
 
             socket.on('connect', function () {
                 // Dashboard
