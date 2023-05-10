@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { config } = require('./config');
-const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'a' });
+const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'w' });
 const tools = require("./tools");
 const { createServer } = require('http');
 const { Server } = require("socket.io");
