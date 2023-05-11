@@ -8,6 +8,8 @@ const config = {
     socket_protocol: config_file.socket_protocol,
     client: config_file.client,
     token: config_file.token,
+    https_key: config_file.https_key,
+    https_cert: config_file.https_cert,
 
     // From DB
     bot_name: "",

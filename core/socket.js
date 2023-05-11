@@ -4,24 +4,32 @@ const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'w'
 const tools = require("./tools");
 const { Server } = require("socket.io");
 const room = "dashboard";
-const server = {
-    create: () => null,
+const basicServer = {
+    create: (options) => null,
     options: null
 }
 
 switch (config.socket_protocol) {
     case "http":
-        server.create = () => require('http').createServer();
-        server.options = {
+        basicServer.server = require('http').createServer();
+        basicServer.options = {
             cors: {
                 origin: "*"
             }
         }
         break;
 
-    /*case "https":
-        server.create = () => require('https').createServer();
-        break;*/
+    case "https":
+        basicServer.server = require('https').createServer({
+            key: readFileSync(config.https_key),
+            cert: readFileSync(config.https_cert)
+        });
+        basicServer.options = {
+            cors: {
+                origin: "*"
+            }
+        }
+        break;
 
     default:
         console.error(`Invalid socket protocol (Current is : '${config.socket_protocol}')`);
@@ -29,7 +37,7 @@ switch (config.socket_protocol) {
 }
 
 // Basic HTTP server
-const io = new Server(server.create(), server.options);
+const io = new Server(basicServer.server, basicServer.options);
 
 // GUI info
 const GUI = {

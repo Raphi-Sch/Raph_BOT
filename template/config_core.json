@@ -4,5 +4,7 @@
     "socket_protocol" : "http",
     "API_URL" : "<PATH_TO_SERVER>/api/",
     "client" : "",
-    "token" : ""
+    "token" : "",
+    "https_key" : "<PATH_TO_KEY>",
+    "https_cert" : "<PATH_TO_CERT>"
 }
