@@ -18,9 +18,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
-        if (isset($_GET['socket-port'])) {
+        if (isset($_GET['socket'])) {
             header('Content-Type: application/json');
-            echo json_encode(socket_port());
+            echo json_encode(socket_config());
             break;
         }
 
@@ -83,9 +83,10 @@ function bot_name(mysqli $db)
     return array("value" => db_query($db, "SELECT `value` FROM config WHERE id = 'bot_name'")["value"]);
 }
 
-function socket_port()
+function socket_config()
 {
-    return array("value" => json_decode(file_get_contents("../../config.json"), true)['socket_port']);
+    $config = json_decode(file_get_contents("../../config.json"), true);
+    return ["port" => $config['socket_port'], "protocol" => $config['socket_protocol']];
 }
 
 function get_log()

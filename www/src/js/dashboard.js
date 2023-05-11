@@ -104,13 +104,11 @@ function playAudio(file, volume) {
 
 function connectSocket() {
     $.ajax({
-        url: "api/config.php?socket-port",
+        url: "api/config.php?socket",
         type: "GET",
         dataType: "json",
-        success: function (data) {
-            port = data['value'];
-
-            socket = io('http://' + window.location.hostname + ':' + port);
+        success: function (config) {
+            socket = io(`${config['protocol']}://${window.location.hostname}:${config['port']}`);
 
             socket.on('connect', function () {
                 // Dashboard

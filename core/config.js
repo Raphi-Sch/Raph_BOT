@@ -5,6 +5,7 @@ const config = {
     // From file
     api_url: config_file.API_URL,
     socket_port: config_file.socket_port,
+    socket_protocol: config_file.socket_protocol,
     client: config_file.client,
     token: config_file.token,
 

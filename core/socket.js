@@ -2,17 +2,34 @@ const fs = require('fs');
 const { config } = require('./config');
 const stream_log = fs.createWriteStream(__dirname + "/lastest.log", { flags: 'w' });
 const tools = require("./tools");
-const { createServer } = require('http');
 const { Server } = require("socket.io");
+const room = "dashboard";
+const server = {
+    create: () => null,
+    options: null
+}
+
+switch (config.socket_protocol) {
+    case "http":
+        server.create = () => require('http').createServer();
+        server.options = {
+            cors: {
+                origin: "*"
+            }
+        }
+        break;
+
+    /*case "https":
+        server.create = () => require('https').createServer();
+        break;*/
+
+    default:
+        console.error(`Invalid socket protocol (Current is : '${config.socket_protocol}')`);
+        process.exit(1);
+}
 
 // Basic HTTP server
-const httpServer = createServer();
-const io = new Server(httpServer, {
-  cors: {
-    origin: "*"
-  }
-});
-const room = "dashboard";
+const io = new Server(server.create(), server.options);
 
 // GUI info
 const GUI = {
@@ -70,7 +87,7 @@ io.on('connection', socket => {
         process.exit(0);
     });
 
-    if(config.debug_level >= 1){
+    if (config.debug_level >= 1) {
         console.error(`${tools.logTime()} [SOCKET] New connection`);
     }
 });
@@ -83,7 +100,7 @@ function setTwitchState(state) {
     GUI.twitch = state;
     broadcast();
 
-    if(config.debug_level >= 1){
+    if (config.debug_level >= 1) {
         console.error(`${tools.logTime()} [TWITCH] Update state : ${GUI.twitch}`);
     }
 }
@@ -92,7 +109,7 @@ function setShout(current, max) {
     GUI.shout = { current, max };
     broadcast();
 
-    if(config.debug_level >= 1){
+    if (config.debug_level >= 1) {
         console.error(`${tools.logTime()} [SHOUT] Update state : Current ${GUI.shout.current}, Max ${GUI.shout.max}`);
     }
 }
@@ -101,7 +118,7 @@ function setTimeCounter(current, max, total) {
     GUI.triggerTime = { current, max, total };
     broadcast();
 
-    if(config.debug_level >= 1){
+    if (config.debug_level >= 1) {
         console.error(`${tools.logTime()} [TRIGGER-TIME] Update state : Current ${GUI.triggerTime.current}, Max ${GUI.triggerTime.max}, Total ${GUI.triggerTime.total}`);
     }
 }
@@ -110,7 +127,7 @@ function setMessageCounter(current, max, total) {
     GUI.triggerMessage = { current, max, total };
     broadcast();
 
-    if(config.debug_level >= 1){
+    if (config.debug_level >= 1) {
         console.error(`${tools.logTime()} [TRIGGER-MSG] Update state : Current ${GUI.triggerMessage.current}, Max ${GUI.triggerMessage.max}, Total ${GUI.triggerMessage.total}`);
     }
 }
@@ -129,7 +146,7 @@ function playAudio(data) {
     io.to(room).emit('play-audio', JSON.stringify(data));
 }
 
-function playTTS(){
+function playTTS() {
     io.to(room).emit('play-TTS');
 }
 

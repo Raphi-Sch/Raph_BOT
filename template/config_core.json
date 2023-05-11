@@ -1,6 +1,7 @@
 {
     "version":"7.0.x",
     "socket_port" : 3000,
+    "socket_protocol" : "http",
     "API_URL" : "<PATH_TO_SERVER>/api/",
     "client" : "",
     "token" : ""
