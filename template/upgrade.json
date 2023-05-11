@@ -16,7 +16,7 @@
                 "token_hash": "text NOT NULL",
                 "expiration": "date DEFAULT NULL",
                 "note": "text DEFAULT NULL",
-                "usage_type" : "INT(4) DEFAULT 2"
+                "usage_type": "INT(4) DEFAULT 2"
             }
         },
         "commands": {
@@ -108,7 +108,7 @@
                 "explanation": "text NOT NULL",
                 "duration": "int(11) NOT NULL",
                 "reason": "text NOT NULL",
-                "seriousness" : "INT NOT NULL DEFAULT 1"
+                "seriousness": "INT NOT NULL DEFAULT 1"
             }
         },
         "reactions": {
@@ -197,6 +197,136 @@
             "types": {
                 "username": "varchar(20) NOT NULL",
                 "password": "text DEFAULT 0"
+            }
+        }
+    },
+    "data": {
+        "config": {
+            "bot_name": {
+                "value": "Raph_BOT",
+                "hidden": 0,
+                "type": 0,
+                "help": "Name displayed in the bot WebUI"
+            },
+            "cmd_msg_interval": {
+                "value": 10,
+                "hidden": 0,
+                "type": 2,
+                "help": "Number of message before an automatic commands"
+            },
+            "cmd_prefix": {
+                "value": "!",
+                "hidden": 0,
+                "type": 0,
+                "help": "Prefix used for all commands"
+            },
+            "cmd_time_interval": {
+                "value": 10,
+                "hidden": 0,
+                "type": 2,
+                "help": "Time in minutes before an automatic commands"
+            },
+            "debug_level": {
+                "value": 0,
+                "hidden": 0,
+                "type": 2,
+                "help": "Level of debugging. <br> 0 → None <br> 1 → Basic <br> 2 → All"
+            },
+            "force_gui_update": {
+                "value": 0,
+                "hidden": 0,
+                "type": 2,
+                "help": "Interval (in seconds) before forcing refresh of the WebUI"
+            },
+            "plugin_commands": {
+                "value": 0,
+                "hidden": 0,
+                "type": 1
+            },
+            "plugin_moderator": {
+                "value": 0,
+                "hidden": 0,
+                "type": 1
+            },
+            "plugin_reaction": {
+                "value": 0,
+                "hidden": 0,
+                "type": 1
+            },
+            "plugin_shout": {
+                "value": 0,
+                "hidden": 0,
+                "type": 1
+            },
+            "plugin_tanks": {
+                "value": 0,
+                "hidden": 0,
+                "type": 1
+            },
+            "shout_interval": {
+                "value": 50,
+                "hidden": 0,
+                "type": 2,
+                "help": "Number of message before a shout"
+            },
+            "shout_language": {
+                "value": "",
+                "hidden": 0,
+                "type": 0,
+                "help": "Language to use for shout (Available : fr, fr-uwu)"
+            },
+            "shout_prefix": {
+                "value": "",
+                "hidden": 0,
+                "type": 0,
+                "help": "Text put before generated shout"
+            },
+            "tts_language": {
+                "value": "",
+                "hidden": 0,
+                "type": 0,
+                "help": "Any language supported by Google TTS"
+            },
+            "twitch_channel": {
+                "value": "",
+                "hidden": 0,
+                "type": 0,
+                "help": "Twitch channel where the bot connects"
+            },
+            "twitch_connection_message": {
+                "value": "Hello I'm Raph_BOT",
+                "hidden": 0,
+                "type": 0,
+                "help": "First message the bot will send to twitch chat"
+            },
+            "twitch_token": {
+                "value": "",
+                "hidden": 1,
+                "type": 0
+            },
+            "twitch_display_name": {
+                "value": "",
+                "hidden": 0,
+                "type": 0,
+                "help": "Display name of the bot"
+            },
+            "twitch_client_id": {
+                "value": "",
+                "hidden": 1,
+                "type": 0,
+                "help": "Client ID for Twitch API"
+            },
+            "twitch_scope": {
+                "value": "chat:edit+chat:read+channel:moderate",
+                "hidden": 0,
+                "type": 0,
+                "help": "Permission of the bot (default should be fine)"
+            },
+            "twitch_redirect_uri": {
+                "value": "http://localhost",
+                "hidden": 0,
+                "type": 0,
+                "help": "URI to this page, need to match the URI set for Client ID"
             }
         }
     }
