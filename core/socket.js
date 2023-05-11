@@ -5,7 +5,7 @@ const tools = require("./tools");
 const { Server } = require("socket.io");
 const room = "dashboard";
 const basicServer = {
-    create: (options) => null,
+    server: null,
     options: null
 }
 
