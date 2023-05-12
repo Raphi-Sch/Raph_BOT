@@ -1,15 +1,14 @@
 const socket = require("../socket");
 const { config } = require("../config");
 const tools = require("../tools");
-const actionText = ["Ban", "Timeout", "Delete message"];
 const moderatorAPI = require('./API');
-
 const { re } = require("@babel/core/lib/vendor/import-meta-resolve");
 
-const ACTION_BAN = 0;
-const ACTION_TIMEOUT = 1;
-const ACTION_DELETE = 2;
-const ACTION_WARN = 3;
+const actionText = ["Ban", "Timeout", "Delete message", "Warning"];
+const actionBan = 0;
+const actionTimeout = 1;
+const actionDelete = 2;
+const actionWarn = 3;
 
 async function runModerator(user, message, twitchAPI) {
     const fullCommand = tools.parseCommand(message, config.cmd_prefix);
@@ -32,20 +31,20 @@ async function checkMessage(user, message, twitchAPI) {
                 default:
                     return null;
 
-                case ACTION_BAN:
+                case actionBan:
                     twitchAPI.banUser(user['user-id'], result.reason);
                     return result.explanation.replace("@username", user['display-name']);
 
-                case ACTION_TIMEOUT:
+                case actionTimeout:
                     twitchAPI.timeoutUser(user['user-id'], result.reason, result.duration);
                     return result.explanation.replace("@username", user['display-name']);
 
-                case ACTION_DELETE:
+                case actionDelete:
                     //twitchAPI.deleteChatMessage(messageID);
                     log('[MODERATOR] Delete message is not implemented yet (not possible with current client)');
                     return true;
 
-                case ACTION_WARN:
+                case actionWarn:
                     return warnUser(user['username'], config.twitch_display_name, twitchAPI);
             }
         }
@@ -89,6 +88,8 @@ async function warnUser(usernameToWarn, moderator, twitchAPI) {
             if (result.explanation) {
                 return result.explanation.replace("@username", result.username);
             }
+
+            socket.log(`[MODERATOR-WARN] Taking action against '${result.username}' (Action : ${actionText[result.action]}, Duration : ${tools.timeoutToString(result.duration)})`);
 
             return true;
         }
