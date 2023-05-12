@@ -41,7 +41,7 @@ async function checkMessage(user, message, twitchAPI) {
 
                 case actionDelete:
                     //twitchAPI.deleteChatMessage(messageID);
-                    log('[MODERATOR] Delete message is not implemented yet (not possible with current client)');
+                    socket.log('[MODERATOR] Delete message is not implemented yet (not possible with current client)');
                     return true;
 
                 case actionWarn:
@@ -73,14 +73,23 @@ async function warnUser(usernameToWarn, moderator, twitchAPI) {
 
     if (userID !== null) {
         result = await moderatorAPI.warnUser(userID);
+
         if (result !== null) {
+            socket.log(`[MODERATOR-WARN] Taking action against '${result.username}' (Action : ${actionText[result.action]}, Duration : ${tools.timeoutToString(result.duration)})`);
+
             switch (result.action) {
-                case 0:
+                default:
+                    return null;
+
+                case actionDelete:
+                    socket.log('[MODERATOR-WARN] Delete message is not implemented yet (not possible with current client)');
                     break;
-                case 1:
+
+                case actionTimeout:
                     twitchAPI.timeoutUser(result.userid, result.reason, result.duration);
                     break;
-                case 2:
+
+                case actionBan:
                     twitchAPI.banUser(result.userid, result.reason);
                     break;
             }
@@ -88,8 +97,6 @@ async function warnUser(usernameToWarn, moderator, twitchAPI) {
             if (result.explanation) {
                 return result.explanation.replace("@username", result.username);
             }
-
-            socket.log(`[MODERATOR-WARN] Taking action against '${result.username}' (Action : ${actionText[result.action]}, Duration : ${tools.timeoutToString(result.duration)})`);
 
             return true;
         }
