@@ -1,5 +1,5 @@
 {
-    "version":"7.0.x",
+    "version":"7.1.x",
     "db_host" : "127.0.0.1",
     "db_user" : "",
     "db_pass" : "",
