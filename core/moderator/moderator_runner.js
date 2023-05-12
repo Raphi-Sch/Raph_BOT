@@ -6,6 +6,11 @@ const moderatorAPI = require('./API');
 
 const { re } = require("@babel/core/lib/vendor/import-meta-resolve");
 
+const ACTION_BAN = 0;
+const ACTION_TIMEOUT = 1;
+const ACTION_DELETE = 2;
+const ACTION_WARN = 3;
+
 async function runModerator(user, message, twitchAPI) {
     const fullCommand = tools.parseCommand(message, config.cmd_prefix);
     if (fullCommand) {
@@ -26,17 +31,17 @@ async function checkMessage(user, message, twitchAPI) {
             switch (parseInt(result.mod_action)) {
                 default:
                     return null;
-                case 0:
+                case ACTION_BAN:
                     twitchAPI.banUser(user['user-id'], result.reason);
                     return result.explanation.replace("@username", user['display-name']);
-                case 1:
+                case ACTION_TIMEOUT:
                     twitchAPI.timeoutUser(user['user-id'], result.reason, result.duration);
                     return result.explanation.replace("@username", user['display-name']);
-                case 2:
+                case ACTION_DELETE:
                     //twitchAPI.deleteChatMessage(messageID);
                     log('[MODERATOR] Delete message is not implemented yet (not possible with current client)');
                     return true;
-                case 3:
+                case ACTION_WARN:
                     return warnUser(user['username'], config.twitch_display_name, twitchAPI);
             }
         }

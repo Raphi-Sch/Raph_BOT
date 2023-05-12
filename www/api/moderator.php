@@ -7,6 +7,11 @@ require_once('../src/php/functions.php');
 
 header('Content-Type: application/json');
 
+const ACTION_BAN = 0;
+const ACTION_TIMEOUT = 1;
+const ACTION_DELETE = 2;
+const ACTION_WARN = 3;
+
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['list'])) {
@@ -207,21 +212,21 @@ function expression_filter_data($data){
     $data['seriousness'] = intval($data['seriousness']);
 
     switch($data['mod_action']){
-        case 0:
+        case ACTION_DELETE:
             $data['duration'] = 0;
             $data['seriousness'] = filter_var($data['seriousness'], FILTER_VALIDATE_INT, ['options' => ['default' => 1, 'min_range' => 1, 'max_range' => 3]]);
             break;
         
-        case 1:
+        case ACTION_TIMEOUT:
             $data['seriousness'] = filter_var($data['seriousness'], FILTER_VALIDATE_INT, ['options' => ['default' => 4, 'min_range' => 4, 'max_range' => 6]]);
             break;
 
-        case 2:
+        case ACTION_BAN:
             $data['duration'] = 0;
             $data['seriousness'] = filter_var($data['seriousness'], FILTER_VALIDATE_INT, ['options' => ['default' => 7, 'min_range' => 7, 'max_range' => 10]]);
             break;
 
-        case 3:
+        case ACTION_WARN:
             $data['duration'] = 0;
             $data['explanation'] = "";
             $data['reason'] = "";
