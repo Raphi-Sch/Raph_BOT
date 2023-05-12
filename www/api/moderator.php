@@ -117,16 +117,16 @@ function check_message(mysqli $db, $message)
         $pos = strrpos($message, $row['trigger_word']);
         if ($pos !== false) {
 
-            if($pos > 0)
+            if ($pos > 0)
                 $char_before = substr($message, $pos - 1, 1);
             else
                 $char_before = '';
 
             $char_after = substr($message, $pos + strlen($row['trigger_word']), 1);
 
-            if(($char_before == '' || $char_before == ' ') && ($char_after == '' || $char_after == ' '))
+            if (($char_before == '' || $char_before == ' ') && ($char_after == '' || $char_after == ' '))
                 $action_trigger = true;
-            
+
             break;
         }
     }
@@ -213,10 +213,18 @@ function expression_add(mysqli $db, $data)
     if ($duration > 1209600)
         $duration = 1209600;
 
+    if ($seriousness < 1) {
+        $seriousness = 1;
+    }
+
+    if ($seriousness > 10) {
+        $seriousness = 10;
+    }
+
     db_query_no_result(
-        $db, 
-        "INSERT INTO `moderator` (id, trigger_word, mod_action, explanation, duration, reason, seriousness) VALUES (NULL, ?, ?, ?, ?, ?, ?)", 
-        "sisisi", 
+        $db,
+        "INSERT INTO `moderator` (id, trigger_word, mod_action, explanation, duration, reason, seriousness) VALUES (NULL, ?, ?, ?, ?, ?, ?)",
+        "sisisi",
         [$trigger, $mod_action, $explanation, $duration, $reason, $seriousness]
     );
 
@@ -237,9 +245,9 @@ function expression_edit(mysqli $db, $data)
         $duration = 0;
 
     db_query_no_result(
-        $db, 
-        "UPDATE `moderator` SET `trigger_word` = ?, `mod_action` = ?, `explanation` = ?, `duration` = ?, `reason` = ?, `seriousness` = ? WHERE `id` = ?", 
-        "sisisii", 
+        $db,
+        "UPDATE `moderator` SET `trigger_word` = ?, `mod_action` = ?, `explanation` = ?, `duration` = ?, `reason` = ?, `seriousness` = ? WHERE `id` = ?",
+        "sisisii",
         [$trigger, $mod_action, $explanation, $duration, $reason, $seriousness, $data['id']]
     );
 
