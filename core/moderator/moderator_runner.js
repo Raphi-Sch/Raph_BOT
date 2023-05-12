@@ -75,7 +75,7 @@ async function warnUser(usernameToWarn, moderator, twitchAPI) {
         result = await moderatorAPI.warnUser(userID);
 
         if (result !== null) {
-            socket.log(`[MODERATOR-WARN] Taking action against '${result.username}' (Action : ${actionText[result.action]}, Duration : ${tools.timeoutToString(result.duration)})`);
+            socket.log(`[MODERATOR-WARN] User '${result.username}' got warn (Action : ${actionText[result.action]}, Duration : ${tools.timeoutToString(result.duration)})`);
 
             switch (result.action) {
                 default:
