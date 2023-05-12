@@ -1,4 +1,4 @@
-const actionText = ["Ban", "Timeout", "Delete message"];
+const actionText = ["Ban", "Timeout", "Delete message", "Warn User"];
 
 function view(param) {
     document.getElementById("tab-expression").classList.remove("active");
@@ -82,6 +82,7 @@ function expressionAdd() {
                 <option value=0>Ban</option>
                 <option value=1>Timeout</option>
                 <option value=2>Delete message</option>
+                <option value=3>Warn user</option>
             </select><br/>
             <label>Duration (timeout only)</label><input type='number' class='form-control' name='duration' placeholder='Duration in seconds' step=1 min=0 max=1209600><br/>
             <label>Seriousness</label><input type='number' class='form-control' name='seriousness' placeholder='Level of seriousness compare to other expression' step=1 min=1 max=10><br/>
@@ -132,6 +133,7 @@ function expressionEdit(data) {
                 <option value=0>Ban</option>
                 <option value=1>Timeout</option>
                 <option value=2>Delete message</option>
+                <option value=3>Warn user</option>
             </select><br/>
             <label>Duration (timeout only)</label><input type='number' class='form-control' name='duration' placeholder='Duration in seconds' value='${data.duration}' step=1 min=0 max=1209600><br/>
             <label>Seriousness</label><input type='number' class='form-control' name='seriousness' placeholder='Duration in seconds' value='${data.seriousness}' step=1 min=1 max=10><br/>

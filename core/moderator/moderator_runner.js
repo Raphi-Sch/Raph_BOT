@@ -24,20 +24,21 @@ async function checkMessage(user, message, twitchAPI) {
             socket.log(`[MODERATOR] Taking action against '${user['display-name']}' for saying '${result.trigger_word}' (Context : '${message}', Action : ${actionText[result.mod_action]}, Duration : ${tools.timeoutToString(result.duration)})`);
 
             switch (parseInt(result.mod_action)) {
+                default:
+                    return null;
                 case 0:
                     twitchAPI.banUser(user['user-id'], result.reason);
-                    break;
+                    return result.explanation.replace("@username", user['display-name']);
                 case 1:
                     twitchAPI.timeoutUser(user['user-id'], result.reason, result.duration);
-                    break;
+                    return result.explanation.replace("@username", user['display-name']);
                 case 2:
                     //twitchAPI.deleteChatMessage(messageID);
                     log('[MODERATOR] Delete message is not implemented yet (not possible with current client)');
-                    break;
+                    return true;
+                case 3:
+                    return warnUser(user['username'], config.twitch_display_name, twitchAPI);
             }
-
-            result.explanation = result.explanation.replace("@username", user['display-name']);
-            return result.explanation;
         }
     }
     catch (err) {
@@ -53,18 +54,17 @@ async function command(command, user, twitchAPI) {
     if (user && (user.mod || user.username === config.twitch_channel.toLowerCase())) {
         switch (command[1]) {
             case 'warn':
-                return await warnUser(command, user, twitchAPI);
+                return await warnUser(command[2].trim(), user['display-name'], twitchAPI);
         }
     }
     return null;
 }
 
-async function warnUser(command, moderator, twitchAPI) {
-    const userInput = command[2].trim();
-    const user = await twitchAPI.getUser(userInput);
+async function warnUser(usernameToWarn, moderator, twitchAPI) {
+    const userID = await twitchAPI.getUser(usernameToWarn);
 
-    if (user !== null) {
-        result = await moderatorAPI.warnUser(user);
+    if (userID !== null) {
+        result = await moderatorAPI.warnUser(userID);
         if (result !== null) {
             switch (result.action) {
                 case 0:
@@ -78,14 +78,14 @@ async function warnUser(command, moderator, twitchAPI) {
             }
 
             if (result.explanation) {
-                result.explanation = result.explanation.replace("@username", result.username);
-                return result.explanation;
+                return result.explanation.replace("@username", result.username);
             }
+
             return true;
         }
     }
     else {
-        return `${moderator['display-name']} : User '${userInput}' doesn't exist.`;
+        return `${moderator} : User '${usernameToWarn}' doesn't exist.`;
     }
 
     return null;

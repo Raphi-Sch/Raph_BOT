@@ -198,60 +198,71 @@ function expression_list(mysqli $db)
     return $result;
 }
 
+function expression_filter_data($data){
+    $data['trigger_word'] = trim(strtolower($data['trigger_word']));
+    $data['mod_action'] = intval($data['mod_action']);
+    $data['explanation'] = trim($data['explanation']);
+    $data['duration'] = intval($data['duration']);
+    $data['reason'] = trim($data['reason']);
+    $data['seriousness'] = intval($data['seriousness']);
+
+    switch($data['mod_action']){
+        case 0:
+            $data['duration'] = 0;
+            $data['seriousness'] = filter_var($data['seriousness'], FILTER_VALIDATE_INT, ['options' => ['default' => 1, 'min_range' => 1, 'max_range' => 3]]);
+            break;
+        
+        case 1:
+            $data['seriousness'] = filter_var($data['seriousness'], FILTER_VALIDATE_INT, ['options' => ['default' => 4, 'min_range' => 4, 'max_range' => 6]]);
+            break;
+
+        case 2:
+            $data['duration'] = 0;
+            $data['seriousness'] = filter_var($data['seriousness'], FILTER_VALIDATE_INT, ['options' => ['default' => 7, 'min_range' => 7, 'max_range' => 10]]);
+            break;
+
+        case 3:
+            $data['duration'] = 0;
+            $data['explanation'] = "";
+            $data['reason'] = "";
+            $data['seriousness'] = filter_var($data['seriousness'], FILTER_VALIDATE_INT, ['options' => ['default' => 1, 'min_range' => 1, 'max_range' => 3]]);
+            break;
+    }
+
+    // Max timeout duration possible (limit of Twitch API)
+    if ($data['duration'] > 1209600)
+        $data['duration'] = 1209600;
+    
+    return $data;
+}
+
 function expression_add(mysqli $db, $data)
 {
-    $trigger = trim(strtolower($data['trigger_word']));
-    $mod_action = intval($data['mod_action']);
-    $explanation = trim($data['explanation']);
-    $duration = intval($data['duration']);
-    $reason = trim($data['reason']);
-    $seriousness = intval($data['seriousness']);
-
-    if ($mod_action == 0)
-        $duration = 0;
-
-    if ($duration > 1209600)
-        $duration = 1209600;
-
-    if ($seriousness < 1) {
-        $seriousness = 1;
-    }
-
-    if ($seriousness > 10) {
-        $seriousness = 10;
-    }
+    $data = expression_filter_data($data);
 
     db_query_no_result(
         $db,
         "INSERT INTO `moderator` (id, trigger_word, mod_action, explanation, duration, reason, seriousness) VALUES (NULL, ?, ?, ?, ?, ?, ?)",
         "sisisi",
-        [$trigger, $mod_action, $explanation, $duration, $reason, $seriousness]
+        [$data['trigger_word'], $data['mod_action'], $data['explanation'], $data['duration'], $data['reason'], $data['seriousness']]
     );
 
-    log_activity("API", "[MODERATOR] Added", $trigger);
+    log_activity("API", "[MODERATOR] Added", $data['trigger_word']);
     return true;
 }
 
 function expression_edit(mysqli $db, $data)
 {
-    $trigger = trim(strtolower($data['trigger_word']));
-    $mod_action = trim($data['mod_action']);
-    $explanation = trim($data['explanation']);
-    $duration = trim($data['duration']);
-    $reason = trim($data['reason']);
-    $seriousness = intval($data['seriousness']);
-
-    if ($mod_action == 0)
-        $duration = 0;
+    $data = expression_filter_data($data);
 
     db_query_no_result(
         $db,
         "UPDATE `moderator` SET `trigger_word` = ?, `mod_action` = ?, `explanation` = ?, `duration` = ?, `reason` = ?, `seriousness` = ? WHERE `id` = ?",
         "sisisii",
-        [$trigger, $mod_action, $explanation, $duration, $reason, $seriousness, $data['id']]
+        [$data['trigger_word'], $data['mod_action'], $data['explanation'], $data['duration'], $data['reason'], $data['seriousness'], $data['id']]
     );
 
-    log_activity("API", "[MODERATOR] Edited", $trigger);
+    log_activity("API", "[MODERATOR] Edited", $data['trigger_word']);
     return true;
 }
 
