@@ -26,7 +26,7 @@ require_once('src/php/header.php');
         </h1>
 
         <ul class="nav nav-tabs">
-            <li id="tab-expression"><a href="#" onclick='view("expression")'>Ban Expression</a></li>
+            <li id="tab-expression"><a href="#" onclick='view("expression")'>Expression</a></li>
             <li id="tab-leet"><a href="#" onclick='view("leet")'>Leet</a></li>
             <li id="tab-warning"><a href="#" onclick='view("warning")'>Warning</a></li>
         </ul>
