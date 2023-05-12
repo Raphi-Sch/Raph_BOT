@@ -65,7 +65,7 @@ function check_table($db, $db_name, $table)
         $result .= "\n\t- Table state : MISSING -> check your configuration and compare it to the provided template";
     }
 
-    return $result."\n";
+    return $result . "\n";
 }
 
 function check_config($db, $key, $data)
@@ -73,25 +73,24 @@ function check_config($db, $key, $data)
     global $can_redirect;
     $result = "";
 
-    $presence = mysqli_num_rows(db_query_raw($db, "SELECT * FROM config WHERE id = ?", "s", $key));
+    $presence = mysqli_num_rows(db_query_raw($db, "SELECT id FROM config WHERE id = ?", "s", $key));
 
-    $result .= "- config, id, $key : " . ($presence ? "OK" : "MISSING");
+    $result .= "- config, id ($key) : " . ($presence ? "OK" : "MISSING");
 
     if (!$presence) {
         $can_redirect = false;
 
         db_query_no_result($db, "INSERT INTO config (id, `value`, `hidden`, `type`) VALUES (?, ?, ?, ?)", "ssii", [$key, $data['value'], $data['hidden'], $data['type']]);
 
-        $repaired = mysqli_num_rows(db_query_raw($db, "SELECT * FROM config WHERE id = ?", "s", $key));
-        if ($repaired){
+        $repaired = mysqli_num_rows(db_query_raw($db, "SELECT id FROM config WHERE id = ?", "s", $key));
+        if ($repaired) {
             $result .= " (Repair successful)";
             $presence = true;
-        } 
-        else
+        } else
             $result .= " (Repair failed)";
     }
 
-    if($presence && isset($data['help']) && !empty($data['help'])){
+    if ($presence && isset($data['help']) && !empty($data['help'])) {
         db_query_no_result($db, "UPDATE `config` SET `help` = ? WHERE `id` = ?", "ss", [$data['help'], $key]);
         $result .= " (Help updated)";
     }
@@ -101,22 +100,82 @@ function check_config($db, $key, $data)
     return $result;
 }
 
+function check_commands_tts_config($db, $key, $data)
+{
+    global $can_redirect;
+    $result = "";
+
+    $presence = mysqli_num_rows(db_query_raw($db, "SELECT id FROM commands_tts_config WHERE id = ?", "s", $key));
+
+    $result .= "- commands_tts_config, id ($key) : " . ($presence ? "OK" : "MISSING");
+
+    if (!$presence) {
+        $can_redirect = false;
+
+        db_query_no_result($db, "INSERT INTO commands_tts_config (id, `value`, `type`) VALUES (?, ?, ?)", "ssi", [$key, $data['value'], $data['type']]);
+
+        $repaired = mysqli_num_rows(db_query_raw($db, "SELECT id FROM commands_tts_config WHERE id = ?", "s", $key));
+        if ($repaired) {
+            $result .= " (Repair successful)";
+            $presence = true;
+        } else
+            $result .= " (Repair failed)";
+    }
+
+    $result .= "\n";
+    return $result;
+}
+
+function check_moderator_warning_level($db, $key, $data)
+{
+    global $can_redirect;
+    $result = "";
+
+    $presence = mysqli_num_rows(db_query_raw($db, "SELECT `level` FROM moderator_warning_level WHERE `level` = ?", "i", $key));
+
+    $result .= "- moderator_warning_level, level $key : " . ($presence ? "OK" : "MISSING");
+
+    if (!$presence) {
+        $can_redirect = false;
+
+        db_query_no_result($db, "INSERT INTO moderator_warning_level (`level`, `action`, `duration`, `explanation`, `reason`) VALUES (?, ?, ?, ?, ?)", "iiiss", [$key, $data['action'], $data['duration'], $data['explanation'], $data['reason']]);
+
+        $repaired = mysqli_num_rows(db_query_raw($db, "SELECT `level` FROM moderator_warning_level WHERE `level` = ?", "i", $key));
+        if ($repaired) {
+            $result .= " (Repair successful)";
+            $presence = true;
+        } else
+            $result .= " (Repair failed)";
+    }
+
+    $result .= "\n";
+    return $result;
+}
+
 // Check Table
 foreach ($JSON["table"] as $key => $data) {
     $result .= check_table($db, $db_name, $key);
 }
 
-// Check Config Data
-$result .= "\n\nChecking data in table 'config'\n";
-
+// Check Data
 foreach ($JSON['data'] as $table_name => $table_data) {
+    $result .= "\n\nChecking data in table '$table_name'\n";
+
     foreach ($table_data as $key => $data) {
         switch ($table_name) {
             case 'config':
                 $result .= check_config($db, $key, $data);
                 break;
+
+            case 'commands_tts_config':
+                $result .= check_commands_tts_config($db, $key, $data);
+                break;
+
+            case 'moderator_warning_level':
+                $result .= check_moderator_warning_level($db, $key, $data);
+                break;
+
             default:
-                $result .= "Invalid table name : '$table_name'";
                 break;
         }
     }

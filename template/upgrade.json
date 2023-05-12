@@ -75,6 +75,18 @@
                 "sub_only": "tinyint(1) NOT NULL DEFAULT 0"
             }
         },
+        "commands_tts_config": {
+            "fields": [
+                "id",
+                "value",
+                "type"
+            ],
+            "types": {
+                "id": "varchar(30) NOT NULL, ADD PRIMARY KEY (`id`)",
+                "value": "text NULL",
+                "type": "int(4) NOT NULL"
+            }
+        },
         "config": {
             "fields": [
                 "id",
@@ -109,6 +121,52 @@
                 "duration": "int(11) NOT NULL",
                 "reason": "text NOT NULL",
                 "seriousness": "INT NOT NULL DEFAULT 1"
+            }
+        },
+        "moderator_leet": {
+            "fields": [
+                "id",
+                "original",
+                "replacement"
+            ],
+            "types": {
+                "id": "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
+                "original": "text NOT NULL",
+                "replacement": "text NOT NULL"
+            }
+        },
+        "moderator_warning": {
+            "fields": [
+                "id",
+                "userid",
+                "username",
+                "count",
+                "datetime_insert",
+                "datetime_update"
+            ],
+            "types": {
+                "id": "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
+                "userid": "varchar(30) NOT NULL",
+                "username": "varchar(30) NOT NULL",
+                "count": "int(11) NOT NULL DEFAULT 1",
+                "datetime_insert": "datetime NOT NULL",
+                "datetime_update": "datetime NOT NULL"
+            }
+        },
+        "moderator_warning_level": {
+            "fields": [
+                "level",
+                "action",
+                "duration",
+                "explanation",
+                "reason"
+            ],
+            "types": {
+                "level": "int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
+                "action": "int(11) NOT NULL",
+                "duration": "int(11) NOT NULL",
+                "explanation": "text NOT NULL",
+                "reason": "text NOT NULL"
             }
         },
         "reactions": {
@@ -327,6 +385,84 @@
                 "hidden": 0,
                 "type": 0,
                 "help": "URI to this page, need to match the URI set for Client ID"
+            }
+        },
+        "commands_tts_config": {
+            "active": {
+                "value": "0",
+                "type": 1
+            },
+            "character_limit": {
+                "value": "50",
+                "type": 2
+            },
+            "character_limit_replace": {
+                "value": "Too long",
+                "type": 0
+            },
+            "mod_only": {
+                "value": "0",
+                "type": 1
+            },
+            "no_text_answer": {
+                "value": "1",
+                "type": 1
+            },
+            "prefix": {
+                "value": "@username said",
+                "type": 0
+            },
+            "sub_only": {
+                "value": "0",
+                "type": 1
+            },
+            "text_when_disable": {
+                "value": "@username : TTS is disabled",
+                "type": 0
+            },
+            "text_when_timeout": {
+                "value": "@username : TTS not available yet",
+                "type": 0
+            },
+            "timeout": {
+                "value": "60",
+                "type": 2
+            },
+            "timeout_tolerance": {
+                "value": "5",
+                "type": 2
+            }
+        },
+        "moderator_warning_level": {
+            "1": {
+                "action": "2",
+                "duration": "0",
+                "explanation": "@username This is your first and last warning before being timeout, be careful !",
+                "reason": ""
+            },
+            "2": {
+                "action": "1",
+                "duration": "30",
+                "explanation": "@username Go touch some grass (timeout 30s)",
+                "reason": "You got warned already"
+            },
+            "3": {
+                "action": "1",
+                "duration": "60",
+                "explanation": "@username Seriously, again ? (timeout 1min)",
+                "reason": "3rd warning ..."
+            },
+            "4": {
+                "action": "1",
+                "duration": "120",
+                "explanation": "@username 4th and last warning ...",
+                "reason": "4th and last warning ..."
+            },
+            "5": {
+                "action": "0",
+                "duration": "0",
+                "explanation": "@username Looks like you will touch grass forever.",
+                "reason": "Bye bye."
             }
         }
     }
