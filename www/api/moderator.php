@@ -113,8 +113,20 @@ function check_message(mysqli $db, $message)
 
     while ($row = $trigger_data->fetch_assoc()) {
         $id_expression = $row['id'];
-        if (strrpos($message, $row['trigger_word']) !== false) {
-            $action_trigger = true;
+
+        $pos = strrpos($message, $row['trigger_word']);
+        if ($pos !== false) {
+
+            if($pos > 0)
+                $char_before = substr($message, $pos - 1, 1);
+            else
+                $char_before = '';
+
+            $char_after = substr($message, $pos + strlen($row['trigger_word']), 1);
+
+            if(($char_before == '' || $char_before == ' ') && ($char_after == '' || $char_after == ' '))
+                $action_trigger = true;
+            
             break;
         }
     }
