@@ -136,7 +136,7 @@ function check_message(mysqli $db, $message)
     }
 
     if ($result == null)
-        return ['mod_action' => null, 'explanation' => null, 'duration' => null, 'reason' => null, 'trigger_word' => null];
+        return ['mod_action' => null];
     else
         return $result;
 }
