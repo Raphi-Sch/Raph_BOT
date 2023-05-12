@@ -29,6 +29,7 @@ require_once('src/php/header.php');
             <li id="tab-expression"><a href="#" onclick='view("expression")'>Expression</a></li>
             <li id="tab-leet"><a href="#" onclick='view("leet")'>Leet</a></li>
             <li id="tab-warning"><a href="#" onclick='view("warning")'>Warning</a></li>
+            <li id="tab-warning-level"><a href="#" onclick='view("warning-level")'>Warning Level</a></li>
         </ul>
 
         <!-- Expression -->
@@ -89,6 +90,26 @@ require_once('src/php/header.php');
             </table>
         </div>
 
+        <!-- Warnings -->
+        <div id='div-warning-level'>
+            <br/>
+            <table class="table table-hover table-condensed table-scroll">
+                <thead>
+                    <tr>
+                        <th class='col-xs-1'>Level</th>
+                        <th class='col-xs-1'>Action</th>
+                        <th class='col-xs-1'>Duration</th>
+                        <th class='col-xs-4'>Reason</th>
+                        <th class='col-xs-4'>Explanation</th>
+                        <th class='table-scroll-th-fix'></th>
+                        <th class='col-xs-1'></th>
+                    </tr>
+                </thead>
+                <tbody class="table-scroll-td" id='tbody-warning-level'>
+                    <!-- Dynamic -->
+                </tbody>
+            </table>
+        </div>
 
     </div>
 

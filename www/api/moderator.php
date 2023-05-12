@@ -29,6 +29,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if (isset($_GET['warning-level'])) {
+            echo json_encode(warn_level_list($db));
+            break;
+        }
+
         header("HTTP/1.0 400 Bad request");
         break;
 
@@ -69,6 +74,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
         if (isset($_GET['expression'])) {
             echo json_encode(expression_edit($db, $body));
+            break;
+        }
+
+        if (isset($_GET['warning-level'])) {
+            echo json_encode(warn_level_edit($db, $body));
             break;
         }
 
@@ -187,6 +197,35 @@ function warn_delete(mysqli $db, $id)
     return true;
 }
 
+function warn_level_list(mysqli $db)
+{
+    $SQL_query = "SELECT * FROM moderator_warning_level ORDER BY `level` ASC";
+    $data = db_query_raw($db, $SQL_query);
+
+    $result = array();
+    $count = 0;
+
+    while ($row = $data->fetch_assoc()) {
+        $result += array($count => $row);
+        $count++;
+    }
+
+    return $result;
+}
+
+function warn_level_edit(mysqli $db, $data)
+{
+    db_query_no_result(
+        $db,
+        "UPDATE `moderator_warning_level` SET `action` = ?, `duration` = ?, `explanation` = ?, `reason` = ? WHERE `level` = ?",
+        "iissi",
+        [$data['action'], $data['duration'], $data['explanation'], $data['reason'], $data['level']]
+    );
+
+    log_activity("API", "[MODERATOR-WARNING-LEVEL] Edited", "Level " . $data['level']);
+    return true;
+}
+
 function expression_list(mysqli $db)
 {
     $SQL_query = "SELECT * FROM moderator ORDER BY trigger_word ASC";
@@ -203,7 +242,8 @@ function expression_list(mysqli $db)
     return $result;
 }
 
-function expression_filter_data($data){
+function expression_filter_data($data)
+{
     $data['trigger_word'] = trim(strtolower($data['trigger_word']));
     $data['mod_action'] = intval($data['mod_action']);
     $data['explanation'] = trim($data['explanation']);
@@ -211,12 +251,12 @@ function expression_filter_data($data){
     $data['reason'] = trim($data['reason']);
     $data['seriousness'] = intval($data['seriousness']);
 
-    switch($data['mod_action']){
+    switch ($data['mod_action']) {
         case ACTION_DELETE:
             $data['duration'] = 0;
             $data['seriousness'] = filter_var($data['seriousness'], FILTER_VALIDATE_INT, ['options' => ['default' => 1, 'min_range' => 1, 'max_range' => 3]]);
             break;
-        
+
         case ACTION_TIMEOUT:
             $data['seriousness'] = filter_var($data['seriousness'], FILTER_VALIDATE_INT, ['options' => ['default' => 4, 'min_range' => 4, 'max_range' => 6]]);
             break;
@@ -237,7 +277,7 @@ function expression_filter_data($data){
     // Max timeout duration possible (limit of Twitch API)
     if ($data['duration'] > 1209600)
         $data['duration'] = 1209600;
-    
+
     return $data;
 }
 

@@ -4,10 +4,12 @@ function view(param) {
     document.getElementById("tab-expression").classList.remove("active");
     document.getElementById("tab-leet").classList.remove("active");
     document.getElementById("tab-warning").classList.remove("active");
+    document.getElementById("tab-warning-level").classList.remove("active");
 
     document.getElementById('div-expression').classList.add('hidden');
     document.getElementById('div-leet').classList.add('hidden');
     document.getElementById('div-warning').classList.add('hidden');
+    document.getElementById('div-warning-level').classList.add('hidden');
 
     switch (param) {
         case 'expression':
@@ -15,7 +17,7 @@ function view(param) {
             document.getElementById('div-expression').classList.remove('hidden');
             document.getElementById('btn-refresh').onclick = () => expressionList(true);
 
-            window.history.pushState(null, '', 'moderator.php?list');
+            window.history.pushState(null, '', 'moderator.php?expression');
             expressionList();
             return;
 
@@ -24,7 +26,7 @@ function view(param) {
             document.getElementById('div-leet').classList.remove('hidden');
             document.getElementById('btn-refresh').onclick = () => leetList(true);
 
-            window.history.pushState(null, '', 'moderator.php?list-leet');
+            window.history.pushState(null, '', 'moderator.php?leet');
             leetList();
             return;
 
@@ -33,8 +35,17 @@ function view(param) {
             document.getElementById('div-warning').classList.remove('hidden');
             document.getElementById('btn-refresh').onclick = () => warningList(true);
 
-            window.history.pushState(null, '', 'moderator.php?list-warning');
+            window.history.pushState(null, '', 'moderator.php?warning');
             warningList();
+            return;
+
+        case 'warning-level':
+            document.getElementById('tab-warning-level').classList.add("active");
+            document.getElementById('div-warning-level').classList.remove('hidden');
+            document.getElementById('btn-refresh').onclick = () => warningLevelList(true);
+
+            window.history.pushState(null, '', 'moderator.php?warning-level');
+            warningLevelList();
             return;
     }
 }
@@ -98,7 +109,7 @@ function expressionAdd() {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.value) {
-            const FORM =  document.getElementById('swal-form');
+            const FORM = document.getElementById('swal-form');
             const FORM_DATA = {
                 'trigger_word': FORM.trigger_word.value,
                 'mod_action': FORM.mod_action.value,
@@ -107,7 +118,7 @@ function expressionAdd() {
                 'explanation': FORM.explanation.value,
                 'seriousness': FORM.seriousness.value
             };
-            
+
             $.ajax({
                 url: "api/moderator.php?expression",
                 type: "PUT",
@@ -151,9 +162,9 @@ function expressionEdit(data) {
         }
     }).then((result) => {
         if (result.value) {
-            const FORM =  document.getElementById('swal-form');
+            const FORM = document.getElementById('swal-form');
             const FORM_DATA = {
-                'id' : data.id,
+                'id': data.id,
                 'trigger_word': FORM.trigger_word.value,
                 'mod_action': FORM.mod_action.value,
                 'reason': FORM.reason.value,
@@ -161,7 +172,7 @@ function expressionEdit(data) {
                 'explanation': FORM.explanation.value,
                 'seriousness': FORM.seriousness.value
             };
-            
+
             $.ajax({
                 url: "api/moderator.php?expression",
                 type: "PATCH",
@@ -216,7 +227,7 @@ function leetList(reload = false) {
                 TR.appendChild(createTableData(element.replacement, 'col-xs-5'));
                 TR.appendChild(createTableData(element.original, 'col-xs-5'));
                 TR.appendChild(createButtonGroup(createButton("btn btn-danger", "glyphicon glyphicon-remove", () => leetDel(element))));
-                
+
                 LIST.appendChild(TR);
             })
 
@@ -227,7 +238,7 @@ function leetList(reload = false) {
     })
 }
 
-function leetAdd(){
+function leetAdd() {
     Swal.fire({
         title: "Add leet conversion",
         html: "<form id='swal-form'>" +
@@ -243,12 +254,12 @@ function leetAdd(){
         cancelButtonText: 'Cancel',
     }).then((result) => {
         if (result.value) {
-            const FORM =  document.getElementById('swal-form');
+            const FORM = document.getElementById('swal-form');
             const FORM_DATA = {
                 'original': FORM.original.value,
                 'replacement': FORM.replacement.value
             };
-            
+
             $.ajax({
                 url: "api/moderator.php?leet",
                 type: "PUT",
@@ -263,7 +274,7 @@ function leetAdd(){
     });
 }
 
-function leetDel(data){
+function leetDel(data) {
     Swal.fire({
         title: `Delete "${data.original}" -> "${data.replacement}" ?`,
         icon: 'question',
@@ -288,7 +299,7 @@ function leetDel(data){
 }
 
 // Warning
-function warningList(reload){
+function warningList(reload) {
     $.ajax({
         url: "api/moderator.php?list-warning",
         type: "GET",
@@ -318,7 +329,7 @@ function warningList(reload){
     })
 }
 
-function warningDelete(data){
+function warningDelete(data) {
     Swal.fire({
         title: `Delete warning for "${data.username}" ?`,
         icon: 'question',
@@ -335,6 +346,86 @@ function warningDelete(data){
                 dataType: "json",
                 success: function () {
                     warningList(true);
+                },
+                error: errorAPI
+            })
+        }
+    })
+}
+
+// Warning Level
+function warningLevelList(reload) {
+    $.ajax({
+        url: "api/moderator.php?warning-level",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            const LIST = document.getElementById('tbody-warning-level');
+            LIST.innerHTML = "";
+
+            data.forEach(element => {
+                const TR = document.createElement('tr');
+                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => warningLevelEdit(element));
+
+                TR.appendChild(createTableData(element.level, 'col-xs-1'));
+                TR.appendChild(createTableData(actionText[element.action], 'col-xs-1'));
+                TR.appendChild(createTableData(element.duration, 'col-xs-1'));
+                TR.appendChild(createTableData(element.reason, 'col-xs-4'));
+                TR.appendChild(createTableData(element.explanation, 'col-xs-4'));
+                TR.appendChild(createButtonGroup(btnEdit));
+
+                LIST.appendChild(TR);
+            })
+
+            if (reload)
+                reloadSuccess();
+        },
+        error: errorAPI
+    })
+}
+
+function warningLevelEdit(element){
+    Swal.fire({
+        title: `Editing level : '${element.level}'`,
+        icon: 'info',
+        html: `<form id='swal-form'><br/>
+            <label>Action</label>
+            <select class='form-control' name='action' id='swal-select-action'>
+                <option value=0>Ban</option>
+                <option value=1>Timeout</option>
+                <option value=2>Delete message</option>
+            </select><br/>
+            <label>Duration (timeout only)</label><input type='number' class='form-control' name='duration' placeholder='Duration in seconds' value='${element.duration}' step=1 min=0 max=1209600><br/>
+            <label>Reason</label><textarea class='form-control' type='text' name='reason'>${element.reason}</textarea><br/>
+            <label>Explanation</label><textarea class='form-control' type='text' name='explanation'>${element.explanation}</textarea><br/>
+            </form>`,
+        showCancelButton: true,
+        focusConfirm: false,
+        allowOutsideClick: false,
+        width: "30%",
+        confirmButtonText: 'Edit',
+        cancelButtonText: 'Cancel',
+        didOpen: () => {
+            document.getElementById('swal-select-action').value = element.action;
+        }
+    }).then((result) => {
+        if (result.value) {
+            const FORM = document.getElementById('swal-form');
+            const FORM_DATA = {
+                'level': element.level,
+                'action': FORM.action.value,
+                'reason': FORM.reason.value,
+                'duration': FORM.duration.value,
+                'explanation': FORM.explanation.value
+            };
+
+            $.ajax({
+                url: "api/moderator.php?warning-level",
+                type: "PATCH",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    warningLevelList(true);
                 },
                 error: errorAPI
             })
