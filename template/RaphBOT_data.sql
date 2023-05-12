@@ -74,6 +74,17 @@ INSERT INTO `users` (`username`, `password`) VALUES
 ('admin', NULL);
 
 --
+-- Déchargement des données de la table `moderator_warning_level`
+--
+
+INSERT INTO `moderator_warning_level` (`level`, `action`, `duration`, `explanation`, `reason`) VALUES
+(1, 2, 0, '@username This is your first and last warning before being timeout, be careful !', ''),
+(2, 1, 31, ' @username Go touch some grass (timeout 30s)', 'You got warned already'),
+(3, 1, 60, '@username Seriously, again ? (timeout 1min)', '3rd warning ...'),
+(4, 1, 600, '@username 4th and last warning ...', '4th and last warning ...'),
+(5, 0, 0, '@username Looks like you will touch grass forever.', 'Bye bye.');
+
+--
 -- Déchargement des données de la table `moderator_leet`
 --
 

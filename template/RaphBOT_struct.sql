@@ -156,7 +156,6 @@ CREATE TABLE `moderator_warning` (
 --
 
 CREATE TABLE `moderator_warning_level` (
-  `id` int(11) NOT NULL,
   `level` int(11) NOT NULL,
   `action` int(11) NOT NULL,
   `duration` int(11) NOT NULL DEFAULT 0,
@@ -300,7 +299,7 @@ ALTER TABLE `moderator_leet`
 -- Index pour la table `moderator_warning`
 --
 ALTER TABLE `moderator_warning`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`level`),
   ADD UNIQUE KEY `userID` (`userid`);
 
 --
