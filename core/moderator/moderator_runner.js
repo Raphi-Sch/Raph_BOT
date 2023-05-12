@@ -31,16 +31,20 @@ async function checkMessage(user, message, twitchAPI) {
             switch (parseInt(result.mod_action)) {
                 default:
                     return null;
+
                 case ACTION_BAN:
                     twitchAPI.banUser(user['user-id'], result.reason);
                     return result.explanation.replace("@username", user['display-name']);
+
                 case ACTION_TIMEOUT:
                     twitchAPI.timeoutUser(user['user-id'], result.reason, result.duration);
                     return result.explanation.replace("@username", user['display-name']);
+
                 case ACTION_DELETE:
                     //twitchAPI.deleteChatMessage(messageID);
                     log('[MODERATOR] Delete message is not implemented yet (not possible with current client)');
                     return true;
+
                 case ACTION_WARN:
                     return warnUser(user['username'], config.twitch_display_name, twitchAPI);
             }
