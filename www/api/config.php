@@ -85,7 +85,7 @@ function bot_name(mysqli $db)
 
 function socket_config()
 {
-    $config = json_decode(file_get_contents("../../config.json"), true);
+    $config = json_decode(file_get_contents("../../core/config.json"), true);
     return ["port" => $config['socket_port'], "protocol" => $config['socket_protocol']];
 }
 
