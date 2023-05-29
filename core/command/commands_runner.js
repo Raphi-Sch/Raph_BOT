@@ -6,8 +6,8 @@ const { re } = require('@babel/core/lib/vendor/import-meta-resolve');
 
 let excludedTanks = [];
 let excludedAudio = [];
-let ttsTimeout = 0;
-let ttsTimeoutInterval = null;
+let ttsTimeoutStart = null;
+let ttsTimeoutTotal = 0;
 
 async function runCommand(user, message) {
     let result = null;
@@ -59,7 +59,12 @@ async function queryAPI(fullCommand) {
         param: fullCommand[2],
         excluded_tanks: excludedTanks,
         excluded_audio: excludedAudio,
-        timeout_tts: ttsTimeout
+        timeout_tts: (ttsTimeoutStart !== null ? Math.ceil(ttsTimeoutTotal - (Date.now() - ttsTimeoutStart) / 1000) : 0)
+    }
+
+    if(config.debug_level <= 2){
+        console.error(`${tools.logTime()} [COMMANDS] Data send to API :`);
+        console.error(body);
     }
 
     const response = await fetch(config.api_url + "commands.php?request", {
@@ -146,24 +151,16 @@ function runTTS(command, user) {
             return true;
         }
 
-        ttsTimeout = parseInt(command.timeout);
+        ttsTimeoutStart = Date.now();
+        ttsTimeoutTotal = parseInt(command.timeout);
+        setTimeout(() => {
+            socket.log(`[TTS] Timeout over.`);
+            ttsTimeoutStart = null;
+        }, ttsTimeoutTotal * 1000);
 
         command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
         tools.TTS(config, socket, command.value, user['display-name']);
-        socket.log(`[TTS] Timeout for ${tools.timeoutToString(ttsTimeout)}`);
-
-        ttsTimeoutInterval = setInterval(() => {
-            ttsTimeout -= 5;
-
-            if (ttsTimeout <= 0) {
-                clearInterval(ttsTimeoutInterval);
-                socket.log(`[TTS] Timeout cleared`);
-            }
-
-            if (config.debug_level >= 1) {
-                console.error(`${tools.logTime()} [TTS] Timeout updated (current : ${ttsTimeout})`);
-            }
-        }, 5000); // Every 5 sec
+        socket.log(`[TTS] Timeout for ${tools.timeoutToString(parseInt(command.timeout))}`);
     }
 
     if (command.tts_type == 'bot') {
