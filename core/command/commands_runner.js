@@ -64,8 +64,8 @@ async function queryAPI(fullCommand) {
         command: fullCommand[1],
         param: fullCommand[2],
         tanks_excluded: excludedTanks,
-        tts_timeout: (tts.timeoutStart != 0 ? Math.ceil(tts.timeoutTotal - (Date.now() - tts.timeoutStart) / 1000) : 0),
-        audio_timeout: (audio.timeoutStart != 0 ? Math.ceil(audio.timeoutTotal - (Date.now() - audio.timeoutStart) / 1000) : 0),
+        tts_timeout: getTimeLeft(tts),
+        audio_timeout: getTimeLeft(audio),
         audio_excluded: audio.excluded
     }
 
@@ -190,6 +190,10 @@ function runTTS(command, user) {
     }
 
     return true; // No text output, but command success
+}
+
+function getTimeLeft(obj){
+    return (obj.timeoutStart != 0 ? Math.ceil(obj.timeoutTotal - (Date.now() - obj.timeoutStart) / 1000) : 0);
 }
 
 module.exports = { runCommand }
