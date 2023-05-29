@@ -1,7 +1,10 @@
 <?php
 
-function tts_run($db, $text, $timeout)
+function tts_run($db, $data)
 {
+    $text = $data['param'];
+    $timeout = $data['tts_timeout'];
+
     // Load config dynamically
     $TTS_config = array();
     $data = db_query_raw($db, "SELECT `id`, `value` FROM commands_tts_config");

@@ -44,11 +44,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
         if (isset($_GET['request']) && isset($body['command'])) {
-            $param = isset($body['param']) ? trim($body['param']) : "";
-            $excluded_tanks = isset($body['excluded_tanks']) ? $body['excluded_tanks'] : array();
-            $excluded_audio = isset($body['excluded_audio']) ? $body['excluded_audio'] : array();
-
-            echo json_encode(request($db, trim($body['command']), $param, $excluded_tanks, $excluded_audio, $body['timeout_tts']));
+            echo json_encode(request($db, $body));
             break;
         }
 
@@ -116,8 +112,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 exit();
 
 
-function request(mysqli $db, string $command, string $param, array $excluded_tanks, array $excluded_audio, $timeout_tts)
+function request(mysqli $db, $data)
 {
+    $command = trim($data['command']);
+    $data['audio_excluded'] = isset($data['audio_excluded']) ? $data['audio_excluded'] : array();
+    $data['tanks_excluded'] = isset($data['tanks_excluded']) ? $data['tanks_excluded'] : array();
+    
     // Check for alias
     $result = db_query($db, "SELECT `command` FROM commands_alias WHERE alias = ?", "s", $command);
     if (!empty($result['command'])) {
@@ -127,7 +127,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
     // Built-in commands
     // Tank
     if ($command == 'tank') {
-        return tank_run($db, $param, $excluded_tanks);
+        return tank_run($db, $data);
     }
 
     // List audio
@@ -137,7 +137,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
 
     // TTS
     if ($command == 'tts') {
-        return tts_run($db, $param, $timeout_tts);
+        return tts_run($db, $data);
     }
 
     // Custom commands
@@ -151,7 +151,7 @@ function request(mysqli $db, string $command, string $param, array $excluded_tan
     }
 
     // Query Audio
-    $result = audio_request($db, $command, $excluded_audio);
+    $result = audio_request($db, $data);
     if (!empty($result)) {
         return $result;
     }
