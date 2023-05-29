@@ -103,7 +103,7 @@ require_once('src/php/header.php');
                     <tr>
                         <th class="col-xs-2">Key</th>
                         <th class="col-xs-5">Value</th>
-                        <th class="col-xs-1"></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody id='tbody-config'>
