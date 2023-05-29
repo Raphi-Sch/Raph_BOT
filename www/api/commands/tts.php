@@ -13,19 +13,19 @@ function tts_run($db, $data)
     }
 
     // Active
-    if ($TTS_config['tts_enable'] == 0) {
-        if ($TTS_config['tts_text_answer'])
-            return ['response_type' => null];
-        else
+    if (!boolval($TTS_config['tts_enable'])) {
+        if (boolval($TTS_config['tts_text_answer']))
             return ['response_type' => 'text', 'value' => $TTS_config['tts_text_disable'], 'mod_only' => 0, 'sub_only' => 0];
+
+        return ['response_type' => null];
     }
 
     // Timeout
     if ((intval($timeout) > intval($TTS_config['tts_timeout_tolerance']))) {
-        if ($TTS_config['tts_text_answer'])
-            return ['response_type' => null];
-        else
+        if (boolval($TTS_config['tts_text_answer']))
             return ['response_type' => 'text', 'value' => str_replace("@timeout", $timeout, $TTS_config['tts_text_timeout']), 'mod_only' => 0, 'sub_only' => 0];
+
+        return ['response_type' => null];
     }
 
     // Format text output
