@@ -5,11 +5,15 @@ const { config } = require("../config");
 const { re } = require('@babel/core/lib/vendor/import-meta-resolve');
 
 let excludedTanks = [];
-let excludedAudio = [];
-let ttsTimeoutStart = 0;
-let ttsTimeoutTotal = 0;
-let audioTimeoutStart = 0;
-let audioTimeoutTotal = 0;
+const tts = {
+    timeoutStart: 0,
+    timeoutTotal: 0
+}
+const audio = {
+    timeoutStart: 0,
+    timeoutTotal: 0,
+    excluded: []
+}
 
 async function runCommand(user, message) {
     let result = null;
@@ -60,9 +64,9 @@ async function queryAPI(fullCommand) {
         command: fullCommand[1],
         param: fullCommand[2],
         tanks_excluded: excludedTanks,
-        tts_timeout: (ttsTimeoutStart != 0 ? Math.ceil(ttsTimeoutTotal - (Date.now() - ttsTimeoutStart) / 1000) : 0),
-        audio_timeout: (audioTimeoutStart != 0 ? Math.ceil(audioTimeoutTotal - (Date.now() - audioTimeoutStart) / 1000) : 0),
-        audio_excluded: excludedAudio
+        tts_timeout: (tts.timeoutStart != 0 ? Math.ceil(tts.timeoutTotal - (Date.now() - tts.timeoutStart) / 1000) : 0),
+        audio_timeout: (audio.timeoutStart != 0 ? Math.ceil(audio.timeoutTotal - (Date.now() - audio.timeoutStart) / 1000) : 0),
+        audio_excluded: audio.excluded
     }
 
     if (config.debug_level <= 2) {
@@ -133,25 +137,25 @@ function runTankRandom(command, user) {
 function runAudio(command, user) {
     if (canUseCommand(command, user)) {
         if (command.timeout > 0) {
-            excludedAudio.push(command.trigger_word);
+            audio.excluded.push(command.trigger_word);
 
             // Specific timeout
             setTimeout(function () {
-                excludedAudio.splice(excludedAudio.indexOf(command.trigger_word), 1);
+                audio.excluded.splice(audio.excluded.indexOf(command.trigger_word), 1);
                 socket.log(`[AUDIO] '${command.name}' has been removed from the exclusion list`);
             }, parseInt(command.timeout) * 1000);
         }
 
         // Global timeout
-        audioTimeoutStart = Date.now();
-        audioTimeoutTotal = parseInt(command.global_timeout);
+        audio.timeoutStart = Date.now();
+        audio.timeoutTotal = parseInt(command.global_timeout);
         setTimeout(function () {
-            audioTimeoutStart = 0
+            audio.timeoutStart = 0
             socket.log(`[AUDIO] Global timeout over.`);
-        }, audioTimeoutTotal * 1000);
+        }, audio.timeoutTotal * 1000);
 
         socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
-        socket.log(`[AUDIO] Global timeout set (${tools.timeoutToString(audioTimeoutTotal)})`);
+        socket.log(`[AUDIO] Global timeout set (${tools.timeoutToString(audio.timeoutTotal)})`);
 
         socket.playAudio(command);
     }
@@ -166,12 +170,12 @@ function runTTS(command, user) {
             return true;
         }
 
-        ttsTimeoutStart = Date.now();
-        ttsTimeoutTotal = parseInt(command.timeout);
+        tts.timeoutStart = Date.now();
+        tts.timeoutTotal = parseInt(command.timeout);
         setTimeout(() => {
             socket.log(`[TTS] Timeout over.`);
-            ttsTimeoutStart = 0;
-        }, ttsTimeoutTotal * 1000);
+            tts.timeoutStart = 0;
+        }, tts.timeoutTotal * 1000);
 
         command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
         tools.TTS(config, socket, command.value, user['display-name']);
