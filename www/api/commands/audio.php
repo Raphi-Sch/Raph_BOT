@@ -68,10 +68,12 @@ function audio_request(mysqli $db, string $command, array $excluded_audio)
     $SQL_query = "SELECT * FROM commands_audio WHERE trigger_word = ? AND active = 1 $trigger_word_not_in";
     $result = db_query($db, $SQL_query, $SQL_params_type, $SQL_params);
 
+    $timeout = intval(db_query($db, "SELECT `value` FROM commands_config WHERE id = 'audio_timeout'")['value']);
+
     if ($result == null)
         return null;
     else
-        return array_merge(['response_type' => 'audio'], $result);
+        return array_merge(['response_type' => 'audio', 'global_timeout' => $timeout], $result);
 }
 
 function audio_edit(mysqli $db, $data)
