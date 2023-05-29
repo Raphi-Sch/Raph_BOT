@@ -6,8 +6,10 @@ const { re } = require('@babel/core/lib/vendor/import-meta-resolve');
 
 let excludedTanks = [];
 let excludedAudio = [];
-let ttsTimeoutStart = null;
+let ttsTimeoutStart = 0;
 let ttsTimeoutTotal = 0;
+let audioTimeoutStart = 0;
+let audioTimeoutTotal = 0;
 
 async function runCommand(user, message) {
     let result = null;
@@ -57,12 +59,13 @@ async function queryAPI(fullCommand) {
     const body = {
         command: fullCommand[1],
         param: fullCommand[2],
-        excluded_tanks: excludedTanks,
-        excluded_audio: excludedAudio,
-        timeout_tts: (ttsTimeoutStart !== null ? Math.ceil(ttsTimeoutTotal - (Date.now() - ttsTimeoutStart) / 1000) : 0)
+        tanks_excluded: excludedTanks,
+        tts_timeout: (ttsTimeoutStart != 0 ? Math.ceil(ttsTimeoutTotal - (Date.now() - ttsTimeoutStart) / 1000) : 0),
+        audio_timeout: (audioTimeoutStart != 0 ? Math.ceil(audioTimeoutTotal - (Date.now() - audioTimeoutStart) / 1000) : 0),
+        audio_excluded: excludedAudio
     }
 
-    if(config.debug_level <= 2){
+    if (config.debug_level <= 2) {
         console.error(`${tools.logTime()} [COMMANDS] Data send to API :`);
         console.error(body);
     }
@@ -70,10 +73,10 @@ async function queryAPI(fullCommand) {
     const response = await fetch(config.api_url + "commands.php?request", {
         method: "post",
         body: JSON.stringify(body),
-        headers: { 
+        headers: {
             "Content-Type": "application/json",
-            "Authorization" : `Bearer ${config.token}`,
-            "Client" : config.client
+            "Authorization": `Bearer ${config.token}`,
+            "Client": config.client
         }
     })
 
@@ -132,11 +135,21 @@ function runAudio(command, user) {
         if (command.timeout > 0) {
             excludedAudio.push(command.trigger_word);
 
+            // Specific timeout
             setTimeout(function () {
                 excludedAudio.splice(excludedAudio.indexOf(command.trigger_word), 1);
                 socket.log(`[AUDIO] '${command.name}' has been removed from the exclusion list`);
-            }, command.timeout * 1000);
+            }, parseInt(command.timeout) * 1000);
         }
+
+        // Global timeout
+        audioTimeoutStart = Date.now();
+        audioTimeoutTotal = parseInt(command.global_timeout);
+        setTimeout(function () {
+            audioTimeoutStart = 0
+            socket.log(`[AUDIO] Global timeout over.`);
+        }, audioTimeoutTotal * 1000);
+
         socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
         socket.playAudio(command);
     }
@@ -155,7 +168,7 @@ function runTTS(command, user) {
         ttsTimeoutTotal = parseInt(command.timeout);
         setTimeout(() => {
             socket.log(`[TTS] Timeout over.`);
-            ttsTimeoutStart = null;
+            ttsTimeoutStart = 0;
         }, ttsTimeoutTotal * 1000);
 
         command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));

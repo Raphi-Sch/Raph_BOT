@@ -43,15 +43,24 @@ function audio_list_text(mysqli $db)
     return ['response_type' => 'text', 'value' => $result, 'mod_only' => 0, 'sub_only' => 0];
 }
 
-function audio_request(mysqli $db, string $command, array $excluded_audio)
+function audio_request(mysqli $db, $data)
 {
-    $SQL_params_type = "";
-    $SQL_params = array();
-    $trigger_word_not_in = "";
+    $command = $data['command'];
+    $excluded_audio = $data['audio_excluded'];
 
+    // Global timeout
+    if ($data['audio_timeout'] > 0) {
+        return ['response_type' => 'text', 'value' => "Audio commands are not available yet."];
+    }
+
+    // Specific timeout
     if (in_array($command, $excluded_audio)) {
         return ['response_type' => 'text', 'value' => "Command '!$command' is not available yet."];
     }
+
+    $SQL_params_type = "";
+    $SQL_params = array();
+    $trigger_word_not_in = "";
 
     // Command
     $SQL_params_type .= "s";
