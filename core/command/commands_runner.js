@@ -69,7 +69,7 @@ async function queryAPI(fullCommand) {
         audio_excluded: audio.excluded
     }
 
-    if (config.debug_level <= 2) {
+    if (config.debug_level >= 2) {
         console.error(`${tools.logTime()} [COMMANDS] Data send to API :`);
         console.error(body);
     }
