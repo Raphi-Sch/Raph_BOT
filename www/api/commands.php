@@ -7,6 +7,7 @@ require_once('../src/php/functions.php');
 require_once('./commands/audio.php');
 require_once('./commands/tanks.php');
 require_once('./commands/tts.php');
+require_once('./commands/config.php');
 
 header('Content-Type: application/json');
 
@@ -32,8 +33,8 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
-        if (isset($_GET['list-tts-config'])) {
-            echo json_encode(tts_config_list($db));
+        if (isset($_GET['list-config'])) {
+            echo json_encode(config_list($db));
             break;
         }
 
@@ -80,8 +81,8 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
-        if (isset($_GET['tts-config'])) {
-            echo json_encode(tts_config_edit($db, $body));
+        if (isset($_GET['config'])) {
+            echo json_encode(config_edit($db, $body));
             break;
         }
 

@@ -29,7 +29,7 @@ require_once('src/php/header.php');
             <li id="tab-text"><a href="#" onclick='view("commands")'>Text</a></li>
             <li id="tab-alias"><a href="#" onclick='view("alias")'>Alias</a></li>
             <li id="tab-audio"><a href="#" onclick='view("audio")'>Audio</a></li>
-            <li id="tab-tts"><a href="#" onclick='view("tts")'>TTS</a></li>
+            <li id="tab-config"><a href="#" onclick='view("config")'>Config</a></li>
         </ul>
 
         <!-- Main content -->
@@ -95,10 +95,10 @@ require_once('src/php/header.php');
             </table>
         </div>
 
-        <!-- TTS -->
-        <div id='div-tts'>
-            <h3>Config</h3>
-            <table class="table table-hover table-condensed">
+        <!-- Config -->
+        <div id='div-config'>
+            <br/>     
+            <table class="table table-hover table-condensed table-scroll">
                 <thead>
                     <tr>
                         <th class="col-xs-2">Key</th>
@@ -106,7 +106,7 @@ require_once('src/php/header.php');
                         <th class="col-xs-1"></th>
                     </tr>
                 </thead>
-                <tbody id='tbody-tts-config'>
+                <tbody id='tbody-config'>
                     <!-- Dynamic -->
                 </tbody>
             </table>

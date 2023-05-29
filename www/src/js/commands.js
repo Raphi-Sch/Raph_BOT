@@ -2,12 +2,12 @@ function view(param) {
     document.getElementById("tab-text").classList.remove("active");
     document.getElementById("tab-alias").classList.remove("active");
     document.getElementById("tab-audio").classList.remove("active");
-    document.getElementById("tab-tts").classList.remove("active");
+    document.getElementById("tab-config").classList.remove("active");
 
     document.getElementById('div-text').classList.add("hidden");
     document.getElementById('div-alias').classList.add("hidden");
     document.getElementById('div-audio').classList.add("hidden");
-    document.getElementById('div-tts').classList.add("hidden");
+    document.getElementById('div-config').classList.add("hidden");
 
 
     switch (param) {
@@ -38,13 +38,13 @@ function view(param) {
             audioList();
             return;
 
-        case 'tts':
-            document.getElementById("tab-tts").classList.add("active");
-            document.getElementById('div-tts').classList.remove('hidden');
-            document.getElementById('btn-refresh').onclick = () => TTSList(true);
+        case 'config':
+            document.getElementById("tab-config").classList.add("active");
+            document.getElementById('div-config').classList.remove('hidden');
+            document.getElementById('btn-refresh').onclick = () => configList(true);
 
-            window.history.pushState(null, '', 'commands.php?tts');
-            TTSList();
+            window.history.pushState(null, '', 'commands.php?config');
+            configList();
             break;
     }
 }
@@ -457,13 +457,13 @@ function audioDelete(data) {
     })
 }
 
-function TTSList(reload = false) {
+function configList(reload = false) {
     $.ajax({
-        url: "api/commands.php?list-tts-config",
+        url: "api/commands.php?list-config",
         type: "GET",
         dataType: "json",
         success: function (data) {
-            const LIST = document.getElementById('tbody-tts-config');
+            const LIST = document.getElementById('tbody-config');
             LIST.innerHTML = "";
 
             data.forEach(element => {
@@ -476,7 +476,7 @@ function TTSList(reload = false) {
 
                 TR.appendChild(createTableData(element.id, 'col-xs-2'));
                 TR.appendChild(createTableData(displayValue, 'col-xs-5'));
-                TR.appendChild(createButtonGroup(createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => TTSEdit(element))));
+                TR.appendChild(createButtonGroup(createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => configEdit(element))));
 
                 LIST.appendChild(TR);
             })
@@ -489,7 +489,7 @@ function TTSList(reload = false) {
     })
 }
 
-function TTSEdit(element) {
+function configEdit(element) {
     let input = "";
     let didOpen = null;
     switch (element.type) {
@@ -529,12 +529,12 @@ function TTSEdit(element) {
             };
 
             $.ajax({
-                url: "api/commands.php?tts-config",
+                url: "api/commands.php?config",
                 type: "PATCH",
                 dataType: "json",
                 data: JSON.stringify(FORM_DATA),
                 success: function () {
-                    TTSList(true);
+                    configList(true);
                 },
                 error: errorAPI
             })
