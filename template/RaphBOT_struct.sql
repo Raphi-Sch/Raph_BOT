@@ -95,6 +95,18 @@ CREATE TABLE `commands_tts_config` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `commands_config`
+--
+
+CREATE TABLE `commands_config` (
+  `id` varchar(30) NOT NULL,
+  `value` text DEFAULT NULL,
+  `type` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `config`
 --
 

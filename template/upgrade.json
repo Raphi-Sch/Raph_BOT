@@ -87,6 +87,18 @@
                 "type": "int(4) NOT NULL"
             }
         },
+        "commands_config": {
+            "fields": [
+                "id",
+                "value",
+                "type"
+            ],
+            "types": {
+                "id": "varchar(30) NOT NULL, ADD PRIMARY KEY (`id`)",
+                "value": "text NULL",
+                "type": "int(4) NOT NULL"
+            }
+        },
         "config": {
             "fields": [
                 "id",
@@ -430,6 +442,12 @@
             },
             "timeout_tolerance": {
                 "value": "5",
+                "type": 2
+            }
+        },
+        "commands_config": {
+            "audio_timeout": {
+                "value": "30",
                 "type": 2
             }
         },

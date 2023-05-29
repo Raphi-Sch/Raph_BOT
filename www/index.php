@@ -126,6 +126,32 @@ function check_commands_tts_config($db, $key, $data)
     return $result;
 }
 
+function check_commands_config($db, $key, $data)
+{
+    global $can_redirect;
+    $result = "";
+
+    $presence = mysqli_num_rows(db_query_raw($db, "SELECT id FROM commands_config WHERE id = ?", "s", $key));
+
+    $result .= "- commands_tts_config, id ($key) : " . ($presence ? "OK" : "MISSING");
+
+    if (!$presence) {
+        $can_redirect = false;
+
+        db_query_no_result($db, "INSERT INTO commands_config (id, `value`, `type`) VALUES (?, ?, ?)", "ssi", [$key, $data['value'], $data['type']]);
+
+        $repaired = mysqli_num_rows(db_query_raw($db, "SELECT id FROM commands_config WHERE id = ?", "s", $key));
+        if ($repaired) {
+            $result .= " (Repair successful)";
+            $presence = true;
+        } else
+            $result .= " (Repair failed)";
+    }
+
+    $result .= "\n";
+    return $result;
+}
+
 function check_moderator_warning_level($db, $key, $data)
 {
     global $can_redirect;
@@ -169,6 +195,10 @@ foreach ($JSON['data'] as $table_name => $table_data) {
 
             case 'commands_tts_config':
                 $result .= check_commands_tts_config($db, $key, $data);
+                break;
+
+            case 'commands_config':
+                $result .= check_commands_config($db, $key, $data);
                 break;
 
             case 'moderator_warning_level':
