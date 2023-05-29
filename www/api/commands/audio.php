@@ -1,5 +1,17 @@
 <?php
 
+function audio_load_config(mysqli $db)
+{
+    $config = array();
+
+    $data = db_query_raw($db, "SELECT `id`, `value` FROM commands_config WHERE id LIKE 'audio_%'");
+    while ($row = mysqli_fetch_assoc($data)) {
+        $config[$row['id']] = $row['value'];
+    }
+
+    return $config;
+}
+
 function audio_list(mysqli $db)
 {
     $SQL_query = "SELECT * FROM commands_audio ORDER BY `name` ASC";
@@ -18,7 +30,8 @@ function audio_list(mysqli $db)
 
 function audio_list_text(mysqli $db)
 {
-    $result = "Audio commands : ";
+    $config = audio_load_config($db);
+    $result = $config['audio_list_prefix'];
     $first = true;
 
     $data = db_query_raw($db, "SELECT * FROM commands_audio WHERE active = 1 AND sub_only = 0 AND mod_only = 0 ORDER BY `trigger_word` ASC");
@@ -45,17 +58,18 @@ function audio_list_text(mysqli $db)
 
 function audio_request(mysqli $db, $data)
 {
+    $config = audio_load_config($db);
     $command = $data['command'];
     $excluded_audio = $data['audio_excluded'];
 
     // Global timeout
     if ($data['audio_timeout'] > 0) {
-        return ['response_type' => 'text', 'value' => "Audio commands are not available yet."];
+        return ['response_type' => 'text', 'value' => str_replace("@timeout", $data['audio_timeout'], $config['audio_text_global_timeout'])];
     }
 
     // Specific timeout
     if (in_array($command, $excluded_audio)) {
-        return ['response_type' => 'text', 'value' => "Command '!$command' is not available yet."];
+        return ['response_type' => 'text', 'value' => str_replace("@audio", $command, $config['audio_text_individual_timeout'])];
     }
 
     $SQL_params_type = "";

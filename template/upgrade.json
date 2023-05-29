@@ -392,6 +392,18 @@
                 "value": "30",
                 "type": 2
             },
+            "audio_text_prefix": {
+                "value": "Audio commands : ",
+                "type": 0
+            },
+            "audio_text_global_timeout": {
+                "value": "@username : Audio command not available yet (retry in @timeout sec)",
+                "type": 0
+            },
+            "audio_text_individual_timeout": {
+                "value": "@username : @audio not available yet",
+                "type": 0
+            },
             "tts_enable": {
                 "value": "0",
                 "type": 1
@@ -425,7 +437,7 @@
                 "type": 0
             },
             "tts_text_timeout": {
-                "value": "@username : TTS not available yet",
+                "value": "@username : TTS not available yet (retry in @timeout sec)",
                 "type": 0
             },
             "tts_timeout": {
