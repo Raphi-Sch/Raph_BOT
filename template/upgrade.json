@@ -75,18 +75,6 @@
                 "sub_only": "tinyint(1) NOT NULL DEFAULT 0"
             }
         },
-        "commands_tts_config": {
-            "fields": [
-                "id",
-                "value",
-                "type"
-            ],
-            "types": {
-                "id": "varchar(30) NOT NULL, ADD PRIMARY KEY (`id`)",
-                "value": "text NULL",
-                "type": "int(4) NOT NULL"
-            }
-        },
         "commands_config": {
             "fields": [
                 "id",
@@ -399,55 +387,53 @@
                 "help": "URI to this page, need to match the URI set for Client ID"
             }
         },
-        "commands_tts_config": {
-            "active": {
-                "value": "0",
-                "type": 1
-            },
-            "character_limit": {
-                "value": "50",
-                "type": 2
-            },
-            "character_limit_replace": {
-                "value": "Too long",
-                "type": 0
-            },
-            "mod_only": {
-                "value": "0",
-                "type": 1
-            },
-            "no_text_answer": {
-                "value": "1",
-                "type": 1
-            },
-            "prefix": {
-                "value": "@username said",
-                "type": 0
-            },
-            "sub_only": {
-                "value": "0",
-                "type": 1
-            },
-            "text_when_disable": {
-                "value": "@username : TTS is disabled",
-                "type": 0
-            },
-            "text_when_timeout": {
-                "value": "@username : TTS not available yet",
-                "type": 0
-            },
-            "timeout": {
-                "value": "60",
-                "type": 2
-            },
-            "timeout_tolerance": {
-                "value": "5",
-                "type": 2
-            }
-        },
         "commands_config": {
             "audio_timeout": {
                 "value": "30",
+                "type": 2
+            },
+            "tts_enable": {
+                "value": "0",
+                "type": 1
+            },
+            "tts_character_limit": {
+                "value": "50",
+                "type": 2
+            },
+            "tts_character_limit_replace": {
+                "value": "Too long",
+                "type": 0
+            },
+            "tts_mod_only": {
+                "value": "0",
+                "type": 1
+            },
+            "tts_text_answer": {
+                "value": "1",
+                "type": 1
+            },
+            "tts_prefix": {
+                "value": "@username said",
+                "type": 0
+            },
+            "tts_sub_only": {
+                "value": "0",
+                "type": 1
+            },
+            "tts_text_disable": {
+                "value": "@username : TTS is disabled",
+                "type": 0
+            },
+            "tts_text_timeout": {
+                "value": "@username : TTS not available yet",
+                "type": 0
+            },
+            "tts_timeout": {
+                "value": "60",
+                "type": 2
+            },
+            "tts_timeout_tolerance": {
+                "value": "5",
                 "type": 2
             }
         },
