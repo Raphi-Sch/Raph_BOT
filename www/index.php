@@ -184,31 +184,36 @@ foreach ($JSON["table"] as $key => $data) {
 }
 
 // Check Data
-foreach ($JSON['data'] as $table_name => $table_data) {
-    $result .= "\n\nChecking data in table '$table_name'\n";
+if ($can_redirect) {
+    foreach ($JSON['data'] as $table_name => $table_data) {
+        $result .= "\n\nChecking data in table '$table_name'\n";
 
-    foreach ($table_data as $key => $data) {
-        switch ($table_name) {
-            case 'config':
-                $result .= check_config($db, $key, $data);
-                break;
+        foreach ($table_data as $key => $data) {
+            switch ($table_name) {
+                case 'config':
+                    $result .= check_config($db, $key, $data);
+                    break;
 
-            case 'commands_tts_config':
-                $result .= check_commands_tts_config($db, $key, $data);
-                break;
+                case 'commands_tts_config':
+                    $result .= check_commands_tts_config($db, $key, $data);
+                    break;
 
-            case 'commands_config':
-                $result .= check_commands_config($db, $key, $data);
-                break;
+                case 'commands_config':
+                    $result .= check_commands_config($db, $key, $data);
+                    break;
 
-            case 'moderator_warning_level':
-                $result .= check_moderator_warning_level($db, $key, $data);
-                break;
+                case 'moderator_warning_level':
+                    $result .= check_moderator_warning_level($db, $key, $data);
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
         }
     }
+}
+else{
+    $result .= "\nSkipping checking table content because some tables are not set correctly";
 }
 
 $result .= "\n";
