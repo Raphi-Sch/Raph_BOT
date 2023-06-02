@@ -370,7 +370,7 @@
             },
             "twitch_client_id": {
                 "value": "",
-                "hidden": 1,
+                "hidden": 0,
                 "type": 0,
                 "help": "Client ID for Twitch API"
             },
