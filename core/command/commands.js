@@ -13,50 +13,48 @@ let total_auto_cmd_msg = 0;
 let last_auto_cmd = 0;
 
 const runnable = {
-    run: (user, message) => null
+    run: (user, message) => null,
+    timeTrigger: () => null,
+    messageTrigger: () => null
 }
 
 function init() {
     if (config.plugin_commands == 1) {
         socket.log("[PLUGIN] Commands enabled");
-        runnable.run = (user, message) => runCommand(user, message)
+        runnable.run = (user, message) => runCommand(user, message);
+        runnable.timeTrigger = () => runTimeTrigger();
+        runnable.messageTrigger = () => runMessageTrigger();
     }
     else {
         socket.log("[PLUGIN] Commands disabled");
     }
 }
 
-async function timeTrigger() {
-    if (config.plugin_commands == 1) {
-        timer++;
-        socket.setTimeCounter(timer, config.cmd_time_interval, total_auto_cmd_time);
-        if (timer >= config.cmd_time_interval) {
-            timer = 0;
-            total_auto_cmd_time++;
-            return autoCommand();
-        }
+async function runTimeTrigger() {
+    timer++;
+    socket.setTimeCounter(timer, config.cmd_time_interval, total_auto_cmd_time);
+
+    if (timer >= config.cmd_time_interval) {
+        timer = 0;
+        total_auto_cmd_time++;
+        return autoCommand();
     }
+
     return null;
 }
 
-/**
- *
- * @returns {Promise<string|*|null>}
- */
-async function messageTrigger() {
+async function runMessageTrigger() {
     const message_interval = config.cmd_msg_interval
-    message_counter++
-    socket.setMessageCounter(message_counter, message_interval, total_auto_cmd_msg)
-    if (message_counter >= message_interval) {
-        resetMessageCounter()
-        total_auto_cmd_msg++
-        return autoCommand()
-    }
-    return null
-}
+    message_counter++;
+    socket.setMessageCounter(message_counter, message_interval, total_auto_cmd_msg);
 
-function resetMessageCounter() {
-    message_counter = 0
+    if (message_counter >= message_interval) {
+        message_counter = 0
+        total_auto_cmd_msg++;
+        return autoCommand();
+    }
+
+    return null;
 }
 
 async function loadAutoCommand() {
@@ -80,10 +78,6 @@ async function loadAutoCommand() {
     }
 }
 
-/**
- * Boucle des commandes automatiques
- * @returns {Promise<string|string|*|null>}
- */
 async function autoCommand() {
     const list = await loadAutoCommand();
 
@@ -103,6 +97,14 @@ async function autoCommand() {
 
 function run(user, message) {
     return runnable.run(user, message)
+}
+
+function timeTrigger(){
+    return runnable.timeTrigger();
+}
+
+function messageTrigger(){
+    return runnable.messageTrigger();
 }
 
 module.exports = { init, run, timeTrigger, messageTrigger }
