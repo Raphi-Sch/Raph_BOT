@@ -8,25 +8,23 @@ function list(reload = false) {
             LIST.innerHTML = "";
 
             data.forEach(element => {
-                let displayValue = element.value;
+                if (!element.hidden) {
+                    let displayValue = element.value;
 
-                if (element.type == 1) {
-                    displayValue = (element.value == '1' ? "Enabled" : "Disabled")
-                };
+                    if (element.type == 1) {
+                        displayValue = (element.value == '1' ? "Enabled" : "Disabled")
+                    };
 
-                if (element.hidden) {
-                    displayValue = '##########';
+                    const TR = document.createElement('tr');
+                    const btnHelp = createButton("btn btn-info", "glyphicon glyphicon-info-sign", () => showHelp(element));
+                    const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => editConfig(element));
+
+                    TR.appendChild(createTableData(element.id, 'col-xs-2'));
+                    TR.appendChild(createTableData(displayValue, 'col-xs-4'));
+                    TR.appendChild(createButtonGroup(btnHelp, btnEdit));
+
+                    LIST.appendChild(TR);
                 }
-
-                const TR = document.createElement('tr');
-                const btnHelp = createButton("btn btn-info", "glyphicon glyphicon-info-sign", () => showHelp(element));
-                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => editConfig(element));
-
-                TR.appendChild(createTableData(element.id, 'col-xs-2'));
-                TR.appendChild(createTableData(displayValue, 'col-xs-4'));
-                TR.appendChild(createButtonGroup(btnHelp, btnEdit));
-
-                LIST.appendChild(TR);
             })
 
             if (reload)
