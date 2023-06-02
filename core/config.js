@@ -96,7 +96,9 @@ async function load_commands(){
 
 async function load() {
     await load_global();
-    await load_commands();
+
+    if(config.plugin_commands == 1)
+        await load_commands();
 
     if(config.debug_level >= 2){
         console.error("[CONFIG] Currently loaded :");
