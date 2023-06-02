@@ -266,24 +266,6 @@
                 "type": 0,
                 "help": "Name displayed in the bot WebUI"
             },
-            "cmd_msg_interval": {
-                "value": 10,
-                "hidden": 0,
-                "type": 2,
-                "help": "Number of message before an automatic commands"
-            },
-            "cmd_prefix": {
-                "value": "!",
-                "hidden": 0,
-                "type": 0,
-                "help": "Prefix used for all commands"
-            },
-            "cmd_time_interval": {
-                "value": 10,
-                "hidden": 0,
-                "type": 2,
-                "help": "Time in minutes before an automatic commands"
-            },
             "debug_level": {
                 "value": 0,
                 "hidden": 0,
@@ -446,6 +428,18 @@
             },
             "tts_timeout_tolerance": {
                 "value": "5",
+                "type": 2
+            },
+            "global_prefix": {
+                "value": "!",
+                "type": 0
+            },
+            "global_interval_time": {
+                "value": "20",
+                "type": 2
+            },
+            "global_interval_message": {
+                "value": "20",
                 "type": 2
             }
         },

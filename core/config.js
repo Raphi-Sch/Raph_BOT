@@ -34,7 +34,7 @@ const config = {
     twitch_display_name: "",
 };
 
-async function load() {
+async function load_global(){
     const response = await fetch(config.api_url + "config.php?list", {
         method: "get",
         headers: { 
@@ -51,17 +51,59 @@ async function load() {
             config[data[neddle].id] = data[neddle].value;
         }
 
-        if(config.debug_level >= 2){
-            console.error("[CONFIG] Currently loaded :");
-            console.error(config);
-        }        
-
         return null;
     } else {
-        console.error("Unable to load configuration from API, starting aborted.")
+        console.error("Unable to load general configuration from API, starting aborted.")
         console.error(`API ERROR : ${response.status} ${response.statusText}`);
         process.exit(1);
     }
+}
+
+async function load_commands(){
+    const response = await fetch(config.api_url + "commands.php?list-config", {
+        method: "get",
+        headers: { 
+            "Content-Type" : "application/json",
+            "Authorization" : `Bearer ${config.token}`,
+            "Client" : config.client
+        }
+    })
+
+    if (response.ok) {
+        const data = await response.json();
+
+        for (const neddle in data) {
+            if(data[neddle].id == "global_prefix"){
+                config.cmd_prefix = data[neddle].value;
+            }
+
+            if(data[neddle].id == "global_interval_message"){
+                config.cmd_msg_interval = data[neddle].value;
+            }
+
+            if(data[neddle].id == "global_interval_time"){
+                config.cmd_time_interval = data[neddle].value;
+            }
+        }
+
+        return null;
+    } else {
+        console.error("Unable to load commands configuration from API, starting aborted.")
+        console.error(`API ERROR : ${response.status} ${response.statusText}`);
+        process.exit(1);
+    }
+}
+
+async function load() {
+    await load_global();
+    await load_commands();
+
+    if(config.debug_level >= 2){
+        console.error("[CONFIG] Currently loaded :");
+        console.error(config);
+    }        
+
+    return null;
 }
 
 module.exports = { load, config }
