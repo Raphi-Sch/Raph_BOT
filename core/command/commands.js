@@ -27,19 +27,16 @@ function init() {
 }
 
 async function timeTrigger() {
-    const time_interval = config.cmd_time_interval;
-    timer++;
-    socket.setTimeCounter(timer, time_interval, total_auto_cmd_time);
-    if (timer >= time_interval) {
-        resetTimer()
-        total_auto_cmd_time++;
-        return autoCommand();
+    if (config.plugin_commands == 1) {
+        timer++;
+        socket.setTimeCounter(timer, config.cmd_time_interval, total_auto_cmd_time);
+        if (timer >= config.cmd_time_interval) {
+            timer = 0;
+            total_auto_cmd_time++;
+            return autoCommand();
+        }
     }
     return null;
-}
-
-function resetTimer() {
-    timer = 0
 }
 
 /**
