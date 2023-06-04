@@ -359,6 +359,10 @@ function audioList(reload = false) {
     })
 }
 
+function audioTimeoutPreset(time){
+    document.getElementById('swal-timeout').value = parseInt(time);
+}
+
 function audioAdd() {
     Swal.fire({
         title: "Add audio command",
@@ -367,7 +371,14 @@ function audioAdd() {
             <label>Name</label><input type='text' class='form-control' name='name' required><br/>
             <label>Trigger</label><input type='text' class='form-control' name='trigger' required><br/>
             <label>Volume</label><input type='range' class='form-control' name='volume' min=0 max=1 step=0.05 value=0.5)><br/>
-            <label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 step=1 value=0><br/>
+            <label>Timeout</label><input type='number' class='form-control' name='timeout' id='swal-timeout' min=0 step=1 value=0><br/>
+            <button type='button' class='btn btn-sml btn-info' onclick='audioTimeoutPreset(0)'>0s</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='audioTimeoutPreset(30)'>30s</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='audioTimeoutPreset(60)'>1min</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='audioTimeoutPreset(600)'>10min</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='audioTimeoutPreset(1800)'>30min</button>
+            <br/>
+            <br/>
             <label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only'><br />
             <label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only'><br />
             <label>File</label><input type='file' class='form-control' name='audio' accept='.mp3' required>
@@ -393,7 +404,14 @@ function audioEdit(data) {
             <label>Trigger</label><input type='text' class='form-control' name='trigger' value='${data.trigger_word}'  required><br/>
             <label>Volume (<span id='swal-volume'>${parseInt(data.volume * 100)}</span>%)</label>
             <input type='range' class='form-control' name='volume' min=0 max=1 step=0.05 value='${data.volume}' oninput="document.getElementById('swal-volume').innerText = parseInt(this.value*100)"><br/>
-            <label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 value='${data.timeout}')><br/>
+            <label>Timeout</label><input type='number' class='form-control' name='timeout' id='swal-timeout' min=0 value='${data.timeout}')><br/>
+            <button type='button' class='btn btn-sml btn-info' onclick='audioTimeoutPreset(0)'>0s</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='audioTimeoutPreset(30)'>30s</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='audioTimeoutPreset(60)'>1min</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='audioTimeoutPreset(600)'>10min</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='audioTimeoutPreset(1800)'>30min</button>
+            <br/>
+            <br/>
             <label>Active</label><input class='form-control' type='checkbox' name='active' ${data.active ? "checked" : ""}><br />
             <label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only' ${data.mod_only ? "checked" : ""}><br />
             <label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only' ${data.sub_only ? "checked" : ""}><br />

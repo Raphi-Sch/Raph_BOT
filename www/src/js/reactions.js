@@ -29,6 +29,10 @@ function list(reload = false) {
     })
 }
 
+function reactionTimeoutPreset(time){
+    document.getElementById('swal-timeout').value = parseInt(time);
+}
+
 function reactionAdd() {
     Swal.fire({
         title: "Add entry",
@@ -37,7 +41,14 @@ function reactionAdd() {
             <label>Reaction</label><textarea type='text' class='form-control' name='reaction' placeholder='Reaction' required></textarea><br/>
             <label>Frequency (<span id='swal-freq'>50</span>%)</label>
             <input type='range' class='form-control' name='frequency' min=0 max=100 step=1 value=50 oninput="document.getElementById('swal-freq').innerText = parseInt((this.value))"><br/>
-            <label>Timeout</label><input type='number' class='form-control' name='timeout' min=0 step=1 value=0 required><br/>
+            <label>Timeout</label><input type='number' class='form-control' name='timeout' id='swal-timeout' min=0 step=1 value=0 required><br/>
+            <button type='button' class='btn btn-sml btn-info' onclick='reactionTimeoutPreset(0)'>0s</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='reactionTimeoutPreset(30)'>30s</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='reactionTimeoutPreset(60)'>1min</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='reactionTimeoutPreset(600)'>10min</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='reactionTimeoutPreset(1800)'>30min</button>
+            <br/>
+            <br/>
             <label>TTS</label><input class='form-control' type='checkbox' name='tts'><br/>
             </form>`,
         showCancelButton: true,
@@ -84,7 +95,14 @@ function reactionEdit(data) {
             <label>Reaction</label><textarea class='form-control' type='text' name='reaction'>${data.reaction}</textarea><br/>
             <label>Frequency (<span id='swal-freq'>${data.frequency}</span>%)</label>
             <input type='range' class='form-control' name='frequency' min=0 max=100 step=1 value='${data.frequency}' oninput="document.getElementById('swal-freq').innerText = parseInt((this.value))"><br/>
-            <label>Timeout (s)</label><input class='form-control' type='number' name='timeout' min=0 step=1 value="${data.timeout}"><br/>
+            <label>Timeout (s)</label><input class='form-control' type='number' name='timeout' id='swal-timeout' min=0 step=1 value="${data.timeout}"><br/>
+            <button type='button' class='btn btn-sml btn-info' onclick='reactionTimeoutPreset(0)'>0s</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='reactionTimeoutPreset(30)'>30s</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='reactionTimeoutPreset(60)'>1min</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='reactionTimeoutPreset(600)'>10min</button>
+            <button type='button' class='btn btn-sml btn-info' onclick='reactionTimeoutPreset(1800)'>30min</button>
+            <br/>
+            <br/>
             <label>TTS</label><input class='form-control' type='checkbox' name='tts' ${checkbox_tts}><br />
             </form>`,
         showCancelButton: true,
