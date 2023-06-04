@@ -62,11 +62,6 @@ function audio_request(mysqli $db, $data)
     $command = $data['command'];
     $excluded_audio = $data['audio_excluded'];
 
-    // Global timeout
-    if ($data['audio_timeout'] > 0) {
-        return ['response_type' => 'text', 'value' => str_replace("@timeout", $data['audio_timeout'], $config['audio_text_global_timeout'])];
-    }
-
     // Specific timeout
     if (in_array($command, $excluded_audio)) {
         return ['response_type' => 'text', 'value' => str_replace("@audio", $command, $config['audio_text_individual_timeout'])];
@@ -95,8 +90,14 @@ function audio_request(mysqli $db, $data)
 
     if ($result == null)
         return null;
-    else
+    else {
+        // Global timeout
+        if ($data['audio_timeout'] > 0) {
+            return ['response_type' => 'text', 'value' => str_replace("@timeout", $data['audio_timeout'], $config['audio_text_global_timeout'])];
+        }
+
         return array_merge(['response_type' => 'audio', 'global_timeout' => $timeout], $result);
+    }
 }
 
 function audio_edit(mysqli $db, $data)
