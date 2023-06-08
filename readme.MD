@@ -54,6 +54,8 @@ NodeJS module:
 - Copy the client ID, paste it in the config key "twitch_client_id", save
 - Click on the "Renew Twitch Token" button at the bottom of the page
 - You may need to change "twitch_scope" parameter for some feature, but default should work. (Doc : https://dev.twitch.tv/docs/authentication/scopes/)
+- Set the other configuration key if needed
+- Most modules have their own configuration tab, check those too
 
 # Documentation
 
