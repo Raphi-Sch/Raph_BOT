@@ -20,19 +20,19 @@ NodeJS module:
 
 # First time setup
 
+- Use "first_time_setup.sh" script in the template folder.
+
 ### Backend
 - Configure your web server so it uses the 'www' folder as document root. The virtual host must be HTTPS.
 - Use raphbot_struct.sql and raphbot_data.sql to configure your database with the required tables
-- Make sure the folder 'core' and 'www/src/audio' can be written by the web server.
+- Make sure the folder 'www/src/audio' can be written by the web server.
 
 ### WebUI
-- Move "config_UI.json" from the template folder to the root folder and rename it "config.json" (mv ./template/config_UI.json ./config.json)
-- Open "config.json"
+- Open "./config.json"
 - Set your database config (host, user, password, database)
 
 ### Core config
-- Move "config_core.json" from the template folder to the root folder and rename it "config.json" (mv ./template/config_core.json ./core/config.json)
-- Open "config.json"
+- Open "./core/config.json"
 - Set "API_URL" with the complete URL to access the Raph_BOT API
 - Set "socket_port" (default is 3000)
 - Set "socket_protocol" (http or http). Need to match the protocol of virtual host, otherwise browser will block the socket.
