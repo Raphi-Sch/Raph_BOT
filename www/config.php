@@ -41,7 +41,7 @@ $token_URL = "https://id.twitch.tv/oauth2/authorize?response_type=token&client_i
             </tbody>
         </table>
 
-        <a class='btn btn-info' href="<?php echo $token_URL; ?>">Renew Twitch API key</a>
+        <a class='btn btn-info' href="<?php echo $token_URL; ?>">Renew Twitch Token</a>
 
     </div>
 
