@@ -12,6 +12,9 @@ test*.*
 *.mp3
 *.wav
 
+# Backup file
+*.bak
+
 # Node_modules
 node_modules
 package-lock.json
