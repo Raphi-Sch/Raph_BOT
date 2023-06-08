@@ -56,7 +56,7 @@ function audio_list_text(mysqli $db)
     if (!empty($result_sub))
         $result_sub = ", Sub only : " . $result_sub;
 
-    return ['response_type' => 'text', 'value' => $config['audio_list_prefix'] . $result . $result_sub, 'mod_only' => 0, 'sub_only' => 0];
+    return ['response_type' => 'text', 'value' => $config['audio_text_prefix'] . $result . $result_sub, 'mod_only' => 0, 'sub_only' => 0];
 }
 
 function audio_request(mysqli $db, $data)
