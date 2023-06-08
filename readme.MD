@@ -48,7 +48,12 @@ NodeJS module:
 
 ### Configure bot
 - Log into the dashboard
-- Got to the "Configuration" tab and setup your twitch key, etc.
+- Go to https://dev.twitch.tv/console/apps/create and register the Bot with the following :
+    - URL : http(s)://<SERVER_IP>/config.php 
+    - Category : Chat Bot
+- Copy the client ID, paste it in the config key "twitch_client_id", save
+- Click on the "Renew Twitch Token" button at the bottom of the page
+- You may need to change "twitch_scope" parameter for some feature, but default should work. (Doc : https://dev.twitch.tv/docs/authentication/scopes/)
 
 # Documentation
 
