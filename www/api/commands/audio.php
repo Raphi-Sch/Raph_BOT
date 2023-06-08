@@ -34,7 +34,7 @@ function audio_list_text(mysqli $db)
     $result = "";
     $result_sub = "";
 
-    $data = db_query_raw($db, "SELECT DISTINCT trigger_word, sub_only  FROM commands_audio WHERE active = 1 ORDER BY `trigger_word` ASC");
+    $data = db_query_raw($db, "SELECT DISTINCT trigger_word, sub_only, mod_only  FROM commands_audio WHERE active = 1 ORDER BY `trigger_word` ASC");
     while ($row = mysqli_fetch_assoc($data)) {
         // Sub only
         if (boolval($row['sub_only'])) {
