@@ -38,7 +38,10 @@ function audio_list_text(mysqli $db)
     while ($row = mysqli_fetch_assoc($data)) {
         // Sub only
         if (boolval($row['sub_only'])) {
-            $result_sub .= "!" . $row['trigger_word'];
+            if (empty($result_sub))
+                $result_sub .= "!" . $row['trigger_word'];
+            else
+                $result_sub .= ", !" . $row['trigger_word'];
         } else {
             // Everyone
             if (!boolval($row['mod_only'])) {
