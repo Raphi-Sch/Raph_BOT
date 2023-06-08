@@ -1,6 +1,6 @@
 {
   "name": "core",
-  "version": "1.0.0",
+  "version": "7.1.0",
   "main": "core.js",
   "scripts": {
     "test": "jest"
@@ -23,5 +23,5 @@
   "jest": {
     "verbose": true
   },
-  "description": ""
+  "description": "Raph_BOT core module."
 }
