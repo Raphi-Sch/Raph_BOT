@@ -13,6 +13,8 @@ touch ../core/debug.log
 chmod +w ../core/debug.log
 touch ../core/lastest.log
 chmod +w ../core/lastest.log
+touch ../www/activity.log
+chmod +w ../www/activity.log
 
 # Copy config files
 echo -e "\nChecking config files :"
@@ -34,4 +36,9 @@ fi
 echo -e "\nMaking audio folder writable"
 chmod +w ../www/src/audio
 
+# NPM modules
+echo -e "\nInstalling NPM Modules"
+npm install --prefix ../core/
+
+# Done
 echo -e "\nAutomatic setup done\nFollow the next instruction in the readme\nHave fun !"
