@@ -31,29 +31,29 @@ function audio_list(mysqli $db)
 function audio_list_text(mysqli $db)
 {
     $config = audio_load_config($db);
-    $result = $config['audio_list_prefix'];
-    $first = true;
+    $result = "";
+    $result_sub = "";
 
-    $data = db_query_raw($db, "SELECT * FROM commands_audio WHERE active = 1 AND sub_only = 0 AND mod_only = 0 ORDER BY `trigger_word` ASC");
+    $data = db_query_raw($db, "SELECT DISTINCT trigger_word, sub_only  FROM commands_audio WHERE active = 1 ORDER BY `trigger_word` ASC");
     while ($row = mysqli_fetch_assoc($data)) {
-        if ($first) {
-            $result .= "!" . $row['trigger_word'];
-            $first = false;
-        } else
-            $result .= ", !" . $row['trigger_word'];
+        // Sub only
+        if (boolval($row['sub_only'])) {
+            $result_sub .= "!" . $row['trigger_word'];
+        } else {
+            // Everyone
+            if (!boolval($row['mod_only'])) {
+                if (empty($result))
+                    $result .= "!" . $row['trigger_word'];
+                else
+                    $result .= ", !" . $row['trigger_word'];
+            }
+        }
     }
 
-    $first = true;
-    $data = db_query_raw($db, "SELECT * FROM commands_audio WHERE active = 1 AND sub_only = 1 ORDER BY `trigger_word` ASC");
-    while ($row = mysqli_fetch_assoc($data)) {
-        if ($first) {
-            $result .= " - Sub only : !" . $row['trigger_word'];
-            $first = false;
-        } else
-            $result .= ", !" . $row['trigger_word'];
-    }
+    if (!empty($result_sub))
+        $result_sub = ", Sub only : " . $result_sub;
 
-    return ['response_type' => 'text', 'value' => $result, 'mod_only' => 0, 'sub_only' => 0];
+    return ['response_type' => 'text', 'value' => $config['audio_list_prefix'] . $result . $result_sub, 'mod_only' => 0, 'sub_only' => 0];
 }
 
 function audio_request(mysqli $db, $data)
