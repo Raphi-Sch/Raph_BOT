@@ -126,6 +126,11 @@ function request(mysqli $db, $data)
     }
 
     // Built-in commands
+    // GitHub
+    if ($command == 'github'){
+        return ['response_type' => 'text', 'value' => "Github repository : https://github.com/Raphi-Sch/Raph_BOT/", 'mod_only' => 0, 'sub_only' => 0];
+    }
+
     // Tank
     if ($command == 'tank') {
         return tank_run($db, $data);
