@@ -21,15 +21,19 @@ echo -e "\nChecking config files :"
 if [ -f "../core/config.json" ]; then
     echo -e "\t- Core config file already exist."
 else 
-    echo -e "\t- Copying core config file."
+    echo -e "\t- Copying core config."
     cp ./config_core.json ../core/config.json
+    echo -e "\t- Editing core config."
+    nano ../core/config.json
 fi
 
 if [ -f "../config.json" ]; then
     echo -e "\t- UI config file already exist."
 else 
-    echo -e "\t- Copying UI config file."
+    echo -e "\t- Copying UI config."
     cp ./config_UI.json ../config.json
+    echo -e "\t- Editing UI config."
+    nano ../config.json
 fi
 
 # Change writing right
