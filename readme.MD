@@ -20,24 +20,19 @@ NodeJS module:
 
 # First time setup
 
-- Use "first_time_setup.sh" script in the template folder.
+### Automatic install
+
+To perform the install you will need the following information :
+- The database config (host, user, password, database)
+- The URL of the Raph_BOT API (Exemple : "http(s)://<SERVER>/api/")
+- If you use HTTPS, the path to the key and certificate of the Apache virtual host
+
+Then use "first_time_setup.sh" script in the template folder.
 
 ### Backend
 - Configure your web server so it uses the 'www' folder as document root. The virtual host must be HTTPS.
 - Use raphbot_struct.sql and raphbot_data.sql to configure your database with the required tables
 - Make sure the folder 'www/src/audio' can be written by the web server.
-
-### WebUI
-- Open "./config.json"
-- Set your database config (host, user, password, database)
-
-### Core config
-- Open "./core/config.json"
-- Set "API_URL" with the complete URL to access the Raph_BOT API
-- Set "socket_port" (default is 3000)
-- Set "socket_protocol" (http or http). Need to match the protocol of virtual host, otherwise browser will block the socket.
-- Set "https_key" with the path to the Key file of the virtual host
-- Set "https_cert" with the path to the Cert file of the virtual host
 
 ### Create auth token
 - Log into RaphBOT WebUI (default user is 'admin' with password '0'), ignore all errors related to "API ERROR". You don't have any pair of client/token yet.
