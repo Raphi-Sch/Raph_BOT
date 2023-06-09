@@ -24,7 +24,7 @@ NodeJS module:
 
 To perform the install you will need the following information :
 - The database config (host, user, password, database)
-- The URL of the Raph_BOT API (Exemple : "http(s)://<SERVER>/api/")
+- The URL of the Raph_BOT API (Exemple : "http(s)://SERVERNAME/api/")
 - If you use HTTPS, the path to the key and certificate of the Apache virtual host
 
 Then use "first_time_setup.sh" script in the template folder.
