@@ -116,6 +116,7 @@ exit();
 function request(mysqli $db, $data)
 {
     $command = trim($data['command']);
+    $data['param'] = trim($data['param']);
     $data['audio_excluded'] = isset($data['audio_excluded']) ? $data['audio_excluded'] : array();
     $data['tanks_excluded'] = isset($data['tanks_excluded']) ? $data['tanks_excluded'] : array();
     
