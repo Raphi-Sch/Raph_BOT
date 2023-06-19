@@ -143,4 +143,27 @@ async function shoutout(userName){
     }
 }
 
-module.exports = { init, getUser, getUserId, banUser, timeoutUser, deleteChatMessage, shoutout }
+async function followDate(userID){
+    const response = await fetch(`https://api.twitch.tv/helix/channels/followers?broadcaster_id=${configAPI.broadcasterID}&user_id=${userID}`, {
+        method: "get",
+        headers: {
+            "Authorization": `Bearer ${configAPI.authorizationToken}`,
+            "Client-Id": configAPI.clientID,
+        }
+    })
+
+    if (response.ok) {
+        const json = await response.json();
+
+        if(json.data[0] != null){
+            return new Date(json.data[0].followed_at);
+        }
+
+        return null;
+    } else {
+        errorLog('followDate()', response);
+        return null;
+    }
+}
+
+module.exports = { init, getUser, getUserId, banUser, timeoutUser, deleteChatMessage, shoutout, followDate }
