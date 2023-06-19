@@ -4,6 +4,8 @@ require_once('../src/php/db.php');
 $db = db_connect("../../config.json");
 require_once('../src/php/auth.php');
 require_once('../src/php/functions.php');
+
+// Extensions
 require_once('./commands/audio.php');
 require_once('./commands/tanks.php');
 require_once('./commands/tts.php');
@@ -115,6 +117,7 @@ exit();
 
 function request(mysqli $db, $data)
 {
+    // Preparing input data
     $command = trim($data['command']);
     $data['param'] = trim($data['param']);
     $data['audio_excluded'] = isset($data['audio_excluded']) ? $data['audio_excluded'] : array();
@@ -127,24 +130,18 @@ function request(mysqli $db, $data)
     }
 
     // Built-in commands
-    // GitHub
-    if ($command == 'github'){
-        return ['response_type' => 'text', 'value' => "Github repository : https://github.com/Raphi-Sch/Raph_BOT/", 'mod_only' => 0, 'sub_only' => 0];
-    }
+    switch($command){
+        case 'github':
+            return ['response_type' => 'text', 'value' => "Github repository : https://github.com/Raphi-Sch/Raph_BOT/", 'mod_only' => 0, 'sub_only' => 0];
 
-    // Tank
-    if ($command == 'tank') {
-        return tank_run($db, $data);
-    }
+        case 'tank':
+            return tank_run($db, $data);
 
-    // List audio
-    if ($command == 'audio') {
-        return audio_list_text($db);
-    }
+        case 'audio':
+            return audio_list_text($db);
 
-    // TTS
-    if ($command == 'tts') {
-        return tts_run($db, $data);
+        case 'tts':
+            return tts_run($db, $data);
     }
 
     // Custom commands
