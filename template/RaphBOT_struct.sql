@@ -299,7 +299,7 @@ ALTER TABLE `moderator_leet`
 -- Index pour la table `moderator_warning`
 --
 ALTER TABLE `moderator_warning`
-  ADD PRIMARY KEY (`level`),
+  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `userID` (`userid`);
 
 --
