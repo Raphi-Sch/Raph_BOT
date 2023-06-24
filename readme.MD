@@ -7,9 +7,9 @@ Raph_BOT is a twitch chat bot.
 # Prerequisite : 
 
 Linux package :
-- Apache2 (or any web server)
+- Apache2 (with mod_rewrite)
 - PHP 7.0 (or higher)
-- MySQL / MariaDB
+- MariaDB (MySQL)
 - NodeJS (v16)
 
 NodeJS module: 
