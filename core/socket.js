@@ -32,7 +32,7 @@ switch (config.socketProtocol) {
         break;
 
     default:
-        console.error(`Invalid socket protocol (Current is : '${config.socketProtocol}')`);
+        console.error(`Invalid socket protocol (Must be 'http' or 'https', Current is : '${config.socketProtocol}')`);
         process.exit(1);
 }
 
