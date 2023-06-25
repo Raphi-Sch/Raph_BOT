@@ -48,7 +48,7 @@ INSERT INTO `config` (`id`, `value`, `hidden`, `type`) VALUES
 ('cmd_prefix', '!', 0, 0),
 ('cmd_time_interval', '5', 0, 2),
 ('debug_level', '1', 0, 2),
-('force_gui_update', '30', 0, 2),
+('gui_force_update', '30', 0, 2),
 ('plugin_commands', '1', 0, 1),
 ('plugin_moderator', '1', 0, 1),
 ('plugin_reaction', '1', 0, 1),

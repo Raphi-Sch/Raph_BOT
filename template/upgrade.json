@@ -272,7 +272,7 @@
                 "type": 2,
                 "help": "Level of debugging. <br> 0 → None <br> 1 → Basic <br> 2 → All"
             },
-            "force_gui_update": {
+            "gui_force_update": {
                 "value": 0,
                 "hidden": 0,
                 "type": 2,
