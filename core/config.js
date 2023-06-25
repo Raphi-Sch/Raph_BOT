@@ -6,8 +6,8 @@ const config = {
     apiUrl: configFile.API_URL,
     apiClient: configFile.client,
     apiToken: configFile.token,
-    socket_port: configFile.socket_port,
-    socket_protocol: configFile.socket_protocol,
+    socketPort: configFile.socket_port,
+    socketProtocol: configFile.socket_protocol,
     https_key: configFile.https_key,
     https_cert: configFile.https_cert,
 

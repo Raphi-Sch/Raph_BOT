@@ -9,7 +9,7 @@ const basicServer = {
     options: null
 }
 
-switch (config.socket_protocol) {
+switch (config.socketProtocol) {
     case "http":
         basicServer.server = require('http').createServer();
         basicServer.options = {
@@ -32,7 +32,7 @@ switch (config.socket_protocol) {
         break;
 
     default:
-        console.error(`Invalid socket protocol (Current is : '${config.socket_protocol}')`);
+        console.error(`Invalid socket protocol (Current is : '${config.socketProtocol}')`);
         process.exit(1);
 }
 
@@ -63,10 +63,10 @@ function init(version) {
 
     if (config.debug_level >= 1) {
         log(`[DEBUG] DEBUG IS ENABLE (LEVEL ${config.debug_level})`);
-        console.error(`${tools.logTime()} [SOCKET] Listening port '${config.socket_port}', protocol '${config.socket_protocol}'`);
+        console.error(`${tools.logTime()} [SOCKET] Listening port '${config.socketPort}', protocol '${config.socketProtocol}'`);
     }
 
-    io.listen(config.socket_port);
+    io.listen(config.socketPort);
 
     // GUI set max values
     GUI.shout.max = config.shout_interval;
