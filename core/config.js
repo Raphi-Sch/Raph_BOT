@@ -8,8 +8,8 @@ const config = {
     apiToken: configFile.token,
     socketPort: configFile.socket_port,
     socketProtocol: configFile.socket_protocol,
-    https_key: configFile.https_key,
-    https_cert: configFile.https_cert,
+    httpsKey: configFile.https_key,
+    httpsCertificate: configFile.https_cert,
 
     // From DB
     bot_name: "",

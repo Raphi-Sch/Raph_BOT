@@ -21,8 +21,8 @@ switch (config.socketProtocol) {
 
     case "https":
         basicServer.server = require('https').createServer({
-            key: fs.readFileSync(config.https_key),
-            cert: fs.readFileSync(config.https_cert)
+            key: fs.readFileSync(config.httpsKey),
+            cert: fs.readFileSync(config.httpsCertificate)
         });
         basicServer.options = {
             cors: {
