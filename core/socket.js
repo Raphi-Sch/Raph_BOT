@@ -59,7 +59,7 @@ const GUI = {
 };
 
 function init(version) {
-    log("[CORE] Started (" + version + ")");
+    log(`[CORE] Started (${version})`);
 
     if (config.debug_level >= 1) {
         log(`[DEBUG] DEBUG IS ENABLE (LEVEL ${config.debug_level})`);
