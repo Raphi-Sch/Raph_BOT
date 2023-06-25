@@ -1,15 +1,15 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-const config_file = require("./config.json");
+const configFile = require("./config.json");
 
 const config = {
     // From file
-    api_url: config_file.API_URL,
-    socket_port: config_file.socket_port,
-    socket_protocol: config_file.socket_protocol,
-    client: config_file.client,
-    token: config_file.token,
-    https_key: config_file.https_key,
-    https_cert: config_file.https_cert,
+    apiUrl: configFile.API_URL,
+    apiClient: configFile.client,
+    apiToken: configFile.token,
+    socket_port: configFile.socket_port,
+    socket_protocol: configFile.socket_protocol,
+    https_key: configFile.https_key,
+    https_cert: configFile.https_cert,
 
     // From DB
     bot_name: "",
@@ -35,12 +35,12 @@ const config = {
 };
 
 async function load_global(){
-    const response = await fetch(config.api_url + "config.php?list", {
+    const response = await fetch(config.apiUrl + "config.php?list", {
         method: "get",
         headers: { 
             "Content-Type" : "application/json",
-            "Authorization" : `Bearer ${config.token}`,
-            "Client" : config.client
+            "Authorization" : `Bearer ${config.apiToken}`,
+            "Client" : config.apiClient
         }
     })
 
@@ -60,12 +60,12 @@ async function load_global(){
 }
 
 async function load_commands(){
-    const response = await fetch(config.api_url + "commands.php?list-config", {
+    const response = await fetch(config.apiUrl + "commands.php?list-config", {
         method: "get",
         headers: { 
             "Content-Type" : "application/json",
-            "Authorization" : `Bearer ${config.token}`,
-            "Client" : config.client
+            "Authorization" : `Bearer ${config.apiToken}`,
+            "Client" : config.apiClient
         }
     })
 

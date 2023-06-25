@@ -58,12 +58,12 @@ async function runMessageTrigger() {
 }
 
 async function loadAutoCommand() {
-    const response = await fetch(config.api_url + "commands.php?list-auto", {
+    const response = await fetch(config.apiUrl + "commands.php?list-auto", {
         method: "get",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${config.token}`,
-            "Client": config.client
+            "Authorization": `Bearer ${config.apiToken}`,
+            "Client": config.apiClient
         }
     })
 

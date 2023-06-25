@@ -6,13 +6,13 @@ async function checkMessage(message){
         message: message,
     }
 
-    const response = await fetch(config.api_url + "moderator.php?check-message", {
+    const response = await fetch(config.apiUrl + "moderator.php?check-message", {
         method: "post",
         body: JSON.stringify(body),
         headers: { 
             "Content-Type": "application/json",
-            "Authorization" : `Bearer ${config.token}`,
-            "Client" : config.client
+            "Authorization" : `Bearer ${config.apiToken}`,
+            "Client" : config.apiClient
         }
     })
     
@@ -33,13 +33,13 @@ async function warnUser(user){
         username: user.login
     }
 
-    const response = await fetch(config.api_url + "moderator.php?warn-user", {
+    const response = await fetch(config.apiUrl + "moderator.php?warn-user", {
         method: "post",
         body: JSON.stringify(body),
         headers: { 
             "Content-Type": "application/json",
-            "Authorization" : `Bearer ${config.token}`,
-            "Client" : config.client
+            "Authorization" : `Bearer ${config.apiToken}`,
+            "Client" : config.apiClient
         }
     })
     

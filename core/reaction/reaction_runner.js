@@ -38,13 +38,13 @@ async function queryAPI(message) {
         exclusion: exclusion
     }
 
-    const response = await fetch(config.api_url + "reactions.php?request", {
+    const response = await fetch(config.apiUrl + "reactions.php?request", {
         method: "post",
         body: JSON.stringify(body),
         headers: { 
             "Content-Type": "application/json",
-            "Authorization" : `Bearer ${config.token}`,
-            "Client" : config.client
+            "Authorization" : `Bearer ${config.apiToken}`,
+            "Client" : config.apiClient
         }
     })
 
