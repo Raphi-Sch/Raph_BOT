@@ -21,26 +21,51 @@ require_once('src/php/header.php');
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h1 class="page-header">Shout
             <div class='pull-right'>
-                <button type="button" class="btn btn-info" onclick='list(true)'><i class="glyphicon glyphicon-refresh"></i></button>
+                <button type="button" class="btn btn-info" id="btn-refresh"><i class="glyphicon glyphicon-refresh"></i></button>
             </div>
         </h1>
 
-        <!-- Add command -->
-        <table class="table table-hover table-condensed table-scroll">
-            <thead>
-                <tr>
-                    <th class="col-xs-2">Original</th>
-                    <th class="col-xs-2">Replacement</th>
-                    <th class="col-xs-2">Language</th>
-                    <th class="col-xs-2">Type</th>
-                    <th class="table-scroll-th-fix"></th>
-                    <th class="col-xs-4"><button type="button" class="btn btn-success pull-right" onclick='add_entry()'><i class="glyphicon glyphicon-plus"></i></button></th>
-                </tr>
-            </thead>
-            <tbody class="table-scroll-td" id='tbody-list'>
-                <!-- Dynamic -->
-            </tbody>
-        </table>
+        <ul class="nav nav-tabs">
+            <li id="tab-dictionary"><a href="#" onclick='view("dictionary")'>Dictionary</a></li>
+            <li id="tab-config"><a href="#" onclick='view("config")'>Config</a></li>
+        </ul>
+
+        <!-- Dictionary -->
+        <div id='div-dictionary'>
+            <table class="table table-hover table-condensed table-scroll">
+                <thead>
+                    <tr>
+                        <th class="col-xs-2">Original</th>
+                        <th class="col-xs-2">Replacement</th>
+                        <th class="col-xs-2">Language</th>
+                        <th class="col-xs-2">Type</th>
+                        <th class="table-scroll-th-fix"></th>
+                        <th class="col-xs-4"><button type="button" class="btn btn-success pull-right" onclick='dictionaryAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                    </tr>
+                </thead>
+                <tbody class="table-scroll-td" id='tbody-dictionary'>
+                    <!-- Dynamic -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Config -->
+        <div id='div-config'>
+            <br />
+            <table class="table table-hover table-condensed table-scroll">
+                <thead>
+                    <tr>
+                        <th class="col-xs-2">Key</th>
+                        <th class="col-xs-5">Value</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id='tbody-config'>
+                    <!-- Dynamic -->
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
     <script src="src/js/common.js"></script>
@@ -49,11 +74,15 @@ require_once('src/php/header.php');
         $(document).ready(function() {
             // Active the corresponding button in the navbar
             document.getElementById("plugin_shout").classList.add("active");
-            list();
+
+            const param_name = getParameterName(0);
+            if (param_name)
+                view(param_name);
+            else
+                view('dictionary');
         });
-        
     </script>
-    
+
 
 </body>
 
