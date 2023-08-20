@@ -4,7 +4,7 @@ function pause(){
  echo ""
 }
 
-echo "Raph_BOT first time setup"
+echo "Raph_BOT first time setup (please run as root)"
 pause
 
 # Log File
