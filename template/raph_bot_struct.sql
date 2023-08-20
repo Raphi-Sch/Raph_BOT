@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4deb2~bpo10+1
+-- version 5.0.4deb2+deb11u1
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : ven. 14 avr. 2023 à 12:56
--- Version du serveur :  10.3.36-MariaDB-0+deb10u2
--- Version de PHP : 7.3.31-1~deb10u1
+-- Généré le : Dim 20 août 2023 à 14:38
+-- Version du serveur :  10.5.19-MariaDB-0+deb11u2
+-- Version de PHP : 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `raphbot`
+-- Base de données : `raph_bot`
 --
 
 -- --------------------------------------------------------
@@ -33,8 +33,10 @@ CREATE TABLE `authentication` (
   `token_hash` text NOT NULL,
   `expiration` date DEFAULT NULL,
   `note` text DEFAULT NULL,
-  `usage_type` INT(4) DEFAULT 2
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `usage_type` int(4) DEFAULT 2
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
 
 --
 -- Structure de la table `commands`
@@ -48,7 +50,7 @@ CREATE TABLE `commands` (
   `sub_only` tinyint(1) NOT NULL DEFAULT 0,
   `mod_only` tinyint(1) NOT NULL DEFAULT 0,
   `tts` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -60,7 +62,7 @@ CREATE TABLE `commands_alias` (
   `id` int(11) NOT NULL,
   `command` text NOT NULL,
   `alias` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -78,7 +80,7 @@ CREATE TABLE `commands_audio` (
   `file` text NOT NULL,
   `mod_only` tinyint(1) NOT NULL DEFAULT 0,
   `sub_only` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -90,7 +92,7 @@ CREATE TABLE `commands_config` (
   `id` varchar(30) NOT NULL,
   `value` text DEFAULT NULL,
   `type` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -104,7 +106,7 @@ CREATE TABLE `config` (
   `hidden` tinyint(1) DEFAULT 0,
   `type` tinyint(4) NOT NULL DEFAULT 0,
   `help` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -120,7 +122,7 @@ CREATE TABLE `moderator` (
   `duration` int(11) NOT NULL,
   `reason` text NOT NULL,
   `seriousness` int(11) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -132,7 +134,7 @@ CREATE TABLE `moderator_leet` (
   `id` int(11) NOT NULL,
   `original` text NOT NULL,
   `replacement` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -147,7 +149,7 @@ CREATE TABLE `moderator_warning` (
   `count` int(11) NOT NULL DEFAULT 1,
   `datetime_insert` datetime NOT NULL,
   `datetime_update` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -161,7 +163,7 @@ CREATE TABLE `moderator_warning_level` (
   `duration` int(11) NOT NULL DEFAULT 0,
   `explanation` text NOT NULL,
   `reason` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -176,7 +178,7 @@ CREATE TABLE `reactions` (
   `frequency` tinyint(4) NOT NULL,
   `timeout` int(11) NOT NULL,
   `tts` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -190,7 +192,7 @@ CREATE TABLE `shout` (
   `replacement` text NOT NULL,
   `language` text DEFAULT NULL,
   `type` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -208,7 +210,7 @@ CREATE TABLE `tanks` (
   `max_dmg` int(5) NOT NULL,
   `note` text NOT NULL,
   `type` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -219,7 +221,7 @@ CREATE TABLE `tanks` (
 CREATE TABLE `tanks_alias` (
   `alias` varchar(30) NOT NULL,
   `tank` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -230,7 +232,7 @@ CREATE TABLE `tanks_alias` (
 CREATE TABLE `tanks_nation` (
   `alias` varchar(30) NOT NULL,
   `nation` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -241,7 +243,7 @@ CREATE TABLE `tanks_nation` (
 CREATE TABLE `users` (
   `username` varchar(20) NOT NULL,
   `password` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Index pour les tables déchargées
@@ -306,7 +308,7 @@ ALTER TABLE `moderator_warning`
 -- Index pour la table `moderator_warning_level`
 --
 ALTER TABLE `moderator_warning_level`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`level`);
 
 --
 -- Index pour la table `reactions`
@@ -382,18 +384,6 @@ ALTER TABLE `moderator`
 -- AUTO_INCREMENT pour la table `moderator_leet`
 --
 ALTER TABLE `moderator_leet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `moderator_warning`
---
-ALTER TABLE `moderator_warning`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `moderator_warning_level`
---
-ALTER TABLE `moderator_warning_level`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
