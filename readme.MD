@@ -20,17 +20,18 @@ NodeJS module:
 
 # First time setup
 
-### Automatic install
+### Automated install
+
+If you don't have any linux package installed, you can use "1_Install_server.sh" to install them.
 
 To perform the install you will need the following information :
 - The database config (host, user, password, database)
 - The URL of the Raph_BOT API (Exemple : "http(s)://SERVERNAME/api/")
 - If you use HTTPS, the path to the key and certificate of the Apache virtual host
 
-Then run "first_time_setup.sh" script with sudo.
+Then run "2_Install_app.sh" script with sudo.
 
 ### Backend
-- Enable Raph_BOT virtual host with the provided config. The virtual host must be HTTPS (but HTTP work too).
 - Use raph_bot_struct.sql and raph_bot_data.sql to configure your database with the required tables
 
 ### Create auth token
