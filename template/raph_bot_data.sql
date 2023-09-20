@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : lun. 06 fév. 2023 à 13:10
--- Version du serveur :  10.5.15-MariaDB-0+deb11u1
+-- Généré le : Dim 20 août 2023 à 14:40
+-- Version du serveur :  10.5.19-MariaDB-0+deb11u2
 -- Version de PHP : 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -18,71 +18,33 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `RaphBOT`
+-- Base de données : `raph_bot`
 --
-
---
--- Déchargement des données de la table `commands_tts_config`
---
-
-INSERT INTO `commands_tts_config` (`id`, `value`, `type`) VALUES
-('active', '0', 1),
-('character_limit', '50', 2),
-('character_limit_replace', '', 0),
-('mod_only', '0', 1),
-('no_text_answer', '1', 1),
-('prefix', '@username said :', 0),
-('sub_only', '0', 1),
-('text_when_disable', '@username : TTS is disabled', 0),
-('text_when_timeout', '@username : TTS is not available yet (retry in @timeout seconds)', 0),
-('timeout', '30', 2),
-('timeout_tolerance', '5', 2);
 
 --
 -- Déchargement des données de la table `config`
 --
 
-INSERT INTO `config` (`id`, `value`, `hidden`, `type`) VALUES
-('bot_name', 'Raph_BOT', 0, 0),
-('cmd_msg_interval', '10', 0, 2),
-('cmd_prefix', '!', 0, 0),
-('cmd_time_interval', '5', 0, 2),
-('debug_level', '1', 0, 2),
-('force_gui_update', '30', 0, 2),
-('plugin_commands', '1', 0, 1),
-('plugin_moderator', '1', 0, 1),
-('plugin_reaction', '1', 0, 1),
-('plugin_shout', '1', 0, 1),
-('plugin_tanks', '1', 0, 1),
-('shout_interval', '10', 0, 2),
-('shout_language', 'fr', 0, 0),
-('shout_prefix', 'AH OUAIS @username,', 0, 0, 'Text put before generated shout'),
+INSERT INTO `config` (`id`, `value`, `hidden`, `type`, `help`) VALUES
+('bot_name', 'Raph_BOT_DEV', 0, 0, 'Name displayed in the bot WebUI'),
+('debug_level', '2', 0, 2, 'Level of debugging. <br> 0 → None <br> 1 → Basic <br> 2 → All'),
+('gui_force_update', '15', 0, 2, 'Interval (in seconds) before forcing refresh of the WebUI'),
+('plugin_commands', '1', 0, 1, NULL),
+('plugin_moderator', '1', 0, 1, NULL),
+('plugin_reaction', '1', 0, 1, NULL),
+('plugin_shout', '1', 0, 1, NULL),
+('plugin_tanks', '1', 0, 1, NULL),
+('shout_interval', '5', 0, 2, 'Number of message before a shout'),
+('shout_language', 'fr-uwu', 0, 0, 'Language to use for shout (Available : fr, fr-uwu)'),
+('shout_prefix', 'AH OUAIS @username', 0, 0, 'Text put before generated shout'),
 ('tts_language', 'fr', 0, 0, 'Any language supported by Google TTS'),
-('twitch_channel', 'YOUR CHANNEL HERE', 0, 0),
-('twitch_client_id', 'AUTH ID', 1, 0),
-('twitch_connection_message', 'Raph_BOT Greatings', 0, 0),
-('twitch_display_name', 'Raph_BOT', 0, 0),
-('twitch_redirect_uri', 'http://<web_server>/www/config.php', 0, 0),
-('twitch_scope', 'chat:edit+chat:read+moderator:manage:banned_users+moderator:manage:chat_messages+user:read:follows+moderator:manage:shoutouts', 0, 0),
-('twitch_token', '', 1, 0);
-
---
--- Déchargement des données de la table `users`
---
-
-INSERT INTO `users` (`username`, `password`) VALUES
-('admin', NULL);
-
---
--- Déchargement des données de la table `moderator_warning_level`
---
-
-INSERT INTO `moderator_warning_level` (`level`, `action`, `duration`, `explanation`, `reason`) VALUES
-(1, 2, 0, '@username This is your first and last warning before being timeout, be careful !', ''),
-(2, 1, 31, ' @username Go touch some grass (timeout 30s)', 'You got warned already'),
-(3, 1, 60, '@username Seriously, again ? (timeout 1min)', '3rd warning ...'),
-(4, 1, 600, '@username 4th and last warning ...', '4th and last warning ...'),
-(5, 0, 0, '@username Looks like you will touch grass forever.', 'Bye bye.');
+('twitch_channel', NULL, 0, 0, 'Twitch channel where the bot connects'),
+('twitch_client_id', NULL, 0, 0, 'Client ID for Twitch API'),
+('twitch_connection_message', 'Hello I\'m Raph_BOT', 0, 0, 'First message the bot will send to twitch chat'),
+('twitch_display_name', 'Raph_BOT', 0, 0, 'Display name of the bot'),
+('twitch_redirect_uri', 'http://localhost/Raph_BOT/www/config.php', 0, 0, 'URI to this page, need to match the URI set for Client ID'),
+('twitch_scope', 'chat:edit+chat:read+moderator:manage:banned_users+moderator:manage:chat_messages+user:read:follows+moderator:manage:shoutouts', 0, 0, 'Permission of the bot (default should be fine)'),
+('twitch_token', NULL, 1, 0, NULL);
 
 --
 -- Déchargement des données de la table `moderator_leet`
@@ -321,6 +283,23 @@ INSERT INTO `moderator_leet` (`id`, `original`, `replacement`) VALUES
 (236, '-\\_', 'z'),
 (237, '\'/_', 'z');
 
+--
+-- Déchargement des données de la table `moderator_warning_level`
+--
+
+INSERT INTO `moderator_warning_level` (`level`, `action`, `duration`, `explanation`, `reason`) VALUES
+(1, 2, 0, '@username This is your first and last warning before being timeout, be careful !', ''),
+(2, 1, 30, '@username Go touch some grass (timeout 30s)', 'You got warned already'),
+(3, 1, 60, '@username Seriously, again ? (timeout 1min)', '3rd warning ...'),
+(4, 1, 120, '@username 4th and last warning ...', '4th and last warning ...'),
+(5, 0, 0, '@username Looks like you will touch grass forever.', 'Bye bye.');
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`username`, `password`) VALUES
+('admin', 'NULL');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

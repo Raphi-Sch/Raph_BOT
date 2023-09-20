@@ -1,18 +1,46 @@
 const type = ["Word", "Consonant", "Vowel"];
 
-function list(reload = false) {
+function view(param) {
+    document.getElementById("tab-dictionary").classList.remove("active");
+    document.getElementById("tab-config").classList.remove("active");
+
+    document.getElementById('div-dictionary').classList.add("hidden");
+    document.getElementById('div-config').classList.add("hidden");
+
+    switch (param) {
+        case 'dictionary':
+            document.getElementById("tab-dictionary").classList.add("active");
+            document.getElementById('div-dictionary').classList.remove('hidden');
+            document.getElementById('btn-refresh').onclick = () => dictionaryList(true);
+
+            window.history.pushState(null, '', 'shout.php?dictionary');
+            dictionaryList();
+            return;
+
+        case 'config':
+            document.getElementById("tab-config").classList.add("active");
+            document.getElementById('div-config').classList.remove('hidden');
+            document.getElementById('btn-refresh').onclick = () => configList(true);
+
+            window.history.pushState(null, '', 'shout.php?config');
+            configList();
+            break;
+    }
+}
+
+function dictionaryList(reload = false) {
     $.ajax({
         url: "api/shout.php?list",
         type: "GET",
         dataType: "json",
         success: function (data) {
-            const LIST = document.getElementById('tbody-list');
+            const LIST = document.getElementById('tbody-dictionary');
             LIST.innerHTML = "";
 
             data.forEach(element => {
                 const TR = document.createElement('tr');
-                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => edit_entry(element));
-                const btnDel  = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => del_entry(element));
+                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => dictionaryEdit(element));
+                const btnDel  = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => dictionaryDelete(element));
 
                 TR.appendChild(createTableData(element.original, 'col-xs-2'));
                 TR.appendChild(createTableData(element.replacement, 'col-xs-2'));
@@ -30,7 +58,7 @@ function list(reload = false) {
     })
 }
 
-function add_entry() {
+function dictionaryAdd() {
     Swal.fire({
         title: "Add entry",
         html: `<form id='swal-form'>
@@ -62,7 +90,7 @@ function add_entry() {
                 dataType: "json",
                 data: JSON.stringify(FORM_DATA),
                 success: function () {
-                    list(true);
+                    dictionaryList(true);
                 },
                 error: errorAPI
             })
@@ -70,7 +98,7 @@ function add_entry() {
     });
 }
 
-function edit_entry(data) {
+function dictionaryEdit(data) {
     Swal.fire({
         title: `Editing : '${data.original}'`,
         icon: 'info',
@@ -107,7 +135,7 @@ function edit_entry(data) {
                 dataType: "json",
                 data: JSON.stringify(FORM_DATA),
                 success: function () {
-                    list(true);
+                    dictionaryList(true);
                 },
                 error: errorAPI
             })
@@ -115,7 +143,7 @@ function edit_entry(data) {
     })
 }
 
-function del_entry(data) {
+function dictionaryDelete(data) {
     Swal.fire({
         title: `Delete '${data.original}' ?`,
         icon: 'question',
@@ -131,10 +159,18 @@ function del_entry(data) {
                 type: "DELETE",
                 dataType: "json",
                 success: function () {
-                    list(true);
+                    dictionaryList(true);
                 },
                 error: errorAPI
             })
         }
     })
+}
+
+function configList(reload = false){
+
+}
+
+function configEdit(){
+
 }

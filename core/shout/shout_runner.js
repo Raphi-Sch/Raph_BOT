@@ -31,13 +31,13 @@ async function queryAPI(message, language) {
         message: message
     }
 
-    const response = await fetch(config.api_url + "shout.php?request", {
+    const response = await fetch(config.apiUrl + "shout.php?request", {
         method: "post",
         body: JSON.stringify(body),
         headers: { 
             "Content-Type": "application/json",
-            "Authorization" : `Bearer ${config.token}`,
-            "Client" : config.client
+            "Authorization" : `Bearer ${config.apiToken}`,
+            "Client" : config.apiClient
         }
     })
 

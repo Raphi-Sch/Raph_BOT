@@ -9,7 +9,7 @@ const basicServer = {
     options: null
 }
 
-switch (config.socket_protocol) {
+switch (config.socketProtocol) {
     case "http":
         basicServer.server = require('http').createServer();
         basicServer.options = {
@@ -21,8 +21,8 @@ switch (config.socket_protocol) {
 
     case "https":
         basicServer.server = require('https').createServer({
-            key: fs.readFileSync(config.https_key),
-            cert: fs.readFileSync(config.https_cert)
+            key: fs.readFileSync(config.httpsKey),
+            cert: fs.readFileSync(config.httpsCertificate)
         });
         basicServer.options = {
             cors: {
@@ -32,7 +32,7 @@ switch (config.socket_protocol) {
         break;
 
     default:
-        console.error(`Invalid socket protocol (Current is : '${config.socket_protocol}')`);
+        console.error(`Invalid socket protocol (Must be 'http' or 'https', Current is : '${config.socketProtocol}')`);
         process.exit(1);
 }
 
@@ -59,14 +59,14 @@ const GUI = {
 };
 
 function init(version) {
-    log("[CORE] Started (" + version + ")");
+    log(`[CORE] Started (${version})`);
 
     if (config.debug_level >= 1) {
         log(`[DEBUG] DEBUG IS ENABLE (LEVEL ${config.debug_level})`);
-        console.error(`${tools.logTime()} [SOCKET] Listening port '${config.socket_port}', protocol '${config.socket_protocol}'`);
+        console.error(`${tools.logTime()} [SOCKET] Listening port '${config.socketPort}', protocol '${config.socketProtocol}'`);
     }
 
-    io.listen(config.socket_port);
+    io.listen(config.socketPort);
 
     // GUI set max values
     GUI.shout.max = config.shout_interval;
@@ -74,14 +74,14 @@ function init(version) {
     GUI.triggerMessage.max = config.cmd_msg_interval;
 
     // Force GUI update
-    if (config.force_gui_update > 0) {
-        log(`[GUI] Forced refresh enable (every ${config.force_gui_update} sec)`);
+    if (config.gui_force_update > 0) {
+        log(`[GUI] Forced refresh enable (every ${config.gui_force_update} sec)`);
         setInterval(async function () {
             if (config.debug_level >= 1) {
                 console.error(`${tools.logTime()} [GUI] Refreshed`);
             }
             broadcast();
-        }, config.force_gui_update * 1000);
+        }, config.gui_force_update * 1000);
     }
 }
 

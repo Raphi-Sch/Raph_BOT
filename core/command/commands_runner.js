@@ -74,13 +74,13 @@ async function queryAPI(fullCommand) {
         console.error(body);
     }
 
-    const response = await fetch(config.api_url + "commands.php?request", {
+    const response = await fetch(config.apiUrl + "commands.php?request", {
         method: "post",
         body: JSON.stringify(body),
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${config.token}`,
-            "Client": config.client
+            "Authorization": `Bearer ${config.apiToken}`,
+            "Client": config.apiClient
         }
     })
 

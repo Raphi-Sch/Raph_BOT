@@ -7,9 +7,9 @@ Raph_BOT is a twitch chat bot.
 # Prerequisite : 
 
 Linux package :
-- Apache2 (or any web server)
+- Apache2 (with mod_rewrite)
 - PHP 7.0 (or higher)
-- MySQL / MariaDB
+- MariaDB (MySQL)
 - NodeJS (v16)
 
 NodeJS module: 
@@ -20,24 +20,24 @@ NodeJS module:
 
 # First time setup
 
-### Automatic install
+### Automated install
+
+If you don't have any linux package installed, you can use "1_Install_server.sh" to install them.
 
 To perform the install you will need the following information :
 - The database config (host, user, password, database)
 - The URL of the Raph_BOT API (Exemple : "http(s)://SERVERNAME/api/")
 - If you use HTTPS, the path to the key and certificate of the Apache virtual host
 
-Then use "first_time_setup.sh" script in the template folder.
+Then run "2_Install_app.sh" script with sudo.
 
 ### Backend
-- Configure your web server so it uses the 'www' folder as document root. The virtual host must be HTTPS.
-- Use raphbot_struct.sql and raphbot_data.sql to configure your database with the required tables
-- Make sure the folder 'www/src/audio' can be written by the web server.
+- Use raph_bot_struct.sql and raph_bot_data.sql to configure your database with the required tables
 
 ### Create auth token
 - Log into RaphBOT WebUI (default user is 'admin' with password '0'), ignore all errors related to "API ERROR". You don't have any pair of client/token yet.
 - Go to "Authentication". 
-- Add two client, set usage to 'Core' for the first one and 'WebUI' for the seconds. 
+- Add two client, set usage to 'Core' for one and 'WebUI' for the other. 
 - Use the renew button on both client to generate a token. Config files are automatically edited.
 - Relog into the WebUI for the change to be effective.
 

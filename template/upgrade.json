@@ -272,7 +272,7 @@
                 "type": 2,
                 "help": "Level of debugging. <br> 0 → None <br> 1 → Basic <br> 2 → All"
             },
-            "force_gui_update": {
+            "gui_force_update": {
                 "value": 0,
                 "hidden": 0,
                 "type": 2,
@@ -357,7 +357,7 @@
                 "help": "Client ID for Twitch API"
             },
             "twitch_scope": {
-                "value": "chat:edit+chat:read+channel:moderate",
+                "value": "chat:edit+chat:read+moderator:manage:banned_users+moderator:manage:chat_messages+user:read:follows+moderator:manage:shoutouts",
                 "hidden": 0,
                 "type": 0,
                 "help": "Permission of the bot (default should be fine)"
