@@ -1,7 +1,7 @@
 <?php
 
 require_once('../src/php/db.php');
-$db = db_connect("../../config.json");
+$db = db_connect();
 require_once('../src/php/auth.php');
 require_once('../src/php/functions.php');
 

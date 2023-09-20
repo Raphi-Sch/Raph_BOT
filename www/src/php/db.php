@@ -1,14 +1,12 @@
 <?php
 
-function db_connect(string $alternative_path = null)
+function db_connect()
 {
-    if (empty($alternative_path))
-        $config_JSON = json_decode(file_get_contents("../config.json"), true);
-    else
-        $config_JSON = json_decode(file_get_contents($alternative_path), true);
-
+    $config_JSON = json_decode(file_get_contents(dirname(__FILE__) . "/../../../config.json"), true);
     $db = mysqli_connect($config_JSON["db_host"], $config_JSON["db_user"], $config_JSON["db_pass"], $config_JSON["db_name"]);
+
     mysqli_set_charset($db, "utf8");
+
     /* check connection */
     if (mysqli_connect_errno()) {
         echo "<h2>SQL Error : " . mysqli_connect_error() . "</h2>";
