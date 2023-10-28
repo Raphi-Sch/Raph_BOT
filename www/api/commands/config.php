@@ -2,7 +2,7 @@
 
 function config_list(mysqli $db)
 {
-    $SQL_query = "SELECT * FROM commands_config ORDER BY `id` ASC";
+    $SQL_query = "SELECT * FROM commands_config";
     $data = db_query_raw($db, $SQL_query);
 
     $result = array();
