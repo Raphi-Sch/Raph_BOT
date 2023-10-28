@@ -484,20 +484,24 @@ function configList(reload = false) {
             const LIST = document.getElementById('tbody-config');
             LIST.innerHTML = "";
 
-            data.forEach(element => {
+            console.log(data);
+
+            for(const [key, values] of Object.entries(data)){
+                console.log(`${key}: ${values.value}`);
+
                 const TR = document.createElement('tr');
 
-                if (element.type == 1)
-                    displayValue = (element.value == '1' ? "Enabled" : "Disabled");
+                if (values.type == 1)
+                    displayValue = (values.value == '1' ? "Enabled" : "Disabled");
                 else
-                    displayValue = element.value;
+                    displayValue = values.value;
 
-                TR.appendChild(createTableData(element.id, 'col-xs-2'));
+                TR.appendChild(createTableData(key, 'col-xs-2'));
                 TR.appendChild(createTableData(displayValue, 'col-xs-5'));
-                TR.appendChild(createButtonGroup(createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => configEdit(element))));
+                TR.appendChild(createButtonGroup(createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => configEdit(key, values))));
 
                 LIST.appendChild(TR);
-            })
+            }
 
             if (reload)
                 reloadSuccess();
@@ -507,7 +511,7 @@ function configList(reload = false) {
     })
 }
 
-function configEdit(element) {
+function configEdit(key, element) {
     let input = "";
     let didOpen = null;
     switch (element.type) {
@@ -526,7 +530,7 @@ function configEdit(element) {
     }
 
     Swal.fire({
-        title: `Editing : ${element.id}`,
+        title: `Editing : ${key}`,
         icon: 'info',
         html: `<form id='swal-form'>
             ${input}

@@ -1,16 +1,14 @@
 <?php
 
-function config_list($db)
+function config_list(mysqli $db)
 {
     $SQL_query = "SELECT * FROM commands_config ORDER BY `id` ASC";
     $data = db_query_raw($db, $SQL_query);
 
     $result = array();
-    $count = 0;
 
     while ($row = mysqli_fetch_assoc($data)) {
-        $result[$count] = $row;
-        $count++;
+        $result[$row['id']] = ['value' => $row['value'], 'type' => $row['type']];
     }
 
     return $result;

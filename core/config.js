@@ -72,19 +72,9 @@ async function load_commands(){
     if (response.ok) {
         const data = await response.json();
 
-        for (const neddle in data) {
-            if(data[neddle].id == "global_prefix"){
-                config.cmd_prefix = data[neddle].value;
-            }
-
-            if(data[neddle].id == "global_interval_message"){
-                config.cmd_msg_interval = data[neddle].value;
-            }
-
-            if(data[neddle].id == "global_interval_time"){
-                config.cmd_time_interval = data[neddle].value;
-            }
-        }
+        config.cmd_prefix = data.global_prefix.value;
+        config.cmd_msg_interval = data.global_interval_message.value;
+        config.cmd_time_interval = data.global_interval_time.value;
 
         return null;
     } else {
