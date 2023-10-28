@@ -484,8 +484,6 @@ function configList(reload = false) {
             const LIST = document.getElementById('tbody-config');
             LIST.innerHTML = "";
 
-            console.log(data);
-
             for(const [key, values] of Object.entries(data)){
                 console.log(`${key}: ${values.value}`);
 
