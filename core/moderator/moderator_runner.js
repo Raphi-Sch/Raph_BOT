@@ -24,7 +24,7 @@ async function checkMessage(user, message, twitchAPI) {
     const result = await moderatorAPI.checkMessage(message);
 
     try {
-        if (result && result.mod_action) {
+        if (result !== null && result.mod_action !== null) {
             socket.log(`[MODERATOR] Taking action against '${user['display-name']}' for saying '${result.trigger_word}' (Context : '${message}', Action : ${actionText[result.mod_action]}, Duration : ${tools.timeoutToString(result.duration)})`);
 
             switch (parseInt(result.mod_action)) {

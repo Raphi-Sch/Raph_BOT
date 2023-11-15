@@ -11,7 +11,7 @@ async function runShout(user, message) {
     if (shout_counter >= config.shout_interval) {
         let result = await queryAPI(message, config.shout_language);
 
-        if (result.value !== null) {
+        if (result !== null && result.value !== null) {
             socket.log(`[SHOUT] '${user['display-name']}' got shouted`);
             result = config.shout_prefix + " " + result.value;
             result = result.replace("@username", user['display-name']);

@@ -27,7 +27,7 @@ async function runCommand(user, message) {
         // Default result is true, to stop processing even if command is unknown. Maybe the command is for another bot
         result = true;
 
-        if (command !== null && command.response_type) {
+        if (command !== null && command.response_type !== null) {
             switch (command.response_type) {
                 case "text":
                     result = runText(command, user);

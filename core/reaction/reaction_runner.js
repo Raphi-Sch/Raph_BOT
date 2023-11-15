@@ -8,7 +8,7 @@ async function runReaction(user, message) {
     let result = await queryAPI(message);
 
     try {
-        if (result.reaction !== null) {
+        if (result !== null && result.reaction !== null) {
             if (tools.randomInt(100) <= result.frequency) {
                 logAndTimeout(result, user);
 
