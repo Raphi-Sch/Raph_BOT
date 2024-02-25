@@ -89,16 +89,20 @@ function expressionAdd() {
         html: `<form id='swal-form'>
             <label>Trigger</label><input type='text' class='form-control' name='trigger_word' placeholder='Trigger' required><br/>
             <label>Action</label>
-            <select class='form-control' name='mod_action'>
+            <select class='form-control' name='mod_action' onchange='expressionHideForm("swal-form")'>
                 <option value=0>Ban</option>
                 <option value=1>Timeout</option>
                 <option value=2 disabled>Delete message (not available yet)</option>
                 <option value=3>Warn user</option>
             </select><br/>
-            <label>Duration (timeout only)</label><input type='number' class='form-control' name='duration' placeholder='Duration in seconds' step=1 min=0 max=1209600><br/>
-            <label>Seriousness</label><input type='number' class='form-control' name='seriousness' placeholder='Level of seriousness compare to other expression' step=1 min=1 max=10><br/>
-            <label>Reason</label><textarea type='text' class='form-control' name='reason' placeholder='Reason given to user' required></textarea><br/>
-            <label>Shaming</label><textarea type='text' class='form-control' name='explanation' placeholder='Shaming in chat' required></textarea><br/>
+            <label id='swal-duration-label' class='hidden'>Duration</label>
+                <input class='form-control hidden' type='number' name='duration' placeholder='Duration in seconds' value='30' step=1 min=0 max=1209600><br/ id='swal-duration-br' class='hidden'>
+            <label>Seriousness</label>
+                <input type='number' class='form-control' name='seriousness' placeholder='Level of seriousness compare to other expression' step=1 min=1 max=10><br/>
+            <label>Reason</label>
+                <textarea type='text' class='form-control' name='reason' placeholder='Reason given to user' required></textarea><br/>
+            <label>Shaming</label>
+                <textarea type='text' class='form-control' name='explanation' placeholder='Shaming in chat' required></textarea><br/>
             </form>`,
         showCancelButton: true,
         showConfirmButton: confirm,
@@ -138,18 +142,23 @@ function expressionEdit(data) {
         title: `Editing : '${data.trigger_word}'`,
         icon: 'info',
         html: `<form id='swal-form'><br/>
-            <label>Trigger</label><input class='form-control' type='text' name='trigger_word' value="${data.trigger_word}"><br/>
+            <label>Trigger</label>
+                <input class='form-control' type='text' name='trigger_word' value="${data.trigger_word}"><br/>
             <label>Action</label>
-            <select class='form-control' name='mod_action' id='swal-select-action'>
-                <option value=0>Ban</option>
-                <option value=1>Timeout</option>
-                <option value=2 disabled>Delete message (not available yet)</option>
-                <option value=3>Warn user</option>
-            </select><br/>
-            <label>Duration (timeout only)</label><input type='number' class='form-control' name='duration' placeholder='Duration in seconds' value='${data.duration}' step=1 min=0 max=1209600><br/>
-            <label>Seriousness</label><input type='number' class='form-control' name='seriousness' placeholder='Duration in seconds' value='${data.seriousness}' step=1 min=1 max=10><br/>
-            <label>Reason</label><textarea class='form-control' type='text' name='reason'>${data.reason}</textarea><br/>
-            <label>Explanation</label><textarea class='form-control' type='text' name='explanation'>${data.explanation}</textarea><br/>
+                <select class='form-control' name='mod_action' id='swal-select-action' onchange='expressionHideForm("swal-form")'>
+                    <option value=0>Ban</option>
+                    <option value=1>Timeout</option>
+                    <option value=2 disabled>Delete message (not available yet)</option>
+                    <option value=3>Warn user</option>
+                </select><br/>
+            <label id='swal-duration-label'>Duration</label>
+                <input class='form-control' type='number' name='duration' placeholder='Duration in seconds' value='${data.duration}' step=1 min=0 max=1209600><br/ id='swal-duration-br'>
+            <label>Seriousness</label>
+                <input type='number' class='form-control' name='seriousness' placeholder='Duration in seconds' value='${data.seriousness}' step=1 min=1 max=10><br/>
+            <label>Reason</label>
+                <textarea class='form-control' type='text' name='reason'>${data.reason}</textarea><br/>
+            <label>Explanation</label>
+                <textarea class='form-control' type='text' name='explanation'>${data.explanation}</textarea><br/>
             </form>`,
         showCancelButton: true,
         focusConfirm: false,
@@ -157,8 +166,9 @@ function expressionEdit(data) {
         width: "30%",
         confirmButtonText: 'Edit',
         cancelButtonText: 'Cancel',
-        didOpen: () => {
+        didOpen: () => { 
             document.getElementById('swal-select-action').value = data.mod_action;
+            expressionHideForm("swal-form");
         }
     }).then((result) => {
         if (result.value) {
@@ -209,6 +219,27 @@ function expressionDelete(data) {
             })
         }
     })
+}
+
+function expressionHideForm(form){
+    form = document.getElementById(form);
+    switch(form.mod_action.value){
+        case 1:
+        case "1":
+            form.duration.disabled = false;
+            form.duration.classList.remove('hidden');
+            document.getElementById("swal-duration-label").classList.remove('hidden');
+            document.getElementById("swal-duration-br").classList.remove('hidden');
+            break;
+
+        default:
+            form.duration.value = 0;
+            form.duration.disabled = true;
+            form.duration.classList.add('hidden');
+            document.getElementById("swal-duration-label").classList.add('hidden');
+            document.getElementById("swal-duration-br").classList.add('hidden');
+            break;
+    }
 }
 
 // Leet
