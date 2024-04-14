@@ -54,8 +54,8 @@ Then run "2_Install_app.sh" script with sudo.
 
 # Documentation
 
-- [API Documentation](doc/api/readme.md)
-- [Feature Documentation](doc/feature/readme.md)
+- [API Documentation](.documentation/api/readme.md)
+- [Feature Documentation](.documentation/feature/readme.md)
 
 # DISCLAIMER
 
