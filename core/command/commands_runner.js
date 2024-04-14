@@ -29,6 +29,10 @@ async function runCommand(user, message) {
 
         if (command !== null && command.response_type !== null) {
             switch (command.response_type) {
+                case "stop":
+                    runStop(user);
+                    break;
+
                 case "text":
                     result = runText(command, user);
                     break;
@@ -192,8 +196,15 @@ function runTTS(command, user) {
     return true; // No text output, but command success
 }
 
-function getTimeLeft(obj){
+function getTimeLeft(obj) {
     return (obj.timeoutStart != 0 ? Math.ceil(obj.timeoutTotal - (Date.now() - obj.timeoutStart) / 1000) : 0);
+}
+
+function runStop(user) {
+    if (user && (user.mod || user.username === config.twitch_channel.toLowerCase())) {
+        socket.log(`[CORE] Halted with command in twitch chat`);
+        process.exit(0);
+    }
 }
 
 module.exports = { runCommand }

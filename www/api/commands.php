@@ -131,6 +131,9 @@ function request(mysqli $db, $data)
 
     // Built-in commands
     switch($command){
+        case 'stop':
+            return ['response_type' => 'stop', 'value' => null, 'mod_only' => 1, 'sub_only' => 0];
+
         case 'github':
             return ['response_type' => 'text', 'value' => "Github repository : https://github.com/Raphi-Sch/Raph_BOT/", 'mod_only' => 0, 'sub_only' => 0];
 

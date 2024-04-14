@@ -91,7 +91,7 @@ io.on('connection', socket => {
     socket.emit('reload-log');
 
     socket.on('stop-core', function () {
-        log("[CORE] Halted");
+        log("[CORE] Halted with WebUI");
         process.exit(0);
     });
 
