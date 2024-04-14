@@ -10,6 +10,7 @@ pause
 # Apache2
 echo "Configuring Apache2 ..."
 sudo cp raph_bot_virtualhost.conf /etc/apache2/sites-available/raph_bot.conf
+sudo nano /etc/apache2/sites-available/raph_bot.conf
 sudo a2ensite raph_bot.conf
 sudo systemctl reload apache2
 
