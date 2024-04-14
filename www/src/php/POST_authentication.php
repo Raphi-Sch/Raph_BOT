@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     exit();
 }
 
-$db = db_connect("../../../config.json");
+$db = db_connect();
 
 switch ($_POST['action']) {
     case "auth-add":
