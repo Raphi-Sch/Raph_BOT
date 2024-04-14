@@ -16,6 +16,7 @@ sudo apt install apache2-utils apache2 -y
 echo "Configuring Apache2 ..."
 sudo a2enmod headers
 sudo a2enmod ssl
+sudo a2enmod rewrite
 
 echo "Enabling Apache2 service ..."
 sudo systemctl enable apache2
