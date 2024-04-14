@@ -1,11 +1,5 @@
 #!/bin/bash
-function pause(){
- read -s -n 1 -p "Press any key to continue ..."
- echo ""
-}
-
-echo "Raph_BOT first time setup (please run as root)"
-pause
+echo "Raph_BOT automatic setup"
 
 # Apache2
 echo "Configuring Apache2 ..."
@@ -19,11 +13,17 @@ else
 fi
 
 # Log File
-echo -e "\nCreating log files"
+echo -e "\nCreating log files :"
+
+echo -e "\t- debug.log"
 sudo touch ../core/debug.log
 sudo chmod +w ../core/debug.log
+
+echo -e "\t- lastest.log"
 sudo touch ../core/lastest.log
 sudo chmod +w ../core/lastest.log
+
+echo -e "\t- activity.log"
 sudo touch ../www/activity.log
 sudo chmod +w ../www/activity.log
 
