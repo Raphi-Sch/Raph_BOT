@@ -94,7 +94,7 @@ function log_activity($user, $title, $message = null)
 
     $row = "[" . date('Y-m-d H:i:s') . "] [" . $user . "] " . $title . "\n";
 
-    file_put_contents(dirname(__FILE__) . "/../activity.log", $row, FILE_APPEND);
+    file_put_contents(dirname(__FILE__) . "/../../activity.log", $row, FILE_APPEND);
 }
 
 /**
