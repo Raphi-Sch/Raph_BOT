@@ -16,15 +16,15 @@ fi
 echo -e "\nCreating log files :"
 
 echo -e "\t- debug.log"
-sudo touch ../core/debug.log
+touch ../core/debug.log
 sudo chmod 666 ../core/debug.log
 
 echo -e "\t- lastest.log"
-sudo touch ../core/lastest.log
+touch ../core/lastest.log
 sudo chmod 666 ../core/lastest.log
 
 echo -e "\t- activity.log"
-sudo touch ../www/activity.log
+touch ../www/activity.log
 sudo chmod 666 ../www/activity.log
 
 # Copy config files
