@@ -24,8 +24,8 @@ touch ../core/lastest.log
 sudo chmod 666 ../core/lastest.log
 
 echo -e "\t- activity.log"
-touch ../www/activity.log
-sudo chmod 666 ../www/activity.log
+touch ../www/src/activity.log
+sudo chmod 666 ../www/src/activity.log
 
 # Copy config files
 echo -e "\nChecking config files :"
