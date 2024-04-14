@@ -20,12 +20,12 @@ fi
 
 # Log File
 echo -e "\nCreating log files"
-touch ../core/debug.log
-chmod +w ../core/debug.log
-touch ../core/lastest.log
-chmod +w ../core/lastest.log
-touch ../www/activity.log
-chmod +w ../www/activity.log
+sudo touch ../core/debug.log
+sudo chmod +w ../core/debug.log
+sudo touch ../core/lastest.log
+sudo chmod +w ../core/lastest.log
+sudo touch ../www/activity.log
+sudo chmod +w ../www/activity.log
 
 # Copy config files
 echo -e "\nChecking config files :"
@@ -49,7 +49,7 @@ fi
 
 # Change writing right
 echo -e "\nMaking audio folder writable"
-chmod +w ../www/src/audio
+sudo chmod +w ../www/src/audio
 
 # NPM modules
 echo -e "\nInstalling NPM Modules"
