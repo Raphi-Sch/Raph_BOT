@@ -13,6 +13,10 @@ sudo apt update && sudo apt -y upgrade
 echo "Installing Apache2 ..."
 sudo apt install apache2-utils apache2 -y
 
+echo "Configuring Apache2 ..."
+sudo a2enmod headers
+sudo a2enmod ssl
+
 echo "Enabling Apache2 service ..."
 sudo systemctl enable apache2
 
