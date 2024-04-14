@@ -17,15 +17,15 @@ echo -e "\nCreating log files :"
 
 echo -e "\t- debug.log"
 touch ../core/debug.log
-sudo chmod 666 ../core/debug.log
+sudo chmod +w ../core/debug.log
 
 echo -e "\t- lastest.log"
 touch ../core/lastest.log
-sudo chmod 666 ../core/lastest.log
+sudo chmod +w ../core/lastest.log
 
 echo -e "\t- activity.log"
 touch ../www/src/activity.log
-sudo chmod 666 ../www/src/activity.log
+sudo chmod +w ../www/src/activity.log
 
 # Copy config files
 echo -e "\nChecking config files :"
