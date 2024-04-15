@@ -51,6 +51,11 @@ fi
 echo -e "\nMaking audio folder writable"
 sudo chmod +w ../www/src/audio
 
+# TTS Audio
+echo -e "\nCreating TTS file"
+touch ../www/src/audio/tts.mp3
+sudo chmod +w ../www/src/audio/tts.mp3
+
 # NPM modules
 echo -e "\nInstalling NPM Modules"
 npm install --prefix ../core/
