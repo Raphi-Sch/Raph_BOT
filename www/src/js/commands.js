@@ -485,8 +485,6 @@ function configList(reload = false) {
             LIST.innerHTML = "";
 
             for(const [key, values] of Object.entries(data)){
-                console.log(`${key}: ${values.value}`);
-
                 const TR = document.createElement('tr');
 
                 if (values.type == 1)
@@ -530,9 +528,7 @@ function configEdit(key, element) {
     Swal.fire({
         title: `Editing : ${key}`,
         icon: 'info',
-        html: `<form id='swal-form'>
-            ${input}
-            </form>`,
+        html: `<form id='swal-form'>${input}</form>`,
         showCancelButton: true,
         focusConfirm: false,
         allowOutsideClick: false,
@@ -544,7 +540,7 @@ function configEdit(key, element) {
         if (result.value) {
             const FORM = document.getElementById('swal-form');
             const FORM_DATA = {
-                'id': element.id,
+                'id': key,
                 'value': FORM.value.value
             };
 
