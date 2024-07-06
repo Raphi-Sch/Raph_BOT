@@ -19,7 +19,8 @@ function db_connect()
     return $db;
 }
 
-function query_error($db, $query, $parameters_types, $parameters)
+
+function db_query_error($db, $query, $parameters_types, $parameters)
 {
     echo "SQL Error : " . mysqli_error($db);
     error_log(mysqli_error($db));
@@ -34,17 +35,19 @@ function db_query_no_result($db, $query, $parameters_types = null, $parameters =
     $query_exec = $db->prepare($query);
 
     if (!is_null($parameters)) {
-        if (is_array($parameters))
+        if (is_array($parameters)){
             $query_exec->bind_param($parameters_types, ...$parameters);
-        else
+        }
+        else{
             $query_exec->bind_param($parameters_types, $parameters);
+        }
     }
 
     $query_exec->execute();
     $query_exec->close();
 
     if (mysqli_error($db)) {
-        query_error($db, $query, $parameters_types, $parameters);
+        db_query_error($db, $query, $parameters_types, $parameters);
     }
 }
 
@@ -53,16 +56,18 @@ function db_query($db, $query, $parameters_types = null, $parameters = null)
     $query_exec = $db->prepare($query);
 
     if (!is_null($parameters)) {
-        if (is_array($parameters))
+        if (is_array($parameters)){
             $query_exec->bind_param($parameters_types, ...$parameters);
-        else
+        }
+        else{
             $query_exec->bind_param($parameters_types, $parameters);
+        }
     }
 
     $query_exec->execute();
 
     if (mysqli_error($db)) {
-        query_error($db, $query, $parameters_types, $parameters);
+        db_query_error($db, $query, $parameters_types, $parameters);
     }
 
     return $query_exec->get_result()->fetch_assoc();
@@ -73,16 +78,18 @@ function db_query_raw($db, $query, $parameters_types = null, $parameters = null)
     $query_exec = $db->prepare($query);
 
     if (!is_null($parameters)) {
-        if (is_array($parameters))
+        if (is_array($parameters)){
             $query_exec->bind_param($parameters_types, ...$parameters);
-        else
+        }
+        else{
             $query_exec->bind_param($parameters_types, $parameters);
+        }
     }
 
     $query_exec->execute();
 
     if (mysqli_error($db)) {
-        query_error($db, $query, $parameters_types, $parameters);
+        db_query_error($db, $query, $parameters_types, $parameters);
     }
 
     return $query_exec->get_result();

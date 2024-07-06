@@ -40,7 +40,6 @@ function file_upload($file_field, $dest_dir, $name_prefix = "", $original_name =
 
         // You should also check filesize here. 1MB = 1048576 Bytes
         if ($_FILES[$file_field]['size'] > $MAX_FILE_SIZE) {
-            $size = $_FILES[$file_field]['size'] / $MAX_FILE_SIZE;
             throw new RuntimeException("File size is larger than the server allows. (Limit : " . number_format($MAX_FILE_SIZE / 1048576, 2) . " MB, Your file : " . number_format($_FILES[$file_field]['size'] / 1048576, 2) . " MB).");
         }
 
@@ -57,13 +56,15 @@ function file_upload($file_field, $dest_dir, $name_prefix = "", $original_name =
         }
 
         // Name
-        if ($original_name)
+        if ($original_name) {
             $name = pathinfo($_FILES[$file_field]['name'])['filename'];
-        else
-            if (empty($new_name))
-            $name = sha1_file($_FILES[$file_field]['tmp_name']);
-        else
-            $name = $new_name;
+        } else {
+            if (empty($new_name)) {
+                $name = sha1_file($_FILES[$file_field]['tmp_name']);
+            } else {
+                $name = $new_name;
+            }
+        }
 
         // Extension
         if ($extension) {
@@ -102,12 +103,13 @@ function log_activity($user, $title, $message = null)
  * @param array $input_array Array to clean
  * @return array Clean array
  */
-function clean_string_in_array(array $input_array){
+function clean_string_in_array(array $input_array)
+{
     $output_array = array();
 
-    foreach($input_array as $value){
+    foreach ($input_array as $value) {
         $clean_string = clean_string($value);
-        if(!empty($clean_string))
+        if (!empty($clean_string))
             array_push($output_array, $clean_string);
     }
 
@@ -120,7 +122,8 @@ function clean_string_in_array(array $input_array){
  * @param string $string Input string
  * @return string Clean string
  */
-function clean_string($string){
+function clean_string($string)
+{
     $string = preg_replace("[']", ' ', $string);
     $string = remove_emoji($string);
     return $string;
@@ -148,7 +151,7 @@ function remove_emoji($string)
     // Match Transport And Map Symbols
     $regex_transport = '/[\x{1F680}-\x{1F6FF}]/u';
     $clean_string = preg_replace($regex_transport, '', $clean_string);
-    
+
     // Match Supplemental Symbols and Pictographs
     $regex_supplemental = '/[\x{1F900}-\x{1F9FF}]/u';
     $clean_string = preg_replace($regex_supplemental, '', $clean_string);
@@ -183,21 +186,27 @@ function unleet($db, $input)
     return str_replace($leet_original, $leet_replacement, $input);
 }
 
-function timeout_to_string($seconds) {
-    if($seconds >= 604800)
+function timeout_to_string($seconds)
+{
+    if ($seconds >= 604800) {
         return intval($seconds / 604800) . " week";
+    }
 
-    if($seconds >= 86400)
+    if ($seconds >= 86400) {
         return intval($seconds / 86400) . " day";
+    }
 
-    if($seconds >= 3600)
+    if ($seconds >= 3600) {
         return intval($seconds / 3600) . " hour";
+    }
 
-    if($seconds >= 60)
+    if ($seconds >= 60) {
         return intval($seconds / 60) . " min";
+    }
 
-    if($seconds == 0)
+    if ($seconds == 0) {
         return "No timeout";
+    }
 
     return $seconds . " sec";
 }
