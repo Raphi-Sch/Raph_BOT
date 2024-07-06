@@ -95,8 +95,12 @@ function auth_renew($db)
 
     log_activity($_SESSION['username'], "[AUTH] Client token renew", $_POST['client']);
 
-    if ($updated)
+    if ($updated !== false){
         log_activity($_SESSION['username'], "[AUTH] Token updated in config file");
+    }
+    else{
+        log_activity($_SESSION['username'], "[AUTH] Failed to update token in config file");
+    }
 
     return ['token' => $token, 'file_updated' => $updated];
 }
@@ -128,6 +132,5 @@ function update_config($client, $token, $usage)
     $config['client'] = $client;
     $config['token'] = $token;
 
-    file_put_contents($config_path, json_encode($config, JSON_PRETTY_PRINT));
-    return true;
+    return file_put_contents($config_path, json_encode($config, JSON_PRETTY_PRINT));
 }
