@@ -1,8 +1,8 @@
 <?php
 
-require_once('db.php');
-require_once('access.php');
-require_once('functions.php');
+require_once 'db.php';
+require_once 'access.php';
+require_once 'functions.php';
 
 const USAGE_CORE = 0;
 const USAGE_WEBUI = 1;
