@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('src/php/db.php');
+require_once 'src/php/db.php';
 
 $db = db_connect();
 $bot_name = db_query($db, "SELECT `value` FROM config WHERE id = 'bot_name'")["value"];
@@ -56,10 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en-GB">
 
 <head>
-    <?php include("src/html/header.html"); ?>
+    <?php include 'src/html/header.html'; ?>
     <title>Login - <?php echo $bot_name;?> </title>
 </head>
 

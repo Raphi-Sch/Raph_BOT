@@ -7,15 +7,15 @@ require_once 'src/php/header.php';
 
 <head>
     <title id='bot_name'>Shout - </title>
-    <?php include("src/html/header.html"); ?>
+    <?php include 'src/html/header.html'; ?>
 </head>
 
 <body>
     <!-- TOP Navbar -->
-    <?php include("src/php/navbar.php"); ?>
+    <?php include 'src/php/navbar.php'; ?>
 
     <!-- Side Navbar -->
-    <?php include("src/html/sidebar.html"); ?>
+    <?php include 'src/html/sidebar.html'; ?>
 
     <!-- Main area -->
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

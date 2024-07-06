@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('src/php/db.php');
+require_once 'src/php/db.php';
 
 global $can_redirect;
 global $JSON;
@@ -118,8 +118,9 @@ function check_commands_tts_config($db, $key, $data)
         if ($repaired) {
             $result .= " (Repair successful)";
             $presence = true;
-        } else
+        } else {
             $result .= " (Repair failed)";
+        }
     }
 
     $result .= "\n";
@@ -144,8 +145,9 @@ function check_commands_config($db, $key, $data)
         if ($repaired) {
             $result .= " (Repair successful)";
             $presence = true;
-        } else
+        } else {
             $result .= " (Repair failed)";
+        }
     }
 
     $result .= "\n";
@@ -211,8 +213,7 @@ if ($can_redirect) {
             }
         }
     }
-}
-else{
+} else {
     $result .= "\nSkipping checking table content because some tables are not set correctly";
 }
 
@@ -232,7 +233,7 @@ if ($can_redirect) {
 
 <head>
     <title>Index - Raph_BOT</title>
-    <?php include("src/html/header.html"); ?>
+    <?php include 'src/html/header.html'; ?>
 </head>
 
 <body>
