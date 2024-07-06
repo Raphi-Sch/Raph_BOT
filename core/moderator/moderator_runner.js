@@ -28,9 +28,6 @@ async function checkMessage(user, message, twitchAPI) {
             socket.log(`[MODERATOR] Taking action against '${user['display-name']}' for saying '${result.trigger_word}' (Context : '${message}', Action : ${actionText[result.mod_action]}, Duration : ${tools.timeoutToString(result.duration)})`);
 
             switch (parseInt(result.mod_action)) {
-                default:
-                    return null;
-
                 case actionBan:
                     twitchAPI.banUser(user['user-id'], result.reason);
                     return result.explanation.replace("@username", user['display-name']);
@@ -46,6 +43,9 @@ async function checkMessage(user, message, twitchAPI) {
 
                 case actionWarn:
                     return warnUser(user['username'], config.twitch_display_name, twitchAPI);
+
+                default:
+                    return null;
             }
         }
     }
@@ -72,15 +72,12 @@ async function warnUser(usernameToWarn, moderator, twitchAPI) {
     const userID = await twitchAPI.getUser(usernameToWarn);
 
     if (userID !== null) {
-        result = await moderatorAPI.warnUser(userID);
+        let result = await moderatorAPI.warnUser(userID);
 
         if (result !== null) {
             socket.log(`[MODERATOR-WARN] User '${result.username}' got warn (Action : ${actionText[result.action]}, Duration : ${tools.timeoutToString(result.duration)})`);
 
             switch (result.action) {
-                default:
-                    return null;
-
                 case actionDelete:
                     socket.log('[MODERATOR-WARN] Delete message is not implemented yet (not possible with current client)');
                     break;
@@ -92,6 +89,9 @@ async function warnUser(usernameToWarn, moderator, twitchAPI) {
                 case actionBan:
                     twitchAPI.banUser(result.userid, result.reason);
                     break;
+
+                default:
+                    return null;
             }
 
             if (result.explanation) {
