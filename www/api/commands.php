@@ -13,6 +13,8 @@ require_once './commands/config.php';
 
 header('Content-Type: application/json');
 
+$body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['list-auto'])) {
@@ -44,8 +46,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'POST':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($_GET['request']) && isset($body['command'])) {
             echo json_encode(request($db, $body));
             break;
@@ -55,8 +55,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'PUT':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($_GET['command'])) {
             echo json_encode(command_add($db, $body));
             break;
@@ -71,8 +69,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'PATCH':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($_GET['audio'])) {
             echo json_encode(audio_edit($db, $body));
             break;

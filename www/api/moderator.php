@@ -12,6 +12,8 @@ const ACTION_TIMEOUT = 1;
 const ACTION_DELETE = 2;
 const ACTION_WARN = 3;
 
+$body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['list'])) {
@@ -38,8 +40,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'POST':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($_GET['check-message'])) {
             echo json_encode(check_message($db, $body["message"]));
             break;
@@ -54,8 +54,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'PUT':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($_GET['expression'])) {
             echo json_encode(expression_add($db, $body));
             break;
@@ -70,8 +68,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'PATCH':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($_GET['expression'])) {
             echo json_encode(expression_edit($db, $body));
             break;

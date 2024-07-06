@@ -4,6 +4,8 @@ $db = db_connect();
 require_once '../src/php/auth.php';
 require_once '../src/php/functions.php';
 
+$body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['plugin'])) {
@@ -46,8 +48,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'PATCH':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($_GET['edit']) && isset($body['id']) && isset($body['value'])) {
             header('Content-Type: application/json');
             echo json_encode(config_patch($db, $body));

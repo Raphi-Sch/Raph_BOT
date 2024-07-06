@@ -12,12 +12,12 @@ set_time_limit(2);
 
 const MIN_WORDS = 3;
 const MAX_WORDS = 15;
-
 const TYPE_WORD = 0;
 const TYPE_CONSONANT = 1;
 const TYPE_VOWEL = 2;
-
 const VOWELS = array("a", "e", "i", "o", "u", "y", "A", "E", "I", "O", "U", "Y");
+
+$body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
@@ -30,8 +30,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'POST':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($_GET['request'])) {
             switch ($body["language"]) {
                 case "fr":
@@ -53,8 +51,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         exit();
 
     case 'PUT':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($body['original'])) {
             echo json_encode(add($db, $body));
             break;
@@ -64,8 +60,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'PATCH':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($body['id'])) {
             echo json_encode(edit($db, $body));
             break;

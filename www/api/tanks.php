@@ -7,6 +7,8 @@ require_once '../src/php/functions.php';
 
 header('Content-Type: application/json');
 
+$body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['list-tanks'])) {
@@ -28,8 +30,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'PUT':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($_GET['tank'])) {
             echo json_encode(tank_add($db, $body));
             break;
@@ -50,8 +50,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 
     case 'PATCH':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($_GET['tank'])) {
             echo json_encode(tank_edit($db, $body));
             break;

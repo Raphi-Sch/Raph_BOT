@@ -7,6 +7,8 @@ require_once '../src/php/functions.php';
 
 header('Content-Type: application/json');
 
+$body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
+
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['list'])) {
@@ -18,8 +20,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'POST':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($_GET['request']) && isset($body['message'])) {
             $exclusion = isset($body['exclusion']) ? $body['exclusion'] : array();
 
@@ -37,8 +37,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 
     case 'PUT':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($body['trigger'])) {
             header('Content-Type: application/json');
             echo json_encode(add($db, $body));
@@ -49,8 +47,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case 'PATCH':
-        $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
-
         if (isset($body['id'])) {
             header('Content-Type: application/json');
             echo json_encode(edit($db, $body));
