@@ -6,8 +6,6 @@ global $can_redirect;
 global $JSON;
 
 $redirect = isset($_GET['redirect']) ? trim($_GET['redirect']) : "";
-
-$db = db_connect();
 $db_name = json_decode(file_get_contents("../config.json"), true)["db_name"];
 $JSON = json_decode(file_get_contents("../.install/upgrade.json"), true);
 $result = "";

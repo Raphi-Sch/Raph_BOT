@@ -87,3 +87,5 @@ function db_query_raw($db, $query, $parameters_types = null, $parameters = null)
 
     return $query_exec->get_result();
 }
+
+$db = db_connect();

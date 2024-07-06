@@ -9,8 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     exit();
 }
 
-$db = db_connect();
-
 switch ($_POST['action']) {
     case "add-audio":
         audio_add($db);

@@ -12,8 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     exit();
 }
 
-$db = db_connect();
-
 switch ($_POST['action']) {
     case "auth-add":
         echo json_encode(auth_add($db));

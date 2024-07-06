@@ -1,8 +1,6 @@
 <?php
 require_once 'src/php/header.php';
 
-$db = db_connect();
-
 const USAGE_TEXT = ['Core', 'WebUI', 'Other'];
 
 $HTML = "";
