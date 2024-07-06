@@ -10,7 +10,7 @@ $token_URL = "https://id.twitch.tv/oauth2/authorize?response_type=token&client_i
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en-GB">
 
 <head>
     <title id='bot_name'>Configuration - </title>

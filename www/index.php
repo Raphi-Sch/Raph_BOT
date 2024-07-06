@@ -228,7 +228,7 @@ if ($can_redirect) {
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en-GB">
 
 <head>
     <title>Index - Raph_BOT</title>

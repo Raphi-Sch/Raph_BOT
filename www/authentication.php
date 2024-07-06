@@ -35,7 +35,7 @@ while($row = $data->fetch_assoc()){
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en-GB">
 
 <head>
     <title id='bot_name'>Authentication - </title>
