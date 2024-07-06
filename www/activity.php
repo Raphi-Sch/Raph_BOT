@@ -3,7 +3,7 @@ require_once('src/php/header.php');
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en-GB">
 
 <head>
     <title id='bot_name'>Authentication - </title>
