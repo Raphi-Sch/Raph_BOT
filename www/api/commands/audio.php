@@ -4,7 +4,7 @@ function audio_load_config(mysqli $db)
 {
     $config = array();
 
-    $data = db_query_raw($db, "SELECT `id`, `value` FROM commands_config WHERE id LIKE 'audio_%'");
+    $data = db_query_raw($db, "SELECT `id`, `value` FROM commands_config");
     while ($row = mysqli_fetch_assoc($data)) {
         $config[$row['id']] = $row['value'];
     }
@@ -36,25 +36,31 @@ function audio_list_text(mysqli $db)
 
     $data = db_query_raw($db, "SELECT DISTINCT trigger_word, sub_only, mod_only  FROM commands_audio WHERE active = 1 ORDER BY `trigger_word` ASC");
     while ($row = mysqli_fetch_assoc($data)) {
-        // Sub only
+        // Mod only (not listed in chat)
+        if (boolval($row['mod_only']) && !boolval($row['sub_only'])) {
+            continue;
+        }
+
+        $command = $config['global_prefix'] . $row['trigger_word'];
+
         if (boolval($row['sub_only'])) {
-            if (empty($result_sub))
-                $result_sub .= "!" . $row['trigger_word'];
-            else
-                $result_sub .= ", !" . $row['trigger_word'];
+            // Sub only
+            if (!empty($result_sub)) {
+                $result_sub .= ", ";
+            }
+            $result_sub .= $command;
         } else {
             // Everyone
-            if (!boolval($row['mod_only'])) {
-                if (empty($result))
-                    $result .= "!" . $row['trigger_word'];
-                else
-                    $result .= ", !" . $row['trigger_word'];
+            if (!empty($result)) {
+                $result .= ", ";
             }
+            $result .= $command;
         }
     }
 
-    if (!empty($result_sub))
+    if (!empty($result_sub)) {
         $result_sub = ", Sub only : " . $result_sub;
+    }
 
     return ['response_type' => 'text', 'value' => $config['audio_text_prefix'] . $result . $result_sub, 'mod_only' => 0, 'sub_only' => 0];
 }
