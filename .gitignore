@@ -23,3 +23,6 @@ package-lock.json
 # Sonarqube
 scan.sh
 .scannerwork
+
+# VSCode
+.vscode
