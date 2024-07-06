@@ -1,8 +1,8 @@
 function getParameterName(pos) {
-    var url = window.location.search.substring(1);
-    var varUrl = url.split('&');
-    for (var i = 0; i < varUrl.length; i++) {
-        var parameter = varUrl[i].split('=');
+    let url = window.location.search.substring(1);
+    let letUrl = url.split('&');
+    for (let i = 0; i < letUrl.length; i++) {
+        let parameter = letUrl[i].split('=');
         return parameter[pos];
     }
 }
