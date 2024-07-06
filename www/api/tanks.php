@@ -71,7 +71,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
-        if (isset($_GET['alias']) && isset($_GET['alias'])) {
+        if (isset($_GET['alias'])) {
             echo json_encode(alias_delete($db, $_GET['alias']));
             break;
         }
