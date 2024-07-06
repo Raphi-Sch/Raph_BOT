@@ -112,31 +112,28 @@ function check_message(mysqli $db, $message)
     $result = null;
 
     // Convert array to string
-    if (is_array($message))
+    if (is_array($message)) {
         $message = implode(" ", $message);
+    }
 
     // Clean up before processing
     $message = unleet($db, trim(strtolower($message)));
 
     $id_expression = null;
     $action_trigger = false;
-    $trigger_data = db_query_raw($db, "SELECT id, trigger_word FROM moderator ORDER BY seriousness DESC");
 
+    $trigger_data = db_query_raw($db, "SELECT id, trigger_word FROM moderator ORDER BY seriousness DESC");
     while ($row = $trigger_data->fetch_assoc()) {
         $id_expression = $row['id'];
 
         $pos = strrpos($message, $row['trigger_word']);
         if ($pos !== false) {
-
-            if ($pos > 0)
-                $char_before = substr($message, $pos - 1, 1);
-            else
-                $char_before = '';
-
+            $char_before = $pos > 0 ? substr($message, $pos - 1, 1) : '';
             $char_after = substr($message, $pos + strlen($row['trigger_word']), 1);
 
-            if (($char_before == '' || $char_before == ' ') && ($char_after == '' || $char_after == ' '))
+            if (($char_before == '' || $char_before == ' ') && ($char_after == '' || $char_after == ' ')) {
                 $action_trigger = true;
+            }
 
             break;
         }
@@ -146,10 +143,11 @@ function check_message(mysqli $db, $message)
         $result = db_query($db, "SELECT * FROM moderator WHERE id = ?", "i", $id_expression);
     }
 
-    if ($result == null)
+    if ($result == null) {
         return ['mod_action' => null];
-    else
+    } else {
         return $result;
+    }
 }
 
 function warn_list(mysqli $db)
@@ -248,6 +246,9 @@ function expression_filter_data($data)
     $data['seriousness'] = intval($data['seriousness']);
 
     switch ($data['mod_action']) {
+        default:
+            break;
+
         case ACTION_DELETE:
             $data['duration'] = 0;
             $data['seriousness'] = filter_var($data['seriousness'], FILTER_VALIDATE_INT, ['options' => ['default' => 1, 'min_range' => 1, 'max_range' => 3]]);
@@ -271,8 +272,9 @@ function expression_filter_data($data)
     }
 
     // Max timeout duration possible (limit of Twitch API)
-    if ($data['duration'] > 1209600)
+    if ($data['duration'] > 1209600) {
         $data['duration'] = 1209600;
+    }
 
     return $data;
 }
