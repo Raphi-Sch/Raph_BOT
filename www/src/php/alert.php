@@ -1,20 +1,18 @@
 <?php
-    if(!isset($_SESSION['alert']))
-        $_SESSION['alert'] = false;
-
-    $alert_type = false;
-    if($_SESSION['alert']){
-        $alert_type = $_SESSION['alert'][0];
-        $alert_title = $_SESSION['alert'][1];
-        $alert_text = $_SESSION['alert'][2];
-        $alert_toast = $_SESSION['alert'][3];
-
-        $_SESSION['alert'] = false;
-    }
+if (!isset($_SESSION['alert'])) {
+    $_SESSION['alert'] = null;
+}
 ?>
 
 <!-- Unified alert system -->
 <script>
-    $(document).ready(function() {<?php if(!empty($alert_type)) echo "Swal.fire({icon: \"$alert_type\", title: \"$alert_title\", text: \"$alert_text\", toast: \"$alert_toast\"});"; ?>});
+    $(document).ready(function() {
+        <?php 
+            if (!empty($$_SESSION['alert'])){
+                echo "Swal.fire({icon: \"" . $_SESSION['alert'][0] . "\", title: \"" . $_SESSION['alert'][1] . "\", text: \"" . $_SESSION['alert'][2] . "\", toast: \"" . $_SESSION['alert'][3] . "\"});"; 
+                $_SESSION['alert'] = false; // Clear alert
+            }
+        ?>
+    });
 </script>
 <!-- /Unified alert system -->
