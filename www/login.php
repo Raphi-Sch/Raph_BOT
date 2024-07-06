@@ -66,9 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="main col-lg-4 col-lg-offset-4 col-md-12">
         <!-- Titre -->
-        <center>
+        <div class="center">
             <h2><b><?php echo $bot_name; ?></b></h2>
-        </center>
+        </div>
 
         <!-- Login -->
         <div class="login-form">

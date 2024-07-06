@@ -35,7 +35,7 @@ require_once('src/php/header.php');
             </tr>
         </table>
         <br/>
-        <center><button type='button' class='btn btn-info'  onclick="document.location.href='dashboard.php'">Dashboard</button></center>
+        <div class="center"><button type='button' class='btn btn-info'  onclick="document.location.href='dashboard.php'">Dashboard</button></div>
     </div>
 
     <div class='dock-right'>

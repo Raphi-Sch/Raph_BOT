@@ -67,9 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <fieldset>
 
                 <!-- Form Name -->
-                <center>
+                <div class="center">
                     <h1 class="page-header"><b>Change password</b></h1>
-                </center>
+                </div>
 
                 <!-- username -->
                 <div class="form-group">
@@ -119,10 +119,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="form-group">
                     <label class="col-md-4 control-label"></label>
                     <div class="col-md-4"><br>
-                        <center>
+                        <div class="center">
                             <?php echo $bouton_retour; ?>
                             <button type="submit" class="btn btn-success">Save</button>
-                            <center>
+                            <div class="center">
                     </div>
                 </div>
 
