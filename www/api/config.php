@@ -4,42 +4,45 @@ $db = db_connect();
 require_once '../src/php/auth.php';
 require_once '../src/php/functions.php';
 
+const HEADER_JSON = 'Content-Type: application/json';
+const HEADER_TEXT = 'Content-Type: text/plain';
+
 $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_ARRAY);
 
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['plugin'])) {
-            header('Content-Type: application/json');
+            header(HEADER_JSON);
             echo json_encode(plugin_list($db));
             break;
         }
 
         if (isset($_GET['name'])) {
-            header('Content-Type: application/json');
+            header(HEADER_JSON);
             echo json_encode(bot_name($db));
             break;
         }
 
         if (isset($_GET['socket'])) {
-            header('Content-Type: application/json');
+            header(HEADER_JSON);
             echo json_encode(socket_config());
             break;
         }
 
         if (isset($_GET['log'])) {
-            header('Content-Type: text/plain');
+            header(HEADER_TEXT);
             echo get_log();
             break;
         }
 
         if (isset($_GET['debug'])) {
-            header('Content-Type: text/plain');
+            header(HEADER_TEXT);
             echo get_debug();
             break;
         }
 
         if (isset($_GET['list'])) {
-            header('Content-Type: application/json');
+            header(HEADER_JSON);
             echo json_encode(config_list($db));
             break;
         }
@@ -49,7 +52,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
     case 'PATCH':
         if (isset($_GET['edit']) && isset($body['id']) && isset($body['value'])) {
-            header('Content-Type: application/json');
+            header(HEADER_JSON);
             echo json_encode(config_patch($db, $body));
             break;
         }
