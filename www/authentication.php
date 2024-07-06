@@ -1,5 +1,5 @@
 <?php
-require_once('src/php/header.php');
+require_once 'src/php/header.php';
 
 $db = db_connect();
 

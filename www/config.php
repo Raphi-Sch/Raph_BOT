@@ -1,5 +1,5 @@
 <?php
-require_once('src/php/header.php');
+require_once 'src/php/header.php';
 
 $token_id = db_query($db, "SELECT `value` FROM config WHERE id = 'twitch_client_id'")['value'];
 $token_scope = db_query($db, "SELECT `value` FROM config WHERE id = 'twitch_scope'")['value'];

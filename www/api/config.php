@@ -1,8 +1,8 @@
 <?php
-require_once('../src/php/db.php');
+require_once '../src/php/db.php';
 $db = db_connect();
-require_once('../src/php/auth.php');
-require_once('../src/php/functions.php');
+require_once '../src/php/auth.php';
+require_once '../src/php/functions.php';
 
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
