@@ -178,7 +178,7 @@ function parseTags(tags) {
 
 function parseCommand(rawCommandComponent) {
     let parsedCommand = null;
-    commandParts = rawCommandComponent.split(' ');
+    let commandParts = rawCommandComponent.split(' ');
 
     switch (commandParts[0]) {
         case 'JOIN':
