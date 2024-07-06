@@ -106,40 +106,47 @@ function authRenew(data) {
         focusCancel: true
     }).then((result) => {
         if (result.value) {
-            $.post("src/php/POST_authentication.php", {
-                action: 'auth-renew',
-                id: element.id,
-                client: element.client
-            }, function (data) {
-                if (data) {
-                    data = JSON.parse(data);
-
-                    if (data.file_updated) {
-                        title = `Token renewed (config file updated)`;
-                        html = "";
-                    }
-                    else {
-                        title = `Token renewed (copied to clipboard)`;
-                        html = `<p id='swal-token'>${data.token}</p>`;
-                    }
-
-                    Swal.fire({
-                        title: title,
-                        icon: 'info',
-                        width: '25%',
-                        html: html,
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        allowEnterKey: false,
-                        didOpen: () => {
-                            if (!data.file_updated)
-                                navigator.clipboard.writeText(document.getElementById('swal-token').innerText);
+            $.ajax({
+                url: "src/php/POST_authentication.php",
+                type: "POST",
+                dataType: "json",
+                data:{
+                    action: 'auth-renew',
+                    id: element.id,
+                    client: element.client
+                },
+                success: function (data) {
+                    if (data) {    
+                        let title = "";
+                        let html = "";
+    
+                        if (data.file_updated) {
+                            title = `Token renewed (config file updated)`;
                         }
-                    }).then(() => {
-                        document.location.reload();
-                    })
-                }
-            });
+                        else {
+                            title = `Token renewed (copied to clipboard)`;
+                            html = `<p id='swal-token'>${data.token}</p>`;
+                        }
+    
+                        Swal.fire({
+                            title: title,
+                            icon: 'info',
+                            width: '25%',
+                            html: html,
+                            allowEscapeKey: false,
+                            allowOutsideClick: false,
+                            allowEnterKey: false,
+                            didOpen: () => {
+                                if (!data.file_updated)
+                                    navigator.clipboard.writeText(document.getElementById('swal-token').innerText);
+                            }
+                        }).then(() => {
+                            document.location.reload();
+                        })
+                    }
+                },
+                error: errorAPI
+            })
         }
     })
 }
