@@ -26,7 +26,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
-        header("HTTP/1.0 400 Bad request");
+        http_response_code(400);
         break;
 
     case 'POST':
@@ -43,13 +43,13 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     break;
 
                 default:
-                    header("HTTP/1.0 400 Bad request");
+                    http_response_code(400);
                     break;
             }
             exit();
         }
 
-        header("HTTP/1.0 400 Bad request");
+        http_response_code(400);
         exit();
 
     case 'PUT':
@@ -60,7 +60,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
-        header("HTTP/1.0 400 Bad request");
+        http_response_code(400);
         break;
 
     case 'PATCH':
@@ -71,7 +71,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
-        header("HTTP/1.0 400 Bad request");
+        http_response_code(400);
         break;
 
     case 'DELETE':
@@ -80,11 +80,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
-        header("HTTP/1.0 400 Bad request");
+        http_response_code(400);
         break;
 
     default:
-        header("HTTP/1.0 405 Method Not Allowed");
+        http_response_code(405);
         exit();
 }
 
