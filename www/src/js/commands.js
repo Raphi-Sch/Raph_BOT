@@ -126,21 +126,16 @@ function commandAdd() {
 }
 
 function commandEdit(data) {
-    checkbox_auto = data.auto ? "checked" : "";
-    checkbox_mod = data.mod_only ? "checked" : "";
-    checkbox_sub = data.sub_only ? "checked" : "";
-    checkbox_tts = data.tts ? "checked" : "";
-
     Swal.fire({
         title: `Editing : "${data.command}"`,
         icon: 'info',
         html: `<form id='swal-form'>
             <label>Command</label><input class='form-control' type='text' name='command' value="${data.command}"><br />
             <label>Text</label><textarea class='form-control' type='text' name='text'>${data.value}</textarea><br />
-            <label>Auto</label><input class='form-control' type='checkbox' name='auto' ${checkbox_auto}><br />
-            <label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only' ${checkbox_mod}><br />
-            <label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only' ${checkbox_sub}><br />
-            <label>TTS</label><input class='form-control' type='checkbox' name='tts' ${checkbox_tts}><br />
+            <label>Auto</label><input class='form-control' type='checkbox' name='auto' ${data.auto ? "checked" : ""}><br />
+            <label>Mod Only</label><input class='form-control' type='checkbox' name='mod_only' ${data.mod_only ? "checked" : ""}><br />
+            <label>Sub Only</label><input class='form-control' type='checkbox' name='sub_only' ${data.sub_only ? "checked" : ""}><br />
+            <label>TTS</label><input class='form-control' type='checkbox' name='tts' ${data.tts ? "checked" : ""}><br />
             </form>`,
         showCancelButton: true,
         focusConfirm: false,
