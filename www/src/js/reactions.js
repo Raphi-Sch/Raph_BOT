@@ -85,8 +85,6 @@ function reactionAdd() {
 }
 
 function reactionEdit(data) {
-    checkbox_tts = data.tts ? "checked" : "";
-
     Swal.fire({
         title: `Editing : "${data.trigger_word}"`,
         icon: 'info',
@@ -103,7 +101,7 @@ function reactionEdit(data) {
             <button type='button' class='btn btn-sml btn-info' onclick='reactionTimeoutPreset(1800)'>30min</button>
             <br/>
             <br/>
-            <label>TTS</label><input class='form-control' type='checkbox' name='tts' ${checkbox_tts}><br />
+            <label>TTS</label><input class='form-control' type='checkbox' name='tts' ${data.tts ? "checked" : ""}><br />
             </form>`,
         showCancelButton: true,
         focusConfirm: false,

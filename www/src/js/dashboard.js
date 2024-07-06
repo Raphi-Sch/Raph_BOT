@@ -151,8 +151,7 @@ function connectSocket() {
 
             // Update
             socket.on('update', function (json) {
-                data = JSON.parse(json);
-
+                const data = JSON.parse(json);
                 updateTwitchState(data.twitch);
                 updateShoutCounter(data.shout);
                 updateTriggerTime(data.triggerTime);
@@ -162,7 +161,7 @@ function connectSocket() {
             // Log
             socket.on('log', function (msg) {
                 if((is_dashboard && is_tab_log) || is_dock){
-                    log_element = document.getElementById("log");
+                    const log_element = document.getElementById("log");
                     log_element.innerText += msg;
                     log_element.scrollTop = log_element.scrollHeight;
                 }
