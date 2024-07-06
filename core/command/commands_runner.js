@@ -30,7 +30,7 @@ async function runCommand(user, message) {
         if (command !== null && command.response_type !== null) {
             switch (command.response_type) {
                 case "stop":
-                    runStop(user);
+                    result = runStop(user);
                     break;
 
                 case "text":
@@ -38,7 +38,7 @@ async function runCommand(user, message) {
                     break;
 
                 case "audio":
-                    runAudio(command, user);
+                    result = runAudio(command, user);
                     break;
 
                 case "tank-random":
@@ -55,9 +55,8 @@ async function runCommand(user, message) {
         }
 
         // Log if user issued command
-        if (user && result !== null && result !== true)
+        if (user && result !== false)
             socket.log(`[COMMANDS] '${fullCommand[1]}' has been used by '${user['display-name']}'`);
-
     }
 
     return result;
@@ -119,10 +118,10 @@ function runText(command, user) {
     if (user)
         command.value = command.value.replace("@username", user['display-name']);
 
-    if (canUseCommand(command, user))
+    if (canUseCommand(command, user) && command.value !== null)
         return command.value;
 
-    return null;
+    return false;
 }
 
 function runTankRandom(command, user) {
@@ -163,6 +162,7 @@ function runAudio(command, user) {
 
         socket.playAudio(command);
     }
+    return false;
 }
 
 function runTTS(command, user) {
@@ -171,7 +171,7 @@ function runTTS(command, user) {
             if (config.debug_level >= 1) {
                 console.error(`[TTS] Access denied to ${user['display-name']}`);
             }
-            return true;
+            return false;
         }
 
         tts.timeoutStart = Date.now();
@@ -205,6 +205,7 @@ function runStop(user) {
         socket.log(`[CORE] Halted with command in twitch chat`);
         process.exit(0);
     }
+    return false;
 }
 
 module.exports = { runCommand }
