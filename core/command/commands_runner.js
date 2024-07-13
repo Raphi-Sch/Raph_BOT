@@ -182,7 +182,7 @@ function runAudio(command, user) {
 }
 
 function runTextToSpeech(command, user) {
-    // TTS issued by a user
+    // TTS issued by user
     if (user && command.type == 'user') {
         if (!canUseCommand(command, user)) {
             if (config.debug_level >= 1) {
@@ -194,7 +194,7 @@ function runTextToSpeech(command, user) {
         command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
 
         if(!tts.timeoutRunning){
-            // Play directly if no message in queue
+            // Play directly
             tools.TTS(config, socket, command.value, user['display-name']);
             socket.log(`[TTS] Timeout for ${tools.timeoutToString(parseInt(command.timeout))}, next message will be queued during the timeout`);
 
@@ -213,7 +213,7 @@ function runTextToSpeech(command, user) {
             return true;
         }
         else{
-            // Played is delayed
+            // Play is delayed
             tts.queue.push({
                 'text': command.value, 
                 'user': user['display-name'],
@@ -246,7 +246,7 @@ function runTextToSpeech(command, user) {
         return true;
     }
 
-    return true; // No text output, but command success
+    return true; // No text output, but command successful
 }
 
 function runTextToSpeechTimeout(timeout){
