@@ -3,12 +3,15 @@ const tools = require("../tools");
 const socket = require("../socket");
 const { config } = require("../config");
 const { re } = require('@babel/core/lib/vendor/import-meta-resolve');
+const { timeTrigger } = require('./commands');
 
 let excludedTanks = [];
+
 const tts = {
-    timeoutStart: 0,
-    timeoutTotal: 0
+    timeoutRunning : false,
+    queue: []
 }
+
 const audio = {
     timeoutStart: 0,
     timeoutTotal: 0,
@@ -22,7 +25,14 @@ async function runCommand(user, message) {
     const fullCommand = tools.parseCommand(message, config.cmd_prefix);
 
     if (fullCommand) {
+        // Call bot API
         let command = await queryAPI(fullCommand);
+
+        // DEBUG
+        if (config.debug_level >= 2) {
+            console.error(`${tools.logTime()} [COMMANDS] Data received from API :`);
+            console.error(command);
+        }
 
         // Default result is true, to stop processing even if command is unknown. Maybe the command is for another bot
         result = true;
@@ -46,12 +56,18 @@ async function runCommand(user, message) {
                     break;
 
                 case "tts":
-                    result = runTTS(command, user);
+                    result = runTextToSpeech(command, user);
                     break;
 
                 default:
                     break;
             }
+        }
+
+        // DEBUG
+        if (config.debug_level >= 2) {
+            console.error(`${tools.logTime()} [COMMANDS] Command executed, result :`);
+            console.error(result);
         }
 
         // Log if user issued command
@@ -67,7 +83,6 @@ async function queryAPI(fullCommand) {
         command: fullCommand[1],
         param: fullCommand[2],
         tanks_excluded: excludedTanks,
-        tts_timeout: getTimeLeft(tts),
         audio_timeout: getTimeLeft(audio),
         audio_excluded: audio.excluded
     }
@@ -165,7 +180,8 @@ function runAudio(command, user) {
     return false;
 }
 
-function runTTS(command, user) {
+function runTextToSpeech(command, user) {
+    // TTS issued by a user
     if (user && command.tts_type == 'user') {
         if (!canUseCommand(command, user)) {
             if (config.debug_level >= 1) {
@@ -174,18 +190,46 @@ function runTTS(command, user) {
             return false;
         }
 
-        tts.timeoutStart = Date.now();
-        tts.timeoutTotal = parseInt(command.timeout);
-        setTimeout(() => {
-            socket.log(`[TTS] Timeout over.`);
-            tts.timeoutStart = 0;
-        }, tts.timeoutTotal * 1000);
-
         command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
-        tools.TTS(config, socket, command.value, user['display-name']);
-        socket.log(`[TTS] Timeout for ${tools.timeoutToString(parseInt(command.timeout))}`);
+
+        if(!tts.timeoutRunning){
+            // Play directly if no message in queue
+            tools.TTS(config, socket, command.value, user['display-name']);
+            socket.log(`[TTS] Timeout for ${tools.timeoutToString(parseInt(command.timeout))}, next message will be queued during the timeout`);
+
+            // Timeout
+            tts.timeoutRunning = true;
+            setTimeout(() => {
+                runTextToSpeechTimeout(command.timeout);
+                tts.timeoutRunning = false;
+            }, parseInt(command.timeout) * 1000);
+
+            // DEBUG
+            if(config.debug_level >= 2){
+                console.error(`[TTS] Played directly (queue length is 0)`);
+            }
+
+            return true;
+        }
+        else{
+            // Played is delayed
+            tts.queue.push({'text': command.value, 'user': user['display-name']});
+            socket.log(`[TTS] Message added to queue (current length : ${tts.queue.length})`);
+
+            // DEBUG
+            if(config.debug_level >= 2){
+                console.error(`[TTS] Queue length : ${tts.queue.length}`);
+            }
+
+            if(command.tts_text_to_chat != ""){
+                return command.tts_text_to_chat.replace("@username", tools.simplifyUsername(user['display-name']));
+            }
+
+            return true;
+        }
     }
 
+    // TTS issued by internal code
     if (command.tts_type == 'bot') {
         if (user) {
             command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
@@ -194,6 +238,23 @@ function runTTS(command, user) {
     }
 
     return true; // No text output, but command success
+}
+
+function runTextToSpeechTimeout(timeout){
+    let current = tts.queue[0];
+    tts.queue.shift();
+    tools.TTS(config, socket, current.text, current.user);
+    socket.log(`[TTS] Playing from queue (${tts.queue.length} left)`);
+    
+    setTimeout(() => {
+        if(tts.queue.length > 0){
+            tts.timeoutRunning = true;
+            runTextToSpeechTimeout();
+        }
+        else {
+            tts.timeoutRunning = false;
+        }
+    }, parseInt(timeout) * 1000);
 }
 
 function getTimeLeft(obj) {
