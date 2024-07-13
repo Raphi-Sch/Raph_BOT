@@ -176,6 +176,7 @@ function runAudio(command, user) {
         socket.log(`[AUDIO] Global timeout set (${tools.timeoutToString(audio.timeoutTotal)})`);
 
         socket.playAudio(command);
+        return true;
     }
     return false;
 }
