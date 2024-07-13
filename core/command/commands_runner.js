@@ -222,7 +222,9 @@ function runTextToSpeech(command, user) {
             }
 
             if(command.tts_text_to_chat != ""){
-                return command.tts_text_to_chat.replace("@username", tools.simplifyUsername(user['display-name']));
+                command.tts_text_to_chat = command.tts_text_to_chat.replace("@username", tools.simplifyUsername(user['display-name']));
+                command.tts_text_to_chat = command.tts_text_to_chat.replace("@timeout", tools.timeoutToString(tts.queue.length * command.timeout));
+                return command.tts_text_to_chat;
             }
 
             return true;
