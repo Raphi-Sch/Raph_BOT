@@ -419,7 +419,11 @@
                 "type": 0
             },
             "tts_text_timeout": {
-                "value": "@username : TTS not available yet (retry in @timeout sec)",
+                "value": "@username : Your message as been queued (ETA : @timeout)",
+                "type": 0
+            },
+            "tts_text_playing": {
+                "value": "@username : Your message is currently playing",
                 "type": 0
             },
             "tts_timeout": {
