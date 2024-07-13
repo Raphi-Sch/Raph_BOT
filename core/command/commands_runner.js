@@ -183,7 +183,7 @@ function runAudio(command, user) {
 
 function runTextToSpeech(command, user) {
     // TTS issued by a user
-    if (user && command.tts_type == 'user') {
+    if (user && command.type == 'user') {
         if (!canUseCommand(command, user)) {
             if (config.debug_level >= 1) {
                 console.error(`[TTS] Access denied to ${user['display-name']}`);
@@ -214,7 +214,12 @@ function runTextToSpeech(command, user) {
         }
         else{
             // Played is delayed
-            tts.queue.push({'text': command.value, 'user': user['display-name']});
+            tts.queue.push({
+                'text': command.value, 
+                'user': user['display-name'],
+                'twitchText': command.text_playing
+            });
+
             socket.log(`[TTS] Message added to queue (current length : ${tts.queue.length})`);
 
             // DEBUG
@@ -222,10 +227,10 @@ function runTextToSpeech(command, user) {
                 console.error(`[TTS] Queue length : ${tts.queue.length}`);
             }
 
-            if(command.tts_text_to_chat != ""){
-                command.tts_text_to_chat = command.tts_text_to_chat.replace("@username", tools.simplifyUsername(user['display-name']));
-                command.tts_text_to_chat = command.tts_text_to_chat.replace("@timeout", tools.timeoutToString(tts.queue.length * command.timeout));
-                return command.tts_text_to_chat;
+            if(command.text_timeout != null){
+                command.text_timeout = command.text_timeout.replace("@username", tools.simplifyUsername(user['display-name']));
+                command.text_timeout = command.text_timeout.replace("@timeout", tools.timeoutToString(tts.queue.length * command.timeout));
+                return command.text_timeout;
             }
 
             return true;
@@ -233,11 +238,12 @@ function runTextToSpeech(command, user) {
     }
 
     // TTS issued by internal code
-    if (command.tts_type == 'bot') {
+    if (command.type == 'bot') {
         if (user) {
             command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
         }
         tools.TTS(config, socket, command.value, 'Raph_BOT');
+        return true;
     }
 
     return true; // No text output, but command success

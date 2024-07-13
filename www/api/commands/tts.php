@@ -3,7 +3,6 @@
 function tts_run($db, $data)
 {
     $text = $data['param'];
-    $tts_text_to_chat = "";
 
     // Load config dynamically
     $TTS_config = array();
@@ -21,8 +20,12 @@ function tts_run($db, $data)
     }
 
     // Timeout
+    $tts_text_timeout = "";
+    $tts_text_playing = "";
+
     if (boolval($TTS_config['tts_text_answer'])){
-        $tts_text_to_chat = $TTS_config['tts_text_timeout'];
+        $tts_text_timeout = $TTS_config['tts_text_timeout'];
+        $tts_text_playing = $TTS_config['tts_text_playing'];
     }
     
     // Format text output
@@ -31,10 +34,11 @@ function tts_run($db, $data)
     return [
         'response_type' => 'tts',
         'value' => $text,
-        'tts_type' => 'user',
+        'type' => 'user',
         'mod_only' => intval($TTS_config['tts_mod_only']),
         'sub_only' => intval($TTS_config['tts_sub_only']),
         'timeout' => intval($TTS_config['tts_timeout']),
-        'tts_text_to_chat' => $tts_text_to_chat
+        'text_timeout' => $tts_text_timeout,
+        'text_playing' => $tts_text_playing
     ];
 }
