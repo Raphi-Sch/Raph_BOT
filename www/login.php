@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="en-GB">
 
 <head>
-    <?php include 'src/html/header.html'; ?>
+    <?php include_once 'src/html/header.html'; ?>
     <title>Login - <?php echo $bot_name;?> </title>
 </head>
 

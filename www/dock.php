@@ -7,7 +7,7 @@ require_once 'src/php/header.php';
 
 <head>
     <title id='bot_name'>Dock - </title>
-    <?php include 'src/html/header.html'; ?>
+    <?php include_once 'src/html/header.html'; ?>
 </head>
 
 <body class="dock">

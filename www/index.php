@@ -231,7 +231,7 @@ if ($can_redirect) {
 
 <head>
     <title>Index - Raph_BOT</title>
-    <?php include 'src/html/header.html'; ?>
+    <?php include_once 'src/html/header.html'; ?>
 </head>
 
 <body>

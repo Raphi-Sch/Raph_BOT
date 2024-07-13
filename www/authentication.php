@@ -37,15 +37,15 @@ while($row = $data->fetch_assoc()){
 
 <head>
     <title id='bot_name'>Authentication - </title>
-    <?php include 'src/html/header.html'; ?>
+    <?php include_once 'src/html/header.html'; ?>
 </head>
 
 <body>
     <!-- TOP Navbar -->
-    <?php include 'src/php/navbar.php'; ?>
+    <?php include_once 'src/php/navbar.php'; ?>
 
     <!-- Side Navbar -->
-    <?php include 'src/html/sidebar.html'; ?>
+    <?php include_once 'src/html/sidebar.html'; ?>
 
     <!-- Main area -->
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -67,7 +67,7 @@ while($row = $data->fetch_assoc()){
         </table>
     </div>
 
-    <?php include 'src/php/alert.php'; ?>
+    <?php include_once 'src/php/alert.php'; ?>
 
     <script src="src/js/common.js"></script>
     <script src="src/js/authentication.js"></script>
