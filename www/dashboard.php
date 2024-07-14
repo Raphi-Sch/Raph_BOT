@@ -101,6 +101,7 @@ require_once 'src/php/header.php';
             <ul class="nav nav-tabs">
                 <li id="tab-log"><a href="#" onclick='getLog()'>Log</a></li>
                 <li id="tab-debug"><a href="#" onclick='getDebug()'>Debug</a></li>
+                <li id="tab-apache2-log"><a href="#" onclick='getApache2Log()'>Apache2 Log</a></li>
             </ul>
 
             <div class="dash-log">

@@ -40,6 +40,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if (isset($_GET['apache2-log'])) {
+            header(HEADER_TEXT);
+            echo get_apache2_log();
+            break;
+        }
+
         if (isset($_GET['list'])) {
             header(HEADER_JSON);
             echo json_encode(config_list($db));
@@ -99,6 +105,11 @@ function get_log()
 function get_debug()
 {
     return file_get_contents(dirname(__FILE__) . "/../../core/debug.log");
+}
+
+function get_apache2_log()
+{
+    return file_get_contents("/var/www/html/logs/raphbot_http_error.log");
 }
 
 function config_list(mysqli $db)

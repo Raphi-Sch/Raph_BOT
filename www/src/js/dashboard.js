@@ -214,6 +214,7 @@ function getLog() {
     if (is_dashboard) {
         document.getElementById('tab-log').classList.add('active');
         document.getElementById('tab-debug').classList.remove('active');
+        document.getElementById('tab-apache2-log').classList.remove('active');
         is_tab_log = true;
     }
 
@@ -238,11 +239,37 @@ function getDebug() {
     if (is_dashboard) {
         document.getElementById('tab-debug').classList.add('active');
         document.getElementById('tab-log').classList.remove('active');
+        document.getElementById('tab-apache2-log').classList.remove('active');
         is_tab_log = false;
     }
 
     $.ajax({
         url: "api/config.php?debug",
+        type: "GET",
+        success: function (result) {
+            document.getElementById("log").innerText = "";
+            document.getElementById("log").innerText = result;
+        },
+        error: function (result, status, error) {
+            Swal.fire({
+                title: "API Error while loading",
+                text: error,
+                type: 'error'
+            })
+        }
+    })
+}
+
+function getApache2Log() {
+    if (is_dashboard) {
+        document.getElementById('tab-apache2-log').classList.add('active');
+        document.getElementById('tab-log').classList.remove('active');
+        document.getElementById('tab-debug').classList.remove('active');
+        is_tab_log = false;
+    }
+
+    $.ajax({
+        url: "api/config.php?apache2-log",
         type: "GET",
         success: function (result) {
             document.getElementById("log").innerText = "";
