@@ -49,7 +49,7 @@ function updateTriggerTime(data) {
         }
         else {
             document.getElementById('auto-cmd-time-bar').style.width = "100%";
-            document.getElementById('auto-cmd-time-bar').className = "progress-bar progress-bar-danger progress-bar-striped";
+            document.getElementById('auto-cmd-time-bar').className = "progress-bar progress-bar-danger";
             document.getElementById('auto-cmd-time-text').innerHTML = "Disabled";
         }
     }
@@ -70,7 +70,7 @@ function updateTriggerMessage(data) {
         }
         else {
             document.getElementById('auto-cmd-msg-bar').style.width = "100%";
-            document.getElementById('auto-cmd-msg-bar').className = "progress-bar progress-bar-danger progress-bar-striped";
+            document.getElementById('auto-cmd-msg-bar').className = "progress-bar progress-bar-danger";
             document.getElementById('auto-cmd-msg-text').innerHTML = "Disabled";
         }
     }
