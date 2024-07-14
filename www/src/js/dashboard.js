@@ -42,9 +42,16 @@ function updateShoutCounter(data) {
 function updateTriggerTime(data) {
     // Dashboard
     if (is_dashboard) {
-        document.getElementById('auto-cmd-time-bar').style.width = (data.current / data.max) * 100 + "%";
-        document.getElementById('auto-cmd-time-text').innerHTML = data.current + " / " + data.max;
-        document.getElementById('auto-cmd-time-counter').innerHTML = data.total;
+        if (data.max > 0) {
+            document.getElementById('auto-cmd-time-bar').style.width = (data.current / data.max) * 100 + "%";
+            document.getElementById('auto-cmd-time-text').innerHTML = data.current + " / " + data.max;
+            document.getElementById('auto-cmd-time-counter').innerHTML = data.total;
+        }
+        else {
+            document.getElementById('auto-cmd-time-bar').style.width = "100%";
+            document.getElementById('auto-cmd-time-bar').className = "progress-bar progress-bar-danger progress-bar-striped";
+            document.getElementById('auto-cmd-time-text').innerHTML = "Disabled";
+        }
     }
 
     // Dock
@@ -56,9 +63,16 @@ function updateTriggerTime(data) {
 function updateTriggerMessage(data) {
     // Dashboard
     if (is_dashboard) {
-        document.getElementById('auto-cmd-msg-bar').style.width = (data.current / data.max) * 100 + "%";
-        document.getElementById('auto-cmd-msg-text').innerHTML = data.current + " / " + data.max;
-        document.getElementById('auto-cmd-msg-counter').innerHTML = data.total;
+        if (data.max > 0) {
+            document.getElementById('auto-cmd-msg-bar').style.width = (data.current / data.max) * 100 + "%";
+            document.getElementById('auto-cmd-msg-text').innerHTML = data.current + " / " + data.max;
+            document.getElementById('auto-cmd-msg-counter').innerHTML = data.total;
+        }
+        else {
+            document.getElementById('auto-cmd-msg-bar').style.width = "100%";
+            document.getElementById('auto-cmd-msg-bar').className = "progress-bar progress-bar-danger progress-bar-striped";
+            document.getElementById('auto-cmd-msg-text').innerHTML = "Disabled";
+        }
     }
 
     // Dock
@@ -160,7 +174,7 @@ function connectSocket() {
 
             // Log
             socket.on('log', function (msg) {
-                if((is_dashboard && is_tab_log) || is_dock){
+                if ((is_dashboard && is_tab_log) || is_dock) {
                     const log_element = document.getElementById("log");
                     log_element.innerText += msg;
                     log_element.scrollTop = log_element.scrollHeight;
@@ -174,12 +188,12 @@ function connectSocket() {
             })
 
             // Reload log
-            socket.on('reload-log', function (){
+            socket.on('reload-log', function () {
                 getLog();
             });
 
             // TTS
-            socket.on('play-TTS', function(){
+            socket.on('play-TTS', function () {
                 playAudio('tts.mp3', 1);
             })
 
@@ -195,7 +209,7 @@ function connectSocket() {
 }
 
 function getLog() {
-    if(is_dashboard){
+    if (is_dashboard) {
         document.getElementById('tab-log').classList.add('active');
         document.getElementById('tab-debug').classList.remove('active');
         is_tab_log = true;
@@ -219,7 +233,7 @@ function getLog() {
 }
 
 function getDebug() {
-    if(is_dashboard){
+    if (is_dashboard) {
         document.getElementById('tab-debug').classList.add('active');
         document.getElementById('tab-log').classList.remove('active');
         is_tab_log = false;
