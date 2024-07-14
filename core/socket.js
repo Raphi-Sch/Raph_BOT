@@ -89,6 +89,7 @@ function init(version) {
 io.on('connection', socket => {
     socket.join(room);
     socket.emit('reload-log');
+    broadcast();
 
     socket.on('stop-core', function () {
         log("[CORE] Halted with WebUI");
