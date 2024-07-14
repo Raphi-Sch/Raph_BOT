@@ -142,7 +142,7 @@ function request(mysqli $db, $data)
             return tts_run($db, $data);
 
         default:
-            return null;
+            break;
     }
 
     // Custom commands
