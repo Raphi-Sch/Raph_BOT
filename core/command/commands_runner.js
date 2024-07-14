@@ -36,9 +36,6 @@ async function runCommand(user, message) {
 
         if (command !== null && command.response_type !== null && canUseCommand(command, user)) {
             switch (command.response_type) {
-                default:
-                    break;
-
                 case "stop":
                     result = runStop(user);
                     break;
@@ -57,6 +54,9 @@ async function runCommand(user, message) {
 
                 case "tts":
                     result = runTextToSpeech(command, user);
+                    break;
+
+                default:
                     break;
             }
         }
