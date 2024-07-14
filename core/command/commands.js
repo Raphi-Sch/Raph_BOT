@@ -44,14 +44,15 @@ async function runTimeTrigger() {
 }
 
 async function runMessageTrigger() {
-    const message_interval = config.cmd_msg_interval
-    message_counter++;
-    socket.setMessageCounter(message_counter, message_interval, total_auto_cmd_msg);
+    if (config.cmd_msg_interval > 0) {
+        message_counter++;
+        socket.setMessageCounter(message_counter, config.cmd_msg_interval, total_auto_cmd_msg);
 
-    if (message_counter >= message_interval) {
-        message_counter = 0
-        total_auto_cmd_msg++;
-        return autoCommand();
+        if (message_counter >= config.cmd_msg_interval) {
+            message_counter = 0
+            total_auto_cmd_msg++;
+            return autoCommand();
+        }
     }
 
     return null;
@@ -99,11 +100,11 @@ function run(user, message) {
     return runnable.run(user, message)
 }
 
-function timeTrigger(){
+function timeTrigger() {
     return runnable.timeTrigger();
 }
 
-function messageTrigger(){
+function messageTrigger() {
     return runnable.messageTrigger();
 }
 

@@ -25,13 +25,15 @@ function init() {
         send(config.twitch_connection_message);
         socket.log("[TWITCH] Connected on : " + address)
 
-        setInterval(async function () {
-            commands.timeTrigger().then(result => {
-                if (result) {
-                    send(result)
-                }
-            })
-        }, 60000);
+        if (config.cmd_time_interval > 0) {
+            setInterval(async function () {
+                commands.timeTrigger().then(result => {
+                    if (result) {
+                        send(result)
+                    }
+                })
+            }, 60000);
+        }
     });
 
     tmiClient.on('disconnected', function () {
@@ -99,7 +101,7 @@ function initTmi() {
 }
 
 function send(msg) {
-    if (msg !== null && msg !== true){
+    if (msg !== null && msg !== true) {
         tmiClient.say(config.twitch_channel, msg);
     }
 }
