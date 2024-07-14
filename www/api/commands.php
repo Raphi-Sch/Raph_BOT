@@ -153,7 +153,7 @@ function request(mysqli $db, $data)
             return ['response_type' => 'text', 'value' => $result['value'], 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
         }
         else{
-            return ['response_type' => 'tts', 'value' => $result['value'], 'tts_type' => 'bot', 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
+            return ['response_type' => 'tts', 'value' => $result['value'], 'type' => 'bot', 'mod_only' => $result['mod_only'], 'sub_only' => $result['sub_only']];
         }
     }
 
