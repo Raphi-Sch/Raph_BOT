@@ -13,7 +13,7 @@ function tts_run($db, $data)
 
     // Active
     if (!boolval($TTS_config['tts_enable'])) {
-        if (boolval($TTS_config['tts_text_answer'])){
+        if (boolval($TTS_config['tts_text_answer'])) {
             return ['response_type' => 'text', 'value' => $TTS_config['tts_text_disable'], 'mod_only' => 0, 'sub_only' => 0];
         }
         return ['response_type' => null];
@@ -23,11 +23,16 @@ function tts_run($db, $data)
     $tts_text_timeout = "";
     $tts_text_playing = "";
 
-    if (boolval($TTS_config['tts_text_answer'])){
+    if (boolval($TTS_config['tts_text_answer'])) {
         $tts_text_timeout = $TTS_config['tts_text_timeout'];
         $tts_text_playing = $TTS_config['tts_text_playing'];
     }
-    
+
+    // Too long
+    if (intval($TTS_config['tts_character_limit']) > 0 && strlen($text) > intval($TTS_config['tts_character_limit'])) {
+        return ['response_type' => 'text', 'value' => $TTS_config['tts_character_limit_replace'], 'mod_only' => 0, 'sub_only' => 0];
+    }
+
     // Format text output
     $text = $TTS_config['tts_prefix'] . " " . $text;
 
