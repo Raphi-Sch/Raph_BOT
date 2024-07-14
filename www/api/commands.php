@@ -140,6 +140,9 @@ function request(mysqli $db, $data)
 
         case 'tts':
             return tts_run($db, $data);
+
+        default:
+            return null;
     }
 
     // Custom commands
@@ -208,9 +211,6 @@ function command_add(mysqli $db, $data)
     $sub_only = boolval($data['sub_only']);
     $tts = boolval($data['tts']);
 
-    if ($auto)
-        $tts = 0;
-
     db_query_no_result($db, "INSERT INTO commands (`id`, `command`, `value`, `auto`, `mod_only`, `sub_only`, `tts`) VALUES (NULL, ?, ?, ?, ?, ?, ?)", "ssiiii", [$command, $text, $auto, $mod_only, $sub_only, $tts]);
 
     log_activity("API", "[COMMAND] Added", $command);
@@ -225,9 +225,6 @@ function command_edit(mysqli $db, $data)
     $mod_only = boolval($data['mod_only']) || boolval($data['sub_only']);
     $sub_only = boolval($data['sub_only']);
     $tts = boolval($data['tts']);
-
-    if ($auto)
-        $tts = 0;
 
     db_query_no_result(
         $db,
