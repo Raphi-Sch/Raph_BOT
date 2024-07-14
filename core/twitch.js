@@ -49,32 +49,29 @@ function init() {
 
         const moderatorResult = await moderator.run(user, message, twitchAPI);
         if (moderatorResult !== null) {
-            if(moderatorResult !== true)
-                send(moderatorResult);
+            send(moderatorResult);
             return;
         }
 
         const messageTriggerResult = await commands.messageTrigger();
-        if (messageTriggerResult) {
+        if (messageTriggerResult !== null) {
             send(messageTriggerResult);
         }
 
         const commandResult = await commands.run(user, message)
         if (commandResult !== null) {
-            if (commandResult !== true)
-                send(commandResult);
+            send(commandResult);
             return;
         }
 
         const reactionResult = await reaction.run(user, message);
         if (reactionResult !== null) {
-            if (reactionResult !== true)
-                send(reactionResult);
+            send(reactionResult);
             return;
         }
 
         const shoutResult = await shout.run(user, message);
-        if (shoutResult) {
+        if (shoutResult !== null) {
             send(shoutResult);
             return;
         }
@@ -102,7 +99,9 @@ function initTmi() {
 }
 
 function send(msg) {
-    tmiClient.say(config.twitch_channel, msg);
+    if (msg !== null && msg !== true){
+        tmiClient.say(config.twitch_channel, msg);
+    }
 }
 
 module.exports = { init }
