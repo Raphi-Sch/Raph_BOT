@@ -43,6 +43,7 @@ function updateTriggerTime(data) {
     // Dashboard
     if (is_dashboard) {
         if (data.max > 0) {
+            document.getElementById('auto-cmd-time-bar').className = "progress-bar progress-bar-info";
             document.getElementById('auto-cmd-time-bar').style.width = (data.current / data.max) * 100 + "%";
             document.getElementById('auto-cmd-time-text').innerHTML = data.current + " / " + data.max;
             document.getElementById('auto-cmd-time-counter').innerHTML = data.total;
@@ -64,6 +65,7 @@ function updateTriggerMessage(data) {
     // Dashboard
     if (is_dashboard) {
         if (data.max > 0) {
+            document.getElementById('auto-cmd-time-bar').className = "progress-bar progress-bar-info";
             document.getElementById('auto-cmd-msg-bar').style.width = (data.current / data.max) * 100 + "%";
             document.getElementById('auto-cmd-msg-text').innerHTML = data.current + " / " + data.max;
             document.getElementById('auto-cmd-msg-counter').innerHTML = data.total;

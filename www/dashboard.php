@@ -42,7 +42,7 @@ require_once 'src/php/header.php';
                     <div class="col-sm-9">
                         <div class="progress">
                             <div class="progress-bar progress-bar-warning" role="progressbar" style="width:100%" id="twitch-statut">
-                                <span>Waiting for the core</span>
+                                <span>Waiting for update</span>
                             </div>
                         </div>
                     </div>
@@ -56,8 +56,8 @@ require_once 'src/php/header.php';
                     <div class="col-sm-1" id="auto-cmd-msg-counter">0</div>
                     <div class="col-sm-9">
                         <div class="progress">
-                            <div class="progress-bar progress-bar-info" role="progressbar" style="width:0%" id="auto-cmd-msg-bar">
-                                <span id="auto-cmd-msg-text"></span>
+                            <div class="progress-bar progress-bar-warning" role="progressbar" style="width:100%" id="auto-cmd-msg-bar">
+                                <span id="auto-cmd-msg-text">Waiting for update</span>
                             </div>
                         </div>
                     </div>
@@ -69,8 +69,8 @@ require_once 'src/php/header.php';
                     <div class="col-sm-1" id="auto-cmd-time-counter">0</div>
                     <div class="col-sm-9">
                         <div class="progress">
-                            <div class="progress-bar progress-bar-info" role="progressbar" style="width:0%" id="auto-cmd-time-bar">
-                                <span id="auto-cmd-time-text"></span>
+                            <div class="progress-bar progress-bar-warning" role="progressbar" style="width:100%" id="auto-cmd-time-bar">
+                                <span id="auto-cmd-time-text">Waiting for update</span>
                             </div>
                         </div>
                     </div>
@@ -81,8 +81,8 @@ require_once 'src/php/header.php';
                     <div class="col-sm-3">Shout Trigger</div>
                     <div class="col-sm-9">
                         <div class="progress">
-                            <div class="progress-bar progress-bar-warning" role="progressbar" style="width:0%" id="shout-bar">
-                                <span id="shout-text"></span>
+                            <div class="progress-bar progress-bar-warning" role="progressbar" style="width:100%" id="shout-bar">
+                                <span id="shout-text">Waiting for update</span>
                             </div>
                         </div>
                     </div>
