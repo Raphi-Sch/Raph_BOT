@@ -171,7 +171,7 @@ function runAudio(command, user) {
         socket.log(`[AUDIO] Global timeout over.`);
     }, audio.timeoutTotal * 1000);
 
-    socket.log(`[AUDIO] '${command.name}' has been played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
+    socket.log(`[AUDIO] '${command.name}' played by '${user['display-name']}' (timeout : ${tools.timeoutToString(command.timeout)})`);
     socket.log(`[AUDIO] Global timeout set (${tools.timeoutToString(audio.timeoutTotal)})`);
 
     socket.playAudio(command);
