@@ -113,17 +113,25 @@ async function queryAPI(fullCommand) {
 }
 
 function canUseCommand(command, user) {
-    // Mod Only
-    if (command.mod_only && user && (user.mod || user.username === config.twitch_channel.toLowerCase()))
+    // No user : internal code
+    if (user == null) {
         return true;
+    }
+
+    // Mod Only
+    if (command.mod_only && user && (user.mod || user.username === config.twitch_channel.toLowerCase())) {
+        return true;
+    }
 
     // Sub only
-    if (command.sub_only && user && user.subscriber)
+    if (command.sub_only && user && user.subscriber) {
         return true;
+    }
 
     // Everyone
-    if (!command.mod_only && !command.sub_only)
+    if (!command.mod_only && !command.sub_only) {
         return true;
+    }
 
     return false
 }
@@ -216,6 +224,7 @@ function runTextToSpeech(command, user) {
             command.value = command.value.replace("@username", tools.simplifyUsername(user['display-name']));
         }
         tools.TTS(config, socket, command.value, 'Raph_BOT');
+        socket.log(`[TTS] Issued by internal code`);
         return true;
     }
 
