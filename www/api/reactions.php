@@ -11,7 +11,7 @@ $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['list'])) {
-            echo json_encode(get_list($db));
+            echo json_encode(get_reactions($db));
             break;
         }
 
@@ -27,7 +27,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 break;
             }
 
-            echo json_encode(request($db, $body['message'], $exclusion));
+            echo json_encode(post_reaction($db, $body['message'], $exclusion));
             break;
         }
 
@@ -38,7 +38,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     case 'PUT':
         if (isset($body['trigger'])) {
             header('Content-Type: application/json');
-            echo json_encode(add($db, $body));
+            echo json_encode(put_reaction($db, $body));
             break;
         }
 
@@ -48,7 +48,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     case 'PATCH':
         if (isset($body['id'])) {
             header('Content-Type: application/json');
-            echo json_encode(edit($db, $body));
+            echo json_encode(patch_reaction($db, $body));
             break;
         }
 
@@ -57,7 +57,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
     case 'DELETE':
         if (isset($_GET['id'])) {
-            echo json_encode(delete($db, $_GET['id']));
+            echo json_encode(delete_reaction($db, $_GET['id']));
             break;
         }
 
@@ -72,7 +72,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 exit();
 
 
-function request(mysqli $db, $message, $exclusion)
+function post_reaction(mysqli $db, $message, $exclusion)
 {
     // Initial clean up
     $message = unleet($db, $message);
@@ -114,7 +114,7 @@ function request(mysqli $db, $message, $exclusion)
         return $result;
 }
 
-function get_list(mysqli $db)
+function get_reactions(mysqli $db)
 {
     $SQL_query = "SELECT * FROM reactions ORDER BY trigger_word ASC";
     $data = db_query_raw($db, $SQL_query);
@@ -130,7 +130,7 @@ function get_list(mysqli $db)
     return $result;
 }
 
-function add(mysqli $db, $data)
+function put_reaction(mysqli $db, $data)
 {
     $trigger = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($data['trigger'])));
     $reaction = trim($data['reaction']);
@@ -144,7 +144,7 @@ function add(mysqli $db, $data)
     return true;
 }
 
-function edit(mysqli $db, $data)
+function patch_reaction(mysqli $db, $data)
 {
     $trigger = preg_replace("/[^a-z0-9]+/", "", trim(strtolower($data['trigger'])));
     $reaction = trim($data['reaction']);
@@ -158,7 +158,7 @@ function edit(mysqli $db, $data)
     return true;
 }
 
-function delete(mysqli $db, int $id)
+function delete_reaction(mysqli $db, int $id)
 {
     $trigger = db_query($db, 'SELECT `trigger_word` FROM `reactions` WHERE id = ?', "s", $id)['trigger_word'];
     log_activity("API", "[REACTION] Deleted", $trigger);

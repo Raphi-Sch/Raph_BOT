@@ -12,19 +12,19 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['plugin'])) {
             header(HEADER_JSON);
-            echo json_encode(plugin_list($db));
+            echo json_encode(get_plugin($db));
             break;
         }
 
         if (isset($_GET['name'])) {
             header(HEADER_JSON);
-            echo json_encode(bot_name($db));
+            echo json_encode(get_bot_name($db));
             break;
         }
 
         if (isset($_GET['socket'])) {
             header(HEADER_JSON);
-            echo json_encode(socket_config());
+            echo json_encode(get_socket_conf());
             break;
         }
 
@@ -48,7 +48,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
         if (isset($_GET['list'])) {
             header(HEADER_JSON);
-            echo json_encode(config_list($db));
+            echo json_encode(get_config($db));
             break;
         }
 
@@ -58,7 +58,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     case 'PATCH':
         if (isset($_GET['edit']) && isset($body['id']) && isset($body['value'])) {
             header(HEADER_JSON);
-            echo json_encode(config_patch($db, $body));
+            echo json_encode(patch_config($db, $body));
             break;
         }
 
@@ -72,7 +72,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 exit();
 
-function plugin_list(mysqli $db)
+function get_plugin(mysqli $db)
 {
     $SQL_query = "SELECT * FROM `config` WHERE id LIKE 'plugin_%'";
     $data = db_query_raw($db, $SQL_query);
@@ -86,12 +86,12 @@ function plugin_list(mysqli $db)
     return $result;
 }
 
-function bot_name(mysqli $db)
+function get_bot_name(mysqli $db)
 {
     return array("value" => db_query($db, "SELECT `value` FROM config WHERE id = 'bot_name'")["value"]);
 }
 
-function socket_config()
+function get_socket_conf()
 {
     $config = json_decode(file_get_contents("../../core/config.json"), true);
     return ["port" => $config['socket_port'], "protocol" => $config['socket_protocol']];
@@ -112,7 +112,7 @@ function get_apache2_log()
     return file_get_contents("/var/www/html/logs/raphbot_http_error.log");
 }
 
-function config_list(mysqli $db)
+function get_config(mysqli $db)
 {
     $SQL_query = "SELECT * FROM `config`";
     $data = db_query_raw($db, $SQL_query);
@@ -128,7 +128,7 @@ function config_list(mysqli $db)
     return $result;
 }
 
-function config_patch(mysqli $db, $body)
+function patch_config(mysqli $db, $body)
 {
     $id = $body['id'];
     $value = $body['value'];

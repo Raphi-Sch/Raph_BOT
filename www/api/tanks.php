@@ -11,17 +11,17 @@ $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['list-tanks'])) {
-            echo json_encode(tank_list($db));
+            echo json_encode(get_tank($db));
             break;
         }
 
         if (isset($_GET['list-alias'])) {
-            echo json_encode(alias_list($db));
+            echo json_encode(get_tank_alias($db));
             break;
         }
 
         if (isset($_GET['list-nation'])) {
-            echo json_encode(nation_list($db));
+            echo json_encode(get_nation_alias($db));
             break;
         }
 
@@ -30,17 +30,17 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
     case 'PUT':
         if (isset($_GET['tank'])) {
-            echo json_encode(tank_add($db, $body));
+            echo json_encode(put_tank($db, $body));
             break;
         }
 
         if (isset($_GET['nation'])) {
-            echo json_encode(nation_add($db, $body));
+            echo json_encode(put_nation_alias($db, $body));
             break;
         }
 
         if (isset($_GET['alias'])) {
-            echo json_encode(alias_add($db, $body));
+            echo json_encode(put_tank_alias($db, $body));
             break;
         }
 
@@ -50,7 +50,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
     case 'PATCH':
         if (isset($_GET['tank'])) {
-            echo json_encode(tank_edit($db, $body));
+            echo json_encode(patch_tank($db, $body));
             break;
         }
 
@@ -59,17 +59,17 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
     case 'DELETE':
         if (isset($_GET['tank']) && isset($_GET['id'])) {
-            echo json_encode(tank_delete($db, $_GET['id']));
+            echo json_encode(delete_tank($db, $_GET['id']));
             break;
         }
 
         if (isset($_GET['nation']) && isset($_GET['alias'])) {
-            echo json_encode(nation_delete($db, $_GET['alias']));
+            echo json_encode(delete_nation_alias($db, $_GET['alias']));
             break;
         }
 
         if (isset($_GET['alias'])) {
-            echo json_encode(alias_delete($db, $_GET['alias']));
+            echo json_encode(delete_tank_alias($db, $_GET['alias']));
             break;
         }
 
@@ -83,7 +83,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 exit();
 
-function tank_list(mysqli $db)
+function get_tank(mysqli $db)
 {
     $SQL_query = "SELECT * FROM tanks ORDER BY `trigger_word` ASC";
     $data = db_query_raw($db, $SQL_query);
@@ -99,7 +99,7 @@ function tank_list(mysqli $db)
     return $result;
 }
 
-function tank_add(mysqli $db, $data)
+function put_tank(mysqli $db, $data)
 {
     $trigger_word = strtolower(trim($data['trigger']));
     $nation = trim($data['nation']);
@@ -118,7 +118,7 @@ function tank_add(mysqli $db, $data)
     return true;
 }
 
-function tank_edit(mysqli $db, $data)
+function patch_tank(mysqli $db, $data)
 {
     $trigger_word = trim($data['trigger']);
     $name = trim($data['name']);
@@ -132,14 +132,14 @@ function tank_edit(mysqli $db, $data)
     return true;
 }
 
-function tank_delete(mysqli $db, $id)
+function delete_tank(mysqli $db, $id)
 {
     db_query_no_result($db, "DELETE FROM tanks WHERE id= ?", "i", $id);
     log_activity("API", "[TANKS] Deleted");
     return true;
 }
 
-function nation_list(mysqli $db)
+function get_nation_alias(mysqli $db)
 {
     $SQL_query = "SELECT * FROM tanks_nation ORDER BY nation ASC";
     $data = db_query_raw($db, $SQL_query);
@@ -155,7 +155,7 @@ function nation_list(mysqli $db)
     return $result;
 }
 
-function nation_add(mysqli $db, $data)
+function put_nation_alias(mysqli $db, $data)
 {
     $alias = strtolower(trim($data['alias']));
     $nation = $data['nation'];
@@ -164,7 +164,7 @@ function nation_add(mysqli $db, $data)
     return true;
 }
 
-function nation_delete(mysqli $db, $alias)
+function delete_nation_alias(mysqli $db, $alias)
 {
     db_query_no_result($db, "DELETE FROM tanks_nation WHERE alias = ?", "s", $alias);
 
@@ -172,7 +172,7 @@ function nation_delete(mysqli $db, $alias)
     return true;
 }
 
-function alias_list(mysqli $db)
+function get_tank_alias(mysqli $db)
 {
     $SQL_query = "SELECT * FROM tanks_alias ORDER BY tank ASC";
     $data = db_query_raw($db, $SQL_query);
@@ -188,7 +188,7 @@ function alias_list(mysqli $db)
     return $result;
 }
 
-function alias_add(mysqli $db, $data)
+function put_tank_alias(mysqli $db, $data)
 {
     $alias = strtolower(trim($data['alias']));
     $tank = $data['tank'];
@@ -198,7 +198,7 @@ function alias_add(mysqli $db, $data)
     return true;
 }
 
-function alias_delete(mysqli $db, $alias)
+function delete_tank_alias(mysqli $db, $alias)
 {
     db_query_no_result($db, "DELETE FROM tanks_alias WHERE alias = ?", "s", $alias);
 

@@ -21,7 +21,7 @@ $body = json_decode(file_get_contents('php://input'), true, 512, JSON_OBJECT_AS_
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         if (isset($_GET['list'])) {
-            echo json_encode(get_list($db));
+            echo json_encode(get_shout($db));
             break;
         }
 
@@ -32,11 +32,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         if (isset($_GET['request'])) {
             switch ($body["language"]) {
                 case "fr":
-                    echo json_encode(shout_fr($db, $body["message"]));
+                    echo json_encode(post_shout_fr($db, $body["message"]));
                     break;
 
                 case "fr-uwu":
-                    echo json_encode(shout_fr_uwu($db, $body["message"]));
+                    echo json_encode(post_shout_fr_uwu($db, $body["message"]));
                     break;
 
                 default:
@@ -51,7 +51,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
     case 'PUT':
         if (isset($body['original'])) {
-            echo json_encode(add($db, $body));
+            echo json_encode(put_shout($db, $body));
             break;
         }
 
@@ -60,7 +60,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
     case 'PATCH':
         if (isset($body['id'])) {
-            echo json_encode(edit($db, $body));
+            echo json_encode(patch_shout($db, $body));
             break;
         }
 
@@ -69,7 +69,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
     case 'DELETE':
         if (isset($_GET['id'])) {
-            echo json_encode(delete($db, $_GET['id']));
+            echo json_encode(delete_shout($db, $_GET['id']));
             break;
         }
 
@@ -84,7 +84,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 exit();
 
 // GET Functions
-function shout_fr(mysqli $db, string $message)
+function post_shout_fr(mysqli $db, string $message)
 {
     // Basic clean
     $message = trim(strtolower($message));
@@ -124,7 +124,7 @@ function shout_fr(mysqli $db, string $message)
             }
         }
 
-        //Add the word to the message
+        //put_shout the word to the message
         $message .= $replaced_word . " ";
     }
 
@@ -134,9 +134,9 @@ function shout_fr(mysqli $db, string $message)
     return ['value' => $message];
 }
 
-function shout_fr_uwu(mysqli $db, string $message)
+function post_shout_fr_uwu(mysqli $db, string $message)
 {
-    $message = shout_fr($db, $message)['value'];
+    $message = post_shout_fr($db, $message)['value'];
 
     if ($message === null) {
         return ['value' => null];
@@ -187,7 +187,7 @@ function load_shout_words(mysqli $db, string $language, int $type)
     return $data;
 }
 
-function get_list(mysqli $db)
+function get_shout(mysqli $db)
 {
     $SQL_query = "SELECT * FROM shout ORDER BY `language` ASC, `type` ASC, original ASC";
     $data = db_query_raw($db, $SQL_query);
@@ -203,7 +203,7 @@ function get_list(mysqli $db)
     return $result;
 }
 
-function add(mysqli $db, $data)
+function put_shout(mysqli $db, $data)
 {
     $original = trim($data['original']);
     $replacement = trim($data['replacement']);
@@ -212,7 +212,7 @@ function add(mysqli $db, $data)
     return true;
 }
 
-function edit(mysqli $db, $data)
+function patch_shout(mysqli $db, $data)
 {
     $original = trim($data['original']);
     $replacement = trim($data['replacement']);
@@ -221,7 +221,7 @@ function edit(mysqli $db, $data)
     return true;
 }
 
-function delete(mysqli $db, $id)
+function delete_shout(mysqli $db, $id)
 {
     $original = db_query($db, "SELECT original FROM shout WHERE id = ?", "i", $id)['original'];
     log_activity("API", "[SHOUT] Deleted", $original);
