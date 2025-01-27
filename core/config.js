@@ -12,6 +12,7 @@ const config = {
     httpsCertificate: configFile.https_cert,
 
     // From DB
+    bot_auto_off: 0,
     bot_name: "",
     cmd_msg_interval: 0,
     cmd_prefix: "",
@@ -34,13 +35,13 @@ const config = {
     twitch_display_name: "",
 };
 
-async function load_global(){
+async function load_global() {
     const response = await fetch(config.apiUrl + "config.php?list", {
         method: "get",
-        headers: { 
-            "Content-Type" : "application/json",
-            "Authorization" : `Bearer ${config.apiToken}`,
-            "Client" : config.apiClient
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${config.apiToken}`,
+            "Client": config.apiClient
         }
     })
 
@@ -53,19 +54,19 @@ async function load_global(){
 
         return null;
     } else {
-        console.error("Unable to load general configuration from API, starting aborted.")
+        console.error("Unable to load main configuration from API, starting aborted.");
         console.error(`API ERROR : ${response.status} ${response.statusText}`);
         process.exit(1);
     }
 }
 
-async function load_commands(){
+async function load_commands() {
     const response = await fetch(config.apiUrl + "commands.php?list-config", {
         method: "get",
-        headers: { 
-            "Content-Type" : "application/json",
-            "Authorization" : `Bearer ${config.apiToken}`,
-            "Client" : config.apiClient
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${config.apiToken}`,
+            "Client": config.apiClient
         }
     })
 
@@ -78,7 +79,7 @@ async function load_commands(){
 
         return null;
     } else {
-        console.error("Unable to load commands configuration from API, starting aborted.")
+        console.error("Unable to load commands configuration from API, starting aborted.");
         console.error(`API ERROR : ${response.status} ${response.statusText}`);
         process.exit(1);
     }
@@ -87,13 +88,21 @@ async function load_commands(){
 async function load() {
     await load_global();
 
-    if(config.plugin_commands == 1)
+    if (config.plugin_commands == 1) {
         await load_commands();
+    }
 
-    if(config.debug_level >= 2){
+    if (config.bot_auto_off != 0) {
+        setTimeout(function () {
+            console.error("[CORE] Halted by Auto Off");
+            process.exit(0);
+        }, config.bot_auto_off * 1000);
+    }
+
+    if (config.debug_level >= 2) {
         console.error("[CONFIG] Currently loaded :");
         console.error(config);
-    }        
+    }
 
     return null;
 }
