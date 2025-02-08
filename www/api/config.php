@@ -22,12 +22,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
-        if (isset($_GET['socket'])) {
-            header(HEADER_JSON);
-            echo json_encode(get_socket_conf());
-            break;
-        }
-
         if (isset($_GET['log'])) {
             header(HEADER_TEXT);
             echo get_log();
@@ -89,12 +83,6 @@ function get_plugin(mysqli $db)
 function get_bot_name(mysqli $db)
 {
     return array("value" => db_query($db, "SELECT `value` FROM config WHERE id = 'bot_name'")["value"]);
-}
-
-function get_socket_conf()
-{
-    $config = json_decode(file_get_contents("../../core/config.json"), true);
-    return ["port" => $config['socket_port'], "protocol" => $config['socket_protocol']];
 }
 
 function get_log()

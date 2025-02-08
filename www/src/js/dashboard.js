@@ -120,7 +120,7 @@ function playAudio(file, volume) {
 
 function connectSocket() {
     $.ajax({
-        url: "api/config.php?socket",
+        url: "api/socket.php?config",
         type: "GET",
         dataType: "json",
         success: function (config) {
@@ -183,21 +183,21 @@ function connectSocket() {
                 }
             })
 
-            // Audio
-            socket.on('play-audio', function (json) {
-                data = JSON.parse(json);
-                playAudio(data.file, data.volume);
-            })
-
             // Reload log
             socket.on('reload-log', function () {
                 getLog();
             });
 
+            /*// Audio
+            socket.on('play-audio', function (json) {
+                data = JSON.parse(json);
+                playAudio(data.file, data.volume);
+            })
+
             // TTS
             socket.on('play-TTS', function () {
                 playAudio('tts.mp3', 1);
-            })
+            })*/
 
         },
         error: function (result, status, error) {
