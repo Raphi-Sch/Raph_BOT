@@ -16,7 +16,7 @@ Text commands can be pure text (the text is send directly to chat) or TTS (text 
 
 Audio commands can be any .mp3 files, they are store in the server Raph_BOT is running on. Audio commands are played through the dashbord.
 
-For both TTS and audio commands, the dashboard need to be open and unmute.
+For both TTS and audio commands, add the player (***[SERVER_URL]**/player.html*) as Navigator source to OBS.
 
 ### Global Configuration :
 - cmd_prefix : Prefix before every commands (by default '!')
