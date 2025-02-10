@@ -11,6 +11,7 @@
         </div>
         <div id='navbar' class='collapse navbar-collapse'>
             <ul class='nav navbar-nav navbar-right'>
+                <li id='player'><a href="player.html">Player</a></li>
                 <li id='dock'><a href="dock.php">Stream Dock</a></li>
                 <li id='compte'><a href='password.php'><span class='glyphicon glyphicon-user'></span> <?php echo $_SESSION['username']; ?></a></li>
                 <li><a href='logout.php'><span class='glyphicon glyphicon-log-in'></span> Log out</a></li>
