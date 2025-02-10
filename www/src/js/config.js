@@ -21,7 +21,13 @@ function list(reload = false) {
 
                     TR.appendChild(createTableData(element.id, 'col-xs-2'));
                     TR.appendChild(createTableData(displayValue, 'col-xs-4'));
-                    TR.appendChild(createButtonGroup(btnHelp, btnEdit));
+
+                    if(element.help != null){
+                        TR.appendChild(createButtonGroup(btnHelp, btnEdit));
+                    }
+                    else{
+                        TR.appendChild(createButtonGroup(btnEdit));
+                    }
 
                     LIST.appendChild(TR);
                 }
