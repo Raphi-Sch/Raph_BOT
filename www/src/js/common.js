@@ -1,3 +1,5 @@
+var editMode = false;
+
 function getParameterName(pos) {
     let url = window.location.search.substring(1);
     let letUrl = url.split('&');
@@ -53,11 +55,12 @@ function createCheckbox(checked) {
     return TD;
 }
 
-function createButton(btnClass, icoClass, onclick) {
+function createButton(btnClass, icoClass, onclick, name = "") {
     const BTN = document.createElement('button');
     BTN.className = btnClass;
     BTN.type = "button";
     BTN.onclick = onclick;
+    BTN.name = name;
 
     const ICO = document.createElement('i');
     ICO.className = icoClass;
@@ -109,6 +112,21 @@ function errorAPI(result, status, error) {
         icon: 'error',
         html: error
     })
+}
+
+function toggleEditMode(){
+    if(editMode){
+        document.getElementsByName("edit").forEach(element => element.classList.add('hidden'));
+        document.getElementById("btn-edit").classList.add('btn-success');
+        document.getElementById("btn-edit").classList.remove('btn-danger');
+        editMode = false;
+    }
+    else{
+        document.getElementsByName("edit").forEach(element => element.classList.remove('hidden'));
+        document.getElementById("btn-edit").classList.remove('btn-success');
+        document.getElementById("btn-edit").classList.add('btn-danger');
+        editMode = true;
+    }
 }
 
 $(document).ready(function () {

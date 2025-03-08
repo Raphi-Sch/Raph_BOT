@@ -12,7 +12,7 @@ function view(param) {
 
     switch (param) {
         case 'alias':
-            document.getElementById("tab-alias").classList.add("active");
+            document.getElementById('tab-alias').classList.add('active');
             document.getElementById('div-alias').classList.remove('hidden');
             document.getElementById('btn-refresh').onclick = () => aliasList(true);
 
@@ -21,7 +21,7 @@ function view(param) {
             return;
 
         case 'commands':
-            document.getElementById("tab-text").classList.add("active");
+            document.getElementById('tab-text').classList.add('active');
             document.getElementById('div-text').classList.remove('hidden');
             document.getElementById('btn-refresh').onclick = () => {commandList(true), presetsList();};
 
@@ -31,7 +31,7 @@ function view(param) {
             return;
 
         case 'audio':
-            document.getElementById("tab-audio").classList.add("active");
+            document.getElementById('tab-audio').classList.add('active');
             document.getElementById('div-audio').classList.remove('hidden');
             document.getElementById('btn-refresh').onclick = () => audioList(true);
 
@@ -40,7 +40,7 @@ function view(param) {
             return;
 
         case 'config':
-            document.getElementById("tab-config").classList.add("active");
+            document.getElementById('tab-config').classList.add('active');
             document.getElementById('div-config').classList.remove('hidden');
             document.getElementById('btn-refresh').onclick = () => configList(true);
 
@@ -61,8 +61,8 @@ function commandList(reload = false) {
 
             data.forEach(element => {
                 const TR = document.createElement('tr');
-                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => commandEdit(element));
-                const btnDel = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => commandDelete(element));
+                const btnEdit = createButton("btn btn-warning hidden", "glyphicon glyphicon-pencil", () => commandEdit(element), "edit");
+                const btnDel = createButton("btn btn-danger hidden", "glyphicon glyphicon-remove", () => commandDelete(element), "edit");
 
                 TR.appendChild(createTableData(element.command, 'col-xs-2'));
                 TR.appendChild(createTableData(element.value, 'col-xs-4'));
@@ -332,8 +332,8 @@ function presetsList(reload = false) {
             data.forEach(element => {
                 const TR = document.createElement('tr');
                 const btnRun = createButton("btn btn-success", "glyphicon glyphicon-play", () => presetsApply(element));
-                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => presetsEdit(element));
-                const btnDel = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => presetsDelete(element));
+                const btnEdit = createButton("btn btn-warning hidden", "glyphicon glyphicon-pencil", () => presetsEdit(element), "edit");
+                const btnDel = createButton("btn btn-danger hidden", "glyphicon glyphicon-remove", () => presetsDelete(element), "edit");
 
                 TR.appendChild(createTableData(element.name, 'col-xs-9'));
                 TR.appendChild(createButtonGroup(btnRun, btnEdit, btnDel));

@@ -21,8 +21,12 @@ require_once 'src/php/header.php';
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h1 class="page-header">Commands
             <div class='pull-right'>
-                <button type="button" class="btn btn-info" id="btn-refresh"><i
-                        class="glyphicon glyphicon-refresh"></i></button>
+                <button type="button" class="btn btn-success" onclick="toggleEditMode()" id="btn-edit">
+                    <i class="glyphicon glyphicon-pencil"></i>
+                </button>
+                <button type="button" class="btn btn-info" id="btn-refresh">
+                    <i class="glyphicon glyphicon-refresh"></i>
+                </button>
             </div>
         </h1>
 
@@ -43,7 +47,7 @@ require_once 'src/php/header.php';
                     <tr>
                         <th class="col-xs-9">Presets</th>
                         <th class="table-scroll-th-fix"></th>
-                        <th class="col-xs-2"><button type="button" class="btn btn-success pull-right"
+                        <th class="col-xs-2"><button type="button" class="btn btn-success pull-right hidden" name="edit"
                                 onclick='presetsAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
                     </tr>
                 </thead>
@@ -62,7 +66,7 @@ require_once 'src/php/header.php';
                         <th class="col-xs-1 text-center">Sub Only</th>
                         <th class="col-xs-1 text-center">TTS</th>
                         <th class="table-scroll-th-fix"></th>
-                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right"
+                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right hidden" name="edit"
                                 onclick='commandAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
                     </tr>
                 </thead>
