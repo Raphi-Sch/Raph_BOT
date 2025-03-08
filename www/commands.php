@@ -21,13 +21,15 @@ require_once 'src/php/header.php';
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h1 class="page-header">Commands
             <div class='pull-right'>
-                <button type="button" class="btn btn-info" id="btn-refresh"><i class="glyphicon glyphicon-refresh"></i></button>
+                <button type="button" class="btn btn-info" id="btn-refresh"><i
+                        class="glyphicon glyphicon-refresh"></i></button>
             </div>
         </h1>
 
         <ul class="nav nav-tabs">
             <li id="tab-text"><a href="#" onclick='view("commands")'>Text</a></li>
             <li id="tab-alias"><a href="#" onclick='view("alias")'>Alias</a></li>
+            <li id="tab-presets"><a href="#" onclick='view("presets")'>Presets</a></li>
             <li id="tab-audio"><a href="#" onclick='view("audio")'>Audio</a></li>
             <li id="tab-config"><a href="#" onclick='view("config")'>Config</a></li>
         </ul>
@@ -39,6 +41,20 @@ require_once 'src/php/header.php';
             <table class="table table-hover table-condensed table-scroll">
                 <thead>
                     <tr>
+                        <th class="col-xs-9">Presets</th>
+                        <th class="table-scroll-th-fix"></th>
+                        <th class="col-xs-2"><button type="button" class="btn btn-success pull-right"
+                                onclick='presetsAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                    </tr>
+                </thead>
+                <tbody class="table-scroll-td" id='tbody-presets'>
+                    <!-- Dynamic -->
+                </tbody>
+            </table>
+
+            <table class="table table-hover table-condensed table-scroll">
+                <thead>
+                    <tr>
                         <th class="col-xs-2">Command</th>
                         <th class="col-xs-4">Text</th>
                         <th class="col-xs-1 text-center">Auto</th>
@@ -46,7 +62,8 @@ require_once 'src/php/header.php';
                         <th class="col-xs-1 text-center">Sub Only</th>
                         <th class="col-xs-1 text-center">TTS</th>
                         <th class="table-scroll-th-fix"></th>
-                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='commandAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right"
+                                onclick='commandAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
                     </tr>
                 </thead>
                 <tbody class="table-scroll-td" id='tbody-text'>
@@ -63,7 +80,8 @@ require_once 'src/php/header.php';
                         <th class="col-xs-5">Alias</th>
                         <th class="col-xs-5">Command</th>
                         <th class="table-scroll-th-fix"></th>
-                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='aliasAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right"
+                                onclick='aliasAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
                     </tr>
                 </thead>
                 <tbody class="table-scroll-td" id='tbody-alias'>
@@ -86,7 +104,8 @@ require_once 'src/php/header.php';
                         <th class="col-xs-1 text-center">Sub Only</th>
                         <th class="col-xs-2 text-center">Player</th>
                         <th class="table-scroll-th-fix"></th>
-                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right" onclick='audioAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
+                        <th class="col-xs-1"><button type="button" class="btn btn-success pull-right"
+                                onclick='audioAdd()'><i class="glyphicon glyphicon-plus"></i></button></th>
                     </tr>
                 </thead>
                 <tbody class="table-scroll-td" id='tbody-audio'>
@@ -97,7 +116,7 @@ require_once 'src/php/header.php';
 
         <!-- Config -->
         <div id='div-config'>
-            <br/>     
+            <br />
             <table class="table table-hover table-condensed table-scroll">
                 <thead>
                     <tr>
@@ -121,16 +140,16 @@ require_once 'src/php/header.php';
     <script src="src/js/common.js"></script>
     <script src="src/js/commands.js"></script>
     <script>
-        $(document).ready(function() {
-            // Active the corresponding button in the navbar
-            document.getElementById("plugin_commands").classList.add("active");
+    $(document).ready(function() {
+        // Active the corresponding button in the navbar
+        document.getElementById("plugin_commands").classList.add("active");
 
-            const param_name = getParameterName(0);
-            if (param_name)
-                view(param_name);
-            else
-                view('commands');
-        });
+        const param_name = getParameterName(0);
+        if (param_name)
+            view(param_name);
+        else
+            view('commands');
+    });
     </script>
 
 

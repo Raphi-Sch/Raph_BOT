@@ -51,6 +51,18 @@
                 "command": "text NOT NULL"
             }
         },
+        "commands_presets": {
+            "fields": [
+                "id",
+                "name",
+                "commands"
+            ],
+            "types": {
+                "id": "INT(11) NULL DEFAULT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)",
+                "name": "text NOT NULL",
+                "commands": "text NOT NULL"
+            }
+        },
         "commands_audio": {
             "fields": [
                 "id",

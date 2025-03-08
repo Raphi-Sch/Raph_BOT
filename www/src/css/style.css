@@ -181,9 +181,9 @@ textarea {
 
 /* Table scroll */
 .table-scroll>tbody {
-    display: block;
+    /*display: block;
     height: 70vh;
-    overflow: auto;
+    overflow: auto;*/
 }
 
 .table-scroll>thead,
@@ -194,7 +194,7 @@ textarea {
 }
 
 .table-scroll-td{
-    height: 70vh !important;
+    /*height: 70vh !important;*/
 }
 
 .table-scroll-th-fix{

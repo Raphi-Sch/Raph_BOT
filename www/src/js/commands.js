@@ -23,10 +23,11 @@ function view(param) {
         case 'commands':
             document.getElementById("tab-text").classList.add("active");
             document.getElementById('div-text').classList.remove('hidden');
-            document.getElementById('btn-refresh').onclick = () => commandList(true);
+            document.getElementById('btn-refresh').onclick = () => {commandList(true), presetsList();};
 
             window.history.pushState(null, '', 'commands.php?commands');
             commandList();
+            presetsList();
             return;
 
         case 'audio':
@@ -147,7 +148,7 @@ function commandEdit(data) {
         if (result.value) {
             const FORM = document.getElementById('swal-form');
             const FORM_DATA = {
-                'id' : data.id,
+                'id': data.id,
                 'command': FORM.command.value,
                 'text': FORM.text.value,
                 'auto': FORM.auto.checked,
@@ -319,6 +320,158 @@ function aliasDelete(data) {
     })
 }
 
+function presetsList(reload = false) {
+    $.ajax({
+        url: "api/commands.php?presets",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            const LIST = document.getElementById('tbody-presets');
+            LIST.innerHTML = "";
+
+            data.forEach(element => {
+                const TR = document.createElement('tr');
+                const btnRun = createButton("btn btn-success", "glyphicon glyphicon-play", () => presetsApply(element));
+                const btnEdit = createButton("btn btn-warning", "glyphicon glyphicon-pencil", () => presetsEdit(element));
+                const btnDel = createButton("btn btn-danger", "glyphicon glyphicon-remove", () => presetsDelete(element));
+
+                TR.appendChild(createTableData(element.name, 'col-xs-9'));
+                TR.appendChild(createButtonGroup(btnRun, btnEdit, btnDel));
+
+                LIST.appendChild(TR);
+            })
+
+            if (reload)
+                reloadSuccess();
+        },
+        error: errorAPI
+    })
+}
+
+function presetsAdd() {
+    Swal.fire({
+        title: "Add commands presets",
+        html: `<form id='swal-form'>
+            <label>Name of preset</label><input type='text' class='form-control' name='name' required><br/>
+            <label>Active commands</label>
+            
+            
+            </form>`,
+        showCancelButton: true,
+        showConfirmButton: confirm,
+        focusConfirm: false,
+        allowOutsideClick: false,
+        width: "25%",
+        confirmButtonText: 'Add',
+        cancelButtonText: 'Cancel',
+        didOpen: () => {
+            aliasListOption();
+        }
+    }).then((result) => {
+        if (result.value) {
+            const FORM = document.getElementById('swal-form');
+            const FORM_DATA = {
+                'alias': FORM.alias.value,
+                'command': FORM.command.value
+            };
+
+            $.ajax({
+                url: "api/commands.php?alias",
+                type: "PUT",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    presetsList(true);
+                },
+                error: errorAPI
+            })
+        }
+    });
+}
+
+function presetsEdit(data) {
+    Swal.fire({
+        title: `Editing : "${data.name}"`,
+        icon: 'info',
+        html: `<form id='swal-form'>
+            <label>Preset name</label><input class='form-control' type='text' name='name' value="${data.name}"><br />
+            </form>`,
+        showCancelButton: true,
+        focusConfirm: false,
+        allowOutsideClick: false,
+        width: "30%",
+        confirmButtonText: 'Edit',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.value) {
+            const FORM = document.getElementById('swal-form');
+            const FORM_DATA = {
+                'id': data.id,
+                'name': FORM.name.value,
+            };
+
+            $.ajax({
+                url: "api/commands.php?preset",
+                type: "PATCH",
+                dataType: "json",
+                data: JSON.stringify(FORM_DATA),
+                success: function () {
+                    presetsList(true);
+                },
+                error: errorAPI
+            })
+        }
+    })
+}
+
+function presetsDelete(data) {
+    Swal.fire({
+        title: `Delete : '${data.name}' ?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        focusCancel: true
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: `api/commands.php?preset&id=${data.id}`,
+                type: "DELETE",
+                dataType: "json",
+                success: function () {
+                    presetsList(true);
+                },
+                error: errorAPI
+            })
+        }
+    })
+}
+
+function presetsApply(data) {
+    Swal.fire({
+        title: `Apply preset : '${data.name}' ?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        focusCancel: true
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: `api/commands.php?preset&id=${data.id}`,
+                type: "POST",
+                dataType: "json",
+                success: function () {
+                    commandList(true);
+                },
+                error: errorAPI
+            })
+        }
+    })
+}
+
 function audioList(reload = false) {
     $.ajax({
         url: "api/commands.php?list-audio",
@@ -354,7 +507,7 @@ function audioList(reload = false) {
     })
 }
 
-function audioTimeoutPreset(time){
+function audioTimeoutPreset(time) {
     document.getElementById('swal-timeout').value = parseInt(time);
 }
 
@@ -479,7 +632,7 @@ function configList(reload = false) {
             const LIST = document.getElementById('tbody-config');
             LIST.innerHTML = "";
 
-            for(const [key, values] of Object.entries(data)){
+            for (const [key, values] of Object.entries(data)) {
                 const TR = document.createElement('tr');
 
                 if (values.type == 1)

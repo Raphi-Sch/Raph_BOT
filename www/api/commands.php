@@ -41,12 +41,22 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             break;
         }
 
+        if(isset($_GET['presets'])){
+            echo json_encode(get_presets($db));
+            break;
+        }
+
         http_response_code(400);
         break;
 
     case 'POST':
         if (isset($_GET['request']) && isset($body['command'])) {
             echo json_encode(request($db, $body));
+            break;
+        }
+
+        if(isset($_GET['preset']) && isset($_GET['id'])){
+            echo json_encode(post_preset($db, $_GET['id']));
             break;
         }
 
@@ -99,6 +109,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
         if (isset($_GET['alias']) && isset($_GET['id'])) {
             echo json_encode(alias_delete($db, $_GET['id']));
+            break;
+        }
+
+        if (isset($_GET['preset']) && isset($_GET['id'])) {
+            echo json_encode(delete_preset($db, $_GET['id']));
             break;
         }
 
@@ -281,5 +296,42 @@ function alias_delete(mysqli $db, $id)
     $alias = db_query($db, "SELECT alias FROM commands_alias WHERE id = ?", "i", $id)['alias'];
     db_query_no_result($db, "DELETE FROM commands_alias WHERE id = ?", "s", $id);
     log_activity("API", "[COMMAND-ALIAS] Deleted", $alias);
+    return true;
+}
+
+// Presets
+function get_presets(mysqli $db){
+    $data = db_query_raw($db, "SELECT * FROM commands_presets ORDER BY `name` ASC");
+
+    $result = array();
+    $count = 0;
+
+    while ($row = $data->fetch_assoc()) {
+        $result[$count] = $row;
+        $count++;
+    }
+
+    return $result;
+}
+
+function post_preset(mysqli $db, $id){
+    $data = db_query($db, "SELECT commands FROM commands_presets WHERE id = ?", "i", $id);
+    if(!empty($data)){
+        $commands = explode(';', $data['commands']);
+
+        // Disable all commands
+        db_query_no_result($db, "UPDATE `commands` SET `auto` = 0");
+
+        foreach($commands as $command){
+            // Enable commands from preset
+            db_query_no_result($db, "UPDATE `commands` SET `auto` = 1 WHERE id = ?", "i",[$command]);
+        }
+    }
+}
+
+function delete_preset(mysqli $db, $id)
+{
+    db_query_no_result($db, "DELETE FROM commands_presets WHERE id = ?", "s", $id);
+    log_activity("API", "[COMMAND-PRESET] Deleted");
     return true;
 }
