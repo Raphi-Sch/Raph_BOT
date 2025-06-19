@@ -36,7 +36,7 @@ function list(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -90,7 +90,7 @@ function editConfig(element) {
                 success: function () {
                     list(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -134,6 +134,6 @@ function updateTwitchToken(hash) {
                     window.location = window.location.origin + window.location.pathname;
             })
         },
-        error: errorAPI
+        error: HttpError
     })
 }

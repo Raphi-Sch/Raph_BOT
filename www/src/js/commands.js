@@ -78,7 +78,7 @@ function commandList(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -120,7 +120,7 @@ function commandAdd() {
                 success: function () {
                     commandList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     });
@@ -165,7 +165,7 @@ function commandEdit(data) {
                 success: function () {
                     commandList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -189,7 +189,7 @@ function commandDelete(data) {
                 success: function () {
                     commandList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -217,7 +217,7 @@ function aliasList(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -234,7 +234,7 @@ function aliasListOption() {
                 select.appendChild(createOption(element.command + ' (text)', element.command));
             })
         },
-        error: errorAPI
+        error: HttpError
     })
 
     // List audio
@@ -249,7 +249,7 @@ function aliasListOption() {
                 select.appendChild(createOption(element.trigger_word + ' (audio)', element.trigger_word));
             })
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -290,7 +290,7 @@ function aliasAdd() {
                 success: function () {
                     aliasList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     });
@@ -314,7 +314,7 @@ function aliasDelete(data) {
                 success: function () {
                     aliasList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -344,7 +344,7 @@ function presetsList(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -383,7 +383,7 @@ function presetsAdd() {
                 success: function () {
                     presetsList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     });
@@ -418,7 +418,7 @@ function presetsEdit(data) {
                 success: function () {
                     presetsList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -442,7 +442,7 @@ function presetsDelete(data) {
                 success: function () {
                     presetsList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -466,7 +466,7 @@ function presetsApply(data) {
                 success: function () {
                     commandList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -503,7 +503,7 @@ function audioList(reload = false) {
                 reloadSuccess();
 
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -593,7 +593,7 @@ function audioEdit(data) {
                 success: function () {
                     audioList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     });
@@ -617,7 +617,7 @@ function audioDelete(data) {
                 success: function () {
                     audioList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -651,7 +651,7 @@ function configList(reload = false) {
                 reloadSuccess();
 
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -700,7 +700,7 @@ function configEdit(key, element) {
                 success: function () {
                     configList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })

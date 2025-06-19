@@ -25,7 +25,7 @@ function list(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -78,7 +78,7 @@ function reactionAdd() {
                 success: function () {
                     list(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     });
@@ -129,7 +129,7 @@ function reactionEdit(data) {
                 success: function () {
                     list(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -153,7 +153,7 @@ function reactionDelete(data) {
                 success: function () {
                     list(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })

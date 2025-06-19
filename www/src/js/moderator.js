@@ -79,7 +79,7 @@ function expressionList(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -131,7 +131,7 @@ function expressionAdd() {
                 success: function () {
                     expressionList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     });
@@ -191,7 +191,7 @@ function expressionEdit(data) {
                 success: function () {
                     expressionList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -215,7 +215,7 @@ function expressionDelete(data) {
                 success: function () {
                     expressionList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -265,7 +265,7 @@ function leetList(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -299,7 +299,7 @@ function leetAdd() {
                 success: function () {
                     leetList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     });
@@ -323,7 +323,7 @@ function leetDel(data) {
                 success: function () {
                     leetList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -356,7 +356,7 @@ function warningList(reload) {
             if (reload)
                 reloadSuccess();
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -378,7 +378,7 @@ function warningDelete(data) {
                 success: function () {
                     warningList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -411,7 +411,7 @@ function warningLevelList(reload) {
             if (reload)
                 reloadSuccess();
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -458,7 +458,7 @@ function warningLevelEdit(element){
                 success: function () {
                     warningLevelList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })

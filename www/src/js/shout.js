@@ -54,7 +54,7 @@ function dictionaryList(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -92,7 +92,7 @@ function dictionaryAdd() {
                 success: function () {
                     dictionaryList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     });
@@ -137,7 +137,7 @@ function dictionaryEdit(data) {
                 success: function () {
                     dictionaryList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -161,7 +161,7 @@ function dictionaryDelete(data) {
                 success: function () {
                     dictionaryList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })

@@ -102,26 +102,54 @@ function createPlayer(data) {
     return TD_PLAYER;
 }
 
-function errorAPI(result, status, error) {
-    if(result.responseJSON){
-        error = error + "<br/>" +  result.responseJSON.message;
+function HttpError(data) {
+    let title = "";
+
+    switch (data.status) {
+        case 400:
+            title = "Error 400 : Bad Request";
+            break;
+
+        case 401:
+            title = "Error 401 : Unauthorized";
+            break;
+
+        case 403:
+            title = "Error 403 : Forbidden";
+            break;
+
+        case 404:
+            title = "Error 404 : Not Found";
+            break;
+
+        case 405:
+            title = "Error 405 : Method Not Allowed";
+            break;
+
+        case 500:
+            title = "Error 500 : Internal Server Error";
+            break;
+
+        default:
+            title = "Unknown error";
+            break;
     }
 
     Swal.fire({
-        title: `API Error while loading`,
+        title: title,
         icon: 'error',
-        html: error
+        width: '500px',
     })
 }
 
-function toggleEditMode(){
-    if(editMode){
+function toggleEditMode() {
+    if (editMode) {
         document.getElementsByName("edit").forEach(element => element.classList.add('hidden'));
         document.getElementById("btn-edit").classList.add('btn-success');
         document.getElementById("btn-edit").classList.remove('btn-danger');
         editMode = false;
     }
-    else{
+    else {
         document.getElementsByName("edit").forEach(element => element.classList.remove('hidden'));
         document.getElementById("btn-edit").classList.remove('btn-success');
         document.getElementById("btn-edit").classList.add('btn-danger');
@@ -142,6 +170,6 @@ $(document).ready(function () {
                 document.getElementById('bot_name_nav').innerText = data.value;
             }
         },
-        error: (result, status, error) => errorAPI(result, status, error)
+        error: HttpError
     })
 });

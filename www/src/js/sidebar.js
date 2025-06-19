@@ -11,5 +11,5 @@ $.ajax({
 
             }
     },
-    error: (result, status, error) => errorAPI(result, status, error)
+    error: HttpError
 })

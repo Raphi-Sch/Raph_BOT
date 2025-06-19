@@ -77,7 +77,7 @@ function tankList(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -157,7 +157,7 @@ function tankAdd() {
                 success: function () {
                     tankList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     });
@@ -200,7 +200,7 @@ function tankEdit(data) {
                 success: function () {
                     tankList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -224,7 +224,7 @@ function tankDelete(data) {
                 success: function () {
                     tankList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -252,7 +252,7 @@ function nationList(reload = false){
             if (reload)
                 reloadSuccess();
         },
-        error: errorAPI
+        error: HttpError
     }) 
 }
 
@@ -298,7 +298,7 @@ function nationAdd() {
                 success: function () {
                     nationList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     });
@@ -322,7 +322,7 @@ function nationDelete(data) {
                 success: function () {
                     nationList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
@@ -350,7 +350,7 @@ function aliasList(reload = false) {
             if (reload)
                 reloadSuccess();
         },
-        error: errorAPI
+        error: HttpError
     }) 
 }
 
@@ -366,7 +366,7 @@ function aliasOptions() {
                 select.appendChild(createOption(element.trigger_word, element.trigger_word));
             })
         },
-        error: errorAPI
+        error: HttpError
     })
 }
 
@@ -403,7 +403,7 @@ function aliasAdd() {
                 success: function () {
                     aliasList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     });
@@ -427,7 +427,7 @@ function aliasDelete(data) {
                 success: function () {
                     aliasList(true);
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })

@@ -145,7 +145,7 @@ function authRenew(data) {
                         })
                     }
                 },
-                error: errorAPI
+                error: HttpError
             })
         }
     })
