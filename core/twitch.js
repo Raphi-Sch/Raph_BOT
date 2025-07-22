@@ -55,6 +55,9 @@ function init() {
             return;
         }
 
+        // Do not react to real talk (after moderator executed)
+        if(message.includes("@" + config.twitch_display_name)) return;
+
         const messageTriggerResult = await commands.messageTrigger();
         if (messageTriggerResult !== null) {
             send(messageTriggerResult);
